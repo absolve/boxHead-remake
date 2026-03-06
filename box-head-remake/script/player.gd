@@ -1,11 +1,10 @@
-extends CharacterBody2D
+extends "res://script/character.gd"
 
 @onready var ani=$ani
 
-var angle=0  #移动
-var speed=50 #移动速度
+
 var playerId=1
-var currAni="stand"
+
 
 func _ready():
 	pass

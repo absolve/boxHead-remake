@@ -1,5 +1,6 @@
-[gd_scene load_steps=76 format=3 uid="uid://ctuwqq3bh161h"]
+[gd_scene load_steps=77 format=3 uid="uid://ctuwqq3bh161h"]
 
+[ext_resource type="PackedScene" uid="uid://gvl5ox363h8g" path="res://scene/character.tscn" id="1_hjaqi"]
 [ext_resource type="Script" uid="uid://ctr0fv8feaujs" path="res://script/player.gd" id="1_xo3ru"]
 [ext_resource type="Texture2D" uid="uid://dgjv8k6tu126u" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/1.png" id="2_2fvbb"]
 [ext_resource type="Texture2D" uid="uid://clixi2eqd774j" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/2.png" id="3_ml7e8"]
@@ -74,9 +75,9 @@
 [ext_resource type="Texture2D" uid="uid://cpsbwvmhcbbv1" path="res://sprite/player/DefineSprite_1380/7.png" id="64_wqho7"]
 [ext_resource type="Texture2D" uid="uid://d4cs5lpei7lyf" path="res://sprite/player/DefineSprite_1380/8.png" id="65_swyrm"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xo3ru"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pv5j"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_xo3ru"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_4miyu"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -375,12 +376,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="player" type="CharacterBody2D"]
+[node name="player" instance=ExtResource("1_hjaqi")]
 script = ExtResource("1_xo3ru")
 
-[node name="shape" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_xo3ru")
+[node name="shape" parent="." index="0"]
+shape = SubResource("RectangleShape2D_8pv5j")
 
-[node name="ani" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_xo3ru")
-animation = &"walk_1_0"
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_4miyu")
+animation = &"stand_1_2"
