@@ -15,6 +15,10 @@ run/main_scene="uid://crxtvopj6f4ty"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Game="*res://autoload/game.gd"
+
 [display]
 
 window/size/viewport_width=1280
@@ -132,6 +136,11 @@ p4_switch={
 
 locale/translations=PackedStringArray("res://lang/lang.en.translation", "res://lang/lang.zh.translation")
 locale/locale_filter_mode=1
+
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="enemy"
 
 [rendering]
 

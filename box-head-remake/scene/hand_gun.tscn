@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://s86phpj82qgc"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_mok8c"]
+[ext_resource type="Script" uid="uid://74q1qmyciesl" path="res://script/hand_gun.gd" id="2_0xup3"]
+
+[node name="handGun" instance=ExtResource("1_mok8c")]
+script = ExtResource("2_0xup3")
+damage = 1
+wRange = 300
+delay = 0.2

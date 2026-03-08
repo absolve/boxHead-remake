@@ -384,4 +384,6 @@ shape = SubResource("RectangleShape2D_8pv5j")
 
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_4miyu")
-animation = &"stand_1_2"
+animation = &"stand_1_0"
+
+[node name="weaponBackpack" type="Node2D" parent="." index="2"]
