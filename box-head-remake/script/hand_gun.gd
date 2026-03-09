@@ -1,13 +1,13 @@
 extends "res://script/weapon.gd"
 
 func _ready() -> void:
-	offsetDir[0]=Vector2(40,0)
-	offsetDir[1]=Vector2(40,40)
-	offsetDir[2]=Vector2(-40,0)
-	offsetDir[3]=Vector2(-40,40)
+	offsetDir[0]=Vector2(45,3)
+	offsetDir[1]=Vector2(20,20)
+	offsetDir[2]=Vector2(-10,20)
+	offsetDir[3]=Vector2(-38,10)
 	offsetDir[4]=Vector2(-40,-20)
-	offsetDir[5]=Vector2(-40,-40)
-	offsetDir[6]=Vector2(0,-40)
+	offsetDir[5]=Vector2(-18,-45)
+	offsetDir[6]=Vector2(20,-40)
 	offsetDir[7]=Vector2(40,-20)
 
 
@@ -30,15 +30,14 @@ func fire(v):
 		detecframes=2
 		vector=v
 		queue_redraw()
-	else:
-		if timer.is_stopped():
-			timer.start(delay)	
+		canShoot=false
+		timer.start(delay)	
+	#else:
+		#if timer.is_stopped():
+			#timer.start(delay)	
 	
 func _draw() -> void:
 	if detecframes>0:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
-		#print(offset)
-		#print(fireAngle)
-		#print(offset+Vector2.RIGHT.rotated(fireAngle)*wRange)
 		draw_line(offset,
 			offset+vector*wRange,Color.WHITE)

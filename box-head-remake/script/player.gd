@@ -17,6 +17,11 @@ func _ready():
 	weaponList.push_back(gun)
 	weaponBackpack.add_child(gun)
 	currWeapon=gun
+	txt.text=Game.weaponName[currWeapon.type]
+	var t=load("res://scene/uzi.tscn")
+	var g=t.instantiate()
+	weaponList.push_back(g)
+	weaponBackpack.add_child(g)
 	if playerId==1:
 		keyMap.left="p1_left"
 		keyMap.right="p1_right"
@@ -31,7 +36,7 @@ func switchWeapon():
 		currWeaponIndex=wrapi(currWeaponIndex,0,weaponList.size())
 		currWeapon=weaponList[currWeaponIndex]
 		#播放声音
-	
+		txt.text=Game.weaponName[currWeapon.type]
 	
 	
 func  _physics_process(_delta):
@@ -45,7 +50,7 @@ func  _physics_process(_delta):
 		currAni="walk"
 	velocity = input_dir * speed
 	move_and_slide()
-	ani.play(currAni+"_%s"%playerId+"_%s"%angle)
+	ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%Game.weaponName[currWeapon.type])
 
 
 func _input(_event: InputEvent) -> void:
