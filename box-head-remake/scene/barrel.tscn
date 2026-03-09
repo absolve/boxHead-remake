@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu378ftp0wsm1"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_sphm8"]
+[ext_resource type="Script" uid="uid://depl0wrh66f6d" path="res://script/barrel.gd" id="2_v68im"]
+
+[node name="barrel" instance=ExtResource("1_sphm8")]
+script = ExtResource("2_v68im")

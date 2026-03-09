@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ot86m473600h"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_cl2vf"]
+[ext_resource type="Script" uid="uid://bxc8ywt451s7f" path="res://script/uzi.gd" id="2_pygel"]
+
+[node name="uzi" instance=ExtResource("1_cl2vf")]
+script = ExtResource("2_pygel")
+type = 4
+damage = 1
+wRange = 400
+delay = 0.3

@@ -1,8 +1,14 @@
 extends "res://script/weapon.gd"
 
 func _ready() -> void:
-	position+=offset
-	pass
+	offsetDir[0]=Vector2(40,0)
+	offsetDir[1]=Vector2(40,40)
+	offsetDir[2]=Vector2(-40,0)
+	offsetDir[3]=Vector2(-40,40)
+	offsetDir[4]=Vector2(-40,-20)
+	offsetDir[5]=Vector2(-40,-40)
+	offsetDir[6]=Vector2(0,-40)
+	offsetDir[7]=Vector2(40,-20)
 
 
 func _physics_process(_delta: float) -> void:
@@ -11,17 +17,18 @@ func _physics_process(_delta: float) -> void:
 		if detecframes<=0:
 			queue_redraw()
 		var space_state = get_world_2d().direct_space_state
-		var query = PhysicsRayQueryParameters2D.create(global_position, 
-		Vector2.RIGHT.rotated(fireAngle)*wRange)
+		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
+		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
+		global_position+vector*wRange+offset)
 		#query.exclude = [self]
 		var result = space_state.intersect_ray(query)
 		print(result)
 
-func fire(angle):
+func fire(v):
 	if canShoot:
 		print('shoot')
 		detecframes=2
-		fireAngle=angle
+		vector=v
 		queue_redraw()
 	else:
 		if timer.is_stopped():
@@ -29,5 +36,9 @@ func fire(angle):
 	
 func _draw() -> void:
 	if detecframes>0:
-		draw_line(position.rotated(fireAngle),Vector2.RIGHT.rotated(fireAngle)*wRange,Color.WHITE)
-	pass
+		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
+		#print(offset)
+		#print(fireAngle)
+		#print(offset+Vector2.RIGHT.rotated(fireAngle)*wRange)
+		draw_line(offset,
+			offset+vector*wRange,Color.WHITE)

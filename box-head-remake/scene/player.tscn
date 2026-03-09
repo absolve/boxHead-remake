@@ -387,3 +387,10 @@ sprite_frames = SubResource("SpriteFrames_4miyu")
 animation = &"stand_1_0"
 
 [node name="weaponBackpack" type="Node2D" parent="." index="2"]
+
+[node name="txt" type="Label" parent="." index="3"]
+offset_left = -8.0
+offset_top = -94.0
+offset_right = 32.0
+offset_bottom = -71.0
+horizontal_alignment = 1

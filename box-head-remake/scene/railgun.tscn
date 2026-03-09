@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://dopagrgxdjwkp"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_g1vjg"]
+[ext_resource type="Script" uid="uid://dddxu6th7xc62" path="res://script/railgun.gd" id="2_p8kex"]
+
+[node name="railgun" instance=ExtResource("1_g1vjg")]
+script = ExtResource("2_p8kex")

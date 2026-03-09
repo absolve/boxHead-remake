@@ -2,12 +2,14 @@ extends "res://script/character.gd"
 
 @onready var ani=$ani
 @onready var weaponBackpack=$weaponBackpack
+@onready var txt=$txt
 
 var playerId=1
 var keyMap={'left':'','right':'','up':'','down':'','fire':'','switch':''}
 var currWeapon=null
 var weaponList=[]
-var fireAngel=0
+var currWeaponIndex=0
+var vector=Vector2.RIGHT
 
 func _ready():
 	var temp=load("res://scene/hand_gun.tscn")
@@ -22,12 +24,22 @@ func _ready():
 		keyMap.down="p1_down"
 		keyMap.fire='p1_fire'
 		keyMap.switch='p1_switch'
+
+func switchWeapon():
+	if weaponList.size()>1:
+		currWeaponIndex+=1
+		currWeaponIndex=wrapi(currWeaponIndex,0,weaponList.size())
+		currWeapon=weaponList[currWeaponIndex]
+		#播放声音
+	
+	
 	
 func  _physics_process(_delta):
 	currAni="stand"
 	var input_dir = Input.get_vector("p1_left", "p1_right", "p1_up", "p1_down")
+	#print(input_dir)
 	if input_dir.length() != 0:
-		fireAngel=input_dir.angle()
+		vector=input_dir
 		angle = input_dir.angle() / (PI/4)
 		angle = wrapi(int(angle), 0, 8)
 		currAni="walk"
@@ -38,5 +50,7 @@ func  _physics_process(_delta):
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(keyMap.fire):
-		currWeapon.fire(fireAngel)
-	
+		currWeapon.fire(vector)
+	if Input.is_action_just_pressed(keyMap.switch):
+		switchWeapon()
+		pass

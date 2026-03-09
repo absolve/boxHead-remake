@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://we6mc6ojy8ac"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_egs87"]
+[ext_resource type="Script" uid="uid://cb4yk42lll8vi" path="res://script/shotgun.gd" id="2_v3i1e"]
+
+[node name="shotgun" instance=ExtResource("1_egs87")]
+script = ExtResource("2_v3i1e")
+damage = 2
+wRange = 300
+delay = 0.5

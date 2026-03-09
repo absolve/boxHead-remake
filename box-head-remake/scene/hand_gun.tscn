@@ -7,4 +7,4 @@
 script = ExtResource("2_0xup3")
 damage = 1
 wRange = 300
-delay = 0.2
+delay = 0.4

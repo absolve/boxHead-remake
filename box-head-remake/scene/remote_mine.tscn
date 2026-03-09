@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://dloo61ps2erhw"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_ikbhm"]
+[ext_resource type="Script" uid="uid://dvdswgvimve1m" path="res://script/remote_mine.gd" id="2_s73ff"]
+
+[node name="remoteMine" instance=ExtResource("1_ikbhm")]
+script = ExtResource("2_s73ff")
