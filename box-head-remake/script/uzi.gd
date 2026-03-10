@@ -22,7 +22,7 @@ func _physics_process(_delta: float) -> void:
 		var space_state = get_world_2d().direct_space_state
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
-		global_position+vector*wRange+offset)
+		global_position+vector*wRange+offset,collisionMask)
 		#query.exclude = [self]
 		var result = space_state.intersect_ray(query)
 		print(result)
@@ -36,7 +36,7 @@ func fire(v):
 		canShoot=false
 		timer.start(delay)		
 		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
-		ani.rotate(vector.angle())
+		ani.rotation=vector.angle()
 		player.play("fire")
 		sound.play()
 	

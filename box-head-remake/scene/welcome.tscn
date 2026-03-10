@@ -1,9 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://crxtvopj6f4ty"]
+[gd_scene load_steps=5 format=3 uid="uid://crxtvopj6f4ty"]
 
 [ext_resource type="Script" uid="uid://3qnx0msgrg15" path="res://script/welcome.gd" id="1_njjjx"]
+[ext_resource type="Texture2D" uid="uid://bmdeognuc4rl6" path="res://sprite/1.png" id="2_hys0r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hys0r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0h2lm"]
 
 [node name="welcome" type="Node2D"]
 script = ExtResource("1_njjjx")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 640.0
+metadata/_edit_lock_ = true
+
+[node name="title" type="Sprite2D" parent="."]
+position = Vector2(640, 180)
+scale = Vector2(2, 2)
+texture = ExtResource("2_hys0r")
+metadata/_edit_lock_ = true
+
+[node name="bg" type="Sprite2D" parent="."]
+modulate = Color(18.892157, 18.892157, 18.892157, 0.05882353)
+position = Vector2(768, 336.00003)
+scale = Vector2(5, 5)
+texture = ExtResource("2_hys0r")
+metadata/_edit_lock_ = true
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -14,14 +37,33 @@ offset_bottom = 40.0
 [node name="vbox" type="VBoxContainer" parent="Control"]
 layout_mode = 0
 offset_left = 512.0
-offset_top = 280.0
-offset_right = 679.0
-offset_bottom = 404.0
+offset_top = 392.0
+offset_right = 742.0
+offset_bottom = 552.0
+alignment = 1
+
+[node name="Button" type="Button" parent="Control/vbox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
+text = "start game"
+
+[node name="Button2" type="Button" parent="Control/vbox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
+text = "instructions"
 
 [node name="Label" type="Label" parent="Control/vbox"]
 layout_mode = 2
 text = "start game"
 horizontal_alignment = 1
 
+[connection signal="mouse_entered" from="Control/vbox/Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/vbox/Button" to="." method="_on_button_mouse_exited"]
 [connection signal="mouse_entered" from="Control/vbox/Label" to="." method="_on_label_mouse_entered"]
 [connection signal="mouse_exited" from="Control/vbox/Label" to="." method="_on_label_mouse_exited"]

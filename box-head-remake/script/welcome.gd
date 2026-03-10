@@ -1,35 +1,44 @@
 extends Node2D
 
 @onready var label=$Control/vbox/Label
+@onready var btn=$Control/vbox/Button
 
-var noise: FastNoiseLite=null
-var startShake=false
-@export var shake_strength: float = 8.0
-@export var shake_duration: float = 0.4
-@export var shake_speed: float = 15.0  # 抖动变化速度
+var tween:Tween
+var originalPos:Vector2
+var duration=0.3 #频率
+var offset=4  #偏移
 
 func _ready():
-	noise=FastNoiseLite.new()
-	noise.seed = randi()
-	noise.fractal_octaves = 4
-	
+	tween=create_tween()
+	tween.set_loops()
+	tween.tween_method(updatePos,null,null,duration)
+	tween.stop()
 
 	
-func _process(_delta):
-	if startShake:
-		# 用噪声生成偏移（2D）
-		var offset_x: float = noise.get_noise_2d(noise.seed, 0) * shake_strength 
-		var offset_y: float = noise.get_noise_2d(noise.seed, 10) * shake_strength 
-		var offset: Vector2 = Vector2(offset_x, offset_y)
-		label.position+=offset
-		print(1)
-
+func updatePos(_progress):
+	var random_x = randf_range(-offset, offset)
+	var random_y = randf_range(-offset, offset)	
+	btn.position=originalPos + Vector2(random_x, random_y)
 
 func _on_label_mouse_entered():
-	startShake=true
+	
 	pass # Replace with function body.
 
 
 func _on_label_mouse_exited():
-	startShake=false
+	
 	pass # Replace with function body.
+
+
+func _on_button_mouse_entered() -> void:
+	if tween!=null:
+		tween.stop()
+	originalPos=btn.position	
+	tween.bind_node(btn)
+	tween.play()
+
+
+func _on_button_mouse_exited() -> void:
+	if tween!=null:
+		tween.stop()
+	btn.position=originalPos
