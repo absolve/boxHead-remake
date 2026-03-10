@@ -84,6 +84,7 @@
 [ext_resource type="Texture2D" uid="uid://d4cs5lpei7lyf" path="res://sprite/player/DefineSprite_1380/8.png" id="65_swyrm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8pv5j"]
+size = Vector2(15, 10)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4miyu"]
 animations = [{
@@ -684,6 +685,7 @@ animations = [{
 script = ExtResource("1_xo3ru")
 
 [node name="shape" parent="." index="0"]
+position = Vector2(0, 20)
 shape = SubResource("RectangleShape2D_8pv5j")
 
 [node name="ani" parent="." index="1"]

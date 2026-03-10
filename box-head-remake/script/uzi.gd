@@ -1,5 +1,7 @@
 extends "res://script/weapon.gd"
 
+@onready var ani=$ani
+@onready var player=$player
 
 func _ready():
 	offsetDir[0]=Vector2(45,3)
@@ -33,6 +35,10 @@ func fire(v):
 		queue_redraw()
 		canShoot=false
 		timer.start(delay)		
+		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
+		ani.rotate(vector.angle())
+		player.play("fire")
+		sound.play()
 	
 func _draw() -> void:
 	if detecframes>0:

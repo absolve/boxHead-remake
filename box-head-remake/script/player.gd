@@ -29,7 +29,8 @@ func _ready():
 		keyMap.down="p1_down"
 		keyMap.fire='p1_fire'
 		keyMap.switch='p1_switch'
-
+	
+	
 func switchWeapon():
 	if weaponList.size()>1:
 		currWeaponIndex+=1

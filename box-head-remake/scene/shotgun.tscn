@@ -1,10 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://we6mc6ojy8ac"]
+[gd_scene load_steps=6 format=3 uid="uid://we6mc6ojy8ac"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_egs87"]
 [ext_resource type="Script" uid="uid://cb4yk42lll8vi" path="res://script/shotgun.gd" id="2_v3i1e"]
+[ext_resource type="AudioStream" uid="uid://bia5hx4npxwl5" path="res://sound/561_561 Weapon.ShotGun.Fire.mp3" id="3_yha0r"]
+[ext_resource type="Texture2D" uid="uid://gypb2ausmi4k" path="res://sprite/shape/DefineSprite_2309/1.png" id="4_eb14o"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yha0r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_eb14o")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="shotgun" instance=ExtResource("1_egs87")]
 script = ExtResource("2_v3i1e")
 damage = 2
 wRange = 300
-delay = 0.5
+delay = 0.6
+
+[node name="sound" parent="." index="0"]
+stream = ExtResource("3_yha0r")
+
+[node name="ani" type="AnimatedSprite2D" parent="." index="2"]
+visible = false
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_yha0r")
+
+[node name="player" type="AnimationPlayer" parent="." index="3"]

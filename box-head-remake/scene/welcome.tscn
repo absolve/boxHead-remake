@@ -4,3 +4,24 @@
 
 [node name="welcome" type="Node2D"]
 script = ExtResource("1_njjjx")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="vbox" type="VBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 512.0
+offset_top = 280.0
+offset_right = 679.0
+offset_bottom = 404.0
+
+[node name="Label" type="Label" parent="Control/vbox"]
+layout_mode = 2
+text = "start game"
+horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="Control/vbox/Label" to="." method="_on_label_mouse_entered"]
+[connection signal="mouse_exited" from="Control/vbox/Label" to="." method="_on_label_mouse_exited"]

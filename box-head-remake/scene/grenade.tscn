@@ -5,3 +5,4 @@
 
 [node name="grenade" instance=ExtResource("1_n8g3t")]
 script = ExtResource("2_gt16k")
+delay = 1.0

@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dopagrgxdjwkp"]
+[gd_scene load_steps=4 format=3 uid="uid://dopagrgxdjwkp"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_g1vjg"]
 [ext_resource type="Script" uid="uid://dddxu6th7xc62" path="res://script/railgun.gd" id="2_p8kex"]
+[ext_resource type="AudioStream" uid="uid://cl6kg7qcixw45" path="res://sound/559_559 Weapon.Railgun.Fire.mp3" id="3_6a3wx"]
 
 [node name="railgun" instance=ExtResource("1_g1vjg")]
 script = ExtResource("2_p8kex")
+
+[node name="sound" parent="." index="0"]
+stream = ExtResource("3_6a3wx")

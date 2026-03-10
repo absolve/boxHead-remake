@@ -14,6 +14,9 @@ var vector:Vector2=Vector2.RIGHT
 var offsetDir={0:Vector2.ZERO,1:Vector2.ZERO,2:Vector2.ZERO,
 				3:Vector2.ZERO,4:Vector2.ZERO,5:Vector2.ZERO,
 				6:Vector2.ZERO,7:Vector2.ZERO}
+var ownerId=null  #武器持有者id
+var collisionMask=1+2  #检测对象默认是玩家和敌人
+var excludeObj=[]		#排除对象的列表
 
 
 @onready var sound=$sound

@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://p3fxgxarffnd"]
+[gd_scene load_steps=4 format=3 uid="uid://p3fxgxarffnd"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_3h2xa"]
 [ext_resource type="Script" uid="uid://b5ptssunwhgb8" path="res://script/wall.gd" id="2_n28be"]
+[ext_resource type="AudioStream" uid="uid://bpal8illcog0k" path="res://sound/549_549 Object.Barrel.Place.mp3" id="3_n28be"]
 
 [node name="wall" instance=ExtResource("1_3h2xa")]
 script = ExtResource("2_n28be")
+
+[node name="sound" parent="." index="0"]
+stream = ExtResource("3_n28be")

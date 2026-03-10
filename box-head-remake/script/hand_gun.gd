@@ -1,5 +1,9 @@
 extends "res://script/weapon.gd"
 
+@onready var ani=$ani
+@onready var player=$player
+
+
 func _ready() -> void:
 	offsetDir[0]=Vector2(45,3)
 	offsetDir[1]=Vector2(20,20)
@@ -19,8 +23,8 @@ func _physics_process(_delta: float) -> void:
 		var space_state = get_world_2d().direct_space_state
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
-		global_position+vector*wRange+offset)
-		#query.exclude = [self]
+		global_position+vector*wRange+offset,collisionMask)
+		#query.exclude = [ownerId]
 		var result = space_state.intersect_ray(query)
 		print(result)
 
@@ -32,6 +36,9 @@ func fire(v):
 		queue_redraw()
 		canShoot=false
 		timer.start(delay)	
+		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
+		player.play("fire")
+		sound.play()
 	#else:
 		#if timer.is_stopped():
 			#timer.start(delay)	
