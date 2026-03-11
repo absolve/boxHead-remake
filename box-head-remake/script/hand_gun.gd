@@ -24,6 +24,8 @@ func _physics_process(_delta: float) -> void:
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
 		global_position+vector*wRange+offset,collisionMask)
+		query.collide_with_areas=true
+		print(global_position+offset,global_position+vector*wRange+offset)
 		#query.exclude = [ownerId]
 		var result = space_state.intersect_ray(query)
 		print(result)

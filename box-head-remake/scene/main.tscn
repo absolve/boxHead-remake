@@ -1,10 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://dp1r8mdq1jy20"]
+[gd_scene load_steps=5 format=3 uid="uid://dp1r8mdq1jy20"]
 
 [ext_resource type="Script" uid="uid://vpr03eycubaa" path="res://script/main.gd" id="1_v0l8b"]
 [ext_resource type="PackedScene" uid="uid://ctuwqq3bh161h" path="res://scene/player.tscn" id="2_wp4xf"]
+[ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/barrel_obj.tscn" id="3_wp4xf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wp4xf"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_v0l8b")
 
 [node name="player" parent="." instance=ExtResource("2_wp4xf")]
 position = Vector2(252, 205)
+
+[node name="barrelObj" parent="." instance=ExtResource("3_wp4xf")]
+position = Vector2(458, 213)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(229, 66)
+shape = SubResource("RectangleShape2D_wp4xf")

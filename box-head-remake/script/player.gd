@@ -29,7 +29,7 @@ func _ready():
 		keyMap.down="p1_down"
 		keyMap.fire='p1_fire'
 		keyMap.switch='p1_switch'
-	
+	print(global_position,global_position+Vector2(800,0))
 	
 func switchWeapon():
 	if weaponList.size()>1:
@@ -52,7 +52,16 @@ func  _physics_process(_delta):
 	velocity = input_dir * speed
 	move_and_slide()
 	ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%Game.weaponName[currWeapon.type])
-
+	
+	#var space_state = get_world_2d().direct_space_state
+	#var mouse_pos = get_global_mouse_position()
+	#var query = PhysicsRayQueryParameters2D.create(global_position, 
+	#mouse_pos)
+	#query.collide_with_areas=true
+	##query.exclude = [ownerId]
+	#var result = space_state.intersect_ray(query)
+	#print(result)
+	
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(keyMap.fire):
