@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://dnhtlsc6ydy68" path="res://script/item.gd" id="1_4w2rt"]
 
 [node name="item" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_4w2rt")
 
 [node name="shape" type="CollisionShape2D" parent="."]

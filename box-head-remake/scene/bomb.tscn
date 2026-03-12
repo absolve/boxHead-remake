@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://kvex0l32d0df"]
+
+[ext_resource type="Script" uid="uid://b7xssj78qhf0" path="res://script/bomb.gd" id="1_coick"]
+[ext_resource type="Texture2D" uid="uid://bu2rmm8wspxe1" path="res://sprite/shape/DefineSprite_2301_Shot.Grenade/1.png" id="2_bjs2y"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r17kw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_bjs2y")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="bomb" type="Node2D"]
+script = ExtResource("1_coick")
+
+[node name="ani" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_r17kw")

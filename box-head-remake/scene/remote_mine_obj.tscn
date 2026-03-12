@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://psshr77l1678"]
+
+[ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_rfdii"]
+[ext_resource type="Script" uid="uid://6edsg3gk1ug8" path="res://script/remote_mine_obj.gd" id="2_62ch0"]
+[ext_resource type="Texture2D" uid="uid://bbjl1sm3khn2y" path="res://sprite/shape/DefineSprite_2271_Object.ChargePack/1.png" id="3_p7d0r"]
+[ext_resource type="AudioStream" uid="uid://c7i0l6xp3ycg5" path="res://sound/550_550 Object.Mine.Detonate.mp3" id="3_pt3ct"]
+[ext_resource type="Texture2D" uid="uid://c0whtncw3jg43" path="res://sprite/shape/DefineSprite_2271_Object.ChargePack/2.png" id="4_nfdou"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_edhcj"]
+radius = 20.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1jqko"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_p7d0r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nfdou")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="remoteMineObj" instance=ExtResource("1_rfdii")]
+collision_mask = 2
+script = ExtResource("2_62ch0")
+damage = 0
+type = 101
+
+[node name="shape" parent="." index="0"]
+shape = SubResource("CircleShape2D_edhcj")
+
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_1jqko")
+autoplay = "default"
+frame = 1
+frame_progress = 0.68606305
+
+[node name="sound" type="AudioStreamPlayer2D" parent="." index="2"]
+stream = ExtResource("3_pt3ct")
+bus = &"sfx"
