@@ -683,6 +683,7 @@ animations = [{
 
 [node name="player" instance=ExtResource("1_hjaqi")]
 script = ExtResource("1_xo3ru")
+speed = 150
 
 [node name="shape" parent="." index="0"]
 position = Vector2(0, 20)

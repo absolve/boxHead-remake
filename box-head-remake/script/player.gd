@@ -14,12 +14,14 @@ var vector=Vector2.RIGHT
 func _ready():
 	var temp=load("res://scene/hand_gun.tscn")
 	var gun=temp.instantiate()
+	gun.ownerId=get_rid()
 	weaponList.push_back(gun)
 	weaponBackpack.add_child(gun)
 	currWeapon=gun
 	txt.text=Game.weaponName[currWeapon.type]
 	var t=load("res://scene/uzi.tscn")
 	var g=t.instantiate()
+	g.ownerId=get_rid()
 	weaponList.push_back(g)
 	weaponBackpack.add_child(g)
 	if playerId==1:

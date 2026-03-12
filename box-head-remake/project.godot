@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Game="*res://autoload/game.gd"
 MapData="*res://autoload/mapData.gd"
+SfxManage="*res://autoload/sfxManage.gd"
 
 [display]
 

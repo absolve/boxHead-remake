@@ -19,17 +19,22 @@ func _physics_process(_delta: float) -> void:
 	if detecframes>0:
 		detecframes-=1
 		if detecframes<=0:
+			excludeObj.clear()
 			queue_redraw()
 		var space_state = get_world_2d().direct_space_state
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
 		global_position+vector*wRange+offset,collisionMask)
 		query.collide_with_areas=true
-		print(global_position+offset,global_position+vector*wRange+offset)
-		#query.exclude = [ownerId]
+		query.exclude = [ownerId]
 		var result = space_state.intersect_ray(query)
 		print(result)
-
+		if result:
+			if !excludeObj.has(result.collider):		
+				if result.collider.type &&result.collider.type==Game.itemType.Barrel:
+					result.collider.hit(damage)
+					excludeObj.append(result.collider)
+				
 func fire(v):
 	if canShoot:
 		print('shoot')
