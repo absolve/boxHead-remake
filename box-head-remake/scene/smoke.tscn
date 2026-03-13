@@ -1,0 +1,97 @@
+[gd_scene load_steps=22 format=3 uid="uid://c4wavvrs2gwax"]
+
+[ext_resource type="Texture2D" uid="uid://e46l66tl26i4" path="res://sprite/shape/DefineSprite_2214_Effect.RocketSmoke/1.png" id="1_phb13"]
+[ext_resource type="Texture2D" uid="uid://ukwvlqn44p7" path="res://sprite/shape/DefineSprite_2214_Effect.RocketSmoke/2.png" id="2_8ghq8"]
+[ext_resource type="Texture2D" uid="uid://c703sq8sgbjw" path="res://sprite/shape/DefineSprite_2214_Effect.RocketSmoke/3.png" id="3_dfe4k"]
+[ext_resource type="Texture2D" uid="uid://cceewbl3qxiuu" path="res://sprite/shape/DefineSprite_2214_Effect.RocketSmoke/4.png" id="4_ia864"]
+[ext_resource type="Texture2D" uid="uid://b1l08x2ioudus" path="res://sprite/shape/DefineSprite_2214_Effect.RocketSmoke/5.png" id="5_c8esx"]
+[ext_resource type="Texture2D" uid="uid://bs3ck01j6yhwo" path="res://sprite/shape/DefineSprite_2214_Effect.RocketSmoke/6.png" id="6_ibb52"]
+[ext_resource type="Script" uid="uid://bpbydm0bjtyfc" path="res://script/smoke.gd" id="7_hqa6s"]
+[ext_resource type="Texture2D" uid="uid://b2r1gkr7k0f11" path="res://sprite/shape/DefineSprite_2244/1.png" id="7_ohyn8"]
+[ext_resource type="Texture2D" uid="uid://cu33civh1cv06" path="res://sprite/shape/DefineSprite_2244/2.png" id="8_polcp"]
+[ext_resource type="Texture2D" uid="uid://ool8p2x10i0n" path="res://sprite/shape/DefineSprite_2244/3.png" id="9_c2j8k"]
+[ext_resource type="Texture2D" uid="uid://hvndffdcex3t" path="res://sprite/shape/DefineSprite_2244/4.png" id="10_vgvkt"]
+[ext_resource type="Texture2D" uid="uid://b6bhkrh52d7sn" path="res://sprite/shape/DefineSprite_2244/5.png" id="11_xsjmf"]
+[ext_resource type="Texture2D" uid="uid://dk5utpnjo472t" path="res://sprite/shape/DefineSprite_2244/6.png" id="12_wnhxi"]
+[ext_resource type="Texture2D" uid="uid://lledcgiciuc2" path="res://sprite/shape/DefineSprite_2244/7.png" id="13_ysqba"]
+[ext_resource type="Texture2D" uid="uid://u2mt3lb6foqr" path="res://sprite/shape/DefineSprite_2244/8.png" id="14_h3115"]
+[ext_resource type="Texture2D" uid="uid://h4i2nhr5e6cd" path="res://sprite/shape/DefineSprite_2244/9.png" id="15_7rf8g"]
+[ext_resource type="Texture2D" uid="uid://c1brno2qg82k5" path="res://sprite/shape/DefineSprite_2244/10.png" id="16_y17sy"]
+[ext_resource type="Texture2D" uid="uid://dsdq3ndabppwg" path="res://sprite/shape/DefineSprite_2244/11.png" id="17_hqsjk"]
+[ext_resource type="Texture2D" uid="uid://dip1ujvpwqfhb" path="res://sprite/shape/DefineSprite_2244/12.png" id="18_b2gyl"]
+[ext_resource type="Texture2D" uid="uid://c2dm2dcf8u7c1" path="res://sprite/shape/DefineSprite_2244/13.png" id="19_56ihe"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_33d0h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_phb13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_8ghq8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_dfe4k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ia864")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_c8esx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ibb52")
+}],
+"loop": false,
+"name": &"0",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ohyn8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_polcp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_c2j8k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_vgvkt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xsjmf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_wnhxi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ysqba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_h3115")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_7rf8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_y17sy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_hqsjk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_b2gyl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_56ihe")
+}],
+"loop": false,
+"name": &"1",
+"speed": 20.0
+}]
+
+[node name="smoke" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_33d0h")
+animation = &"1"
+script = ExtResource("7_hqa6s")

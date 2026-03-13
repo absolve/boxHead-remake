@@ -4,7 +4,7 @@ extends Node
 enum weaponType{HandGun,Railgun,Rocket,Shotgun,
 				UZI,Mine,RemoteMine,Wall,Barrel,Grenade }
 
-enum itemType{Box=99,Mine,RemoteMine,Wall,Barrel,Grenade}
+enum itemType{Box=99,Mine,RemoteMine,Wall,Barrel,Grenade,RocketBullet,Explosion}
 
 #武器名字
 const weaponName={
@@ -19,6 +19,8 @@ const weaponName={
 	weaponType.Barrel:'other',
 	weaponType.Grenade:'other',
 }
+
+enum smokeType{RocketSmoke=200,SmokeCloud}
 
 @warning_ignore("unused_signal")
 signal weaponUpgrade

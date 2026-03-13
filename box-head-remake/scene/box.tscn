@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8tgtwj8ccifs"]
+
+[ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_dmwsn"]
+[ext_resource type="Texture2D" uid="uid://mpgxgmnfa2a" path="res://sprite/shape/DefineSprite_2279_Object.Pickup/1.png" id="2_3tsfx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5jxcw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_05o4f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3tsfx")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="box" instance=ExtResource("1_dmwsn")]
+collision_layer = 4
+
+[node name="shape" parent="." index="0"]
+shape = SubResource("RectangleShape2D_5jxcw")
+
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_05o4f")

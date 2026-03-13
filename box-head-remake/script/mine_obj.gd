@@ -3,7 +3,6 @@ extends "res://script/item.gd"
 var  delay=1
 var tween:Tween=null
 
-@onready var ani=$ani
 @onready var sound=$sound
 @export var damage=0 #伤害
 var splitNum=0  #分裂成小爆炸

@@ -1,7 +1,7 @@
 extends "res://script/item.gd"
 
 
-@onready var ani=$ani
+
 @onready var sound=$sound
 @export var damage=0 #伤害
 

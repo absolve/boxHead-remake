@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://crxtvopj6f4ty"]
+[gd_scene load_steps=6 format=3 uid="uid://crxtvopj6f4ty"]
 
 [ext_resource type="Script" uid="uid://3qnx0msgrg15" path="res://script/welcome.gd" id="1_njjjx"]
+[ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_0h2lm"]
 [ext_resource type="Texture2D" uid="uid://bmdeognuc4rl6" path="res://sprite/1.png" id="2_hys0r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hys0r"]
@@ -11,20 +12,20 @@
 script = ExtResource("1_njjjx")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 offset_right = 1280.0
 offset_bottom = 640.0
+metadata/_edit_lock_ = true
+
+[node name="bg" type="Sprite2D" parent="."]
+position = Vector2(640, 480)
+scale = Vector2(2, 2)
+texture = ExtResource("2_0h2lm")
 metadata/_edit_lock_ = true
 
 [node name="title" type="Sprite2D" parent="."]
 position = Vector2(640, 180)
 scale = Vector2(2, 2)
-texture = ExtResource("2_hys0r")
-metadata/_edit_lock_ = true
-
-[node name="bg" type="Sprite2D" parent="."]
-modulate = Color(18.892157, 18.892157, 18.892157, 0.05882353)
-position = Vector2(768, 336.00003)
-scale = Vector2(5, 5)
 texture = ExtResource("2_hys0r")
 metadata/_edit_lock_ = true
 

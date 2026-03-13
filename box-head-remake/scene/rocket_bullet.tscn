@@ -1,0 +1,38 @@
+[gd_scene load_steps=8 format=3 uid="uid://dc6sa3b8pjort"]
+
+[ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_ncq0d"]
+[ext_resource type="Script" uid="uid://cbltrjsugdojt" path="res://script/rocket_bullet.gd" id="2_84esx"]
+[ext_resource type="Texture2D" uid="uid://vttq3djc7abi" path="res://sprite/shape/DefineSprite_2306_shot_rocket/1.png" id="3_c1dc3"]
+[ext_resource type="Texture2D" uid="uid://fhi43xbsstim" path="res://sprite/shape/DefineSprite_2306_shot_rocket/2.png" id="4_jxrgb"]
+[ext_resource type="Texture2D" uid="uid://bjayil58u7atn" path="res://sprite/shape/DefineSprite_2306_shot_rocket/3.png" id="5_kd4tn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c1dc3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0q7pg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_c1dc3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jxrgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_kd4tn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="rocketBullet" instance=ExtResource("1_ncq0d")]
+collision_mask = 3
+script = ExtResource("2_84esx")
+type = 105
+
+[node name="shape" parent="." index="0"]
+shape = SubResource("CircleShape2D_c1dc3")
+
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_0q7pg")
+frame_progress = 0.36226174
