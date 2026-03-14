@@ -44,7 +44,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"0",
-"speed": 20.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -93,5 +93,5 @@ animations = [{
 
 [node name="smoke" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_33d0h")
-animation = &"1"
+animation = &"0"
 script = ExtResource("7_hqa6s")

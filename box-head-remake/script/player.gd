@@ -5,7 +5,7 @@ extends "res://script/character.gd"
 @onready var txt=$txt
 
 var playerId=1
-var keyMap={'left':'','right':'','up':'','down':'','fire':'','switch':''}
+var keyMap={'left':'','right':'','up':'','down':'','fire':'','nextWeapon':'','prevWeapon':''}
 var currWeapon=null
 var weaponList=[]
 var currWeaponIndex=0
@@ -24,22 +24,35 @@ func _ready():
 	g.ownerId=get_rid()
 	weaponList.push_back(g)
 	weaponBackpack.add_child(g)
+	var r= preload("res://scene/rocket.tscn")
+	var rocket=r.instantiate()
+	rocket.ownerId=get_rid()
+	weaponList.push_back(rocket)
+	weaponBackpack.add_child(rocket)
+	
+
 	if playerId==1:
 		keyMap.left="p1_left"
 		keyMap.right="p1_right"
 		keyMap.up="p1_up"
 		keyMap.down="p1_down"
 		keyMap.fire='p1_fire'
-		keyMap.switch='p1_switch'
-	print(global_position,global_position+Vector2(800,0))
+		keyMap.nextWeapon='p1_nextWeapon'
+		keyMap.prevWeapon='p1_prevWeapon'
 	
-func switchWeapon():
+	
+func switchWeapon(next:bool=true):
 	if weaponList.size()>1:
-		currWeaponIndex+=1
+		if next:
+			currWeaponIndex+=1
+		else:
+			currWeaponIndex-=1	
 		currWeaponIndex=wrapi(currWeaponIndex,0,weaponList.size())
 		currWeapon=weaponList[currWeaponIndex]
-		#播放声音
-		txt.text=Game.weaponName[currWeapon.type]
+	
+		#txt.text=Game.weaponName[currWeapon.type]
+		
+		
 	
 	
 func  _physics_process(_delta):
@@ -54,20 +67,25 @@ func  _physics_process(_delta):
 	velocity = input_dir * speed
 	move_and_slide()
 	ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%Game.weaponName[currWeapon.type])
+	#更新武器弹药
+	if currWeapon.maxAmmoNum==0:
+		txt.text=Game.weaponName[currWeapon.type]
+	else:
+		txt.text='%s %s'%[Game.weaponName[currWeapon.type],currWeapon.ammoNum]
 	
-	#var space_state = get_world_2d().direct_space_state
-	#var mouse_pos = get_global_mouse_position()
-	#var query = PhysicsRayQueryParameters2D.create(global_position, 
-	#mouse_pos)
-	#query.collide_with_areas=true
-	##query.exclude = [ownerId]
-	#var result = space_state.intersect_ray(query)
-	#print(result)
+	if currWeapon.maxAmmoNum!=0:
+		if currWeapon.ammoNum<=0:
+			txt.modulate=Color.RED
+		else:
+			txt.modulate=Color.WHITE	
 	
+	#if Input.is_action_pressed(keyMap.fire):
+		#currWeapon.fire(vector)
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(keyMap.fire):
 		currWeapon.fire(vector)
-	if Input.is_action_just_pressed(keyMap.switch):
+	if Input.is_action_just_pressed(keyMap.nextWeapon):
 		switchWeapon()
-		pass
+	if Input.is_action_just_pressed(keyMap.prevWeapon):
+		switchWeapon(false)

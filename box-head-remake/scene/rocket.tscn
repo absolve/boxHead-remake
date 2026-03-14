@@ -6,8 +6,11 @@
 
 [node name="rocket" instance=ExtResource("1_j20b5")]
 script = ExtResource("2_ncccc")
+type = 2
 damage = 10
 delay = 1.2
+ammoNum = 10
+maxAmmoNum = 10
 
 [node name="sound" parent="." index="0"]
 stream = ExtResource("3_xdddg")

@@ -2,7 +2,7 @@ extends "res://script/item.gd"
 
 var explosion=preload("res://scene/explosion.tscn")
 var splitNum=4  #分裂成小爆炸
-var splitRadius=80 #分裂半径
+var splitRadius=30 #分裂半径
 
 func _ready():
 	print(global_position)

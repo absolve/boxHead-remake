@@ -22,11 +22,11 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 15.0
+"speed": 20.0
 }]
 
 [node name="rocketBullet" instance=ExtResource("1_ncq0d")]
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("2_84esx")
 type = 105
 
@@ -35,4 +35,8 @@ shape = SubResource("CircleShape2D_c1dc3")
 
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_0q7pg")
-frame_progress = 0.36226174
+frame_progress = 0.0587781
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." index="2"]
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

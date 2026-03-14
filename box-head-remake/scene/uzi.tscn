@@ -83,6 +83,8 @@ type = 4
 damage = 1
 wRange = 400
 delay = 0.1
+ammoNum = 50
+maxAmmoNum = 50
 
 [node name="sound" parent="." index="0"]
 stream = ExtResource("3_jn77h")

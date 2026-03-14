@@ -1,7 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://dik6ckgmdhf4q"]
+[gd_scene load_steps=23 format=3 uid="uid://dik6ckgmdhf4q"]
 
-[ext_resource type="Script" uid="uid://beo2vlrycxodp" path="res://script/explosion.gd" id="1_xjdxb"]
+[ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_xjdxb"]
 [ext_resource type="Texture2D" uid="uid://bft78t8iq5bjb" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/1.png" id="2_0a5ud"]
+[ext_resource type="Script" uid="uid://beo2vlrycxodp" path="res://script/explosion.gd" id="2_c5443"]
 [ext_resource type="Texture2D" uid="uid://cypp7v1ylei3y" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/2.png" id="3_x5v5o"]
 [ext_resource type="Texture2D" uid="uid://b5ffek7qm1f3r" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/3.png" id="4_8vwec"]
 [ext_resource type="Texture2D" uid="uid://dpsm8ufgahlpw" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/4.png" id="5_g66s8"]
@@ -20,10 +21,10 @@
 [ext_resource type="Texture2D" uid="uid://cdol4phqymjup" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/17.png" id="18_j01ny"]
 [ext_resource type="Texture2D" uid="uid://cycl7dfwf4726" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/18.png" id="19_l8ms7"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jg6ay"]
-radius = 40.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_x5v5o"]
+radius = 30.0
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_nhcoi"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_8vwec"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -85,13 +86,13 @@ animations = [{
 "speed": 60.0
 }]
 
-[node name="explosion" type="Area2D"]
-collision_layer = 0
+[node name="explosion" instance=ExtResource("1_xjdxb")]
 collision_mask = 3
-script = ExtResource("1_xjdxb")
+script = ExtResource("2_c5443")
+damage = 0
 
-[node name="shape" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_jg6ay")
+[node name="shape" parent="." index="0"]
+shape = SubResource("CircleShape2D_x5v5o")
 
-[node name="ani" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_nhcoi")
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_8vwec")

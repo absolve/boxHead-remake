@@ -26,9 +26,17 @@ func _physics_process(_delta: float) -> void:
 		#query.exclude = [self]
 		var result = space_state.intersect_ray(query)
 		print(result)
+		if result:
+			if !excludeObj.has(result.collider):		
+				if result.collider.type &&result.collider.type==Game.itemType.Barrel:
+					result.collider.hit(damage)
+					excludeObj.append(result.collider)
 	
 func fire(v):
+	if ammoNum<=0:
+		return
 	if canShoot:
+		ammoNum-=1
 		print('shoot')
 		detecframes=2
 		vector=v
