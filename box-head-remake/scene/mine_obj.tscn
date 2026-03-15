@@ -20,7 +20,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 4.0
+"speed": 1.0
 }]
 
 [node name="mineObj" instance=ExtResource("1_pk4x2")]

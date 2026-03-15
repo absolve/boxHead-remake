@@ -31,7 +31,7 @@ func _physics_process(_delta: float) -> void:
 		print(result)
 		if result:
 			if !excludeObj.has(result.collider):		
-				if result.collider.type &&result.collider.type==Game.itemType.Barrel:
+				if result.collider.type &&result.collider.type in [Game.itemType.Barrel,Game.itemType.Wall]:
 					result.collider.hit(damage)
 					excludeObj.append(result.collider)
 				

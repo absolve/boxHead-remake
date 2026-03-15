@@ -6,6 +6,9 @@
 
 [node name="wall" instance=ExtResource("1_3h2xa")]
 script = ExtResource("2_n28be")
+type = 7
+ammoNum = 10
+maxAmmoNum = 10
 
 [node name="sound" parent="." index="0"]
 stream = ExtResource("3_n28be")

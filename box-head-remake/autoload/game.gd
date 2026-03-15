@@ -13,11 +13,11 @@ const weaponName={
 	weaponType.Rocket:'Rocket',
 	weaponType.Shotgun:'Shotgun',
 	weaponType.UZI:'UZI',
-	weaponType.Mine:'other',
-	weaponType.RemoteMine:'other',
-	weaponType.Wall:'other',
-	weaponType.Barrel:'other',
-	weaponType.Grenade:'other',
+	weaponType.Mine:'Mine',
+	weaponType.RemoteMine:'RemoteMine',
+	weaponType.Wall:'Wall',
+	weaponType.Barrel:'Barrel',
+	weaponType.Grenade:'Grenade',
 }
 
 enum smokeType{RocketSmoke=200,SmokeCloud}

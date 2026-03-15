@@ -6,3 +6,8 @@
 [node name="grenade" instance=ExtResource("1_n8g3t")]
 script = ExtResource("2_gt16k")
 delay = 1.0
+ammoNum = 15
+maxAmmoNum = 15
+
+[node name="Timer" parent="." index="1"]
+wait_time = 0.2

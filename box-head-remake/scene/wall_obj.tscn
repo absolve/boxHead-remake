@@ -1,0 +1,67 @@
+[gd_scene load_steps=15 format=3 uid="uid://ue34cacump0f"]
+
+[ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_swn34"]
+[ext_resource type="Script" uid="uid://dbwo0ugrh6114" path="res://script/wall_obj.gd" id="2_j0u3j"]
+[ext_resource type="Texture2D" uid="uid://7qybrb2smkgf" path="res://sprite/shape/DefineSprite_2294_Object.Wall/1.png" id="3_cswla"]
+[ext_resource type="Texture2D" uid="uid://677v4h5jqhrf" path="res://sprite/shape/DefineSprite_2294_Object.Wall/2.png" id="4_o7pgi"]
+[ext_resource type="Texture2D" uid="uid://3symjmb1ranx" path="res://sprite/shape/DefineSprite_2294_Object.Wall/3.png" id="5_h3s8j"]
+[ext_resource type="Texture2D" uid="uid://csftfr8yrvq7q" path="res://sprite/shape/DefineSprite_2294_Object.Wall/4.png" id="6_6pb7o"]
+[ext_resource type="Texture2D" uid="uid://drft84qi28owh" path="res://sprite/shape/DefineSprite_2294_Object.Wall/5.png" id="7_lfg5h"]
+[ext_resource type="Texture2D" uid="uid://bmk4xcptx20g3" path="res://sprite/shape/DefineSprite_2294_Object.Wall/6.png" id="8_swugl"]
+[ext_resource type="Texture2D" uid="uid://bwxus48xxcm14" path="res://sprite/shape/DefineSprite_2294_Object.Wall/7.png" id="9_webb3"]
+[ext_resource type="Texture2D" uid="uid://bp1j0x6jfvrsa" path="res://sprite/shape/DefineSprite_2294_Object.Wall/8.png" id="10_2cr74"]
+[ext_resource type="Texture2D" uid="uid://b681c7sjl7l8w" path="res://sprite/shape/DefineSprite_2294_Object.Wall/9.png" id="11_rdd7t"]
+[ext_resource type="Texture2D" uid="uid://b5ed3ynh0n8li" path="res://sprite/shape/DefineSprite_2294_Object.Wall/10.png" id="12_xjvug"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cswla"]
+size = Vector2(25, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dxy3s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cswla")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_o7pgi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_h3s8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6pb7o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_lfg5h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_swugl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_webb3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2cr74")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_rdd7t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_xjvug")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="wallObj" instance=ExtResource("1_swn34")]
+collision_layer = 4
+script = ExtResource("2_j0u3j")
+type = 102
+
+[node name="shape" parent="." index="0"]
+shape = SubResource("RectangleShape2D_cswla")
+
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_dxy3s")
+offset = Vector2(-5, -5)

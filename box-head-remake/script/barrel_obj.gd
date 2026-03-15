@@ -18,7 +18,8 @@ func hit(_value):
 		var new=load("res://scene/bomb.tscn")
 		for i in range(splitNum):
 			var b=new.instantiate()
-			b.global_position=global_position+Vector2.RIGHT.rotated(i*(2*PI/splitNum))*splitRadius
+			b.global_position=global_position
+			b.vector=Vector2.RIGHT.rotated(i*(2*PI/splitNum))
 			get_tree().root.add_child(b)
 	
 		

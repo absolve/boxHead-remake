@@ -10,6 +10,8 @@ var currWeapon=null
 var weaponList=[]
 var currWeaponIndex=0
 var vector=Vector2.RIGHT
+var aniException=['Mine','RemoteMine','Wall','Barrel','Grenade']
+
 
 func _ready():
 	var temp=load("res://scene/hand_gun.tscn")
@@ -24,13 +26,30 @@ func _ready():
 	g.ownerId=get_rid()
 	weaponList.push_back(g)
 	weaponBackpack.add_child(g)
-	var r= preload("res://scene/rocket.tscn")
+	var r= load("res://scene/rocket.tscn")
 	var rocket=r.instantiate()
 	rocket.ownerId=get_rid()
 	weaponList.push_back(rocket)
 	weaponBackpack.add_child(rocket)
 	
-
+	var b=load("res://scene/barrel.tscn")
+	var barrel=b.instantiate()
+	barrel.ownerId=get_rid()
+	weaponList.push_back(barrel)
+	weaponBackpack.add_child(barrel)
+	
+	var w=load("res://scene/wall.tscn")
+	var wall=w.instantiate()
+	wall.ownerId=get_rid()
+	weaponList.push_back(wall)
+	weaponBackpack.add_child(wall)
+	
+	var m=load("res://scene/mine.tscn")
+	var mine=m.instantiate()
+	mine.ownerId=get_rid()
+	weaponList.push_back(mine)
+	weaponBackpack.add_child(mine)
+	
 	if playerId==1:
 		keyMap.left="p1_left"
 		keyMap.right="p1_right"
@@ -66,14 +85,18 @@ func  _physics_process(_delta):
 		currAni="walk"
 	velocity = input_dir * speed
 	move_and_slide()
-	ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%Game.weaponName[currWeapon.type])
+	if aniException.has(Game.weaponName[currWeapon.type]):
+		ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%'other')
+	else:	
+		ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%Game.weaponName[currWeapon.type])
+
 	#更新武器弹药
 	if currWeapon.maxAmmoNum==0:
 		txt.text=Game.weaponName[currWeapon.type]
 	else:
-		txt.text='%s %s'%[Game.weaponName[currWeapon.type],currWeapon.ammoNum]
+		txt.text='%s:%s'%[Game.weaponName[currWeapon.type],currWeapon.ammoNum]
 	
-	if currWeapon.maxAmmoNum!=0:
+	if currWeapon.maxAmmoNum!=0&&currWeapon.maxAmmoNum!=0:
 		if currWeapon.ammoNum<=0:
 			txt.modulate=Color.RED
 		else:
@@ -81,6 +104,8 @@ func  _physics_process(_delta):
 	
 	#if Input.is_action_pressed(keyMap.fire):
 		#currWeapon.fire(vector)
+	z_index=floori(global_position.y/MapData.cellSize)+1
+
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(keyMap.fire):

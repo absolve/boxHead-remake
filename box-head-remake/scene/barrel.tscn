@@ -6,6 +6,9 @@
 
 [node name="barrel" instance=ExtResource("1_sphm8")]
 script = ExtResource("2_v68im")
+type = 8
+ammoNum = 10
+maxAmmoNum = 10
 
 [node name="sound" parent="." index="0"]
 stream = ExtResource("3_cm4xf")
