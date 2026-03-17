@@ -49,6 +49,12 @@ func _ready():
 	mine.ownerId=get_rid()
 	weaponList.push_back(mine)
 	weaponBackpack.add_child(mine)
+
+	var s=load("res://scene/shotgun.tscn")
+	var shortGun=s.instantiate()
+	shortGun.ownerId=get_rid()
+	weaponList.push_back(shortGun)
+	weaponBackpack.add_child(shortGun)
 	
 	if playerId==1:
 		keyMap.left="p1_left"

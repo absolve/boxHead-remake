@@ -46,9 +46,7 @@ func fire(v):
 		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
 		player.play("fire")
 		sound.play()
-	#else:
-		#if timer.is_stopped():
-			#timer.start(delay)	
+
 	
 func _draw() -> void:
 	if detecframes>0:
