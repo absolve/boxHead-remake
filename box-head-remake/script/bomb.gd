@@ -10,7 +10,7 @@ func _ready() -> void:
 	#tween.tween_property(ani, "position", Vector2(randf_range(-100,100),randf_range(-20, 20)), 1)
 	tween.tween_property(self,"position",global_position+vector*distance+
 						Vector2(randf_range(-10,10),randf_range(-10,10)),0.6)\
-						.set_ease(Tween.EASE_OUT)
+						.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	#tween.tween_property(ani, "position:y", 0, 0.25).set_ease(Tween.EASE_IN)
 	tween.tween_callback(addExplosion)
 	

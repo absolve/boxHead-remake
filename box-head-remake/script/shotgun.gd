@@ -6,6 +6,7 @@ extends "res://script/weapon.gd"
 var bulletNum=4  #散弹数量
 var splitAngle=4.0  #散弹分裂最大角度
 
+
 func _ready():
 	offsetDir[0]=Vector2(45,8)
 	offsetDir[1]=Vector2(20,20)
@@ -18,10 +19,11 @@ func _ready():
 
 func _physics_process(_delta: float) -> void:
 	if detecframes>0:
+	
 		detecframes-=1
 		if detecframes<=0:
 			excludeObj.clear()
-			queue_redraw()
+			#queue_redraw()
 		for i in range(bulletNum):
 			var space_state = get_world_2d().direct_space_state
 			var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
@@ -36,13 +38,14 @@ func _physics_process(_delta: float) -> void:
 					if result.collider.type &&result.collider.type in [Game.itemType.Barrel,Game.itemType.Wall]:
 						result.collider.hit(damage)
 						excludeObj.append(result.collider)
-
+						
+		queue_redraw()			
 
 func fire(_v):
 	if canShoot:
 		detecframes=2
 		vector=_v
-		queue_redraw()
+		#queue_redraw()
 		canShoot=false
 		timer.start(delay)	
 		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]

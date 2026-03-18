@@ -2,7 +2,7 @@ extends "res://script/weapon.gd"
 
 @onready var ani=$ani
 @onready var player=$player
-
+var intersectPos=null
 
 func _ready() -> void:
 	offsetDir[0]=Vector2(45,3)
@@ -17,10 +17,12 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	if detecframes>0:
+		intersectPos=null
 		detecframes-=1
+		
 		if detecframes<=0:
 			excludeObj.clear()
-			queue_redraw()
+			#queue_redraw()
 		var space_state = get_world_2d().direct_space_state
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
@@ -34,13 +36,15 @@ func _physics_process(_delta: float) -> void:
 				if result.collider.type &&result.collider.type in [Game.itemType.Barrel,Game.itemType.Wall]:
 					result.collider.hit(damage)
 					excludeObj.append(result.collider)
-				
+					intersectPos=result.position
+		queue_redraw()
+					
 func fire(v):
 	if canShoot:
 		print('shoot')
 		detecframes=2
 		vector=v
-		queue_redraw()
+		#queue_redraw()
 		canShoot=false
 		timer.start(delay)	
 		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
@@ -51,5 +55,9 @@ func fire(v):
 func _draw() -> void:
 	if detecframes>0:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
-		draw_line(offset,
-			offset+vector*wRange,Color.WHITE)
+		if intersectPos!=null:
+			draw_line(offset,
+				intersectPos-global_position,Color.WHITE)
+		else:	
+			draw_line(offset,
+				offset+vector*wRange,Color.WHITE)
