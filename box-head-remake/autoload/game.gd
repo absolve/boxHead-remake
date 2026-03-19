@@ -3,8 +3,12 @@ extends Node
 #武器类型
 enum weaponType{HandGun,Railgun,Rocket,Shotgun,
 				UZI,Mine,RemoteMine,Wall,Barrel,Grenade }
-
+#物体类型
 enum itemType{Box=99,Mine,RemoteMine,Wall,Barrel,Grenade,RocketBullet,Explosion}
+
+#奖励箱子的内容
+enum boxContent{Railgun=500,Rocket,Shotgun,
+				UZI,Mine,RemoteMine,Wall,Barrel,Grenade}
 
 #武器名字
 const weaponName={
