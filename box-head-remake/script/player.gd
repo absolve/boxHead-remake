@@ -50,11 +50,11 @@ func _ready():
 	#weaponList.push_back(mine)
 	#weaponBackpack.add_child(mine)
 
-	#var s=load("res://scene/shotgun.tscn")
-	#var shortGun=s.instantiate()
-	#shortGun.ownerId=get_rid()
-	#weaponList.push_back(shortGun)
-	#weaponBackpack.add_child(shortGun)
+	var s=load("res://scene/shotgun.tscn")
+	var shortGun=s.instantiate()
+	shortGun.ownerId=get_rid()
+	weaponList.push_back(shortGun)
+	weaponBackpack.add_child(shortGun)
 	
 	if playerId==1:
 		keyMap.left="p1_left"
@@ -102,11 +102,13 @@ func  _physics_process(_delta):
 	else:
 		txt.text='%s:%s'%[Game.weaponName[currWeapon.type],currWeapon.ammoNum]
 	
-	if currWeapon.maxAmmoNum!=0&&currWeapon.maxAmmoNum!=0:
+	if currWeapon.maxAmmoNum!=0:
 		if currWeapon.ammoNum<=0:
 			txt.modulate=Color.RED
 		else:
 			txt.modulate=Color.WHITE	
+	else:
+		txt.modulate=Color.WHITE
 	
 	#if Input.is_action_pressed(keyMap.fire):
 		#currWeapon.fire(vector)

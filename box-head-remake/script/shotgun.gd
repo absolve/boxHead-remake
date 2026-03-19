@@ -4,7 +4,7 @@ extends "res://script/weapon.gd"
 @onready var player=$player
 
 var bulletNum=4  #散弹数量
-var splitAngle=4.0  #散弹分裂最大角度
+var splitAngle=30.0  #散弹分裂最大角度
 
 
 func _ready():
@@ -28,7 +28,7 @@ func _physics_process(_delta: float) -> void:
 			var space_state = get_world_2d().direct_space_state
 			var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 			var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
-			global_position+vector.rotated(deg_to_rad(-splitAngle/2+i*splitAngle/bulletNum))
+			global_position+vector.rotated(deg_to_rad(-splitAngle/2+i*splitAngle/bulletNum+randi_range(-2,2)))
 			*wRange+offset,collisionMask)
 			query.collide_with_areas=true
 			query.exclude = [ownerId]
@@ -58,6 +58,6 @@ func _draw() -> void:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
 		for i in range(bulletNum):
 			draw_line(offset,
-			offset+vector.rotated(deg_to_rad(-splitAngle/2+i*splitAngle/bulletNum))
+			offset+vector.rotated(deg_to_rad(-splitAngle/2+i*splitAngle/bulletNum+randi_range(-2,2)))
 			*wRange,Color.WHITE)
 		
