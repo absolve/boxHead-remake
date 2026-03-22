@@ -6,6 +6,8 @@ func _ready() -> void:
 	if type==Game.smokeType.RocketSmoke:
 		play("0")
 	elif type==Game.smokeType.SmokeCloud:
-		play("0")
+		scale=Vector2(0.2,0.2)
+		position.y-=10
+		play("1")
 	await animation_finished
 	queue_free()

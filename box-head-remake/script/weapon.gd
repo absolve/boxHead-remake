@@ -5,8 +5,8 @@ var active=false	#是否激活
 @export var damage=0 #伤害
 @export var wRange=0 #射程
 @export var delay=.0 #开火延迟
-@export var ammoNum=0  #当前弹药量
-@export var maxAmmoNum=0  #最大弹药量
+@export var ammoNum:int=0  #当前弹药量
+@export var maxAmmoNum:int=0  #最大弹药量
 var canShoot=true #是否可以射击
 var automatic=false #连发
 var detecframes=0 #检测是否与物体碰撞
@@ -15,8 +15,9 @@ var offsetDir={0:Vector2.ZERO,1:Vector2.ZERO,2:Vector2.ZERO,
 				3:Vector2.ZERO,4:Vector2.ZERO,5:Vector2.ZERO,
 				6:Vector2.ZERO,7:Vector2.ZERO}
 var ownerId=null  #武器持有者id
-var collisionMask=1+2+4  #检测对象默认是玩家和敌人
+var collisionMask=1+2+4+8  #检测对象默认是玩家和敌人 物品 墙壁
 var excludeObj=[]		#排除对象的列表
+var smoke=preload("res://scene/smoke.tscn")
 
 
 @onready var sound=$sound
@@ -28,3 +29,9 @@ func _on_timer_timeout() -> void:
 
 func fire(_angle): 
 	pass
+
+func addSmoke(pos):
+	var temp=smoke.instantiate()
+	temp.global_position=pos
+	temp.type=Game.smokeType.SmokeCloud
+	get_tree().root.add_child(temp)

@@ -92,6 +92,7 @@ animations = [{
 }]
 
 [node name="smoke" type="AnimatedSprite2D"]
+z_index = 10
 sprite_frames = SubResource("SpriteFrames_33d0h")
-animation = &"0"
+animation = &"1"
 script = ExtResource("7_hqa6s")

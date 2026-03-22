@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://censblqiwd0yh"]
+[gd_scene load_steps=7 format=3 uid="uid://censblqiwd0yh"]
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_2ur3v"]
 [ext_resource type="Script" uid="uid://b1l8uktple0ay" path="res://script/grenade_obj.gd" id="2_bvu5d"]
 [ext_resource type="Texture2D" uid="uid://bu2rmm8wspxe1" path="res://sprite/shape/DefineSprite_2301_Shot.Grenade/1.png" id="3_tq2cf"]
+[ext_resource type="AudioStream" uid="uid://gagdlqrphp4q" path="res://sound/539_539 Creature.HitFloor.mp3" id="4_gvnf3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gvnf3"]
 radius = 4.0
@@ -19,12 +20,16 @@ animations = [{
 }]
 
 [node name="grenadeObj" instance=ExtResource("1_2ur3v")]
-collision_mask = 7
+collision_mask = 15
 script = ExtResource("2_bvu5d")
 type = 104
+itemSize = Vector2(4, 4)
 
 [node name="shape" parent="." index="0"]
 shape = SubResource("CircleShape2D_gvnf3")
 
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_tna8y")
+
+[node name="sound" type="AudioStreamPlayer2D" parent="." index="2"]
+stream = ExtResource("4_gvnf3")

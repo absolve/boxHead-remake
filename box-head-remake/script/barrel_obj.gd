@@ -15,11 +15,12 @@ func hit(_value):
 	get_tree().root.add_child(temp)
 	queue_free()
 	if splitNum>0:
-		var new=load("res://scene/bomb.tscn")
+		var new=load("res://scene/grenade_obj.tscn")
 		for i in range(splitNum):
 			var b=new.instantiate()
 			b.global_position=global_position
-			b.vector=Vector2.RIGHT.rotated(i*(2*PI/splitNum))
+			b.vector=Vector2.RIGHT.rotated(i*(2*PI/splitNum)+0.4)
+			b.speed=100
 			get_tree().root.add_child(b)
 	
 		

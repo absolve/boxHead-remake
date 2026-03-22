@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://b5ed3ynh0n8li" path="res://sprite/shape/DefineSprite_2294_Object.Wall/10.png" id="12_xjvug"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cswla"]
-size = Vector2(25, 20)
+size = Vector2(25, 30)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dxy3s"]
 animations = [{

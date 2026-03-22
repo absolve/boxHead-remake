@@ -301,7 +301,7 @@
 [ext_resource type="Texture2D" uid="uid://3lhjgp71bqmo" path="res://sprite/player/DefineSprite_1906/8.png" id="290_eaxob"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8pv5j"]
-size = Vector2(15, 10)
+size = Vector2(15, 18)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4miyu"]
 animations = [{
@@ -1787,17 +1787,18 @@ animations = [{
 }]
 
 [node name="player" instance=ExtResource("1_hjaqi")]
+collision_mask = 15
 script = ExtResource("1_xo3ru")
 speed = 150
 
 [node name="shape" parent="." index="0"]
-position = Vector2(0, 20)
+position = Vector2(0, 18)
 shape = SubResource("RectangleShape2D_8pv5j")
 
 [node name="ani" parent="." index="1"]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_4miyu")
-animation = &"walk_1_7_Shotgun"
+animation = &"stand_1_0_HandGun"
 
 [node name="weaponBackpack" type="Node2D" parent="." index="2"]
 

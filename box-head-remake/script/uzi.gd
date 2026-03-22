@@ -2,7 +2,8 @@ extends "res://script/weapon.gd"
 
 @onready var ani=$ani
 @onready var player=$player
-var intersectPos=null
+#var intersectPos=null
+var targetPos=Vector2.ZERO
 
 func _ready():
 	offsetDir[0]=Vector2(45,3)
@@ -17,24 +18,29 @@ func _ready():
 
 func _physics_process(_delta: float) -> void:
 	if detecframes>0:
-		intersectPos=null
 		detecframes-=1
 		if detecframes<=0:
 			#queue_redraw()
 			excludeObj.clear()
 		var space_state = get_world_2d().direct_space_state
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
+		targetPos=global_position+vector*wRange+offset
 		var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
-		global_position+vector*wRange+offset,collisionMask)
+		targetPos,collisionMask)
 		#query.exclude = [self]
 		var result = space_state.intersect_ray(query)
 		print(result)
 		if result:
-			if !excludeObj.has(result.collider):		
-				if result.collider.type &&result.collider.type==Game.itemType.Barrel:
+			#if !excludeObj.has(result.collider):		
+			if 	result.collider is StaticBody2D:
+				targetPos=result.position
+				addSmoke(targetPos)
+			elif result.collider.type &&result.collider.type==Game.itemType.Barrel:
+				if !excludeObj.has(result.collider):
 					result.collider.hit(damage)
 					excludeObj.append(result.collider)
-					intersectPos=result.position
+				targetPos=result.position
+				addSmoke(targetPos)
 		queue_redraw()
 		
 func fire(v):
@@ -56,9 +62,9 @@ func fire(v):
 func _draw() -> void:
 	if detecframes>0:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
-		if intersectPos!=null:
-			draw_line(offset,
-				intersectPos-global_position,Color.WHITE)
-		else:
-			draw_line(offset,
-				offset+vector*wRange,Color.WHITE)	
+		#if intersectPos!=null:
+			#draw_line(offset,
+				#intersectPos-global_position,Color.WHITE)
+		#else:
+		draw_line(offset,
+			targetPos-global_position,Color.WHITE,1.5)	

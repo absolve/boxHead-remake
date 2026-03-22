@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_cl2vf"]
 [ext_resource type="Script" uid="uid://bxc8ywt451s7f" path="res://script/uzi.gd" id="2_pygel"]
 [ext_resource type="AudioStream" uid="uid://dh6jbifk23632" path="res://sound/562_562 Weapon.UZI.Fire.mp3" id="3_jn77h"]
-[ext_resource type="Texture2D" uid="uid://b581ix5gagb2e" path="res://sprite/shape/DefineSprite_2311/1.png" id="3_tg1ja"]
+[ext_resource type="Texture2D" uid="uid://lt3mxnsfas2t" path="res://sprite/shape/DefineSprite_2311/1.png" id="3_tg1ja"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pygel"]
 animations = [{

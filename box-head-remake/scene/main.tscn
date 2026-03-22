@@ -1,12 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dp1r8mdq1jy20"]
+[gd_scene load_steps=2 format=3 uid="uid://dp1r8mdq1jy20"]
 
 [ext_resource type="Script" uid="uid://vpr03eycubaa" path="res://script/main.gd" id="1_v0l8b"]
-[ext_resource type="PackedScene" uid="uid://ctuwqq3bh161h" path="res://scene/player.tscn" id="2_wp4xf"]
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_v0l8b")
-
-[node name="player" parent="." instance=ExtResource("2_wp4xf")]
-position = Vector2(252, 205)
-collision_mask = 1
-motion_mode = 0

@@ -24,7 +24,11 @@ const weaponName={
 	weaponType.Grenade:'Grenade',
 }
 
-enum smokeType{RocketSmoke=200,SmokeCloud}
+#烟雾类型
+enum smokeType{RocketSmoke=200,SmokeCloud,}
+
+#爆炸类型
+enum explosionType{normal=600,air}
 
 @warning_ignore("unused_signal")
 signal weaponUpgrade

@@ -6,6 +6,7 @@ var allWeaponData={
 	
 }
 
+var mapSize:Vector2  #地图大小
 
 #以x-y为key用来快速判断地图上物体位置
 var mapTile={}
