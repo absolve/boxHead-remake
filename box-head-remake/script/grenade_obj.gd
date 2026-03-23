@@ -4,20 +4,31 @@ var explosion=preload("res://scene/explosion.tscn")
 @onready var sound=$sound
 
 var vector=Vector2.ZERO
-var height=50
+var height=25
 var speed=50
 var tween=null
+var floorPos=Vector2.ZERO
+var isOnFloor=false
 
 func _ready() -> void:
-	gravity=100
-	vector=vector*speed
-	#vector.x*=speed
+	gravity=800
+	#vector=vector*speed
+	#vector.y=-200
+	#vector.x*=speed	
+	vector*=speed
+	vector.y+=-200
+	#floorPos=global_position+Vector2(0,height)
+	#print(floorPos)
 	
 func _physics_process(delta: float) -> void:
-	if height>0:
+	if !isOnFloor:
 		vector.y += gravity * delta
-		height-=gravity * delta
-	vector=vector.lerp(Vector2.ZERO,0.05)
+		#height-=gravity * delta
+		height-=vector.y* delta
+		if height<=0:
+			isOnFloor=true
+			#vector.y=0
+	#vector=vector.lerp(Vector2.ZERO,0.05)
 	position+=vector*delta
 	#print( vector.length())
 	
@@ -29,13 +40,16 @@ func _physics_process(delta: float) -> void:
 		sound.play()
 	
 	var result=has_overlapping_areas()
+	#var result2=has_overlapping_bodies()
 	if result:
-		if abs(vector.x)>0:
-			vector.x*=-1
-			sound.play()
-		if abs(vector.y)>0:
-			vector.y*=-1	
-			sound.play()
+		#if abs(vector.x)>0:
+			#vector.x*=-1
+			#sound.play()
+		#if abs(vector.y)>0:
+			#vector.y*=-1	
+			#sound.play()
+		vector*=-1
+	
 	
 	position.x=clamp(position.x,itemSize.x/2,MapData.mapSize.x-itemSize.x/2)
 	position.y=clamp(position.y,itemSize.y/2,MapData.mapSize.y-itemSize.y/2)

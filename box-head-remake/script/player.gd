@@ -14,7 +14,7 @@ var aniException=['Mine','RemoteMine','Wall','Barrel','Grenade']
 
 
 func _ready():
-	var temp=load("res://scene/hand_gun.tscn")
+	var temp=load("res://scene/pistol.tscn")
 	var gun=temp.instantiate()
 	gun.ownerId=get_rid()
 	weaponList.push_back(gun)

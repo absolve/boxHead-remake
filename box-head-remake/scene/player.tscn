@@ -310,7 +310,7 @@ animations = [{
 "texture": ExtResource("2_2fvbb")
 }],
 "loop": true,
-"name": &"stand_1_0_HandGun",
+"name": &"stand_1_0_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -350,7 +350,7 @@ animations = [{
 "texture": ExtResource("3_ml7e8")
 }],
 "loop": true,
-"name": &"stand_1_1_HandGun",
+"name": &"stand_1_1_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -390,7 +390,7 @@ animations = [{
 "texture": ExtResource("4_ihjo1")
 }],
 "loop": true,
-"name": &"stand_1_2_HandGun",
+"name": &"stand_1_2_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -430,7 +430,7 @@ animations = [{
 "texture": ExtResource("5_dk1vr")
 }],
 "loop": true,
-"name": &"stand_1_3_HandGun",
+"name": &"stand_1_3_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -470,7 +470,7 @@ animations = [{
 "texture": ExtResource("6_34jf3")
 }],
 "loop": true,
-"name": &"stand_1_4_HandGun",
+"name": &"stand_1_4_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -510,7 +510,7 @@ animations = [{
 "texture": ExtResource("7_u7b46")
 }],
 "loop": true,
-"name": &"stand_1_5_HandGun",
+"name": &"stand_1_5_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -550,7 +550,7 @@ animations = [{
 "texture": ExtResource("8_j4wxg")
 }],
 "loop": true,
-"name": &"stand_1_6_HandGun",
+"name": &"stand_1_6_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -590,7 +590,7 @@ animations = [{
 "texture": ExtResource("9_bup7g")
 }],
 "loop": true,
-"name": &"stand_1_7_HandGun",
+"name": &"stand_1_7_Pistol",
 "speed": 5.0
 }, {
 "frames": [{
@@ -651,7 +651,7 @@ animations = [{
 "texture": ExtResource("17_x5omm")
 }],
 "loop": true,
-"name": &"walk_1_0_HandGun",
+"name": &"walk_1_0_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -796,7 +796,7 @@ animations = [{
 "texture": ExtResource("17_ec2ns")
 }],
 "loop": true,
-"name": &"walk_1_1_HandGun",
+"name": &"walk_1_1_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -941,7 +941,7 @@ animations = [{
 "texture": ExtResource("25_x5omm")
 }],
 "loop": true,
-"name": &"walk_1_2_HandGun",
+"name": &"walk_1_2_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1086,7 +1086,7 @@ animations = [{
 "texture": ExtResource("33_5n4ea")
 }],
 "loop": true,
-"name": &"walk_1_3_HandGun",
+"name": &"walk_1_3_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1231,7 +1231,7 @@ animations = [{
 "texture": ExtResource("41_cmg3n")
 }],
 "loop": true,
-"name": &"walk_1_4_HandGun",
+"name": &"walk_1_4_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1376,7 +1376,7 @@ animations = [{
 "texture": ExtResource("49_ranti")
 }],
 "loop": true,
-"name": &"walk_1_5_HandGun",
+"name": &"walk_1_5_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1521,7 +1521,7 @@ animations = [{
 "texture": ExtResource("57_nnw3o")
 }],
 "loop": true,
-"name": &"walk_1_6_HandGun",
+"name": &"walk_1_6_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1666,7 +1666,7 @@ animations = [{
 "texture": ExtResource("65_swyrm")
 }],
 "loop": true,
-"name": &"walk_1_7_HandGun",
+"name": &"walk_1_7_Pistol",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1798,7 +1798,7 @@ shape = SubResource("RectangleShape2D_8pv5j")
 [node name="ani" parent="." index="1"]
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_4miyu")
-animation = &"stand_1_0_HandGun"
+animation = &"walk_1_7_Pistol"
 
 [node name="weaponBackpack" type="Node2D" parent="." index="2"]
 
