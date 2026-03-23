@@ -1,6 +1,6 @@
 extends Node
 
-const cellSize:float=40 #每个格子大小
+const cellSize:float=30 #每个格子大小
 
 var allWeaponData={
 	
@@ -33,3 +33,67 @@ func addMapItem(pos:Vector2,id:int):
 	var x=floori(pos.x/cellSize) 
 	var y= floori(pos.y/cellSize) 
 	mapTile["%s-%s"%[x,y]]=id
+
+
+'''
+3	Pistol+: Fast Fire
+5	New Weapon: UZI (Key 2)
+8	Pistol+: Double Damage
+10	New Weapon: Shotgun (Key 3)
+13	UZI+: Rapid Fire
+15	New Wepon: Barrel (Key 4)
+17	UZI+: Double Ammo
+18	Shotgun+: Fast Fire
+20	New Weapon: Grenade (Key 5)
+21	Shotgun+: Double Ammo
+23	UZI+: Long Shot
+26	Barrel+: Double Ammo
+30	New Weapon: Fake walls (Key 6)
+31	Shotgun+: Wide Shot
+32	Barrel+: Big Bang
+33	Grenade+: Cluster Explode
+35	Shotgun+: Long Shot
+36	Barrel+: Quad Ammo
+37	Fake Wall+: Double Ammo
+39	UZI+: Quad Ammo
+40	New Weapon: Claymore (Key 7)
+41	Shotgun+: Quad Ammo
+42	Grenade+: Double Ammo
+43	Shotgun+: Rapid Fire
+44	Barrel+: Bigger Bang
+45	Grenade+: Big Bang
+47	Claymore+: Cluster Explode
+48	UZI+: Double Damager
+50	New Weapon: Rocket (Key 8)
+51	Shotgun+: Wider Shot
+52	Grenade+: Quad Ammo
+53	Fake Wall+: Quad Ammo
+54	Claymore+: Double Ammo
+55	New Weapon: Chargepack (Key 9)
+56	Shotgun+: Double Damage
+57	Grenade+: Bigger Bang
+58	Claymore+: Big Bang
+59	Rocket+: Fast Fire
+61	UZI+: Infinate Range
+62	Claymore+: Bigger Bang
+63	Charge Pack+: Cluster Explode
+64	Claymore+: Quad Ammo
+66	Rocket+: Double Ammo
+68	Charge Pack+: Double Ammo
+70	New Weapon: Railgun (Key 0)
+72	Rocket+: Big Bang
+74	Charge Pack+: Big Bang
+76	Charge Pack+: Quad Ammo
+78	Railgun+: Fast Fire
+80	Railgun+: Double Ammo
+85	Rocket+: Quad Ammo
+90	UZI+: Quad Damage
+95	Charge Pack+: Bigger Bang
+100	Railgun+: Rapid Fire
+105	Rocket+: Bigger Bang
+110	Railgun+: Quad Ammo
+120	Rocket+: Rapid Fire
+125	Railgun+: Long Shot
+
+
+'''

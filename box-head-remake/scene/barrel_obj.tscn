@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b18staaklk5tu" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1kyk"]
-size = Vector2(25, 20)
+size = Vector2(25, 30)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hwscq"]
 animations = [{
