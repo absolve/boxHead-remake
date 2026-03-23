@@ -19,8 +19,9 @@ func hit(_value):
 		for i in range(splitNum):
 			var b=new.instantiate()
 			b.global_position=global_position
-			b.vector=Vector2.RIGHT.rotated(i*(2*PI/splitNum)+0.4)
-			b.speed=100
+			b.vector=Vector2(1,0).rotated(i*(2*PI/splitNum))
+			b.height=100
+			b.speed=200
 			get_tree().root.add_child(b)
 	
 		

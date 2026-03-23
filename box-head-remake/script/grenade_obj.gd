@@ -9,9 +9,9 @@ var speed=50
 var tween=null
 
 func _ready() -> void:
-	gravity=700
+	gravity=100
 	vector=vector*speed
-	
+	#vector.x*=speed
 	
 func _physics_process(delta: float) -> void:
 	if height>0:
