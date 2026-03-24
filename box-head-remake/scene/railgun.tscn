@@ -5,9 +5,14 @@
 [ext_resource type="AudioStream" uid="uid://cl6kg7qcixw45" path="res://sound/559_559 Weapon.Railgun.Fire.mp3" id="3_6a3wx"]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_6a3wx"]
+b = Vector2(300, 0)
 
 [node name="railgun" instance=ExtResource("1_g1vjg")]
 script = ExtResource("2_p8kex")
+type = 1
+delay = 0.5
+ammoNum = 20
+maxAmmoNum = 20
 
 [node name="sound" parent="." index="0"]
 stream = ExtResource("3_6a3wx")
@@ -15,7 +20,9 @@ stream = ExtResource("3_6a3wx")
 [node name="Timer" parent="." index="1"]
 wait_time = 0.2
 
-[node name="Area2D" type="Area2D" parent="." index="2"]
+[node name="ray" type="Area2D" parent="." index="2"]
+collision_layer = 0
+collision_mask = 7
 
-[node name="shape" type="CollisionShape2D" parent="Area2D" index="0"]
+[node name="shape" type="CollisionShape2D" parent="ray" index="0"]
 shape = SubResource("SegmentShape2D_6a3wx")

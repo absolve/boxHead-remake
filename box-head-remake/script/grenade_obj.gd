@@ -16,13 +16,13 @@ func _ready() -> void:
 	#vector.y=-200
 	#vector.x*=speed	
 	vector*=speed
-	vector.y+=-200
+	vector.y+=-200*cos(vector.angle())
 	#floorPos=global_position+Vector2(0,height)
 	#print(floorPos)
 	
 func _physics_process(delta: float) -> void:
 	if !isOnFloor:
-		vector.y += gravity * delta
+		vector.y += gravity*cos(vector.angle()) * delta
 		#height-=gravity * delta
 		height-=vector.y* delta
 		if height<=0:

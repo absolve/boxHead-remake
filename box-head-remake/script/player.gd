@@ -14,13 +14,13 @@ var aniException=['Mine','RemoteMine','Wall','Barrel','Grenade']
 
 
 func _ready():
-	var temp=load("res://scene/pistol.tscn")
-	var gun=temp.instantiate()
-	gun.ownerId=get_rid()
-	weaponList.push_back(gun)
-	weaponBackpack.add_child(gun)
-	currWeapon=gun
-	txt.text=Game.weaponName[currWeapon.type]
+	#var temp=load("res://scene/pistol.tscn")
+	#var gun=temp.instantiate()
+	#gun.ownerId=get_rid()
+	#weaponList.push_back(gun)
+	#weaponBackpack.add_child(gun)
+	#currWeapon=gun
+	#txt.text=Game.weaponName[currWeapon.type]
 	#var t=load("res://scene/uzi.tscn")
 	#var g=t.instantiate()
 	#g.ownerId=get_rid()
@@ -61,8 +61,10 @@ func _ready():
 	grenade.ownerId=get_rid()
 	weaponList.push_back(grenade)
 	weaponBackpack.add_child(grenade)
+	currWeapon=grenade
 	
 	
+	txt.text=Game.weaponName[currWeapon.type]
 	if playerId==1:
 		keyMap.left="p1_left"
 		keyMap.right="p1_right"
