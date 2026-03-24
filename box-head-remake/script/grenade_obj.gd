@@ -9,26 +9,34 @@ var speed=50
 var tween=null
 var floorPos=Vector2.ZERO
 var isOnFloor=false
+var angle=0
+
 
 func _ready() -> void:
-	gravity=800
+	gravity=900
 	#vector=vector*speed
 	#vector.y=-200
 	#vector.x*=speed	
+	angle=vector.angle()
 	vector*=speed
-	vector.y+=-200*cos(vector.angle())
+	vector.y+=-150*abs(cos(angle))
 	#floorPos=global_position+Vector2(0,height)
 	#print(floorPos)
 	
+	print(angle)
+	print(cos(angle))
+	
 func _physics_process(delta: float) -> void:
 	if !isOnFloor:
-		vector.y += gravity*cos(vector.angle()) * delta
+		vector.y += gravity*abs(cos(angle)) * delta
 		#height-=gravity * delta
 		height-=vector.y* delta
 		if height<=0:
 			isOnFloor=true
-			#vector.y=0
-	#vector=vector.lerp(Vector2.ZERO,0.05)
+			vector.y*=sin(angle)
+			print('===',abs(sin(angle)))
+	if isOnFloor:
+		vector=vector.lerp(Vector2.ZERO,0.05)
 	position+=vector*delta
 	#print( vector.length())
 	

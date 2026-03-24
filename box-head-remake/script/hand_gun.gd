@@ -62,7 +62,7 @@ func fire(v):
 		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
 		player.play("fire")
 		sound.play()
-
+		
 
 	
 func _draw() -> void:

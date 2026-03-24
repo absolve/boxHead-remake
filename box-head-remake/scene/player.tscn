@@ -1,9 +1,10 @@
-[gd_scene load_steps=302 format=3 uid="uid://ctuwqq3bh161h"]
+[gd_scene load_steps=310 format=3 uid="uid://ctuwqq3bh161h"]
 
 [ext_resource type="PackedScene" uid="uid://gvl5ox363h8g" path="res://scene/character.tscn" id="1_hjaqi"]
 [ext_resource type="Script" uid="uid://ctr0fv8feaujs" path="res://script/player.gd" id="1_xo3ru"]
 [ext_resource type="Texture2D" uid="uid://dgjv8k6tu126u" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/1.png" id="2_2fvbb"]
 [ext_resource type="Texture2D" uid="uid://clixi2eqd774j" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/2.png" id="3_ml7e8"]
+[ext_resource type="Texture2D" uid="uid://bhu5jwhy8fqk8" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/1.png" id="4_206a0"]
 [ext_resource type="Texture2D" uid="uid://c2q5jrutsxtxl" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/1.png" id="4_gcs2b"]
 [ext_resource type="Texture2D" uid="uid://b5qc27lpxklix" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/3.png" id="4_ihjo1"]
 [ext_resource type="Texture2D" uid="uid://bfbjavko4txc0" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/1.png" id="4_ryyvu"]
@@ -19,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://cdhqxljhl0v6n" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/8.png" id="9_bup7g"]
 [ext_resource type="Texture2D" uid="uid://dr1dwfwfd46cj" path="res://sprite/player/DefineSprite_1285/1.png" id="10_3mmt4"]
 [ext_resource type="Texture2D" uid="uid://b11gr5f11dqpx" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/4.png" id="10_4gwaa"]
+[ext_resource type="Texture2D" uid="uid://bpe4lkenttgd8" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/2.png" id="10_dlxd1"]
 [ext_resource type="Texture2D" uid="uid://tmqp6v4ff04u" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/2.png" id="10_ff0mh"]
 [ext_resource type="Texture2D" uid="uid://bx31lny5mqaoa" path="res://sprite/player/DefineSprite_1932_Player_Stand/2.png" id="10_ghwgs"]
 [ext_resource type="Texture2D" uid="uid://f0ba46n5a4l7" path="res://sprite/player/DefineSprite_1290/1.png" id="10_ko5ao"]
@@ -41,6 +43,7 @@
 [ext_resource type="Texture2D" uid="uid://cf3ltrh06rl0c" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/7.png" id="16_5n4ea"]
 [ext_resource type="Texture2D" uid="uid://c80413jmfan8u" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/5.png" id="16_ifikf"]
 [ext_resource type="Texture2D" uid="uid://pmqprjogon5e" path="res://sprite/player/DefineSprite_1285/7.png" id="16_lgg88"]
+[ext_resource type="Texture2D" uid="uid://bq2d33jsdn2ux" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/3.png" id="16_pvg5h"]
 [ext_resource type="Texture2D" uid="uid://71qgellxtx7o" path="res://sprite/player/DefineSprite_1290/7.png" id="16_ytl04"]
 [ext_resource type="Texture2D" uid="uid://bt7k7rp060m5g" path="res://sprite/player/DefineSprite_1290/8.png" id="17_ec2ns"]
 [ext_resource type="Texture2D" uid="uid://b03bu0qais8qi" path="res://sprite/player/DefineSprite_1285/8.png" id="17_x5omm"]
@@ -52,6 +55,7 @@
 [ext_resource type="Texture2D" uid="uid://dgmrc81pofv4i" path="res://sprite/player/DefineSprite_1305/3.png" id="20_j2mpt"]
 [ext_resource type="Texture2D" uid="uid://b4o52wsfe01nb" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/4.png" id="20_t44h8"]
 [ext_resource type="Texture2D" uid="uid://ddufihf4g56u4" path="res://sprite/player/DefineSprite_1305/4.png" id="21_5rvhh"]
+[ext_resource type="Texture2D" uid="uid://cduhnbomk2wnd" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/4.png" id="22_aik8a"]
 [ext_resource type="Texture2D" uid="uid://dww48x8lblg7o" path="res://sprite/player/DefineSprite_1932_Player_Stand/5.png" id="22_er534"]
 [ext_resource type="Texture2D" uid="uid://bjb0ff8v1oant" path="res://sprite/player/DefineSprite_1305/5.png" id="22_llvc7"]
 [ext_resource type="Texture2D" uid="uid://dyrb2odw541i3" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/7.png" id="22_scabq"]
@@ -64,6 +68,7 @@
 [ext_resource type="Texture2D" uid="uid://drop25t26mnyq" path="res://sprite/player/DefineSprite_1320/1.png" id="26_odra3"]
 [ext_resource type="Texture2D" uid="uid://dchg4hd2vso8w" path="res://sprite/player/DefineSprite_1320/2.png" id="27_ryyvu"]
 [ext_resource type="Texture2D" uid="uid://jp6we17vjkr3" path="res://sprite/player/DefineSprite_1320/3.png" id="28_5kjuc"]
+[ext_resource type="Texture2D" uid="uid://c51e5iwt4sff6" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/5.png" id="28_6tgw1"]
 [ext_resource type="Texture2D" uid="uid://d1bstchfcgdhw" path="res://sprite/player/DefineSprite_1320/4.png" id="29_frgke"]
 [ext_resource type="Texture2D" uid="uid://d0fwe1h4wvop8" path="res://sprite/player/DefineSprite_1320/5.png" id="30_4gwaa"]
 [ext_resource type="Texture2D" uid="uid://43bw4lbf5krp" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/6.png" id="30_fwc8l"]
@@ -71,6 +76,7 @@
 [ext_resource type="Texture2D" uid="uid://b0kygr534p4cm" path="res://sprite/player/DefineSprite_1320/6.png" id="31_dm46t"]
 [ext_resource type="Texture2D" uid="uid://pwmyn7xl8g4w" path="res://sprite/player/DefineSprite_1320/7.png" id="32_4d8ul"]
 [ext_resource type="Texture2D" uid="uid://ca1er3aqf84bk" path="res://sprite/player/DefineSprite_1320/8.png" id="33_5n4ea"]
+[ext_resource type="Texture2D" uid="uid://dkbi44lyosbk2" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/6.png" id="34_1nnd0"]
 [ext_resource type="Texture2D" uid="uid://6aw8b7lqfa7r" path="res://sprite/player/DefineSprite_1335/1.png" id="34_2v114"]
 [ext_resource type="Texture2D" uid="uid://df7abc1gxla05" path="res://sprite/player/DefineSprite_1932_Player_Stand/8.png" id="34_akcgn"]
 [ext_resource type="Texture2D" uid="uid://brta28qsjq27u" path="res://sprite/player/DefineSprite_1335/2.png" id="35_d3x55"]
@@ -85,6 +91,7 @@
 [ext_resource type="Texture2D" uid="uid://cv8vf8y6r1s1o" path="res://sprite/player/DefineSprite_1655/5.png" id="39_govaw"]
 [ext_resource type="Texture2D" uid="uid://bkthsg17ohqtl" path="res://sprite/player/DefineSprite_1335/6.png" id="39_rgwum"]
 [ext_resource type="Texture2D" uid="uid://iql5ckjb7q6j" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/8.png" id="40_3bjl8"]
+[ext_resource type="Texture2D" uid="uid://6qe4bha32xx4" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/7.png" id="40_8cjyt"]
 [ext_resource type="Texture2D" uid="uid://d7in5wlmg1o5" path="res://sprite/player/DefineSprite_1335/7.png" id="40_ntktn"]
 [ext_resource type="Texture2D" uid="uid://b0ujis0pyyegy" path="res://sprite/player/DefineSprite_1655/6.png" id="40_xcifi"]
 [ext_resource type="Texture2D" uid="uid://pg1ve5ntqalp" path="res://sprite/player/DefineSprite_1655/7.png" id="41_1rkj5"]
@@ -95,6 +102,7 @@
 [ext_resource type="Texture2D" uid="uid://bepledmhieel6" path="res://sprite/player/DefineSprite_1350/3.png" id="44_enbx7"]
 [ext_resource type="Texture2D" uid="uid://bqrtm2t0ih3tt" path="res://sprite/player/DefineSprite_1350/4.png" id="45_85lx7"]
 [ext_resource type="Texture2D" uid="uid://uwc4ekct16tl" path="res://sprite/player/DefineSprite_1350/5.png" id="46_3y6ar"]
+[ext_resource type="Texture2D" uid="uid://b0wiwdnnfnsq7" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/8.png" id="46_ospjf"]
 [ext_resource type="Texture2D" uid="uid://pvb7jjutlw8w" path="res://sprite/player/DefineSprite_1350/6.png" id="47_et5mr"]
 [ext_resource type="Texture2D" uid="uid://nrbrnmd15iy" path="res://sprite/player/DefineSprite_1350/7.png" id="48_qv1i2"]
 [ext_resource type="Texture2D" uid="uid://b7ldk4xm7n7vu" path="res://sprite/player/DefineSprite_1350/8.png" id="49_ranti"]
@@ -315,6 +323,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("4_206a0")
+}],
+"loop": true,
+"name": &"stand_1_0_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("4_gcs2b")
 }],
 "loop": true,
@@ -351,6 +367,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"stand_1_1_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_dlxd1")
+}],
+"loop": true,
+"name": &"stand_1_1_Railgun",
 "speed": 5.0
 }, {
 "frames": [{
@@ -395,6 +419,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("16_pvg5h")
+}],
+"loop": true,
+"name": &"stand_1_2_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("10_urp7k")
 }],
 "loop": true,
@@ -431,6 +463,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"stand_1_3_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_aik8a")
+}],
+"loop": true,
+"name": &"stand_1_3_Railgun",
 "speed": 5.0
 }, {
 "frames": [{
@@ -475,6 +515,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("28_6tgw1")
+}],
+"loop": true,
+"name": &"stand_1_4_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("16_ifikf")
 }],
 "loop": true,
@@ -511,6 +559,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"stand_1_5_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34_1nnd0")
+}],
+"loop": true,
+"name": &"stand_1_5_Railgun",
 "speed": 5.0
 }, {
 "frames": [{
@@ -555,6 +611,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("40_8cjyt")
+}],
+"loop": true,
+"name": &"stand_1_6_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("22_scabq")
 }],
 "loop": true,
@@ -591,6 +655,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"stand_1_7_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("46_ospjf")
+}],
+"loop": true,
+"name": &"stand_1_7_Railgun",
 "speed": 5.0
 }, {
 "frames": [{
@@ -652,6 +724,35 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_1_0_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_3mmt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_8pv5j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_j2mpt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5rvhh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_llvc7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ywa8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_lgg88")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_x5omm")
+}],
+"loop": true,
+"name": &"walk_1_0_Railgun",
 "speed": 10.0
 }, {
 "frames": [{
@@ -801,6 +902,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("10_ko5ao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_w8280")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_0fmm8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5nkdk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_0a317")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ofccr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_ytl04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ec2ns")
+}],
+"loop": true,
+"name": &"walk_1_1_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("51_7ld47")
 }, {
 "duration": 1.0,
@@ -942,6 +1072,35 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_1_2_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_3mmt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_8pv5j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_j2mpt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_5rvhh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_llvc7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_ywa8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_lgg88")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_x5omm")
+}],
+"loop": true,
+"name": &"walk_1_2_Railgun",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1091,6 +1250,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("26_odra3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_ryyvu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_5kjuc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_frgke")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_4gwaa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_dm46t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_4d8ul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_5n4ea")
+}],
+"loop": true,
+"name": &"walk_1_3_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("83_72por")
 }, {
 "duration": 1.0,
@@ -1232,6 +1420,35 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_1_4_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34_2v114")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_d3x55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_rd5ui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_k3o1w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_p1yeu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_rgwum")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_ntktn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_cmg3n")
+}],
+"loop": true,
+"name": &"walk_1_4_Railgun",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1381,6 +1598,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("42_d1347")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_h4gvw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_enbx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_85lx7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_3y6ar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_et5mr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_qv1i2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_ranti")
+}],
+"loop": true,
+"name": &"walk_1_5_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("115_o1jmc")
 }, {
 "duration": 1.0,
@@ -1522,6 +1768,35 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_1_6_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("50_jymme")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_88uyc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_wuu0t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_n7cfl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_8h342")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_nv3o8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_fjrdf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_nnw3o")
+}],
+"loop": true,
+"name": &"walk_1_6_Railgun",
 "speed": 10.0
 }, {
 "frames": [{
@@ -1671,6 +1946,35 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("58_x2dav")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_5jqwt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_21crx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_to47r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_qe2px")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_i4m4b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_wqho7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_swyrm")
+}],
+"loop": true,
+"name": &"walk_1_7_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("147_21i2s")
 }, {
 "duration": 1.0,
@@ -1798,7 +2102,7 @@ shape = SubResource("RectangleShape2D_8pv5j")
 [node name="ani" parent="." index="1"]
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_4miyu")
-animation = &"walk_1_7_Pistol"
+animation = &"walk_1_7_Railgun"
 
 [node name="weaponBackpack" type="Node2D" parent="." index="2"]
 

@@ -61,6 +61,15 @@ func _ready():
 	grenade.ownerId=get_rid()
 	weaponList.push_back(grenade)
 	weaponBackpack.add_child(grenade)
+
+	
+	
+	#var rg=load("res://scene/railgun.tscn")
+	#var railgun=rg.instantiate()
+	#railgun.ownerId=get_rid()
+	#weaponList.push_back(railgun)
+	#weaponBackpack.add_child(railgun)
+	
 	currWeapon=grenade
 	
 	
@@ -81,7 +90,9 @@ func switchWeapon(next:bool=true):
 			currWeaponIndex+=1
 		else:
 			currWeaponIndex-=1	
+		print(currWeaponIndex)	
 		currWeaponIndex=wrapi(currWeaponIndex,0,weaponList.size())
+		print(currWeaponIndex)	
 		currWeapon=weaponList[currWeaponIndex]
 	
 		#txt.text=Game.weaponName[currWeapon.type]	
