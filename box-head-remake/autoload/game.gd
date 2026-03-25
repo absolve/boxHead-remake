@@ -30,6 +30,8 @@ enum smokeType{RocketSmoke=200,SmokeCloud,}
 #爆炸类型
 enum explosionType{normal=600,air}
 
+enum enemyState{Idle,hurt,dead}
+
 @warning_ignore("unused_signal")
 signal weaponUpgrade
 @warning_ignore("unused_signal")

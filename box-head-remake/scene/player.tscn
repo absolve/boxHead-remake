@@ -2090,7 +2090,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="player" instance=ExtResource("1_hjaqi")]
+[node name="player" groups=["player"] instance=ExtResource("1_hjaqi")]
 collision_mask = 15
 script = ExtResource("1_xo3ru")
 speed = 150

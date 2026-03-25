@@ -32,6 +32,10 @@ window/stretch/mode="viewport"
 
 enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
 
+[global_group]
+
+player=""
+
 [input]
 
 p1_left={

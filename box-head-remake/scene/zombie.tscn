@@ -76,6 +76,7 @@
 [ext_resource type="Texture2D" uid="uid://culjg76qjvanw" path="res://sprite/Zombie/DefineSprite_1182/8.png" id="74_kbwv7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmsqm"]
+size = Vector2(15, 18)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tet0w"]
 animations = [{
@@ -377,11 +378,16 @@ animations = [{
 }]
 
 [node name="zombie" instance=ExtResource("1_jeayq")]
+collision_layer = 2
+collision_mask = 11
 script = ExtResource("2_tet0w")
+speed = 50
 
 [node name="shape" parent="." index="0"]
+position = Vector2(0, 18)
 shape = SubResource("RectangleShape2D_wmsqm")
 
 [node name="ani" parent="." index="1"]
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_tet0w")
-animation = &"walk_7"
+animation = &"stand_0"

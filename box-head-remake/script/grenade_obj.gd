@@ -49,8 +49,8 @@ func _physics_process(delta: float) -> void:
 		sound.play()
 	
 	var result=has_overlapping_areas()
-	#var result2=has_overlapping_bodies()
-	if result:
+	var result2=has_overlapping_bodies()
+	if result||result2:
 		var space = get_world_2d().direct_space_state
 		var params = PhysicsShapeQueryParameters2D.new()
 		#params.exclude=[self]
@@ -67,14 +67,7 @@ func _physics_process(delta: float) -> void:
 			print(safe_motion)
 			#position-=safe_motion
 			vector=vector.bounce(normal)
-		#if abs(vector.x)>0:
-			#vector.x*=-1
-			#sound.play()
-		#if abs(vector.y)>0:
-			#vector.y*=-1	
-			#sound.play()
-		#vector*=-1
-	
+
 	
 	position.x=clamp(position.x,itemSize.x/2,MapData.mapSize.x-itemSize.x/2)
 	position.y=clamp(position.y,itemSize.y/2,MapData.mapSize.y-itemSize.y/2)
