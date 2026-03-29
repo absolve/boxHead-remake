@@ -19,9 +19,9 @@ func _ready():
 func _physics_process(_delta: float) -> void:
 	if detecframes>0:
 		detecframes-=1
-		if detecframes<=0:
+		#if detecframes<=0:
 			#queue_redraw()
-			excludeObj.clear()
+			#excludeObj.clear()
 		var space_state = get_world_2d().direct_space_state
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		targetPos=global_position+vector*wRange+offset
@@ -58,6 +58,7 @@ func fire(v):
 		ani.rotation=vector.angle()
 		player.play("fire")
 		sound.play()
+		excludeObj.clear()
 	
 func _draw() -> void:
 	if detecframes>0:

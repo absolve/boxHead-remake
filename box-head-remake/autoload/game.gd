@@ -10,6 +10,9 @@ enum itemType{Box=99,Mine,RemoteMine,Wall,Barrel,Grenade,RocketBullet,Explosion}
 enum boxContent{Railgun=500,Rocket,Shotgun,
 				UZI,Mine,RemoteMine,Wall,Barrel,Grenade}
 
+#角色类型
+enum roleType{Player=400,Zombie,Devil}
+
 #武器名字
 const weaponName={
 	weaponType.Pistol:'Pistol',
@@ -30,7 +33,7 @@ enum smokeType{RocketSmoke=200,SmokeCloud,}
 #爆炸类型
 enum explosionType{normal=600,air}
 
-enum enemyState{Idle,hurt,dead}
+enum enemyState{Idle,hurt,fallDown,dead}
 
 @warning_ignore("unused_signal")
 signal weaponUpgrade

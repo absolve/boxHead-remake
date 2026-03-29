@@ -88,6 +88,7 @@ animations = [{
 
 [node name="devil" instance=ExtResource("1_iik8q")]
 script = ExtResource("2_1gtda")
+type = 402
 
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_1gtda")

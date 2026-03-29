@@ -10,6 +10,7 @@
 script = ExtResource("1_rgtto")
 
 [node name="room001" parent="." instance=ExtResource("2_wpp1k")]
+visible = false
 
 [node name="player" parent="." instance=ExtResource("3_h0nt1")]
 position = Vector2(84, 211)
@@ -20,4 +21,4 @@ position = Vector2(84, 211)
 position = Vector2(191, 105)
 
 [node name="zombie" parent="." instance=ExtResource("5_4xw1d")]
-position = Vector2(300, 150)
+position = Vector2(538, 202)

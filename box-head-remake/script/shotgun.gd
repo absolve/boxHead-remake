@@ -25,8 +25,8 @@ func _physics_process(_delta: float) -> void:
 	if detecframes>0:
 	
 		detecframes-=1
-		if detecframes<=0:
-			excludeObj.clear()
+		#if detecframes<=0:
+			#excludeObj.clear()
 			#queue_redraw()
 		for i in range(bulletNum):
 			var space_state = get_world_2d().direct_space_state
@@ -61,7 +61,8 @@ func fire(_v):
 		ani.rotation=vector.angle()
 		player.play("fire")
 		sound.play()
-
+		excludeObj.clear()
+		
 func _draw() -> void:
 	if detecframes>0:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]

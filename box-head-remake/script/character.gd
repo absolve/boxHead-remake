@@ -6,6 +6,8 @@ var isDead=false
 var invincible=false
 var state   #状态
 
+
 @export var bodySize:Vector2=Vector2(20,25)
 @export var hp:int=10 #血量
 @export var speed=120 #移动速度
+@export var type:Game.roleType=Game.roleType.Player

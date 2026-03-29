@@ -14,11 +14,11 @@ var aniException=['Mine','RemoteMine','Wall','Barrel','Grenade']
 
 
 func _ready():
-	#var temp=load("res://scene/pistol.tscn")
-	#var gun=temp.instantiate()
-	#gun.ownerId=get_rid()
-	#weaponList.push_back(gun)
-	#weaponBackpack.add_child(gun)
+	var temp=load("res://scene/pistol.tscn")
+	var gun=temp.instantiate()
+	gun.ownerId=get_rid()
+	weaponList.push_back(gun)
+	weaponBackpack.add_child(gun)
 	#currWeapon=gun
 	#txt.text=Game.weaponName[currWeapon.type]
 	#var t=load("res://scene/uzi.tscn")
@@ -32,11 +32,11 @@ func _ready():
 	#weaponList.push_back(rocket)
 	#weaponBackpack.add_child(rocket)
 	
-	var b=load("res://scene/barrel.tscn")
-	var barrel=b.instantiate()
-	barrel.ownerId=get_rid()
-	weaponList.push_back(barrel)
-	weaponBackpack.add_child(barrel)
+	#var b=load("res://scene/barrel.tscn")
+	#var barrel=b.instantiate()
+	#barrel.ownerId=get_rid()
+	#weaponList.push_back(barrel)
+	#weaponBackpack.add_child(barrel)
 	
 	#var w=load("res://scene/wall.tscn")
 	#var wall=w.instantiate()
@@ -70,7 +70,7 @@ func _ready():
 	#weaponList.push_back(railgun)
 	#weaponBackpack.add_child(railgun)
 	
-	currWeapon=grenade
+	currWeapon=gun
 	
 	
 	txt.text=Game.weaponName[currWeapon.type]

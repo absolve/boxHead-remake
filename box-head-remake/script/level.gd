@@ -7,6 +7,6 @@ var devilSpawnPoint:Array[Vector2]=[]
 
 
 func _ready() -> void:
-	RenderingServer.set_default_clear_color('#ebdcc7')
+	#RenderingServer.set_default_clear_color('#ebdcc7')
 	pass
 	
