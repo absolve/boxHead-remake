@@ -82,6 +82,7 @@ script = ExtResource("2_6jonc")
 damage = 1
 wRange = 300
 delay = 0.6
+hitFeedback = 100
 
 [node name="sound" parent="." index="0"]
 stream = ExtResource("3_ktkaf")

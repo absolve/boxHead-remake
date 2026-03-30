@@ -7,6 +7,7 @@ var active=false	#是否激活
 @export var delay=.0 #开火延迟
 @export var ammoNum:int=0  #当前弹药量
 @export var maxAmmoNum:int=0  #最大弹药量
+@export var hitFeedback=0  #被击中的反馈速度
 var canShoot=true #是否可以射击
 var automatic=false #连发
 var detecframes=0 #检测是否与物体碰撞

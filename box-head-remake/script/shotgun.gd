@@ -9,14 +9,14 @@ var targetPosList=[]  #射线列表
 
 
 func _ready():
-	offsetDir[0]=Vector2(45,8)
-	offsetDir[1]=Vector2(20,20)
-	offsetDir[2]=Vector2(-10,20)
-	offsetDir[3]=Vector2(-38,10)
-	offsetDir[4]=Vector2(-40,-10)
+	offsetDir[0]=Vector2(45,-15)
+	offsetDir[1]=Vector2(20,0)
+	offsetDir[2]=Vector2(-10,10)
+	offsetDir[3]=Vector2(-35,-5)
+	offsetDir[4]=Vector2(-40,-35)
 	offsetDir[5]=Vector2(-18,-45)
-	offsetDir[6]=Vector2(20,-40)
-	offsetDir[7]=Vector2(40,-20)
+	offsetDir[6]=Vector2(15,-50)
+	offsetDir[7]=Vector2(40,-35)
 	
 	for i in range(bulletNum):
 		targetPosList.append(Vector2.ZERO)

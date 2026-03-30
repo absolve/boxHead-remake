@@ -3,7 +3,7 @@ extends Node2D
 @onready var room = $room001
 var font: FontFile
 
-@onready var enemy = $zombie
+
 
 func _ready() -> void:
 	MapData.mapSize = room.mapSize
@@ -32,11 +32,11 @@ func _draw() -> void:
 	draw_string(font, get_local_mouse_position() + Vector2(20, 20), "%s-%s" % [floori(x / MapData.cellSize), floori(y / MapData.cellSize)],
 	HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
 	
-	if enemy.path.size() > 0:
-		var _path = enemy.path
-		var last_point = _path[0]
-		for index in range(1, len(_path)):
-			var current_point = _path[index]
-			draw_line(last_point, current_point, Color.BLACK, 2, true)
-			draw_circle(current_point, 5.0, Color.BLACK)
-			last_point = current_point
+	#if enemy.path.size() > 0:
+		#var _path = enemy.path
+		#var last_point = _path[0]
+		#for index in range(1, len(_path)):
+			#var current_point = _path[index]
+			#draw_line(last_point, current_point, Color.BLACK, 2, true)
+			#draw_circle(current_point, 5.0, Color.BLACK)
+			#last_point = current_point

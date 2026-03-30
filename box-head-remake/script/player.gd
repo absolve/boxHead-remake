@@ -3,6 +3,8 @@ extends "res://script/character.gd"
 @onready var ani = $ani
 @onready var weaponBackpack = $weaponBackpack
 @onready var txt = $txt
+@onready var body = $body
+@onready var bodyShape = $body/bodyShape
 
 var playerId = 1
 var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
@@ -14,6 +16,7 @@ var aniException = ['Mine', 'RemoteMine', 'Wall', 'Barrel', 'Grenade']
 
 
 func _ready():
+	state=Game.playerState.Idle
 	var temp = load("res://scene/pistol.tscn")
 	var gun = temp.instantiate()
 	gun.ownerId = get_rid()
@@ -98,62 +101,79 @@ func switchWeapon(next: bool = true):
 	
 	
 func _physics_process(_delta):
-	currAni = "stand"
-	var input_dir = Input.get_vector("p1_left", "p1_right", "p1_up", "p1_down")
-	#print(input_dir)
-	if input_dir.length() != 0:
-		vector = input_dir
-		angle = input_dir.angle() / (PI / 4)
-		angle = wrapi(int(angle), 0, 8)
-		currAni = "walk"
-	velocity = input_dir * speed
-	move_and_slide()
-	if aniException.has(Game.weaponName[currWeapon.type]):
-		ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%'other')
-	else:
-		ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%Game.weaponName[currWeapon.type])
+	if state==Game.playerState.Idle:
+		
+		currAni = "stand"
+		var input_dir = Input.get_vector("p1_left", "p1_right", "p1_up", "p1_down")
+		#print(input_dir)
+		if input_dir.length() != 0:
+			vector = input_dir
+			angle = input_dir.angle() / (PI / 4)
+			angle = wrapi(int(angle), 0, 8)
+			currAni = "walk"
+		velocity = input_dir * speed
+	
+		#for i in get_slide_collision_count():
+			#var collision = get_slide_collision(i)
+			#print("碰到了：", collision.get_collider().name)
+		
+		#检测area2d
+		var space_state = get_world_2d().direct_space_state
+		var query=PhysicsShapeQueryParameters2D.new()
+		query.collide_with_bodies=false
+		query.collide_with_areas=true
+		query.collision_mask=1+2+4
+		query.exclude=[body.get_rid()]
+		query.shape=shape.shape
+		query.transform=Transform2D(global_rotation,global_position)
+		var result=space_state.intersect_shape(query,1)
+		if result:
+			print(result)
+			var r=result[0]
+			if r.collider.get('type')&&r.collider.type in [Game.itemType.Barrel,
+									Game.itemType.Wall]:
+				pass		
+				
+				
+		move_and_slide()
+		if aniException.has(Game.weaponName[currWeapon.type]):
+			ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%'other')
+		else:
+			ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%Game.weaponName[currWeapon.type])
 
-	#更新武器弹药
-	if currWeapon.maxAmmoNum == 0:
-		txt.text = Game.weaponName[currWeapon.type]
-	else:
-		txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
+		#更新武器弹药
+		if currWeapon.maxAmmoNum == 0:
+			txt.text = Game.weaponName[currWeapon.type]
+		else:
+			txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
 
-	if currWeapon.maxAmmoNum != 0:
-		if currWeapon.ammoNum <= 0:
-			txt.modulate = Color.RED
+		if currWeapon.maxAmmoNum != 0:
+			if currWeapon.ammoNum <= 0:
+				txt.modulate = Color.RED
+			else:
+				txt.modulate = Color.BLACK
 		else:
 			txt.modulate = Color.BLACK
-	else:
-		txt.modulate = Color.BLACK
-	
-	
-	if Input.is_action_pressed(keyMap.fire):
-		if currWeapon.type == Game.weaponType.Grenade:
-			#print('Grenade')
-			#print(Input.is_action_just_released(keyMap.fire))
-			#print(Input.is_action_just_pressed(keyMap.fire))
-			#if Input.is_action_just_released(keyMap.fire):
-				#print('is_released')
-				#currWeapon.fire(vector)
-			#elif Input.is_action_just_pressed(keyMap.fire):
-				#currWeapon.increase()	
-			currWeapon.increase()
-		else:
-			currWeapon.fire(vector)
-	if Input.is_action_just_released(keyMap.fire):
-		if currWeapon.type == Game.weaponType.Grenade:
-			currWeapon.fire(vector)
+		
+		
+		if Input.is_action_pressed(keyMap.fire):
+			if currWeapon.type == Game.weaponType.Grenade:
+				currWeapon.increase()
+			else:
+				currWeapon.fire(vector)
+		if Input.is_action_just_released(keyMap.fire):
+			if currWeapon.type == Game.weaponType.Grenade:
+				currWeapon.fire(vector)
 
-	
-	if Input.is_action_just_pressed(keyMap.nextWeapon):
-		switchWeapon()
-	if Input.is_action_just_pressed(keyMap.prevWeapon):
-		switchWeapon(false)
+		
+		if Input.is_action_just_pressed(keyMap.nextWeapon):
+			switchWeapon()
+		if Input.is_action_just_pressed(keyMap.prevWeapon):
+			switchWeapon(false)	
+		position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
+		position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
+		
 	z_index = floori(global_position.y / MapData.cellSize) + 1
-	
-	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
-	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
 	
 
 #func _input(_event: InputEvent) -> void:

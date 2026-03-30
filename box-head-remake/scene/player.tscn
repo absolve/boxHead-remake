@@ -1,4 +1,4 @@
-[gd_scene load_steps=310 format=3 uid="uid://ctuwqq3bh161h"]
+[gd_scene load_steps=311 format=3 uid="uid://ctuwqq3bh161h"]
 
 [ext_resource type="PackedScene" uid="uid://gvl5ox363h8g" path="res://scene/character.tscn" id="1_hjaqi"]
 [ext_resource type="Script" uid="uid://ctr0fv8feaujs" path="res://script/player.gd" id="1_xo3ru"]
@@ -2090,7 +2090,11 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_206a0"]
+size = Vector2(15, 20)
+
 [node name="player" groups=["player"] instance=ExtResource("1_hjaqi")]
+collision_layer = 0
 collision_mask = 15
 script = ExtResource("1_xo3ru")
 speed = 150
@@ -2120,3 +2124,10 @@ offset_left = -25.0
 offset_top = -66.0
 offset_right = -25.0
 offset_bottom = -66.0
+
+[node name="body" type="Area2D" parent="." index="5"]
+collision_mask = 0
+
+[node name="bodyShape" type="CollisionShape2D" parent="body" index="0"]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_206a0")

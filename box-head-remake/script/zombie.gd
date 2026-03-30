@@ -148,7 +148,7 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 		state = Game.enemyState.hurt
 		hurtTimer = 0
 		ani.play("hitFront_%s" % [angle])
-		velocity=Vector2.RIGHT.rotated(velocity.angle())*recoil
+		velocity=Vector2.RIGHT.rotated(velocity.angle())*-recoil
 
 func _draw() -> void:
 	draw_string(font, Vector2(30, 10), "%s-%s" % \

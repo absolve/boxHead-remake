@@ -36,6 +36,8 @@ enum explosionType {normal = 600, air}
 #标记点类型
 enum markerPointType{ZombieSpawnPoint,DevilSpawnPoint}
 
+#玩家状态
+enum playerState{Idle,hurt,dead}
 
 enum enemyState {Idle, hurt, fallDown, dead}
 
