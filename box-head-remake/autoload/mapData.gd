@@ -1,53 +1,53 @@
 extends Node
 
-const cellSize:float=30 #每个格子大小
+const cellSize: float = 30 # 每个格子大小
 
-var allWeaponData={
+var allWeaponData = {
 	
 }
 
-var mapSize:Vector2  #地图大小
+var mapSize: Vector2 # 地图大小
 
 #以x-y为key用来快速判断地图上物体位置
-var mapTile={}
+var mapTile = {}
 
-var astarGrid:AStarGrid2D= AStarGrid2D.new()
+var astarGrid: AStarGrid2D = AStarGrid2D.new()
 
 func _ready() -> void:
-	astarGrid.cell_size=Vector2(cellSize,cellSize)
-	astarGrid.default_estimate_heuristic=AStarGrid2D.HEURISTIC_CHEBYSHEV 
-	astarGrid.default_compute_heuristic=AStarGrid2D.HEURISTIC_CHEBYSHEV 
-	astarGrid.diagonal_mode=AStarGrid2D.DIAGONAL_MODE_ALWAYS
-	astarGrid.offset = Vector2(cellSize,cellSize) * 0.5
+	astarGrid.cell_size = Vector2(cellSize, cellSize)
+	astarGrid.default_estimate_heuristic = AStarGrid2D.HEURISTIC_CHEBYSHEV
+	astarGrid.default_compute_heuristic = AStarGrid2D.HEURISTIC_CHEBYSHEV
+	astarGrid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
+	astarGrid.offset = Vector2(cellSize, cellSize) * 0.5
 
 
 func clearMapTile():
 	pass
 
 
-func checkHasMapItem(pos:Vector2):
+func checkHasMapItem(pos: Vector2):
 	print(pos)
-	var x=floori(pos.x/cellSize) 
-	var y= floori(pos.y/cellSize) 
-	print(x,'-',y)
-	var flag=false
-	if mapTile.has("%s-%s"%[x,y]):
-		var temp=mapTile["%s-%s"%[x,y]]
+	var x = floori(pos.x / cellSize)
+	var y = floori(pos.y / cellSize)
+	print(x, '-', y)
+	var flag = false
+	if mapTile.has("%s-%s" % [x, y]):
+		var temp = mapTile["%s-%s" % [x, y]]
 		print(temp)
 		if is_instance_id_valid(temp):
-			flag=true
+			flag = true
 	return flag
 
-func addMapItem(pos:Vector2,id:int):
-	var x=floori(pos.x/cellSize) 
-	var y= floori(pos.y/cellSize) 
-	mapTile["%s-%s"%[x,y]]=id
+func addMapItem(pos: Vector2, id: int):
+	var x = floori(pos.x / cellSize)
+	var y = floori(pos.y / cellSize)
+	mapTile["%s-%s" % [x, y]] = id
 
-#查找路径
-func findPath(start:Vector2,end:Vector2):
-	var s=Vector2(floori(start.x/cellSize),floori(start.y/cellSize))
-	var e=Vector2(floori(end.x/cellSize),floori(end.y/cellSize))
-	return	astarGrid.get_point_path(s,e)
+## 查找路径
+func findPath(start: Vector2, end: Vector2):
+	var s = Vector2(floori(start.x / cellSize), floori(start.y / cellSize))
+	var e = Vector2(floori(end.x / cellSize), floori(end.y / cellSize))
+	return astarGrid.get_point_path(s, e)
 
 
 '''

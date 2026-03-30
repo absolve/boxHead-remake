@@ -1,22 +1,22 @@
 extends "res://script/character.gd"
 
-@onready var ani=$ani
-@onready var weaponBackpack=$weaponBackpack
-@onready var txt=$txt
+@onready var ani = $ani
+@onready var weaponBackpack = $weaponBackpack
+@onready var txt = $txt
 
-var playerId=1
-var keyMap={'left':'','right':'','up':'','down':'','fire':'','nextWeapon':'','prevWeapon':''}
-var currWeapon=null
-var weaponList=[]
-var currWeaponIndex=0
-var vector=Vector2.RIGHT
-var aniException=['Mine','RemoteMine','Wall','Barrel','Grenade']
+var playerId = 1
+var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
+var currWeapon = null
+var weaponList = []
+var currWeaponIndex = 0
+var vector = Vector2.RIGHT
+var aniException = ['Mine', 'RemoteMine', 'Wall', 'Barrel', 'Grenade']
 
 
 func _ready():
-	var temp=load("res://scene/pistol.tscn")
-	var gun=temp.instantiate()
-	gun.ownerId=get_rid()
+	var temp = load("res://scene/pistol.tscn")
+	var gun = temp.instantiate()
+	gun.ownerId = get_rid()
 	weaponList.push_back(gun)
 	weaponBackpack.add_child(gun)
 	#currWeapon=gun
@@ -56,13 +56,12 @@ func _ready():
 	#weaponList.push_back(shortGun)
 	#weaponBackpack.add_child(shortGun)
 	
-	var g=load("res://scene/grenade.tscn")
-	var grenade=g.instantiate()
-	grenade.ownerId=get_rid()
+	var g = load("res://scene/grenade.tscn")
+	var grenade = g.instantiate()
+	grenade.ownerId = get_rid()
 	weaponList.push_back(grenade)
 	weaponBackpack.add_child(grenade)
 
-	
 	
 	#var rg=load("res://scene/railgun.tscn")
 	#var railgun=rg.instantiate()
@@ -70,67 +69,67 @@ func _ready():
 	#weaponList.push_back(railgun)
 	#weaponBackpack.add_child(railgun)
 	
-	currWeapon=gun
+	currWeapon = gun
 	
 	
-	txt.text=Game.weaponName[currWeapon.type]
-	if playerId==1:
-		keyMap.left="p1_left"
-		keyMap.right="p1_right"
-		keyMap.up="p1_up"
-		keyMap.down="p1_down"
-		keyMap.fire='p1_fire'
-		keyMap.nextWeapon='p1_nextWeapon'
-		keyMap.prevWeapon='p1_prevWeapon'
+	txt.text = Game.weaponName[currWeapon.type]
+	if playerId == 1:
+		keyMap.left = "p1_left"
+		keyMap.right = "p1_right"
+		keyMap.up = "p1_up"
+		keyMap.down = "p1_down"
+		keyMap.fire = 'p1_fire'
+		keyMap.nextWeapon = 'p1_nextWeapon'
+		keyMap.prevWeapon = 'p1_prevWeapon'
 	print(currWeapon)
 	
-func switchWeapon(next:bool=true):
-	if weaponList.size()>1:
+func switchWeapon(next: bool = true):
+	if weaponList.size() > 1:
 		if next:
-			currWeaponIndex+=1
+			currWeaponIndex += 1
 		else:
-			currWeaponIndex-=1	
-		print(currWeaponIndex)	
-		currWeaponIndex=wrapi(currWeaponIndex,0,weaponList.size())
-		print(currWeaponIndex)	
-		currWeapon=weaponList[currWeaponIndex]
+			currWeaponIndex -= 1
+		print(currWeaponIndex)
+		currWeaponIndex = wrapi(currWeaponIndex, 0, weaponList.size())
+		print(currWeaponIndex)
+		currWeapon = weaponList[currWeaponIndex]
 	
 		#txt.text=Game.weaponName[currWeapon.type]	
 	
 	
-func  _physics_process(_delta):
-	currAni="stand"
+func _physics_process(_delta):
+	currAni = "stand"
 	var input_dir = Input.get_vector("p1_left", "p1_right", "p1_up", "p1_down")
 	#print(input_dir)
 	if input_dir.length() != 0:
-		vector=input_dir
-		angle = input_dir.angle() / (PI/4)
+		vector = input_dir
+		angle = input_dir.angle() / (PI / 4)
 		angle = wrapi(int(angle), 0, 8)
-		currAni="walk"
+		currAni = "walk"
 	velocity = input_dir * speed
 	move_and_slide()
 	if aniException.has(Game.weaponName[currWeapon.type]):
-		ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%'other')
-	else:	
-		ani.play(currAni+"_%s"%playerId+"_%s"%angle+"_%s"%Game.weaponName[currWeapon.type])
+		ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%'other')
+	else:
+		ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%Game.weaponName[currWeapon.type])
 
 	#更新武器弹药
-	if currWeapon.maxAmmoNum==0:
-		txt.text=Game.weaponName[currWeapon.type]
+	if currWeapon.maxAmmoNum == 0:
+		txt.text = Game.weaponName[currWeapon.type]
 	else:
-		txt.text='%s:%s'%[Game.weaponName[currWeapon.type],currWeapon.ammoNum]
+		txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
 
-	if currWeapon.maxAmmoNum!=0:
-		if currWeapon.ammoNum<=0:
-			txt.modulate=Color.RED
+	if currWeapon.maxAmmoNum != 0:
+		if currWeapon.ammoNum <= 0:
+			txt.modulate = Color.RED
 		else:
-			txt.modulate=Color.BLACK	
+			txt.modulate = Color.BLACK
 	else:
-		txt.modulate=Color.BLACK
+		txt.modulate = Color.BLACK
 	
 	
 	if Input.is_action_pressed(keyMap.fire):
-		if currWeapon.type==Game.weaponType.Grenade:
+		if currWeapon.type == Game.weaponType.Grenade:
 			#print('Grenade')
 			#print(Input.is_action_just_released(keyMap.fire))
 			#print(Input.is_action_just_pressed(keyMap.fire))
@@ -139,11 +138,11 @@ func  _physics_process(_delta):
 				#currWeapon.fire(vector)
 			#elif Input.is_action_just_pressed(keyMap.fire):
 				#currWeapon.increase()	
-			currWeapon.increase()		
-		else:		
+			currWeapon.increase()
+		else:
 			currWeapon.fire(vector)
 	if Input.is_action_just_released(keyMap.fire):
-		if currWeapon.type==Game.weaponType.Grenade:
+		if currWeapon.type == Game.weaponType.Grenade:
 			currWeapon.fire(vector)
 
 	
@@ -151,10 +150,10 @@ func  _physics_process(_delta):
 		switchWeapon()
 	if Input.is_action_just_pressed(keyMap.prevWeapon):
 		switchWeapon(false)
-	z_index=floori(global_position.y/MapData.cellSize)+1
+	z_index = floori(global_position.y / MapData.cellSize) + 1
 	
-	position.x=clamp(position.x,bodySize.x/2,MapData.mapSize.x-bodySize.x/2)
-	position.y=clamp(position.y,bodySize.y/2,MapData.mapSize.y-bodySize.y/2)
+	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
+	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
 	
 
 #func _input(_event: InputEvent) -> void:
