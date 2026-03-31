@@ -13,10 +13,17 @@ var weaponList = []
 var currWeaponIndex = 0
 var vector = Vector2.RIGHT
 var aniException = ['Mine', 'RemoteMine', 'Wall', 'Barrel', 'Grenade']
-
+var shapeQuery=PhysicsShapeQueryParameters2D.new()
 
 func _ready():
 	state=Game.playerState.Idle
+	shapeQuery=PhysicsShapeQueryParameters2D.new()
+	shapeQuery.collide_with_bodies=false
+	shapeQuery.collide_with_areas=true
+	shapeQuery.collision_mask=1+2+4
+	shapeQuery.exclude=[body.get_rid()]
+	shapeQuery.shape=shape.shape
+	
 	var temp = load("res://scene/pistol.tscn")
 	var gun = temp.instantiate()
 	gun.ownerId = get_rid()
@@ -116,26 +123,37 @@ func _physics_process(_delta):
 		#for i in get_slide_collision_count():
 			#var collision = get_slide_collision(i)
 			#print("碰到了：", collision.get_collider().name)
-		
+		move_and_slide()
 		#检测area2d
 		var space_state = get_world_2d().direct_space_state
-		var query=PhysicsShapeQueryParameters2D.new()
-		query.collide_with_bodies=false
-		query.collide_with_areas=true
-		query.collision_mask=1+2+4
-		query.exclude=[body.get_rid()]
-		query.shape=shape.shape
-		query.transform=Transform2D(global_rotation,global_position)
-		var result=space_state.intersect_shape(query,1)
+		#var query=PhysicsShapeQueryParameters2D.new()
+		#query.collide_with_bodies=false
+		#query.collide_with_areas=true
+		#query.collision_mask=1+2+4
+		#query.exclude=[body.get_rid()]
+		#query.shape=shape.shape
+		shapeQuery.transform=Transform2D(global_rotation,global_position)
+		var result=space_state.intersect_shape(shapeQuery,1)
 		if result:
 			print(result)
 			var r=result[0]
 			if r.collider.get('type')&&r.collider.type in [Game.itemType.Barrel,
 									Game.itemType.Wall]:
-				pass		
-				
-				
-		move_and_slide()
+				velocity=Vector2.ZERO						
+				var shape1=r.collider.get_node("shape").shape
+				print(shape1.size)
+				var delta=global_position-r.collider.global_position
+				if abs(delta.x) > abs(delta.y):
+					# 左右边
+					var signx = sign(delta.x)
+					global_position.x =r.collider.global_position.x+signx*(0.09+shape1.size.x/2+shape.shape.size.x/2)
+				else:
+					# 上下边
+					var signy = sign(delta.y)	
+					global_position.y =r.collider.global_position.y+signy*(0.09+shape1.size.y/2+shape.shape.size.y/2)
+					
+		#move_and_collide(velocity*_delta)		
+		
 		if aniException.has(Game.weaponName[currWeapon.type]):
 			ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%'other')
 		else:
