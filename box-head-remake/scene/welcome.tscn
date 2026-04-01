@@ -1,8 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://crxtvopj6f4ty"]
+[gd_scene load_steps=11 format=3 uid="uid://crxtvopj6f4ty"]
 
 [ext_resource type="Script" uid="uid://3qnx0msgrg15" path="res://script/welcome.gd" id="1_njjjx"]
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_0h2lm"]
 [ext_resource type="Texture2D" uid="uid://bmdeognuc4rl6" path="res://sprite/1.png" id="2_hys0r"]
+[ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="4_1kia2"]
+[ext_resource type="Texture2D" uid="uid://bx3vmswg2ts0e" path="res://sprite/234.png" id="4_n2ceq"]
+[ext_resource type="Texture2D" uid="uid://ckmsrgt6k4geq" path="res://sprite/237.png" id="5_xnoho"]
+[ext_resource type="Texture2D" uid="uid://idwey5nhdlf4" path="res://sprite/240.png" id="6_vvofi"]
+[ext_resource type="Texture2D" uid="uid://cxo0o0agfxvku" path="res://sprite/247.png" id="7_vn0ct"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hys0r"]
 
@@ -13,58 +18,80 @@ script = ExtResource("1_njjjx")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
-offset_right = 1280.0
-offset_bottom = 640.0
+offset_right = 640.0
+offset_bottom = 480.0
 metadata/_edit_lock_ = true
 
 [node name="bg" type="Sprite2D" parent="."]
-position = Vector2(640, 480)
-scale = Vector2(2, 2)
 texture = ExtResource("2_0h2lm")
+centered = false
 metadata/_edit_lock_ = true
 
 [node name="title" type="Sprite2D" parent="."]
-position = Vector2(640, 180)
-scale = Vector2(2, 2)
+position = Vector2(320, 100)
 texture = ExtResource("2_hys0r")
 metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(120, 368)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_n2ceq")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(536, 448)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_xnoho")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(120, 448)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_vvofi")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(328, 440)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_vn0ct")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme = ExtResource("4_1kia2")
 
 [node name="vbox" type="VBoxContainer" parent="Control"]
 layout_mode = 0
-offset_left = 512.0
-offset_top = 392.0
-offset_right = 742.0
-offset_bottom = 552.0
+offset_left = 200.0
+offset_top = 240.0
+offset_right = 448.0
+offset_bottom = 400.0
 alignment = 1
+metadata/_edit_group_ = true
 
-[node name="Button" type="Button" parent="Control/vbox"]
+[node name="btn_start" type="Button" parent="Control/vbox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
-text = "start game"
+text = "_start_game"
 
-[node name="Button2" type="Button" parent="Control/vbox"]
+[node name="btn_instructions" type="Button" parent="Control/vbox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
-text = "instructions"
+text = "_instructions"
 
 [node name="Label" type="Label" parent="Control/vbox"]
 layout_mode = 2
 text = "start game"
 horizontal_alignment = 1
 
-[connection signal="mouse_entered" from="Control/vbox/Button" to="." method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="Control/vbox/Button" to="." method="_on_button_mouse_exited"]
+[connection signal="mouse_entered" from="Control/vbox/btn_start" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/vbox/btn_start" to="." method="_on_button_mouse_exited"]
+[connection signal="mouse_entered" from="Control/vbox/btn_instructions" to="." method="_on_btn_instructions_mouse_entered"]
+[connection signal="mouse_exited" from="Control/vbox/btn_instructions" to="." method="_on_btn_instructions_mouse_exited"]
 [connection signal="mouse_entered" from="Control/vbox/Label" to="." method="_on_label_mouse_entered"]
 [connection signal="mouse_exited" from="Control/vbox/Label" to="." method="_on_label_mouse_exited"]

@@ -1,7 +1,8 @@
 extends Node2D
 
 @onready var label=$Control/vbox/Label
-@onready var btn=$Control/vbox/Button
+@onready var btn=$Control/vbox/btn_start
+@onready var btn_instructions=$Control/vbox/btn_instructions
 
 var tween:Tween
 var originalPos:Vector2
@@ -42,3 +43,17 @@ func _on_button_mouse_exited() -> void:
 	if tween!=null:
 		tween.stop()
 	btn.position=originalPos
+
+
+func _on_btn_instructions_mouse_entered():
+	if tween!=null:
+		tween.stop()
+	originalPos=btn_instructions.position	
+	tween.bind_node(btn_instructions)
+	tween.play()
+
+
+func _on_btn_instructions_mouse_exited():
+	if tween!=null:
+		tween.stop()
+	btn_instructions.position=originalPos

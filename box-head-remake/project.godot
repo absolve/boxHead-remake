@@ -162,7 +162,7 @@ p4_prevWeapon={
 [internationalization]
 
 locale/translations=PackedStringArray("res://lang/lang.en.translation", "res://lang/lang.zh.translation")
-locale/locale_filter_mode=1
+locale/test="zh"
 
 [layer_names]
 
