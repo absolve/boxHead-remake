@@ -147,7 +147,12 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	else:
 		state = Game.enemyState.hurt
 		hurtTimer = 0
-		ani.play("hitFront_%s" % [angle])
+		var attacker=(attackPos-global_position).normalized()
+		var dot = velocity.normalized().dot(attacker)
+		if dot>0: #正面击中
+			ani.play("hitFront_%s" % [angle])
+		else: #背面 侧面击中
+			ani.play("hitRear_%s" % [angle])	
 		velocity=Vector2.RIGHT.rotated(velocity.angle())*-recoil
 
 func _draw() -> void:
