@@ -190,28 +190,12 @@ func _physics_process(_delta):
 			switchWeapon(false)	
 		position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
 		position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
+	elif state==Game.playerState.hurt:
+		
+		pass
+	elif state==Game.playerState.dead:
+		pass
+	
 		
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	
-
-#func _input(_event: InputEvent) -> void:
-	#if _event is InputEventKey:
-		#print(_event)
-		#print(Input.is_action_pressed(keyMap.fire))
-		#print('is_released',_event.is_released())
-		#pass
-	#if Input.is_action_pressed(keyMap.fire):
-		#if currWeapon.type==Game.weaponType.Grenade:
-			##print('Grenade')
-			#
-			#if _event.is_released():
-				#print('is_released')
-				#currWeapon.fire(vector)
-			#else:
-				#currWeapon.increase()	
-		#else:		
-			#currWeapon.fire(vector)
-	#if Input.is_action_just_pressed(keyMap.nextWeapon):
-		#switchWeapon()
-	#if Input.is_action_just_pressed(keyMap.prevWeapon):
-		#switchWeapon(false)

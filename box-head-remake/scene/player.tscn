@@ -1,134 +1,190 @@
-[gd_scene load_steps=311 format=3 uid="uid://ctuwqq3bh161h"]
+[gd_scene load_steps=367 format=3 uid="uid://ctuwqq3bh161h"]
 
 [ext_resource type="PackedScene" uid="uid://gvl5ox363h8g" path="res://scene/character.tscn" id="1_hjaqi"]
 [ext_resource type="Script" uid="uid://ctr0fv8feaujs" path="res://script/player.gd" id="1_xo3ru"]
 [ext_resource type="Texture2D" uid="uid://dgjv8k6tu126u" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/1.png" id="2_2fvbb"]
 [ext_resource type="Texture2D" uid="uid://clixi2eqd774j" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/2.png" id="3_ml7e8"]
+[ext_resource type="Texture2D" uid="uid://c8pk5lkhmfwo8" path="res://sprite/player/DefineSprite_1196_Player_Dead/1.png" id="3_ta5i5"]
+[ext_resource type="Texture2D" uid="uid://npruhvlcywc8" path="res://sprite/player/DefineSprite_1196_Player_Dead/2.png" id="4_6wsyq"]
 [ext_resource type="Texture2D" uid="uid://bhu5jwhy8fqk8" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/1.png" id="4_206a0"]
 [ext_resource type="Texture2D" uid="uid://c2q5jrutsxtxl" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/1.png" id="4_gcs2b"]
 [ext_resource type="Texture2D" uid="uid://b5qc27lpxklix" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/3.png" id="4_ihjo1"]
 [ext_resource type="Texture2D" uid="uid://bfbjavko4txc0" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/1.png" id="4_ryyvu"]
 [ext_resource type="Texture2D" uid="uid://dtks6dcp8w1mg" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/1.png" id="5_8l2ny"]
 [ext_resource type="Texture2D" uid="uid://cvlm1y4hl8kgt" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/4.png" id="5_dk1vr"]
+[ext_resource type="Texture2D" uid="uid://ct0s0lh5j67ql" path="res://sprite/player/DefineSprite_1196_Player_Dead/3.png" id="5_lsag6"]
 [ext_resource type="Texture2D" uid="uid://b5ntpbvkb7kl4" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/2.png" id="6_5kjuc"]
 [ext_resource type="Texture2D" uid="uid://bfth0hc1i0ohr" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/5.png" id="6_34jf3"]
 [ext_resource type="Texture2D" uid="uid://b7e23yy1fcxx3" path="res://sprite/player/DefineSprite_1932_Player_Stand/1.png" id="6_fqn14"]
+[ext_resource type="Texture2D" uid="uid://bcjipddgu4hal" path="res://sprite/player/DefineSprite_1196_Player_Dead/4.png" id="6_kqkfd"]
 [ext_resource type="Texture2D" uid="uid://cbbk03skjdgln" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/2.png" id="7_brill"]
+[ext_resource type="Texture2D" uid="uid://h7d574nm3abm" path="res://sprite/player/DefineSprite_1205/1.png" id="7_jqce2"]
 [ext_resource type="Texture2D" uid="uid://c4x2kxl0xs0y6" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/6.png" id="7_u7b46"]
 [ext_resource type="Texture2D" uid="uid://3svw2qx570dg" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/3.png" id="8_frgke"]
+[ext_resource type="Texture2D" uid="uid://brsulushkqqmn" path="res://sprite/player/DefineSprite_1205/2.png" id="8_gxfhq"]
 [ext_resource type="Texture2D" uid="uid://bpktkuye7freb" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/7.png" id="8_j4wxg"]
 [ext_resource type="Texture2D" uid="uid://cdhqxljhl0v6n" path="res://sprite/player/DefineSprite_1258_Player_Handgun_StandAim/8.png" id="9_bup7g"]
+[ext_resource type="Texture2D" uid="uid://bmy5tyt4buo8a" path="res://sprite/player/DefineSprite_1205/3.png" id="9_ybp50"]
 [ext_resource type="Texture2D" uid="uid://dr1dwfwfd46cj" path="res://sprite/player/DefineSprite_1285/1.png" id="10_3mmt4"]
 [ext_resource type="Texture2D" uid="uid://b11gr5f11dqpx" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/4.png" id="10_4gwaa"]
 [ext_resource type="Texture2D" uid="uid://bpe4lkenttgd8" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/2.png" id="10_dlxd1"]
 [ext_resource type="Texture2D" uid="uid://tmqp6v4ff04u" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/2.png" id="10_ff0mh"]
 [ext_resource type="Texture2D" uid="uid://bx31lny5mqaoa" path="res://sprite/player/DefineSprite_1932_Player_Stand/2.png" id="10_ghwgs"]
 [ext_resource type="Texture2D" uid="uid://f0ba46n5a4l7" path="res://sprite/player/DefineSprite_1290/1.png" id="10_ko5ao"]
+[ext_resource type="Texture2D" uid="uid://0xlu1l80yxg8" path="res://sprite/player/DefineSprite_1205/4.png" id="10_s8u0g"]
 [ext_resource type="Texture2D" uid="uid://cr4f5bfx6hjp3" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/3.png" id="10_urp7k"]
+[ext_resource type="Texture2D" uid="uid://dd8e66a4hs2b5" path="res://sprite/player/DefineSprite_1205/5.png" id="11_4ccjy"]
 [ext_resource type="Texture2D" uid="uid://de67abnxdu3rp" path="res://sprite/player/DefineSprite_1285/2.png" id="11_8pv5j"]
 [ext_resource type="Texture2D" uid="uid://pygc0jo0xns2" path="res://sprite/player/DefineSprite_1290/2.png" id="11_w8280"]
 [ext_resource type="Texture2D" uid="uid://cbxc8h2gub7ir" path="res://sprite/player/DefineSprite_1290/3.png" id="12_0fmm8"]
+[ext_resource type="Texture2D" uid="uid://cik866f06gt7" path="res://sprite/player/DefineSprite_1214/1.png" id="12_cfmdo"]
 [ext_resource type="Texture2D" uid="uid://nuvv0d5ubbfe" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/5.png" id="12_dm46t"]
 [ext_resource type="Texture2D" uid="uid://bb5tj0seskx0g" path="res://sprite/player/DefineSprite_1285/3.png" id="12_j2mpt"]
 [ext_resource type="Texture2D" uid="uid://bet18hmamw2vm" path="res://sprite/player/DefineSprite_1290/4.png" id="13_5nkdk"]
 [ext_resource type="Texture2D" uid="uid://bb4n6522a2yi0" path="res://sprite/player/DefineSprite_1285/4.png" id="13_5rvhh"]
 [ext_resource type="Texture2D" uid="uid://dhhx8pf7x6vtx" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/4.png" id="13_fy2xn"]
+[ext_resource type="Texture2D" uid="uid://bx3kub6o6ks4v" path="res://sprite/player/DefineSprite_1214/2.png" id="13_ykp1t"]
 [ext_resource type="Texture2D" uid="uid://bj8upkdk12v7l" path="res://sprite/player/DefineSprite_1290/5.png" id="14_0a317"]
 [ext_resource type="Texture2D" uid="uid://5vaqoel661nv" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/6.png" id="14_4d8ul"]
 [ext_resource type="Texture2D" uid="uid://cf1d8du712rni" path="res://sprite/player/DefineSprite_1932_Player_Stand/3.png" id="14_224qp"]
 [ext_resource type="Texture2D" uid="uid://p6e0ubv20xbr" path="res://sprite/player/DefineSprite_1285/5.png" id="14_llvc7"]
+[ext_resource type="Texture2D" uid="uid://cfuit263iv01u" path="res://sprite/player/DefineSprite_1214/3.png" id="14_xojhx"]
 [ext_resource type="Texture2D" uid="uid://dqwy5pgcejld6" path="res://sprite/player/DefineSprite_1290/6.png" id="15_ofccr"]
+[ext_resource type="Texture2D" uid="uid://ctdt5jqvf546" path="res://sprite/player/DefineSprite_1214/4.png" id="15_rwnoi"]
 [ext_resource type="Texture2D" uid="uid://b2pey34si4hob" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/3.png" id="15_vk6lt"]
 [ext_resource type="Texture2D" uid="uid://c4nkfdea2fc8j" path="res://sprite/player/DefineSprite_1285/6.png" id="15_ywa8g"]
 [ext_resource type="Texture2D" uid="uid://cf3ltrh06rl0c" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/7.png" id="16_5n4ea"]
+[ext_resource type="Texture2D" uid="uid://cp0vc2wryvom2" path="res://sprite/player/DefineSprite_1214/5.png" id="16_dcpbq"]
 [ext_resource type="Texture2D" uid="uid://c80413jmfan8u" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/5.png" id="16_ifikf"]
 [ext_resource type="Texture2D" uid="uid://pmqprjogon5e" path="res://sprite/player/DefineSprite_1285/7.png" id="16_lgg88"]
 [ext_resource type="Texture2D" uid="uid://bq2d33jsdn2ux" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/3.png" id="16_pvg5h"]
 [ext_resource type="Texture2D" uid="uid://71qgellxtx7o" path="res://sprite/player/DefineSprite_1290/7.png" id="16_ytl04"]
 [ext_resource type="Texture2D" uid="uid://bt7k7rp060m5g" path="res://sprite/player/DefineSprite_1290/8.png" id="17_ec2ns"]
+[ext_resource type="Texture2D" uid="uid://x711e86wkhfe" path="res://sprite/player/DefineSprite_1223/1.png" id="17_ognvg"]
 [ext_resource type="Texture2D" uid="uid://b03bu0qais8qi" path="res://sprite/player/DefineSprite_1285/8.png" id="17_x5omm"]
 [ext_resource type="Texture2D" uid="uid://bsmwvpiy7h70v" path="res://sprite/player/DefineSprite_1932_Player_Stand/4.png" id="18_0i0st"]
 [ext_resource type="Texture2D" uid="uid://dvqis3fwq7upw" path="res://sprite/player/DefineSprite_1957_Player_UZI_StandAim/8.png" id="18_2v114"]
 [ext_resource type="Texture2D" uid="uid://dy73oa5ociu45" path="res://sprite/player/DefineSprite_1305/1.png" id="18_3mmt4"]
+[ext_resource type="Texture2D" uid="uid://dt5ln0lv5f0da" path="res://sprite/player/DefineSprite_1223/2.png" id="18_n1pn8"]
 [ext_resource type="Texture2D" uid="uid://bn251cc3ilctg" path="res://sprite/player/DefineSprite_1305/2.png" id="19_8pv5j"]
+[ext_resource type="Texture2D" uid="uid://cyl8qm027qxcg" path="res://sprite/player/DefineSprite_1223/3.png" id="19_fbc5c"]
 [ext_resource type="Texture2D" uid="uid://csrs3xui7wjf2" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/6.png" id="19_mi8e6"]
 [ext_resource type="Texture2D" uid="uid://dgmrc81pofv4i" path="res://sprite/player/DefineSprite_1305/3.png" id="20_j2mpt"]
+[ext_resource type="Texture2D" uid="uid://bpe87shhj2gjq" path="res://sprite/player/DefineSprite_1223/4.png" id="20_rw13a"]
 [ext_resource type="Texture2D" uid="uid://b4o52wsfe01nb" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/4.png" id="20_t44h8"]
 [ext_resource type="Texture2D" uid="uid://ddufihf4g56u4" path="res://sprite/player/DefineSprite_1305/4.png" id="21_5rvhh"]
+[ext_resource type="Texture2D" uid="uid://8sx5nn5d7stm" path="res://sprite/player/DefineSprite_1223/5.png" id="21_oi3ai"]
 [ext_resource type="Texture2D" uid="uid://cduhnbomk2wnd" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/4.png" id="22_aik8a"]
 [ext_resource type="Texture2D" uid="uid://dww48x8lblg7o" path="res://sprite/player/DefineSprite_1932_Player_Stand/5.png" id="22_er534"]
+[ext_resource type="Texture2D" uid="uid://dvfveben4ky7i" path="res://sprite/player/DefineSprite_1232/1.png" id="22_iwdod"]
 [ext_resource type="Texture2D" uid="uid://bjb0ff8v1oant" path="res://sprite/player/DefineSprite_1305/5.png" id="22_llvc7"]
 [ext_resource type="Texture2D" uid="uid://dyrb2odw541i3" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/7.png" id="22_scabq"]
+[ext_resource type="Texture2D" uid="uid://bjb4lu7sjhyyr" path="res://sprite/player/DefineSprite_1232/2.png" id="23_8ow6f"]
 [ext_resource type="Texture2D" uid="uid://c3u03suapf0l5" path="res://sprite/player/DefineSprite_1305/6.png" id="23_ywa8g"]
+[ext_resource type="Texture2D" uid="uid://dn4o5ejt7wkh5" path="res://sprite/player/DefineSprite_1232/3.png" id="24_1v3b8"]
 [ext_resource type="Texture2D" uid="uid://df2f1yuupklfm" path="res://sprite/player/DefineSprite_1305/7.png" id="24_lgg88"]
+[ext_resource type="Texture2D" uid="uid://m5qupmucpt3i" path="res://sprite/player/DefineSprite_1232/4.png" id="25_3uqxc"]
 [ext_resource type="Texture2D" uid="uid://s7tbq0bvnphg" path="res://sprite/player/DefineSprite_1640_Player_Rocket_StandAim/8.png" id="25_05okc"]
 [ext_resource type="Texture2D" uid="uid://dip5skj8se38s" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/5.png" id="25_vxfg1"]
 [ext_resource type="Texture2D" uid="uid://c0g5wlsyh288d" path="res://sprite/player/DefineSprite_1305/8.png" id="25_x5omm"]
 [ext_resource type="Texture2D" uid="uid://c5g0yhdt11ex3" path="res://sprite/player/DefineSprite_1932_Player_Stand/6.png" id="26_13f2e"]
+[ext_resource type="Texture2D" uid="uid://8xh0ctl2awbx" path="res://sprite/player/DefineSprite_1232/5.png" id="26_cntx5"]
 [ext_resource type="Texture2D" uid="uid://drop25t26mnyq" path="res://sprite/player/DefineSprite_1320/1.png" id="26_odra3"]
+[ext_resource type="Texture2D" uid="uid://cpejqruv46xkh" path="res://sprite/player/DefineSprite_1386/1.png" id="27_q30r6"]
 [ext_resource type="Texture2D" uid="uid://dchg4hd2vso8w" path="res://sprite/player/DefineSprite_1320/2.png" id="27_ryyvu"]
 [ext_resource type="Texture2D" uid="uid://jp6we17vjkr3" path="res://sprite/player/DefineSprite_1320/3.png" id="28_5kjuc"]
 [ext_resource type="Texture2D" uid="uid://c51e5iwt4sff6" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/5.png" id="28_6tgw1"]
+[ext_resource type="Texture2D" uid="uid://g3pdwvjgcnkw" path="res://sprite/player/DefineSprite_1386/2.png" id="28_glcxd"]
 [ext_resource type="Texture2D" uid="uid://d1bstchfcgdhw" path="res://sprite/player/DefineSprite_1320/4.png" id="29_frgke"]
+[ext_resource type="Texture2D" uid="uid://b8cmp2mgplgf0" path="res://sprite/player/DefineSprite_1391/1.png" id="29_wek3a"]
 [ext_resource type="Texture2D" uid="uid://d0fwe1h4wvop8" path="res://sprite/player/DefineSprite_1320/5.png" id="30_4gwaa"]
+[ext_resource type="Texture2D" uid="uid://bt4o8qgtg5rus" path="res://sprite/player/DefineSprite_1391/2.png" id="30_edvg7"]
 [ext_resource type="Texture2D" uid="uid://43bw4lbf5krp" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/6.png" id="30_fwc8l"]
 [ext_resource type="Texture2D" uid="uid://c161dqdifb6pt" path="res://sprite/player/DefineSprite_1932_Player_Stand/7.png" id="30_lu4l6"]
 [ext_resource type="Texture2D" uid="uid://b0kygr534p4cm" path="res://sprite/player/DefineSprite_1320/6.png" id="31_dm46t"]
+[ext_resource type="Texture2D" uid="uid://dytf4u546ukul" path="res://sprite/player/DefineSprite_1396/1.png" id="31_fv8qg"]
 [ext_resource type="Texture2D" uid="uid://pwmyn7xl8g4w" path="res://sprite/player/DefineSprite_1320/7.png" id="32_4d8ul"]
+[ext_resource type="Texture2D" uid="uid://b60t0vxek2fcp" path="res://sprite/player/DefineSprite_1396/2.png" id="32_baqt5"]
+[ext_resource type="Texture2D" uid="uid://cfecx151cef7l" path="res://sprite/player/DefineSprite_1401/1.png" id="33_3slcf"]
 [ext_resource type="Texture2D" uid="uid://ca1er3aqf84bk" path="res://sprite/player/DefineSprite_1320/8.png" id="33_5n4ea"]
 [ext_resource type="Texture2D" uid="uid://dkbi44lyosbk2" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/6.png" id="34_1nnd0"]
 [ext_resource type="Texture2D" uid="uid://6aw8b7lqfa7r" path="res://sprite/player/DefineSprite_1335/1.png" id="34_2v114"]
 [ext_resource type="Texture2D" uid="uid://df7abc1gxla05" path="res://sprite/player/DefineSprite_1932_Player_Stand/8.png" id="34_akcgn"]
+[ext_resource type="Texture2D" uid="uid://7aj74c4cuitq" path="res://sprite/player/DefineSprite_1401/2.png" id="34_j1482"]
 [ext_resource type="Texture2D" uid="uid://brta28qsjq27u" path="res://sprite/player/DefineSprite_1335/2.png" id="35_d3x55"]
+[ext_resource type="Texture2D" uid="uid://b7ewoc6xgc8kf" path="res://sprite/player/DefineSprite_1406/1.png" id="35_jqce2"]
 [ext_resource type="Texture2D" uid="uid://mdtkq16gj6my" path="res://sprite/player/DefineSprite_1655/1.png" id="35_jx3i2"]
 [ext_resource type="Texture2D" uid="uid://dc6hq3740dylx" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/7.png" id="35_lsrvc"]
 [ext_resource type="Texture2D" uid="uid://bxv0q04j4h7xd" path="res://sprite/player/DefineSprite_1655/2.png" id="36_03cwq"]
+[ext_resource type="Texture2D" uid="uid://c08bjwid3d75g" path="res://sprite/player/DefineSprite_1406/2.png" id="36_gxfhq"]
 [ext_resource type="Texture2D" uid="uid://dkyxg8ch27rhw" path="res://sprite/player/DefineSprite_1335/3.png" id="36_rd5ui"]
 [ext_resource type="Texture2D" uid="uid://cno15fkw8cxos" path="res://sprite/player/DefineSprite_1655/3.png" id="37_jqoul"]
 [ext_resource type="Texture2D" uid="uid://djxkjpudup50k" path="res://sprite/player/DefineSprite_1335/4.png" id="37_k3o1w"]
+[ext_resource type="Texture2D" uid="uid://ekm7jc3v7iyn" path="res://sprite/player/DefineSprite_1411/1.png" id="37_ybp50"]
 [ext_resource type="Texture2D" uid="uid://dc2qd04tj6wsk" path="res://sprite/player/DefineSprite_1655/4.png" id="38_6h4f1"]
 [ext_resource type="Texture2D" uid="uid://b2i6jcpbuo10a" path="res://sprite/player/DefineSprite_1335/5.png" id="38_p1yeu"]
+[ext_resource type="Texture2D" uid="uid://cmmk3u8t0v7yn" path="res://sprite/player/DefineSprite_1411/2.png" id="38_s8u0g"]
 [ext_resource type="Texture2D" uid="uid://cv8vf8y6r1s1o" path="res://sprite/player/DefineSprite_1655/5.png" id="39_govaw"]
 [ext_resource type="Texture2D" uid="uid://bkthsg17ohqtl" path="res://sprite/player/DefineSprite_1335/6.png" id="39_rgwum"]
+[ext_resource type="Texture2D" uid="uid://coffjxjupwhtr" path="res://sprite/player/DefineSprite_1416/1.png" id="39_ybp50"]
 [ext_resource type="Texture2D" uid="uid://iql5ckjb7q6j" path="res://sprite/player/DefineSprite_1786_Player_Shotgun_StandAim/8.png" id="40_3bjl8"]
 [ext_resource type="Texture2D" uid="uid://6qe4bha32xx4" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/7.png" id="40_8cjyt"]
 [ext_resource type="Texture2D" uid="uid://d7in5wlmg1o5" path="res://sprite/player/DefineSprite_1335/7.png" id="40_ntktn"]
+[ext_resource type="Texture2D" uid="uid://c8bm1f8us5fko" path="res://sprite/player/DefineSprite_1416/2.png" id="40_s8u0g"]
 [ext_resource type="Texture2D" uid="uid://b0ujis0pyyegy" path="res://sprite/player/DefineSprite_1655/6.png" id="40_xcifi"]
 [ext_resource type="Texture2D" uid="uid://pg1ve5ntqalp" path="res://sprite/player/DefineSprite_1655/7.png" id="41_1rkj5"]
+[ext_resource type="Texture2D" uid="uid://dk4emcvkq42kk" path="res://sprite/player/DefineSprite_1421/1.png" id="41_4ccjy"]
 [ext_resource type="Texture2D" uid="uid://weickrsa1anw" path="res://sprite/player/DefineSprite_1335/8.png" id="41_cmg3n"]
 [ext_resource type="Texture2D" uid="uid://m58w8n7o6buf" path="res://sprite/player/DefineSprite_1655/8.png" id="42_7rey3"]
+[ext_resource type="Texture2D" uid="uid://cwigvy13x0p37" path="res://sprite/player/DefineSprite_1421/2.png" id="42_cfmdo"]
 [ext_resource type="Texture2D" uid="uid://b3f6yob3p67t1" path="res://sprite/player/DefineSprite_1350/1.png" id="42_d1347"]
 [ext_resource type="Texture2D" uid="uid://b04rwe71dggm5" path="res://sprite/player/DefineSprite_1350/2.png" id="43_h4gvw"]
+[ext_resource type="Texture2D" uid="uid://xje1hcuko1my" path="res://sprite/player/DefineSprite_1427_back/1.png" id="43_rwnoi"]
+[ext_resource type="Texture2D" uid="uid://1ol5238jo4yh" path="res://sprite/player/DefineSprite_1427_back/2.png" id="44_dcpbq"]
 [ext_resource type="Texture2D" uid="uid://bepledmhieel6" path="res://sprite/player/DefineSprite_1350/3.png" id="44_enbx7"]
 [ext_resource type="Texture2D" uid="uid://bqrtm2t0ih3tt" path="res://sprite/player/DefineSprite_1350/4.png" id="45_85lx7"]
+[ext_resource type="Texture2D" uid="uid://cpuk2seoaefci" path="res://sprite/player/DefineSprite_1432/1.png" id="45_ognvg"]
 [ext_resource type="Texture2D" uid="uid://uwc4ekct16tl" path="res://sprite/player/DefineSprite_1350/5.png" id="46_3y6ar"]
+[ext_resource type="Texture2D" uid="uid://k31xao7xmpls" path="res://sprite/player/DefineSprite_1432/2.png" id="46_n1pn8"]
 [ext_resource type="Texture2D" uid="uid://b0wiwdnnfnsq7" path="res://sprite/player/DefineSprite_1494_Player_Railgun_StandAim/8.png" id="46_ospjf"]
 [ext_resource type="Texture2D" uid="uid://pvb7jjutlw8w" path="res://sprite/player/DefineSprite_1350/6.png" id="47_et5mr"]
+[ext_resource type="Texture2D" uid="uid://by8aqcksn5k6k" path="res://sprite/player/DefineSprite_1437/1.png" id="47_q30r6"]
+[ext_resource type="Texture2D" uid="uid://nms0vvxnldsx" path="res://sprite/player/DefineSprite_1437/2.png" id="48_glcxd"]
 [ext_resource type="Texture2D" uid="uid://nrbrnmd15iy" path="res://sprite/player/DefineSprite_1350/7.png" id="48_qv1i2"]
 [ext_resource type="Texture2D" uid="uid://b7ldk4xm7n7vu" path="res://sprite/player/DefineSprite_1350/8.png" id="49_ranti"]
+[ext_resource type="Texture2D" uid="uid://bn20gepmxihph" path="res://sprite/player/DefineSprite_1442/1.png" id="49_wek3a"]
+[ext_resource type="Texture2D" uid="uid://cuteqlm3l7nol" path="res://sprite/player/DefineSprite_1442/2.png" id="50_edvg7"]
 [ext_resource type="Texture2D" uid="uid://mmoh8gmi11yq" path="res://sprite/player/DefineSprite_1365/1.png" id="50_jymme"]
 [ext_resource type="Texture2D" uid="uid://dwf6gtn3wslbo" path="res://sprite/player/DefineSprite_1670/1.png" id="51_7ld47"]
 [ext_resource type="Texture2D" uid="uid://bd2rahlsj4nhi" path="res://sprite/player/DefineSprite_1365/2.png" id="51_88uyc"]
 [ext_resource type="Texture2D" uid="uid://dj52ijghn5i3a" path="res://sprite/player/DefineSprite_2096_walk/1.png" id="51_dmf5e"]
+[ext_resource type="Texture2D" uid="uid://drwqgboctwxt4" path="res://sprite/player/DefineSprite_1447/1.png" id="51_fv8qg"]
 [ext_resource type="Texture2D" uid="uid://cbc3wv3xoct4q" path="res://sprite/player/DefineSprite_1670/2.png" id="52_3svjg"]
+[ext_resource type="Texture2D" uid="uid://bplq4kvwoihxl" path="res://sprite/player/DefineSprite_1447/2.png" id="52_baqt5"]
 [ext_resource type="Texture2D" uid="uid://b2s8rw4scpnvg" path="res://sprite/player/DefineSprite_2096_walk/2.png" id="52_tmg4k"]
 [ext_resource type="Texture2D" uid="uid://cnglf4fghqf03" path="res://sprite/player/DefineSprite_1365/3.png" id="52_wuu0t"]
+[ext_resource type="Texture2D" uid="uid://s5jh1oj7tydg" path="res://sprite/player/DefineSprite_1452/1.png" id="53_3slcf"]
 [ext_resource type="Texture2D" uid="uid://b1uo4c3fypk3v" path="res://sprite/player/DefineSprite_1670/3.png" id="53_fd7ym"]
 [ext_resource type="Texture2D" uid="uid://b3w5b3hlhare1" path="res://sprite/player/DefineSprite_1365/4.png" id="53_n7cfl"]
 [ext_resource type="Texture2D" uid="uid://d1xlln338738o" path="res://sprite/player/DefineSprite_2096_walk/3.png" id="53_yulgx"]
 [ext_resource type="Texture2D" uid="uid://n0v6831fiswn" path="res://sprite/player/DefineSprite_1365/5.png" id="54_8h342"]
 [ext_resource type="Texture2D" uid="uid://cykwspydbkkux" path="res://sprite/player/DefineSprite_1670/4.png" id="54_dgxyh"]
+[ext_resource type="Texture2D" uid="uid://dh6vqiy1tu0n0" path="res://sprite/player/DefineSprite_1452/2.png" id="54_j1482"]
 [ext_resource type="Texture2D" uid="uid://cn4yevm6sbme8" path="res://sprite/player/DefineSprite_2096_walk/4.png" id="54_sym3p"]
 [ext_resource type="Texture2D" uid="uid://cplbfc1rl8qrl" path="res://sprite/player/DefineSprite_1670/5.png" id="55_goftb"]
 [ext_resource type="Texture2D" uid="uid://cm56hvny83dl8" path="res://sprite/player/DefineSprite_1365/6.png" id="55_nv3o8"]
+[ext_resource type="Texture2D" uid="uid://bwma556oh4am2" path="res://sprite/player/DefineSprite_1457/1.png" id="55_qjpof"]
 [ext_resource type="Texture2D" uid="uid://k477tbshbxf4" path="res://sprite/player/DefineSprite_2096_walk/5.png" id="55_x0vfv"]
 [ext_resource type="Texture2D" uid="uid://dl7u7nud3pn14" path="res://sprite/player/DefineSprite_2096_walk/6.png" id="56_64esg"]
+[ext_resource type="Texture2D" uid="uid://dp8otydc8ao34" path="res://sprite/player/DefineSprite_1457/2.png" id="56_depwd"]
 [ext_resource type="Texture2D" uid="uid://dj063iyogpdo0" path="res://sprite/player/DefineSprite_1670/6.png" id="56_eu5ff"]
 [ext_resource type="Texture2D" uid="uid://eotb77diyrps" path="res://sprite/player/DefineSprite_1365/7.png" id="56_fjrdf"]
+[ext_resource type="Texture2D" uid="uid://0gsjhpncm68f" path="res://sprite/player/DefineSprite_1462/1.png" id="57_djpq7"]
 [ext_resource type="Texture2D" uid="uid://c47dyictddnf4" path="res://sprite/player/DefineSprite_2096_walk/7.png" id="57_dwdw8"]
 [ext_resource type="Texture2D" uid="uid://cec4rqa325k22" path="res://sprite/player/DefineSprite_1365/8.png" id="57_nnw3o"]
 [ext_resource type="Texture2D" uid="uid://b81bayc65k70n" path="res://sprite/player/DefineSprite_1670/7.png" id="57_tl7nr"]
 [ext_resource type="Texture2D" uid="uid://bxj8ywym0dmn8" path="res://sprite/player/DefineSprite_1670/8.png" id="58_1w74e"]
+[ext_resource type="Texture2D" uid="uid://brsvne71o8462" path="res://sprite/player/DefineSprite_1462/2.png" id="58_8mm6u"]
 [ext_resource type="Texture2D" uid="uid://bweneqgxgdvat" path="res://sprite/player/DefineSprite_2096_walk/8.png" id="58_blb72"]
 [ext_resource type="Texture2D" uid="uid://c5pcdpx0lce8p" path="res://sprite/player/DefineSprite_1380/1.png" id="58_x2dav"]
 [ext_resource type="Texture2D" uid="uid://v5tt5qfwx8c1" path="res://sprite/player/DefineSprite_1380/2.png" id="59_5jqwt"]
@@ -313,6 +369,294 @@ size = Vector2(15, 18)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4miyu"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ta5i5")
+}],
+"loop": false,
+"name": &"dead_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_6wsyq")
+}],
+"loop": false,
+"name": &"dead_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_lsag6")
+}],
+"loop": false,
+"name": &"dead_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_kqkfd")
+}],
+"loop": false,
+"name": &"dead_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_jqce2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_gxfhq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ybp50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_s8u0g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4ccjy")
+}],
+"loop": false,
+"name": &"fallDown_1_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_cfmdo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ykp1t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_xojhx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_rwnoi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_dcpbq")
+}],
+"loop": false,
+"name": &"fallDown_1_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_ognvg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_n1pn8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_fbc5c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_rw13a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_oi3ai")
+}],
+"loop": false,
+"name": &"fallDown_1_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_iwdod")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8ow6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_1v3b8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_3uqxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_cntx5")
+}],
+"loop": false,
+"name": &"fallDown_1_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_q30r6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_glcxd")
+}],
+"loop": false,
+"name": &"hitFront_1_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_wek3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_edvg7")
+}],
+"loop": false,
+"name": &"hitFront_1_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_fv8qg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_baqt5")
+}],
+"loop": false,
+"name": &"hitFront_1_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_3slcf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_j1482")
+}],
+"loop": false,
+"name": &"hitFront_1_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_jqce2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_gxfhq")
+}],
+"loop": false,
+"name": &"hitFront_1_4",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("37_ybp50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_s8u0g")
+}],
+"loop": false,
+"name": &"hitFront_1_5",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("39_ybp50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_s8u0g")
+}],
+"loop": false,
+"name": &"hitFront_1_6",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("41_4ccjy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_cfmdo")
+}],
+"loop": false,
+"name": &"hitFront_1_7",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_rwnoi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_dcpbq")
+}],
+"loop": false,
+"name": &"hitRear_1_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("45_ognvg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_n1pn8")
+}],
+"loop": false,
+"name": &"hitRear_1_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("47_q30r6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_glcxd")
+}],
+"loop": false,
+"name": &"hitRear_1_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("49_wek3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_edvg7")
+}],
+"loop": false,
+"name": &"hitRear_1_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("51_fv8qg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_baqt5")
+}],
+"loop": false,
+"name": &"hitRear_1_4",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("53_3slcf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_j1482")
+}],
+"loop": false,
+"name": &"hitRear_1_5",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("55_qjpof")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_depwd")
+}],
+"loop": false,
+"name": &"hitRear_1_6",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("57_djpq7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_8mm6u")
+}],
+"loop": false,
+"name": &"hitRear_1_7",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_2fvbb")
@@ -2106,7 +2450,7 @@ shape = SubResource("RectangleShape2D_8pv5j")
 position = Vector2(0, -18)
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_4miyu")
-animation = &"walk_1_6_Rocket"
+animation = &"hitRear_1_7"
 
 [node name="weaponBackpack" type="Node2D" parent="." index="2"]
 
