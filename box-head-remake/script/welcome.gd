@@ -6,8 +6,9 @@ extends Node2D
 
 var tween:Tween
 var originalPos:Vector2
-var duration=0.3 #频率
-var offset=4  #偏移
+var duration=0.8 #频率
+var offset=2  #偏移
+var currBtn=null
 
 func _ready():
 	tween=create_tween()
@@ -19,7 +20,7 @@ func _ready():
 func updatePos(_progress):
 	var random_x = randf_range(-offset, offset)
 	var random_y = randf_range(-offset, offset)	
-	btn.position=originalPos + Vector2(random_x, random_y)
+	currBtn.position=originalPos + Vector2(random_x, random_y)
 
 func _on_label_mouse_entered():
 	
@@ -35,6 +36,7 @@ func _on_button_mouse_entered() -> void:
 	if tween!=null:
 		tween.stop()
 	originalPos=btn.position	
+	currBtn=btn
 	tween.bind_node(btn)
 	tween.play()
 
@@ -49,6 +51,7 @@ func _on_btn_instructions_mouse_entered():
 	if tween!=null:
 		tween.stop()
 	originalPos=btn_instructions.position	
+	currBtn=btn_instructions
 	tween.bind_node(btn_instructions)
 	tween.play()
 

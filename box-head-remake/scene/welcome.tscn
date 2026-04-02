@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://crxtvopj6f4ty"]
+[gd_scene load_steps=13 format=3 uid="uid://crxtvopj6f4ty"]
 
 [ext_resource type="Script" uid="uid://3qnx0msgrg15" path="res://script/welcome.gd" id="1_njjjx"]
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_0h2lm"]
@@ -12,6 +12,10 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hys0r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0h2lm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n2ceq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xnoho"]
 
 [node name="welcome" type="Node2D"]
 script = ExtResource("1_njjjx")
@@ -33,23 +37,23 @@ texture = ExtResource("2_hys0r")
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(120, 368)
-scale = Vector2(0.5, 0.5)
+position = Vector2(88, 447)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_n2ceq")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(536, 448)
-scale = Vector2(0.5, 0.5)
+position = Vector2(249.00002, 447)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_xnoho")
 
 [node name="Sprite2D3" type="Sprite2D" parent="."]
-position = Vector2(120, 448)
-scale = Vector2(0.5, 0.5)
+position = Vector2(410, 447)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("6_vvofi")
 
 [node name="Sprite2D4" type="Sprite2D" parent="."]
-position = Vector2(328, 440)
-scale = Vector2(0.5, 0.5)
+position = Vector2(568, 447)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("7_vn0ct")
 
 [node name="Control" type="Control" parent="."]
@@ -62,9 +66,9 @@ theme = ExtResource("4_1kia2")
 [node name="vbox" type="VBoxContainer" parent="Control"]
 layout_mode = 0
 offset_left = 200.0
-offset_top = 240.0
+offset_top = 201.0
 offset_right = 448.0
-offset_bottom = 400.0
+offset_bottom = 361.0
 alignment = 1
 metadata/_edit_group_ = true
 
@@ -74,6 +78,7 @@ theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_n2ceq")
 text = "_start_game"
 
 [node name="btn_instructions" type="Button" parent="Control/vbox"]
@@ -82,6 +87,7 @@ theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xnoho")
 text = "_instructions"
 
 [node name="Label" type="Label" parent="Control/vbox"]
