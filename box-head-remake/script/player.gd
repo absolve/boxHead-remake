@@ -14,6 +14,9 @@ var currWeaponIndex = 0
 var vector = Vector2.RIGHT
 var aniException = ['Mine', 'RemoteMine', 'Wall', 'Barrel', 'Grenade']
 var shapeQuery=PhysicsShapeQueryParameters2D.new()
+var hurtTimer = 0
+var hurtDelay = 0.5
+
 
 func _ready():
 	state=Game.playerState.Idle
@@ -42,11 +45,11 @@ func _ready():
 	#weaponList.push_back(rocket)
 	#weaponBackpack.add_child(rocket)
 	
-	#var b=load("res://scene/barrel.tscn")
-	#var barrel=b.instantiate()
-	#barrel.ownerId=get_rid()
-	#weaponList.push_back(barrel)
-	#weaponBackpack.add_child(barrel)
+	var b=load("res://scene/barrel.tscn")
+	var barrel=b.instantiate()
+	barrel.ownerId=get_rid()
+	weaponList.push_back(barrel)
+	weaponBackpack.add_child(barrel)
 	
 	#var w=load("res://scene/wall.tscn")
 	#var wall=w.instantiate()
@@ -66,11 +69,11 @@ func _ready():
 	#weaponList.push_back(shortGun)
 	#weaponBackpack.add_child(shortGun)
 	
-	var g = load("res://scene/grenade.tscn")
-	var grenade = g.instantiate()
-	grenade.ownerId = get_rid()
-	weaponList.push_back(grenade)
-	weaponBackpack.add_child(grenade)
+	#var g = load("res://scene/grenade.tscn")
+	#var grenade = g.instantiate()
+	#grenade.ownerId = get_rid()
+	#weaponList.push_back(grenade)
+	#weaponBackpack.add_child(grenade)
 
 	
 	#var rg=load("res://scene/railgun.tscn")
@@ -79,7 +82,7 @@ func _ready():
 	#weaponList.push_back(railgun)
 	#weaponBackpack.add_child(railgun)
 	
-	currWeapon = gun
+	currWeapon = barrel
 	
 	
 	txt.text = Game.weaponName[currWeapon.type]
@@ -91,6 +94,30 @@ func _ready():
 		keyMap.fire = 'p1_fire'
 		keyMap.nextWeapon = 'p1_nextWeapon'
 		keyMap.prevWeapon = 'p1_prevWeapon'
+	elif playerId == 2:
+		keyMap.left = "p2_left"
+		keyMap.right = "p2_right"
+		keyMap.up = "p2_up"
+		keyMap.down = "p2_down"
+		keyMap.fire = 'p2_fire'
+		keyMap.nextWeapon = 'p2_nextWeapon'
+		keyMap.prevWeapon = 'p2_prevWeapon'
+	elif playerId == 3:	
+		keyMap.left = "p3_left"
+		keyMap.right = "p3_right"
+		keyMap.up = "p3_up"
+		keyMap.down = "p3_down"
+		keyMap.fire = 'p3_fire'
+		keyMap.nextWeapon = 'p3_nextWeapon'
+		keyMap.prevWeapon = 'p3_prevWeapon'
+	elif playerId == 4:		
+		keyMap.left = "p4_left"
+		keyMap.right = "p4_right"
+		keyMap.up = "p4_up"
+		keyMap.down = "p4_down"
+		keyMap.fire = 'p4_fire'
+		keyMap.nextWeapon = 'p4_nextWeapon'
+		keyMap.prevWeapon = 'p4_prevWeapon'
 	print(currWeapon)
 	
 func switchWeapon(next: bool = true):
@@ -105,7 +132,31 @@ func switchWeapon(next: bool = true):
 		currWeapon = weaponList[currWeaponIndex]
 	
 		#txt.text=Game.weaponName[currWeapon.type]	
-	
+
+func hit(damage: int, attackPos: Vector2, recoil: float = 0):
+	hp -= damage
+	if hp <= 0:
+		state=Game.playerState.dead
+		ani.play("fallDown_%s" % [roundi(angle/2.0)])	
+		shape.disabled = true
+		bodyShape.disabled = true
+		await ani.animation_finished
+		var temp = create_tween()
+		temp.tween_interval(2)
+		temp.tween_property(ani, "modulate:a", 0, 1)
+		temp.tween_callback(queue_free)
+		#发送玩家死亡的消息
+	else:
+		state=Game.playerState.hurt
+		hurtTimer = 0
+		var attacker=(attackPos-global_position).normalized()
+		var dot = velocity.normalized().dot(attacker)
+		if dot>0: #正面击中
+			ani.play("hitFront_%s" % [angle])
+		else: #背面 侧面击中
+			ani.play("hitRear_%s" % [angle])	
+		velocity=Vector2.RIGHT.rotated(velocity.angle())*-recoil
+		
 	
 func _physics_process(_delta):
 	if state==Game.playerState.Idle:
@@ -135,24 +186,25 @@ func _physics_process(_delta):
 		shapeQuery.transform=Transform2D(global_rotation,global_position)
 		var result=space_state.intersect_shape(shapeQuery,1)
 		if result:
-			print(result)
+			#print(result)
 			var r=result[0]
 			if r.collider.get('type')&&r.collider.type in [Game.itemType.Barrel,
 									Game.itemType.Wall]:
-				velocity=Vector2.ZERO						
+					
 				var shape1=r.collider.get_node("shape").shape
 				print(shape1.size)
 				var delta=global_position-r.collider.global_position
-				if abs(delta.x) > abs(delta.y):
-					# 左右边
-					var signx = sign(delta.x)
-					global_position.x =r.collider.global_position.x+signx*(0.09+shape1.size.x/2+shape.shape.size.x/2)
-				else:
-					# 上下边
-					var signy = sign(delta.y)	
-					global_position.y =r.collider.global_position.y+signy*(0.09+shape1.size.y/2+shape.shape.size.y/2)
-					
-		#move_and_collide(velocity*_delta)		
+				if abs(delta.x)>shape1.size.x/2||abs(delta.y)>shape1.size.y/2:
+					velocity=Vector2.ZERO		
+					if abs(delta.x) > abs(delta.y):
+						# 左右边
+						var signx = sign(delta.x)
+						global_position.x =r.collider.global_position.x+signx*(0.09+shape1.size.x/2+shape.shape.size.x/2)
+					else:
+						# 上下边
+						var signy = sign(delta.y)	
+						global_position.y =r.collider.global_position.y+signy*(0.09+shape1.size.y/2+shape.shape.size.y/2)
+						
 		
 		if aniException.has(Game.weaponName[currWeapon.type]):
 			ani.play(currAni + "_%s"%playerId + "_%s"%angle + "_%s"%'other')
@@ -191,8 +243,12 @@ func _physics_process(_delta):
 		position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
 		position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
 	elif state==Game.playerState.hurt:
-		
-		pass
+		hurtTimer += _delta
+		if hurtTimer > hurtDelay:
+			hurtTimer = 0
+			state = Game.playerState.Idle
+		velocity=velocity.lerp(Vector2.ZERO,hurtTimer)
+		move_and_collide(velocity * _delta)
 	elif state==Game.playerState.dead:
 		pass
 	
