@@ -1,4 +1,4 @@
-[gd_scene load_steps=367 format=3 uid="uid://ctuwqq3bh161h"]
+[gd_scene format=3 uid="uid://ctuwqq3bh161h"]
 
 [ext_resource type="PackedScene" uid="uid://gvl5ox363h8g" path="res://scene/character.tscn" id="1_hjaqi"]
 [ext_resource type="Script" uid="uid://ctr0fv8feaujs" path="res://script/player.gd" id="1_xo3ru"]
@@ -2437,10 +2437,10 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_206a0"]
 size = Vector2(15, 20)
 
-[node name="player" groups=["player"] instance=ExtResource("1_hjaqi")]
-collision_layer = 0
+[node name="player" unique_id=1841750425 groups=["player"] instance=ExtResource("1_hjaqi")]
 collision_mask = 15
 script = ExtResource("1_xo3ru")
+playerId = 1
 speed = 150
 
 [node name="shape" parent="." index="0"]
@@ -2452,9 +2452,9 @@ scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_4miyu")
 animation = &"hitRear_1_7"
 
-[node name="weaponBackpack" type="Node2D" parent="." index="2"]
+[node name="weaponBackpack" type="Node2D" parent="." index="2" unique_id=1895631629]
 
-[node name="txt" type="Label" parent="." index="3"]
+[node name="txt" type="Label" parent="." index="3" unique_id=2138034439]
 offset_left = -50.0
 offset_top = -55.0
 offset_right = 50.0
@@ -2463,15 +2463,16 @@ theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="lifeBar" parent="." index="4" instance=ExtResource("155_6ev46")]
+[node name="lifeBar" parent="." index="4" unique_id=920951358 instance=ExtResource("155_6ev46")]
 offset_left = -25.0
 offset_top = -66.0
 offset_right = -25.0
 offset_bottom = -66.0
 
-[node name="body" type="Area2D" parent="." index="5"]
+[node name="body" type="Area2D" parent="." index="5" unique_id=1054707257]
+collision_layer = 16
 collision_mask = 0
 
-[node name="bodyShape" type="CollisionShape2D" parent="body" index="0"]
+[node name="bodyShape" type="CollisionShape2D" parent="body" index="0" unique_id=1646115459]
 position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_206a0")

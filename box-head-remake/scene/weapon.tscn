@@ -1,14 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5s0s0mkdalrc"]
+[gd_scene format=3 uid="uid://b5s0s0mkdalrc"]
 
 [ext_resource type="Script" uid="uid://d4c4s531l08dn" path="res://script/weapon.gd" id="1_7flqi"]
 
-[node name="weapon" type="Node2D"]
+[node name="weapon" type="Node2D" unique_id=144224414]
 script = ExtResource("1_7flqi")
 
-[node name="sound" type="AudioStreamPlayer2D" parent="."]
+[node name="sound" type="AudioStreamPlayer2D" parent="." unique_id=1897930747]
 bus = &"sfx"
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=983957772]
 one_shot = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

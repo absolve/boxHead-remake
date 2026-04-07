@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dopagrgxdjwkp"]
+[gd_scene format=3 uid="uid://dopagrgxdjwkp"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_g1vjg"]
 [ext_resource type="Script" uid="uid://dddxu6th7xc62" path="res://script/railgun.gd" id="2_p8kex"]
@@ -80,7 +80,7 @@ _data = {
 &"fire": SubResource("Animation_td821")
 }
 
-[node name="railgun" instance=ExtResource("1_g1vjg")]
+[node name="railgun" unique_id=892343169 instance=ExtResource("1_g1vjg")]
 script = ExtResource("2_p8kex")
 type = 1
 wRange = 300
@@ -88,26 +88,24 @@ delay = 0.5
 ammoNum = 20
 maxAmmoNum = 20
 
-[node name="sound" parent="." index="0"]
+[node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_6a3wx")
 
-[node name="Timer" parent="." index="1"]
+[node name="Timer" parent="." index="1" unique_id=983957772]
 wait_time = 0.2
 
-[node name="ray" type="Area2D" parent="." index="2"]
+[node name="ray" type="Area2D" parent="." index="2" unique_id=148575011]
 collision_layer = 0
-collision_mask = 7
+collision_mask = 52
 
-[node name="shape" type="CollisionShape2D" parent="ray" index="0"]
+[node name="shape" type="CollisionShape2D" parent="ray" index="0" unique_id=1256787893]
 shape = SubResource("SegmentShape2D_6a3wx")
 
-[node name="ani" type="AnimatedSprite2D" parent="." index="3"]
+[node name="ani" type="AnimatedSprite2D" parent="." index="3" unique_id=1656364362]
 visible = false
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_apxru")
 
-[node name="player" type="AnimationPlayer" parent="." index="4"]
-libraries = {
-&"": SubResource("AnimationLibrary_mo67v")
-}
+[node name="player" type="AnimationPlayer" parent="." index="4" unique_id=922462959]
+libraries/ = SubResource("AnimationLibrary_mo67v")
 speed_scale = 5.0

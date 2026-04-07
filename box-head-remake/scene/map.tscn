@@ -1,20 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0kuvc8gn0dj6"]
+[gd_scene format=3 uid="uid://c0kuvc8gn0dj6"]
 
 [ext_resource type="Script" uid="uid://bw52mm3icvxlm" path="res://script/map.gd" id="1_rgtto"]
 [ext_resource type="PackedScene" uid="uid://d0mwo6kivhnbp" path="res://scene/room_001.tscn" id="2_wpp1k"]
 [ext_resource type="PackedScene" uid="uid://ctuwqq3bh161h" path="res://scene/player.tscn" id="3_h0nt1"]
 [ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/barrel_obj.tscn" id="4_nf54y"]
 
-[node name="map" type="Node2D"]
+[node name="map" type="Node2D" unique_id=821564601]
 script = ExtResource("1_rgtto")
 
-[node name="room001" parent="." instance=ExtResource("2_wpp1k")]
+[node name="room001" parent="." unique_id=1385345681 instance=ExtResource("2_wpp1k")]
 visible = false
 
-[node name="player" parent="." instance=ExtResource("3_h0nt1")]
+[node name="player" parent="." unique_id=1459092181 instance=ExtResource("3_h0nt1")]
 position = Vector2(84, 211)
 
-[node name="ui" type="CanvasLayer" parent="."]
+[node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 
-[node name="barrelObj" parent="." instance=ExtResource("4_nf54y")]
+[node name="barrelObj" parent="." unique_id=354021201 instance=ExtResource("4_nf54y")]
 position = Vector2(191, 105)
+
+[node name="player2" parent="." unique_id=1841750425 instance=ExtResource("3_h0nt1")]
+position = Vector2(332, 209)
+playerId = 2
