@@ -4,9 +4,10 @@ extends "res://script/character.gd"
 @onready var ani = $ani
 @onready var body = $body
 @onready var bodyShape = $body/bodyShape
+@onready var attackArea=$attackArea
+
 
 var font: FontFile
-
 
 var target = null
 var targetOldPos = Vector2.ZERO
@@ -20,7 +21,10 @@ var oldAngle = 0 # 之前的角度
 var tween: Tween = null
 var hurtTimer = 0
 var hurtDelay = 0.5
-
+#攻击时判定框位置调整
+var attackPos={0:Vector2.ZERO,1:Vector2.ZERO,2:Vector2.ZERO,
+				3:Vector2.ZERO,4:Vector2.ZERO,5:Vector2.ZERO,
+				6:Vector2.ZERO,7:Vector2.ZERO}
 
 func _ready():
 	state = Game.enemyState.Idle
@@ -72,7 +76,10 @@ func _physics_process(_delta: float) -> void:
 			var dis = global_position.distance_to(target.global_position)
 			if dis < attackRange:
 				velocity = Vector2.ZERO
-			
+				ani.play("attack" + "_%s"%angle)
+				state=Game.enemyState.attack
+				return
+				
 		if velocity.length() > 0:
 			currAni = "walk"
 		else:
@@ -100,6 +107,10 @@ func _physics_process(_delta: float) -> void:
 			state = Game.enemyState.Idle
 		velocity=velocity.lerp(Vector2.ZERO,hurtTimer)
 		move_and_collide(velocity * _delta)
+	elif state==Game.enemyState.attack:
+		if !ani.is_playing():
+			state=Game.enemyState.Idle
+	
 		
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	queue_redraw()
@@ -131,7 +142,7 @@ func playRotateAni(newAngle):
 	tween.tween_property(ani, "frame", newAngle * 4, 0.2)
 	
 #被击中	
-func hit(damage: int, attackPos: Vector2, recoil: float = 0):
+func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
 	hp -= damage
 	print("hit", hp)
 	if hp <= 0:
@@ -147,7 +158,7 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	else:
 		state = Game.enemyState.hurt
 		hurtTimer = 0
-		var attacker=(attackPos-global_position).normalized()
+		var attacker=(_attackPos-global_position).normalized()
 		var dot = velocity.normalized().dot(attacker)
 		if dot>0: #正面击中
 			ani.play("hitFront_%s" % [angle])
