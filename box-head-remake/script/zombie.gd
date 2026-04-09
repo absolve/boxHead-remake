@@ -21,10 +21,15 @@ var oldAngle = 0 # 之前的角度
 var tween: Tween = null
 var hurtTimer = 0
 var hurtDelay = 0.5
+var attackTimer = 0
+var attackDelay=0.8
+
 #攻击时判定框位置调整
-var attackPos={0:Vector2.ZERO,1:Vector2.ZERO,2:Vector2.ZERO,
-				3:Vector2.ZERO,4:Vector2.ZERO,5:Vector2.ZERO,
-				6:Vector2.ZERO,7:Vector2.ZERO}
+var attackPos={0:Vector2(20,-9),1:Vector2(20,-3),2:Vector2(0,3),
+				3:Vector2(-11,-5),4:Vector2(-9,-11),5:Vector2(5,-17),
+				6:Vector2(5,-17),7:Vector2(16,-17)}
+var attackPosAngle={2:90,6:90}
+
 
 func _ready():
 	state = Game.enemyState.Idle
@@ -77,6 +82,12 @@ func _physics_process(_delta: float) -> void:
 			if dis < attackRange:
 				velocity = Vector2.ZERO
 				ani.play("attack" + "_%s"%angle)
+				attackArea.position=attackPos[angle]
+				attackTimer=0
+				if attackPosAngle.has(angle):
+					attackArea.rotation=deg_to_rad(attackPosAngle[angle])
+				else:
+					attackArea.rotation=0	
 				state=Game.enemyState.attack
 				return
 				
@@ -109,9 +120,12 @@ func _physics_process(_delta: float) -> void:
 		move_and_collide(velocity * _delta)
 	elif state==Game.enemyState.attack:
 		if !ani.is_playing():
-			state=Game.enemyState.Idle
-	
-		
+			attackTimer+=_delta
+			if attackTimer>attackDelay:
+				attackTimer=0
+				state=Game.enemyState.Idle
+				
+				
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	queue_redraw()
 	

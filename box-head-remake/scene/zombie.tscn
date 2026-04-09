@@ -204,6 +204,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("6_we221")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wmsqm")
 }],
 "loop": false,
 "name": &"attack_0",
@@ -221,6 +224,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("10_co3no")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_yp1dt")
 }],
 "loop": false,
 "name": &"attack_1",
@@ -238,6 +244,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("14_fqtfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xwd0s")
 }],
 "loop": false,
 "name": &"attack_2",
@@ -255,6 +264,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("18_fqtfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_xnxfg")
 }],
 "loop": false,
 "name": &"attack_3",
@@ -272,6 +284,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("22_nagea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xsarm")
 }],
 "loop": false,
 "name": &"attack_4",
@@ -289,6 +304,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("26_711ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_mhtio")
 }],
 "loop": false,
 "name": &"attack_5",
@@ -306,6 +324,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("30_6naub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_fvxut")
 }],
 "loop": false,
 "name": &"attack_6",
@@ -323,6 +344,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("34_0a1my")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_aia6e")
 }],
 "loop": false,
 "name": &"attack_7",
@@ -1049,6 +1073,6 @@ debug_color = Color(0.37285107, 0.48749793, 0.97211987, 0.41960785)
 collision_layer = 0
 
 [node name="shape" type="CollisionShape2D" parent="attackArea" index="0" unique_id=479460869]
-position = Vector2(24, -8)
+position = Vector2(-11, -5)
 shape = SubResource("CapsuleShape2D_keefw")
 debug_color = Color(0.93937767, 0.20114002, 0.3741672, 0.41960785)
