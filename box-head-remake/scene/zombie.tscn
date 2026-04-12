@@ -1070,6 +1070,7 @@ shape = SubResource("RectangleShape2D_keefw")
 debug_color = Color(0.37285107, 0.48749793, 0.97211987, 0.41960785)
 
 [node name="attackArea" type="Area2D" parent="." index="3" unique_id=131052287]
+visible = false
 collision_layer = 0
 
 [node name="shape" type="CollisionShape2D" parent="attackArea" index="0" unique_id=479460869]

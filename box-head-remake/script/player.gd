@@ -20,12 +20,12 @@ var hurtDelay = 0.5
 
 func _ready():
 	state=Game.playerState.Idle
-	shapeQuery=PhysicsShapeQueryParameters2D.new()
 	shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
 	shapeQuery.collision_mask=1+2+4
 	shapeQuery.exclude=[body.get_rid()]
 	shapeQuery.shape=shape.shape
+
 	
 	var temp = load("res://scene/pistol.tscn")
 	var gun = temp.instantiate()
@@ -183,10 +183,11 @@ func _physics_process(_delta):
 			#print(result)
 			var r=result[0]
 			if r.collider.get('type')&&r.collider.type in [Game.itemType.Barrel,
-									Game.itemType.Wall,Game.roleType.Player]:
+									Game.itemType.Wall,Game.roleType.Player,
+									Game.roleType.Zombie,Game.roleType.Devil]:
 					
 				var shape1=r.collider.get_node("shape").shape
-				print(shape1.size)
+				#print(shape1.size)
 				var delta=global_position-r.collider.global_position
 				if abs(delta.x)>shape1.size.x/2||abs(delta.y)>shape1.size.y/2:
 					velocity=Vector2.ZERO		

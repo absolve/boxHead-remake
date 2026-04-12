@@ -1,11 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ch17ixjn5io1a"]
+[gd_scene format=3 uid="uid://ch17ixjn5io1a"]
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_226e6"]
 [ext_resource type="Script" uid="uid://dcb61sk60lst1" path="res://script/barrel_obj.gd" id="2_j1kyk"]
-[ext_resource type="Texture2D" uid="uid://b18staaklk5tu" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
+[ext_resource type="Texture2D" uid="uid://c2njujhx24wur" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1kyk"]
-size = Vector2(25, 30)
+size = Vector2(25, 25)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hwscq"]
 animations = [{
@@ -18,7 +18,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="barrelObj" instance=ExtResource("1_226e6")]
+[node name="barrelObj" unique_id=693086546 instance=ExtResource("1_226e6")]
 collision_layer = 4
 script = ExtResource("2_j1kyk")
 type = 103
@@ -27,5 +27,6 @@ type = 103
 shape = SubResource("RectangleShape2D_j1kyk")
 
 [node name="ani" parent="." index="1"]
+visible = false
 sprite_frames = SubResource("SpriteFrames_hwscq")
 offset = Vector2(-3, -5)
