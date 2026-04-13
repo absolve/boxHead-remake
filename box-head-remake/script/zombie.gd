@@ -38,6 +38,7 @@ class eightDir:
 	var dir:Vector2
 	var dot:float
 	var canMove:bool
+	var normal:Vector2  #碰到障碍物的法线
 	
 	func _init(_dir:Vector2,_dot:float):
 		self.dir=_dir
@@ -99,43 +100,40 @@ func _physics_process(_delta: float) -> void:
 		
 		#简单的寻路
 		if target != null:
-			var targetDir=(target.global_position-global_position)
+			#var targetDir=(target.global_position-global_position).normalized()
+			#print(targetDir)
 			var bestDir=Vector2.ZERO
-			var minDot=[]
-			var maxDot=[]
-			for i in directions:
-				var dot=targetDir.dot(i.dir)
+			#var targetAngle=targetDir.angle()
+			#var snapped_angle =round(targetAngle / (PI / 4.0)) * (PI / 4.0)
+			#bestDir=Vector2(cos(snapped_angle), sin(snapped_angle))
+			
+			# 计算到目标的向量 根据网格来计算位置
+			var to_target = Vector2(floori(target.global_position.x/ MapData.cellSize),floori(target.global_position.y/ MapData.cellSize))\
+								-Vector2(floori(global_position.x/ MapData.cellSize),floori(global_position.y/ MapData.cellSize)) 
+
+			bestDir=Vector2(sign(to_target.x), sign(to_target.y))
+			
+			print('bestDir ',bestDir)
+			for i in directions: 	#判断8个方向是否可以移动
 				shapeQuery.transform=Transform2D(global_rotation,global_position+i.dir*speed*_delta)
-				var predictionResult=space_state.intersect_shape(shapeQuery,4)
+				var predictionResult=space_state.get_rest_info(shapeQuery)
 				if predictionResult:
 					i.canMove=false
+					i.normal=predictionResult.normal
 				else:
 					i.canMove=true	
-				var a = round(i.dir.angle() / (PI / 4))
-				i.dot = wrapi(int(a), 0, 8)	
-				if dot>=0 && i.canMove: #夹角大于等于90
-					minDot.append(i)
-				elif i.canMove:
-					maxDot.append(i)
-			#挑选夹角最小值
-			if minDot.size()>0:
-				bestDir=minDot[0]
-				for m in minDot:
-					print('---',m.dir,' ',m.dot)
-					#var dot1=floor(targetDir.dot(m.dir))
-					#var dot2=floor(targetDir.dot(bestDir.dir))
-					if m.dot<bestDir.dot:
-						bestDir=m
-			else: #只有大于90度的方向
-				bestDir= maxDot[0]
-				for m in maxDot:
-					if floor(m.dir.dot(targetDir))>floor(bestDir.dot(targetDir)):
-						bestDir=m
+					i.normal=Vector2.ZERO
 			
-			#判断所有的方向是否可以移动 排除不可以移动的反向
-			print(bestDir.dir)
+			#如果当前的方向遇到障碍物 就沿着障碍物边缘的方向移动 方向为左侧或者右侧
+			#记录之前走过的格子 防止重复回头的问题
 			
-			velocity=bestDir.dir
+		
+			
+		
+			print(bestDir)
+			if bestDir.length_squared() > 0: 
+				bestDir=bestDir.normalized()
+			velocity=bestDir
 		
 			
 		if target != null:
