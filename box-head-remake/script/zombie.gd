@@ -30,19 +30,31 @@ var findPathTimer=0
 var findPathDelay=2
 var nextPoint=Vector2.ZERO
 #方向
+var dir = [
+	Vector2(0, -1),      # up
+	Vector2(1, -1),      # up-right
+	Vector2(1, 0),       # right
+	Vector2(1, 1),       # down-right
+	Vector2(0, 1),       # down
+	Vector2(-1, 1),      # down-left
+	Vector2(-1, 0),      # left
+	Vector2(-1, -1)      # up-left
+]
 var directions:Array[eightDir]=[]
-var oldDir:Array[Vector2]=[]  #旧的方向
-
+var recentPos:Array[Vector2]=[]  #旧的格子位置
+var recentMax=30  #最大记录数
+var isBlocked=false #前进方向被阻挡
 
 class eightDir:
 	var dir:Vector2
 	var dot:float
-	var canMove:bool
+	var canMove:bool #是否可以移动
 	var normal:Vector2  #碰到障碍物的法线
+	var distance:float #距离目标位置的距离
 	
-	func _init(_dir:Vector2,_dot:float):
+	func _init(_dir:Vector2):
 		self.dir=_dir
-		self.dot=_dot
+
 	
 
 #攻击时判定框位置调整
@@ -62,9 +74,9 @@ func _ready():
 	shapeQuery.exclude=[body.get_rid()]
 	shapeQuery.shape=shape.shape
 	
-	for i in range(0,8):
-		directions.append(eightDir.new(Vector2.RIGHT.rotated(i * PI * 2 / 8),0))
-	
+	for i in dir:
+		directions.append(eightDir.new(i))
+
 	
 func _physics_process(_delta: float) -> void:
 	if state == Game.enemyState.Idle:
@@ -110,13 +122,17 @@ func _physics_process(_delta: float) -> void:
 			# 计算到目标的向量 根据网格来计算位置
 			var to_target = Vector2(floori(target.global_position.x/ MapData.cellSize),floori(target.global_position.y/ MapData.cellSize))\
 								-Vector2(floori(global_position.x/ MapData.cellSize),floori(global_position.y/ MapData.cellSize)) 
-
+			#向目标前进的最佳方向
 			bestDir=Vector2(sign(to_target.x), sign(to_target.y))
 			
 			print('bestDir ',bestDir)
 			for i in directions: 	#判断8个方向是否可以移动
 				shapeQuery.transform=Transform2D(global_rotation,global_position+i.dir*speed*_delta)
 				var predictionResult=space_state.get_rest_info(shapeQuery)
+				var nextPos=Vector2(floori(global_position.x/ MapData.cellSize),
+							floori(global_position.y/ MapData.cellSize))+i.dir*MapData.cellSize
+				i.distance=nextPos.distance_squared_to(to_target) #当前方向移动后距离目标的距离
+				
 				if predictionResult:
 					i.canMove=false
 					i.normal=predictionResult.normal
@@ -126,12 +142,31 @@ func _physics_process(_delta: float) -> void:
 			
 			#如果当前的方向遇到障碍物 就沿着障碍物边缘的方向移动 方向为左侧或者右侧
 			#记录之前走过的格子 防止重复回头的问题
-			
-		
-			
-		
-			print(bestDir)
-			if bestDir.length_squared() > 0: 
+			var canMoveDir:Array[eightDir]=[]
+			for i in directions: 
+				if i.canMove:
+					canMoveDir.append(i)
+			#当前最佳方向是否被阻挡	
+			isBlocked=true
+			for i in canMoveDir:
+				if i.dir.is_equal_approx(bestDir):
+					isBlocked=false
+			if isBlocked: #被阻挡 寻找一个可以移动的位置 距离目标更进 记录之前的方向避免回头
+				if canMoveDir.is_empty():
+					bestDir=Vector2.ZERO
+				else:
+					canMoveDir.sort_custom(func(a, b): return a.distance < b.distance)
+					bestDir=canMoveDir[0].dir
+					#如果方向是和当前的方向相反就
+				
+				#保存当前格子位置
+				recentPos.push_front(Vector2(floori(global_position.x/ MapData.cellSize),
+							floori(global_position.y/ MapData.cellSize)))	
+				if recentPos.size()>recentMax:
+					recentPos.pop_back()
+				
+			print('final ',bestDir)
+			if bestDir.length_squared() > 0:  #设置成单位向量
 				bestDir=bestDir.normalized()
 			velocity=bestDir
 		
@@ -150,10 +185,9 @@ func _physics_process(_delta: float) -> void:
 				state=Game.enemyState.attack
 				return
 		
-		#判断是否发生碰撞
-		
+		#判断是否发生碰撞	
 		shapeQuery.transform=Transform2D(global_rotation,global_position)
-		var result=space_state.intersect_shape(shapeQuery,4)
+		var result=space_state.intersect_shape(shapeQuery,1)
 		if result:
 			var r=result[0]
 			if r.collider.get('type')&&r.collider.type in [Game.itemType.Barrel,
@@ -171,27 +205,7 @@ func _physics_process(_delta: float) -> void:
 					var signy = sign(delta.y)	
 					global_position.y =r.collider.global_position.y+signy*(shape1.size.y/2+shape.shape.size.y/2)
 		
-		#预测当前方向是否会发生碰撞	
-		#shapeQuery.transform=Transform2D(global_rotation,global_position+velocity*speed*_delta)
-		#var predictionResult=space_state.get_rest_info(shapeQuery)
-		#
-		#if predictionResult:	
-			#findPathTimer+=_delta
-			#if findPathDelay<findPathTimer:	#重新寻路
-				#findPathTimer=0
-				#path = MapData.findPath(global_position, target.global_position)
-				#if path.size() > 0:
-					#nextPoint=path[1]
-					#
-			#print(velocity)
-			##velocity =velocity.rotated(deg_to_rad(-90)).normalized()
-			#velocity=Vector2.DOWN
-			#lastVelocity=velocity	
 		
-					
-		#print(velocity.angle())
-		
-			
 		if velocity.length() > 0:
 			currAni = "walk"
 		else:
@@ -207,9 +221,8 @@ func _physics_process(_delta: float) -> void:
 			oldAngle = angle
 		
 		if tween == null || !tween.is_running():
-			velocity *= speed
 			ani.play(currAni + "_%s"%angle)
-			move_and_collide(velocity * _delta)
+			move_and_collide(velocity *speed* _delta)
 		
 	elif state == Game.enemyState.dead:
 		pass
