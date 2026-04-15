@@ -13,7 +13,7 @@ script = ExtResource("1_rgtto")
 visible = false
 
 [node name="player" parent="." unique_id=1459092181 instance=ExtResource("3_h0nt1")]
-position = Vector2(120, 118)
+position = Vector2(158, 145)
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 

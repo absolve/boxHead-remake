@@ -156,9 +156,15 @@ func _physics_process(_delta: float) -> void:
 					bestDir=Vector2.ZERO
 				else:
 					canMoveDir.sort_custom(func(a, b): return a.distance < b.distance)
-					bestDir=canMoveDir[0].dir
-					#如果方向是和当前的方向相反就
-				
+					#bestDir=canMoveDir[0].dir
+					for i in canMoveDir:
+						#如果新方向是之前的路径就跳过
+						var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
+							floori(global_position.y/ MapData.cellSize))+i.dir*MapData.cellSize
+						if recentPos.has(nPos):
+							continue
+						bestDir=i.dir	#找到一个方向就行了
+						break
 				#保存当前格子位置
 				recentPos.push_front(Vector2(floori(global_position.x/ MapData.cellSize),
 							floori(global_position.y/ MapData.cellSize)))	
@@ -268,7 +274,14 @@ func playRotateAni(newAngle):
 	tween = create_tween()
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4
-	tween.tween_property(ani, "frame", newAngle * 4, 0.2)
+	
+	tween.set_loops(abs(newAngle*4-oldAngle*4))
+	tween.tween_callback(changeFrame.bind(sign(newAngle-oldAngle))).set_delay(0.02)
+	#tween.tween_property(ani, "frame", newAngle * 4, 0.2)
+
+func changeFrame(val):
+	ani.frame+=val
+
 	
 #被击中	
 func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
