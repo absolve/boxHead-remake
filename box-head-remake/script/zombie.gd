@@ -55,7 +55,10 @@ class eightDir:
 	func _init(_dir:Vector2):
 		self.dir=_dir
 
-	
+	func _to_string() -> String:
+		return 'dir %s canMove %s distance %s'%[dir,canMove,distance]
+
+
 
 #攻击时判定框位置调整
 var attackPos={0:Vector2(20,-9),1:Vector2(20,-3),2:Vector2(0,3),
@@ -76,6 +79,7 @@ func _ready():
 	
 	for i in dir:
 		directions.append(eightDir.new(i))
+	
 
 	
 func _physics_process(_delta: float) -> void:
@@ -127,18 +131,19 @@ func _physics_process(_delta: float) -> void:
 			
 			print('bestDir ',bestDir)
 			for i in directions: 	#判断8个方向是否可以移动
-				shapeQuery.transform=Transform2D(global_rotation,global_position+i.dir*speed*_delta)
-				var predictionResult=space_state.get_rest_info(shapeQuery)
+				shapeQuery.transform=Transform2D(global_rotation,global_position+
+												i.dir.normalized()*speed*_delta)
+				var predictionResult=space_state.intersect_shape(shapeQuery,4)
 				var nextPos=Vector2(floori(global_position.x/ MapData.cellSize),
-							floori(global_position.y/ MapData.cellSize))+i.dir*MapData.cellSize
-				i.distance=nextPos.distance_squared_to(to_target) #当前方向移动后距离目标的距离
+							floori(global_position.y/ MapData.cellSize))+i.dir
+				i.distance=(nextPos-to_target).length_squared() #当前方向移动后距离目标的距离
 				
 				if predictionResult:
 					i.canMove=false
-					i.normal=predictionResult.normal
+					#i.normal=predictionResult.normal
 				else:
 					i.canMove=true	
-					i.normal=Vector2.ZERO
+					#i.normal=Vector2.ZERO
 			
 			#如果当前的方向遇到障碍物 就沿着障碍物边缘的方向移动 方向为左侧或者右侧
 			#记录之前走过的格子 防止重复回头的问题
@@ -157,22 +162,40 @@ func _physics_process(_delta: float) -> void:
 				else:
 					canMoveDir.sort_custom(func(a, b): return a.distance < b.distance)
 					#bestDir=canMoveDir[0].dir
+					#判断上一帧的方向有没有阻挡，可以行走就不需要更换方向
+					print('last',velocity)	
+					var canMove=false
 					for i in canMoveDir:
-						#如果新方向是之前的路径就跳过
-						var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
-							floori(global_position.y/ MapData.cellSize))+i.dir*MapData.cellSize
-						if recentPos.has(nPos):
-							continue
-						bestDir=i.dir	#找到一个方向就行了
-						break
+						var tempDir=i.dir
+						if !i.dir.is_normalized():
+							tempDir=i.dir.normalized()
+						if tempDir.is_equal_approx(velocity):
+							canMove=true
+							break
+					if !canMove:		
+						print(canMoveDir)
+						for i in canMoveDir:
+							#如果新方向是之前的路径就跳过
+							var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
+								floori(global_position.y/ MapData.cellSize))+i.dir
+							#if recentPos.has(nPos):
+								#continue
+							bestDir=i.dir	#找到一个方向就行了
+							break
+					else:
+						bestDir=velocity		
 				#保存当前格子位置
-				recentPos.push_front(Vector2(floori(global_position.x/ MapData.cellSize),
-							floori(global_position.y/ MapData.cellSize)))	
+				var currPos=Vector2(floori(global_position.x/ MapData.cellSize),
+							floori(global_position.y/ MapData.cellSize))
+				if !recentPos.is_empty() && !recentPos[0].is_equal_approx(currPos):
+					recentPos.push_front(currPos)	
+				if recentPos.is_empty():
+					recentPos.push_front(currPos)		
 				if recentPos.size()>recentMax:
 					recentPos.pop_back()
 				
 			print('final ',bestDir)
-			if bestDir.length_squared() > 0:  #设置成单位向量
+			if !bestDir.is_normalized():  #设置成单位向量
 				bestDir=bestDir.normalized()
 			velocity=bestDir
 		
@@ -226,7 +249,7 @@ func _physics_process(_delta: float) -> void:
 				playRotateAni(angle)
 			oldAngle = angle
 		
-		if tween == null || !tween.is_running():
+		if tween == null || !tween.is_valid():
 			ani.play(currAni + "_%s"%angle)
 			move_and_collide(velocity *speed* _delta)
 		
@@ -245,7 +268,9 @@ func _physics_process(_delta: float) -> void:
 			if attackTimer>attackDelay:
 				attackTimer=0
 				state=Game.enemyState.Idle
-				
+	elif state==Game.enemyState.rotate:
+		
+		pass			
 				
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	queue_redraw()
@@ -268,20 +293,35 @@ func findTarget():
 
 #播放旋转动画
 func playRotateAni(newAngle):
-	if tween != null && tween.is_running():
+	if tween != null && tween.is_valid():
 		tween.kill()
 	
 	tween = create_tween()
+	ani.stop()
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4
 	
-	tween.set_loops(abs(newAngle*4-oldAngle*4))
-	tween.tween_callback(changeFrame.bind(sign(newAngle-oldAngle))).set_delay(0.02)
-	#tween.tween_property(ani, "frame", newAngle * 4, 0.2)
+	#print(oldAngle * 4,' ',newAngle*4,' ',abs(newAngle*4-oldAngle*4))
+	#print(sign(newAngle-oldAngle))
+	var add=1
+	if abs(newAngle-oldAngle)>4:
+		add=-1
+	#tween.set_loops()	
+	#tween.step_finished.connect(_on_tween_step)
+	#tween.tween_callback(changeFrame.bind(add))
+	#tween.tween_interval(0.08)
+	
+	tween.tween_property(ani, "frame", newAngle * 4, 0.2)
 
 func changeFrame(val):
-	ani.frame+=val
+	#print(val)
+	ani.frame=wrapi(ani.frame+val,0,32)
+	#print(ani.frame)
 
+func _on_tween_step(_idx):
+	#print(angle)
+	if ani.frame==angle*4:
+		tween.kill()
 	
 #被击中	
 func hit(damage: int, _attackPos: Vector2, recoil: float = 0):

@@ -168,7 +168,7 @@ func _physics_process(_delta):
 			angle = input_dir.angle() / (PI / 4)
 			angle = wrapi(int(angle), 0, 8)
 			currAni = "walk"
-		if input_dir.length_squared() > 0:  #对角线移动 长度设为1
+		if !input_dir.is_normalized():  #对角线移动 长度设为1
 			input_dir=input_dir.normalized()
 		velocity = input_dir * speed
 	

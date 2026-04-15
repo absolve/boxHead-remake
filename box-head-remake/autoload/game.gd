@@ -39,7 +39,7 @@ enum markerPointType{ZombieSpawnPoint,DevilSpawnPoint}
 #玩家状态
 enum playerState{Idle,hurt,dead}
 
-enum enemyState {Idle, hurt, fallDown, dead,attack}
+enum enemyState {Idle, hurt, fallDown, dead,attack,rotate}
 
 @warning_ignore("unused_signal")
 signal weaponUpgrade
