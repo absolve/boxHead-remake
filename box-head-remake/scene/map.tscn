@@ -21,7 +21,7 @@ position = Vector2(360, 193)
 position = Vector2(229, 104)
 
 [node name="zombie" parent="." unique_id=1183646961 instance=ExtResource("5_4xw1d")]
-position = Vector2(168, 113)
+position = Vector2(190, 88)
 
 [node name="barrelObj2" parent="." unique_id=328134751 instance=ExtResource("4_nf54y")]
 position = Vector2(229, 135)

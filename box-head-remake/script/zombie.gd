@@ -137,7 +137,7 @@ func _physics_process(_delta: float) -> void:
 				var nextPos=Vector2(floori(global_position.x/ MapData.cellSize),
 							floori(global_position.y/ MapData.cellSize))+i.dir
 				i.distance=(nextPos-to_target).length_squared() #当前方向移动后距离目标的距离
-				
+				i.dot=to_target.dot(i.dir)
 				if predictionResult:
 					i.canMove=false
 					#i.normal=predictionResult.normal
@@ -160,10 +160,11 @@ func _physics_process(_delta: float) -> void:
 				if canMoveDir.is_empty():
 					bestDir=Vector2.ZERO
 				else:
-					canMoveDir.sort_custom(func(a, b): return a.distance < b.distance)
+					#canMoveDir.sort_custom(func(a, b): return a.distance < b.distance)
+					canMoveDir.sort_custom(func(a, b): return a.dot > b.dot)
 					#bestDir=canMoveDir[0].dir
 					#判断上一帧的方向有没有阻挡，可以行走就不需要更换方向
-					print('last',velocity)	
+					print('last ',velocity)	
 					var canMove=false
 					for i in canMoveDir:
 						var tempDir=i.dir
@@ -178,8 +179,8 @@ func _physics_process(_delta: float) -> void:
 							#如果新方向是之前的路径就跳过
 							var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
 								floori(global_position.y/ MapData.cellSize))+i.dir
-							#if recentPos.has(nPos):
-								#continue
+							if recentPos.has(nPos):
+								continue
 							bestDir=i.dir	#找到一个方向就行了
 							break
 					else:
