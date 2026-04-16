@@ -188,7 +188,6 @@
 [ext_resource type="Texture2D" uid="uid://33nl15bjtgg" path="res://sprite/Zombie/DefineSprite_980/2.png" id="90_doj28"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmsqm"]
-size = Vector2(15, 18)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tet0w"]
 animations = [{

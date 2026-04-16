@@ -365,7 +365,6 @@
 [ext_resource type="Texture2D" uid="uid://3lhjgp71bqmo" path="res://sprite/player/DefineSprite_1906/8.png" id="290_eaxob"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8pv5j"]
-size = Vector2(15, 18)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4miyu"]
 animations = [{

@@ -1,0 +1,309 @@
+[gd_scene format=3 uid="uid://bo4bw166k8ygy"]
+
+[ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="1_4cn6t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4cn6t"]
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(1, 1, 1, 0.98039216)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_4cn6t"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_iclba"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_uq3fg"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_qri7q"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_78oiq"]
+
+[node name="gameSetting" type="PopupPanel" unique_id=1401346272]
+oversampling_override = 1.0
+size = Vector2i(795, 576)
+visible = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_4cn6t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1117909959]
+offset_top = 20.0
+offset_right = 795.0
+offset_bottom = 556.0
+theme = ExtResource("1_4cn6t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1594162035]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer" unique_id=994077136]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=933662978]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1658052564]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Difficulty:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1096961920]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=655337159]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_4cn6t")
+text = "BEGINNER"
+
+[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=376156077]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_4cn6t")
+text = "INTERMEDIATE"
+
+[node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1532622018]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_4cn6t")
+text = "EXPERT"
+
+[node name="Button4" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1103318192]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_4cn6t")
+text = "NIGHTMARE"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer" unique_id=1180526818]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/MarginContainer" unique_id=1772745371]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+bbcode_enabled = true
+text = "Sets the difficulty of the level: escalates the level and the upgrades accordingly"
+fit_content = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer" unique_id=1999034513]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer2" unique_id=621034697]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=614938067]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer/MarginContainer" unique_id=1461172905]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Object collision:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=153251771]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1712377451]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_iclba")
+text = "OFF"
+
+[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1320224333]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_iclba")
+text = "ON"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer2" unique_id=268850659]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer2/MarginContainer" unique_id=1780794088]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+bbcode_enabled = true
+text = "Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore"
+fit_content = true
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer" unique_id=1185329198]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer3" unique_id=2081588181]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1108967364]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer3/HBoxContainer/MarginContainer" unique_id=1086949474]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Devils:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1646063319]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=1258132104]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_uq3fg")
+text = "OFF"
+
+[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=345582191]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_uq3fg")
+text = "ON"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer3" unique_id=138769229]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer3/MarginContainer" unique_id=642874317]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+bbcode_enabled = true
+text = "Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!"
+fit_content = true
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer" unique_id=2037590500]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer4" unique_id=421641391]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer4/HBoxContainer" unique_id=1602551332]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer4/HBoxContainer/MarginContainer" unique_id=1925097713]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Friendly Fire:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer4/HBoxContainer" unique_id=309389852]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=1890063601]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_qri7q")
+text = "OFF"
+
+[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=589469415]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_qri7q")
+text = "ON"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer4" unique_id=1253474164]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/MarginContainer" unique_id=370494591]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+bbcode_enabled = true
+text = "Turns the Friendly damage on/off, however damage from barrels is still applicable. Forfeits hiscore!"
+fit_content = true
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer" unique_id=1392498625]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer5" unique_id=503776536]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer5/HBoxContainer" unique_id=1165375500]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer5/HBoxContainer/MarginContainer" unique_id=869924963]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Game speed:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer5/HBoxContainer" unique_id=1014010999]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1831986015]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_78oiq")
+text = "SLOW"
+
+[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=499809297]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_78oiq")
+text = "NORMAL"
+
+[node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1615732297]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_78oiq")
+text = "FAST"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer5" unique_id=1579227333]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer5/MarginContainer" unique_id=1110550064]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+bbcode_enabled = true
+text = "Sets the speed of the game, slow = speed / 2, normal = normal speed, and Fast = speed x2"
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1171345119]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=2007089984]
+layout_mode = 2
+text = "RESET "
+
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1157239989]
+layout_mode = 2
+text = "CLOSE"

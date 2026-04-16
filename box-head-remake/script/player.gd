@@ -20,10 +20,10 @@ var hurtDelay = 0.5
 
 func _ready():
 	state=Game.playerState.Idle
-	shapeQuery.collide_with_bodies=false
+	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
 	shapeQuery.collision_mask=1+2+4
-	shapeQuery.exclude=[body.get_rid()]
+	shapeQuery.exclude=[get_rid()]
 	shapeQuery.shape=shape.shape
 
 	

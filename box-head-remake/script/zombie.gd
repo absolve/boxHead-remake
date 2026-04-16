@@ -71,10 +71,10 @@ func _ready():
 	state = Game.enemyState.Idle
 	font = load("res://font/AlibabaPuHuiTi-3-85-Bold.ttf")
 	#font = ThemeDB.fallback_font
-	shapeQuery.collide_with_bodies=false
+	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
 	shapeQuery.collision_mask=1+2+4
-	shapeQuery.exclude=[body.get_rid()]
+	shapeQuery.exclude=[get_rid()]
 	shapeQuery.shape=shape.shape
 	
 	for i in dir:
@@ -129,7 +129,7 @@ func _physics_process(_delta: float) -> void:
 			#向目标前进的最佳方向
 			bestDir=Vector2(sign(to_target.x), sign(to_target.y))
 			
-			print('bestDir ',bestDir)
+			#print('bestDir ',bestDir)
 			for i in directions: 	#判断8个方向是否可以移动
 				shapeQuery.transform=Transform2D(global_rotation,global_position+
 												i.dir.normalized()*speed*_delta)
@@ -164,7 +164,7 @@ func _physics_process(_delta: float) -> void:
 					canMoveDir.sort_custom(func(a, b): return a.dot > b.dot)
 					#bestDir=canMoveDir[0].dir
 					#判断上一帧的方向有没有阻挡，可以行走就不需要更换方向
-					print('last ',velocity)	
+					#print('last ',velocity)	
 					var canMove=false
 					for i in canMoveDir:
 						var tempDir=i.dir
@@ -177,10 +177,10 @@ func _physics_process(_delta: float) -> void:
 						print(canMoveDir)
 						for i in canMoveDir:
 							#如果新方向是之前的路径就跳过
-							var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
-								floori(global_position.y/ MapData.cellSize))+i.dir
-							if recentPos.has(nPos):
-								continue
+							#var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
+								#floori(global_position.y/ MapData.cellSize))+i.dir
+							#if recentPos.has(nPos):
+								#continue
 							bestDir=i.dir	#找到一个方向就行了
 							break
 					else:
@@ -195,7 +195,7 @@ func _physics_process(_delta: float) -> void:
 				if recentPos.size()>recentMax:
 					recentPos.pop_back()
 				
-			print('final ',bestDir)
+			#print('final ',bestDir)
 			if !bestDir.is_normalized():  #设置成单位向量
 				bestDir=bestDir.normalized()
 			velocity=bestDir
@@ -302,17 +302,18 @@ func playRotateAni(newAngle):
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4
 	
+	#print(oldAngle,' ',newAngle)
 	#print(oldAngle * 4,' ',newAngle*4,' ',abs(newAngle*4-oldAngle*4))
 	#print(sign(newAngle-oldAngle))
 	var add=1
-	if abs(newAngle-oldAngle)>4:
+	if newAngle<oldAngle || abs(newAngle-oldAngle)>=4:
 		add=-1
-	#tween.set_loops()	
-	#tween.step_finished.connect(_on_tween_step)
-	#tween.tween_callback(changeFrame.bind(add))
-	#tween.tween_interval(0.08)
+	tween.set_loops()	
+	tween.step_finished.connect(_on_tween_step)
+	tween.tween_callback(changeFrame.bind(add))
+	tween.tween_interval(0.05)
 	
-	tween.tween_property(ani, "frame", newAngle * 4, 0.2)
+	#tween.tween_property(ani, "frame", newAngle * 4, 0.2)
 
 func changeFrame(val):
 	#print(val)
