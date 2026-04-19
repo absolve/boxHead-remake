@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://clotqhi0x4sm8"]
+
+[ext_resource type="Script" uid="uid://ee7h4fwpyng3" path="res://script/map_select.gd" id="1_wdws0"]
+[ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_4kp6q"]
+[ext_resource type="PackedScene" uid="uid://bo4bw166k8ygy" path="res://scene/game_setting.tscn" id="2_wbm38"]
+[ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="3_81sah"]
+[ext_resource type="Texture2D" uid="uid://dof3s3g5tsf5u" path="res://sprite/ui/44.png" id="4_4mpcx"]
+[ext_resource type="Texture2D" uid="uid://b74f3kywxt0ly" path="res://sprite/ui/419.png" id="4_p7kmg"]
+[ext_resource type="Texture2D" uid="uid://b4pojcu1cnbt3" path="res://sprite/ui/442.png" id="5_1o3hr"]
+[ext_resource type="Texture2D" uid="uid://fr8u4yllgc4g" path="res://sprite/ui/33.png" id="6_pwkbp"]
+[ext_resource type="Texture2D" uid="uid://fbvggpyqds52" path="res://sprite/ui/331.png" id="7_7s5k5"]
+
+[node name="mapSelect" type="Node2D" unique_id=346840057]
+script = ExtResource("1_wdws0")
+
+[node name="bg" type="Sprite2D" parent="." unique_id=998481139]
+texture = ExtResource("2_4kp6q")
+centered = false
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Control" type="Control" parent="." unique_id=1621400941]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("3_81sah")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Control" unique_id=192258781]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 48.0
+offset_right = 556.0
+offset_bottom = 105.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "OBJECTIVE KILL ZOMBIES"
+
+[node name="Label2" type="Label" parent="Control" unique_id=377038499]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 105.0
+offset_right = 576.0
+offset_bottom = 154.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "REWARDS: Earn upto 10 new weapons and 90+ upgrades via multiple Zombies kills!"
+autowrap_mode = 1
+
+[node name="btnOption" type="Button" parent="Control" unique_id=1948125070]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 400.0
+offset_right = 329.0
+offset_bottom = 443.0
+text = "OPTIONS"
+
+[node name="btnControl" type="Button" parent="Control" unique_id=229531225]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 400.0
+offset_right = 459.0
+offset_bottom = 443.0
+text = "CONTROLS"
+
+[node name="btnBack" type="Button" parent="Control" unique_id=1399636900]
+layout_mode = 0
+offset_left = 464.0
+offset_top = 400.0
+offset_right = 610.0
+offset_bottom = 443.0
+text = "Back to menu"
+
+[node name="Label3" type="Label" parent="Control" unique_id=106862444]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 360.0
+offset_right = 497.0
+offset_bottom = 383.0
+theme_override_colors/font_color = Color(0.1254902, 0, 0, 1)
+text = "CLICK TO PLAY LEVEL"
+
+[node name="btnPrev" type="TextureButton" parent="Control" unique_id=35426253]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 230.0
+offset_right = 256.0
+offset_bottom = 270.0
+texture_normal = ExtResource("4_4mpcx")
+texture_pressed = ExtResource("5_1o3hr")
+
+[node name="btnNext" type="TextureButton" parent="Control" unique_id=426910332]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 230.0
+offset_right = 640.0
+offset_bottom = 270.0
+texture_normal = ExtResource("6_pwkbp")
+texture_pressed = ExtResource("7_7s5k5")
+
+[node name="mapImg" type="TextureRect" parent="Control" unique_id=405035913]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 168.0
+offset_right = 745.0
+offset_bottom = 429.0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_p7kmg")
+
+[node name="gameSetting" parent="." unique_id=1401346272 instance=ExtResource("2_wbm38")]
+visible = false
+
+[connection signal="pressed" from="Control/btnOption" to="." method="_on_btn_option_pressed"]
+[connection signal="pressed" from="Control/btnPrev" to="." method="_on_btn_prev_pressed"]
+[connection signal="pressed" from="Control/btnNext" to="." method="_on_btn_next_pressed"]
+[connection signal="mouse_entered" from="Control/mapImg" to="." method="_on_map_img_mouse_entered"]
+[connection signal="mouse_exited" from="Control/mapImg" to="." method="_on_map_img_mouse_exited"]

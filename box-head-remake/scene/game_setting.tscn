@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://bo4bw166k8ygy"]
 
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="1_4cn6t"]
+[ext_resource type="Script" uid="uid://d15sh77pwqhna" path="res://script/game_setting.gd" id="1_iclba"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4cn6t"]
-content_margin_top = 20.0
-content_margin_bottom = 20.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(1, 1, 1, 0.98039216)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
@@ -23,14 +24,16 @@ corner_radius_bottom_left = 10
 
 [node name="gameSetting" type="PopupPanel" unique_id=1401346272]
 oversampling_override = 1.0
-size = Vector2i(634, 599)
+size = Vector2i(571, 475)
 visible = true
+keep_title_visible = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_4cn6t")
+script = ExtResource("1_iclba")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1117909959]
-offset_top = 20.0
-offset_right = 634.0
-offset_bottom = 579.0
+offset_top = 10.0
+offset_right = 571.0
+offset_bottom = 465.0
 theme = ExtResource("1_4cn6t")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1594162035]
@@ -43,7 +46,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
-theme_override_constants/margin_left = 30
+theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
@@ -51,6 +54,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1658052564]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 text = "Difficulty:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1096961920]
@@ -58,38 +62,47 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=655337159]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "BEGINNER"
 
 [node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=376156077]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "INTERMEDIATE"
 
 [node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1532622018]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "EXPERT"
 
 [node name="Button4" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1103318192]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "NIGHTMARE"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer" unique_id=1180526818]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/MarginContainer" unique_id=1772745371]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 text = "Sets the difficulty of the level: escalates the level and the upgrades accordingly"
 fit_content = true
@@ -104,7 +117,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
-theme_override_constants/margin_left = 30
+theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
@@ -112,6 +125,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer/MarginContainer" unique_id=1461172905]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 text = "Object collision:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=153251771]
@@ -119,13 +133,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1712377451]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_iclba")
 text = "OFF"
 
 [node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1320224333]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_iclba")
@@ -133,12 +151,13 @@ text = "ON"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer2" unique_id=268850659]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer2/MarginContainer" unique_id=1780794088]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 text = "Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore"
 fit_content = true
@@ -153,7 +172,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
-theme_override_constants/margin_left = 30
+theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
@@ -161,6 +180,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer3/HBoxContainer/MarginContainer" unique_id=1086949474]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 text = "Devils:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1646063319]
@@ -168,26 +188,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=1258132104]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_uq3fg")
 text = "OFF"
 
 [node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=345582191]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_uq3fg")
 text = "ON"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer3" unique_id=138769229]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer3/MarginContainer" unique_id=642874317]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 text = "Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!"
 fit_content = true
@@ -202,7 +227,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
-theme_override_constants/margin_left = 30
+theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
@@ -210,6 +235,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer4/HBoxContainer/MarginContainer" unique_id=1925097713]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 text = "Friendly Fire:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer4/HBoxContainer" unique_id=309389852]
@@ -217,26 +243,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=1890063601]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_qri7q")
 text = "OFF"
 
 [node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=589469415]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_qri7q")
 text = "ON"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer4" unique_id=1253474164]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/MarginContainer" unique_id=370494591]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "Turns the Friendly damage on/off, however damage from barrels is still applicable. Forfeits hiscore!"
 fit_content = true
@@ -251,7 +282,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.4
-theme_override_constants/margin_left = 30
+theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
@@ -259,6 +290,7 @@ theme_override_constants/margin_bottom = 10
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer5/HBoxContainer/MarginContainer" unique_id=869924963]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 text = "Game speed:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer5/HBoxContainer" unique_id=1014010999]
@@ -266,32 +298,38 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1831986015]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_78oiq")
 text = "SLOW"
 
 [node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=499809297]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_78oiq")
 text = "NORMAL"
 
 [node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1615732297]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = SubResource("ButtonGroup_78oiq")
 text = "FAST"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer5" unique_id=1579227333]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer5/MarginContainer" unique_id=1110550064]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 0.60784316)
+theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 text = "Sets the speed of the game, slow = speed / 2, normal = normal speed, and Fast = speed x2"
 fit_content = true
@@ -301,9 +339,15 @@ layout_mode = 2
 alignment = 1
 
 [node name="Button" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=2007089984]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "RESET "
 
-[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1157239989]
+[node name="btnClose" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1157239989]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 14
 text = "CLOSE"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/btnClose" to="." method="_on_btn_close_pressed"]
