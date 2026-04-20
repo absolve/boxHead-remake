@@ -41,6 +41,10 @@ enum playerState{Idle,hurt,dead}
 
 enum enemyState {Idle, hurt, fallDown, dead,attack,rotate}
 
+
+var mapId=[{'name':'Boxy','id':0,'img':"res://sprite/409.jpg"},{'name':'Big Boxy','id':1,'img':"res://sprite/427.png"},
+			{'name':'Tight','id':2,'img':"res://sprite/409.jpg"},{'name':'Bunker','id':3,'img':"res://sprite/409.jpg"}]
+
 @warning_ignore("unused_signal")
 signal weaponUpgrade
 @warning_ignore("unused_signal")

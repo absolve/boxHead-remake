@@ -4,16 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_4kp6q"]
 [ext_resource type="PackedScene" uid="uid://bo4bw166k8ygy" path="res://scene/game_setting.tscn" id="2_wbm38"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="3_81sah"]
-[ext_resource type="Texture2D" uid="uid://dof3s3g5tsf5u" path="res://sprite/ui/44.png" id="4_4mpcx"]
+[ext_resource type="Texture2D" uid="uid://cyfocfrypvwns" path="res://sprite/ui/44.png" id="4_4mpcx"]
 [ext_resource type="Texture2D" uid="uid://b74f3kywxt0ly" path="res://sprite/ui/419.png" id="4_p7kmg"]
 [ext_resource type="Texture2D" uid="uid://b4pojcu1cnbt3" path="res://sprite/ui/442.png" id="5_1o3hr"]
-[ext_resource type="Texture2D" uid="uid://fr8u4yllgc4g" path="res://sprite/ui/33.png" id="6_pwkbp"]
+[ext_resource type="Texture2D" uid="uid://buws1x6y0b5m" path="res://sprite/ui/33.png" id="6_pwkbp"]
 [ext_resource type="Texture2D" uid="uid://fbvggpyqds52" path="res://sprite/ui/331.png" id="7_7s5k5"]
 
 [node name="mapSelect" type="Node2D" unique_id=346840057]
 script = ExtResource("1_wdws0")
 
 [node name="bg" type="Sprite2D" parent="." unique_id=998481139]
+visible = false
 texture = ExtResource("2_4kp6q")
 centered = false
 metadata/_edit_lock_ = true
@@ -28,6 +29,7 @@ theme = ExtResource("3_81sah")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Control" unique_id=192258781]
+visible = false
 layout_mode = 0
 offset_left = 84.0
 offset_top = 48.0
@@ -38,6 +40,7 @@ theme_override_font_sizes/font_size = 40
 text = "OBJECTIVE KILL ZOMBIES"
 
 [node name="Label2" type="Label" parent="Control" unique_id=377038499]
+visible = false
 layout_mode = 0
 offset_left = 84.0
 offset_top = 105.0
@@ -99,7 +102,14 @@ offset_bottom = 270.0
 texture_normal = ExtResource("6_pwkbp")
 texture_pressed = ExtResource("7_7s5k5")
 
-[node name="mapImg" type="TextureRect" parent="Control" unique_id=405035913]
+[node name="mapImg" type="TextureRect" parent="Control" unique_id=225127661]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 168.0
+offset_right = 284.0
+offset_bottom = 208.0
+
+[node name="mapBorderImg" type="TextureRect" parent="Control" unique_id=405035913]
 layout_mode = 0
 offset_left = 244.0
 offset_top = 168.0
@@ -108,11 +118,21 @@ offset_bottom = 429.0
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_p7kmg")
 
+[node name="mapName" type="Label" parent="Control" unique_id=33558751]
+layout_mode = 0
+offset_left = 376.0
+offset_top = 325.0
+offset_right = 467.0
+offset_bottom = 348.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="gameSetting" parent="." unique_id=1401346272 instance=ExtResource("2_wbm38")]
 visible = false
 
 [connection signal="pressed" from="Control/btnOption" to="." method="_on_btn_option_pressed"]
 [connection signal="pressed" from="Control/btnPrev" to="." method="_on_btn_prev_pressed"]
 [connection signal="pressed" from="Control/btnNext" to="." method="_on_btn_next_pressed"]
-[connection signal="mouse_entered" from="Control/mapImg" to="." method="_on_map_img_mouse_entered"]
-[connection signal="mouse_exited" from="Control/mapImg" to="." method="_on_map_img_mouse_exited"]
+[connection signal="mouse_entered" from="Control/mapBorderImg" to="." method="_on_map_img_mouse_entered"]
+[connection signal="mouse_exited" from="Control/mapBorderImg" to="." method="_on_map_img_mouse_exited"]
