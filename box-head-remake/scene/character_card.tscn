@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://mjmgeklu220x"]
+
+[ext_resource type="Texture2D" uid="uid://d03j5o83q8k76" path="res://sprite/ui/22.png" id="1_av7ou"]
+[ext_resource type="Script" uid="uid://db53j3h8dmsfl" path="res://scene/character_card.gd" id="1_mq4yi"]
+[ext_resource type="Texture2D" uid="uid://dof3s3g5tsf5u" path="res://sprite/ui/44.png" id="2_mq4yi"]
+[ext_resource type="Texture2D" uid="uid://b4pojcu1cnbt3" path="res://sprite/ui/442.png" id="3_d4872"]
+[ext_resource type="Texture2D" uid="uid://fr8u4yllgc4g" path="res://sprite/ui/33.png" id="4_rrad7"]
+[ext_resource type="Texture2D" uid="uid://fbvggpyqds52" path="res://sprite/ui/331.png" id="5_y7fad"]
+
+[node name="characterCard" type="Control" unique_id=481343798]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_mq4yi")
+
+[node name="img" type="TextureRect" parent="." unique_id=564028924]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=256687285]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_av7ou")
+
+[node name="btnPrev" type="TextureButton" parent="." unique_id=677884965]
+layout_mode = 0
+offset_left = -24.0
+offset_top = 64.0
+offset_right = 16.0
+offset_bottom = 104.0
+texture_normal = ExtResource("2_mq4yi")
+texture_pressed = ExtResource("3_d4872")
+
+[node name="btnNext" type="TextureButton" parent="." unique_id=846997074]
+layout_mode = 0
+offset_left = 172.0
+offset_top = 64.0
+offset_right = 212.0
+offset_bottom = 104.0
+texture_normal = ExtResource("4_rrad7")
+texture_pressed = ExtResource("5_y7fad")
+
+[node name="id" type="Label" parent="." unique_id=6309508]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 32.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+
+[node name="name" type="Label" parent="." unique_id=134979]
+layout_mode = 0
+offset_left = 81.0
+offset_top = 144.0
+offset_right = 169.0
+offset_bottom = 167.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)

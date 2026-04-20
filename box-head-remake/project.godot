@@ -25,6 +25,7 @@ Game="*res://autoload/game.gd"
 MapData="*res://autoload/mapData.gd"
 SfxManage="*res://autoload/sfxManage.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+SoundUtil="*uid://bmhmxhlfsbq1d"
 
 [display]
 

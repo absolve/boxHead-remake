@@ -4,11 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_4kp6q"]
 [ext_resource type="PackedScene" uid="uid://bo4bw166k8ygy" path="res://scene/game_setting.tscn" id="2_wbm38"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="3_81sah"]
-[ext_resource type="Texture2D" uid="uid://cyfocfrypvwns" path="res://sprite/ui/44.png" id="4_4mpcx"]
+[ext_resource type="Texture2D" uid="uid://dof3s3g5tsf5u" path="res://sprite/ui/44.png" id="4_4mpcx"]
 [ext_resource type="Texture2D" uid="uid://b74f3kywxt0ly" path="res://sprite/ui/419.png" id="4_p7kmg"]
 [ext_resource type="Texture2D" uid="uid://b4pojcu1cnbt3" path="res://sprite/ui/442.png" id="5_1o3hr"]
-[ext_resource type="Texture2D" uid="uid://buws1x6y0b5m" path="res://sprite/ui/33.png" id="6_pwkbp"]
+[ext_resource type="Texture2D" uid="uid://fr8u4yllgc4g" path="res://sprite/ui/33.png" id="6_pwkbp"]
 [ext_resource type="Texture2D" uid="uid://fbvggpyqds52" path="res://sprite/ui/331.png" id="7_7s5k5"]
+[ext_resource type="PackedScene" uid="uid://mjmgeklu220x" path="res://scene/character_card.tscn" id="9_1o3hr"]
 
 [node name="mapSelect" type="Node2D" unique_id=346840057]
 script = ExtResource("1_wdws0")
@@ -29,7 +30,6 @@ theme = ExtResource("3_81sah")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Control" unique_id=192258781]
-visible = false
 layout_mode = 0
 offset_left = 84.0
 offset_top = 48.0
@@ -40,39 +40,38 @@ theme_override_font_sizes/font_size = 40
 text = "OBJECTIVE KILL ZOMBIES"
 
 [node name="Label2" type="Label" parent="Control" unique_id=377038499]
-visible = false
 layout_mode = 0
-offset_left = 84.0
+offset_left = 76.0
 offset_top = 105.0
-offset_right = 576.0
-offset_bottom = 154.0
+offset_right = 568.0
+offset_bottom = 123.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "REWARDS: Earn upto 10 new weapons and 90+ upgrades via multiple Zombies kills!"
 autowrap_mode = 1
 
 [node name="btnOption" type="Button" parent="Control" unique_id=1948125070]
 layout_mode = 0
-offset_left = 220.0
-offset_top = 400.0
-offset_right = 329.0
-offset_bottom = 443.0
+offset_left = 221.0
+offset_top = 416.0
+offset_right = 330.0
+offset_bottom = 459.0
 text = "OPTIONS"
 
 [node name="btnControl" type="Button" parent="Control" unique_id=229531225]
 layout_mode = 0
-offset_left = 336.0
-offset_top = 400.0
-offset_right = 459.0
-offset_bottom = 443.0
+offset_left = 337.0
+offset_top = 416.0
+offset_right = 460.0
+offset_bottom = 459.0
 text = "CONTROLS"
 
 [node name="btnBack" type="Button" parent="Control" unique_id=1399636900]
 layout_mode = 0
-offset_left = 464.0
-offset_top = 400.0
-offset_right = 610.0
-offset_bottom = 443.0
+offset_left = 465.0
+offset_top = 416.0
+offset_right = 611.0
+offset_bottom = 459.0
 text = "Back to menu"
 
 [node name="Label3" type="Label" parent="Control" unique_id=106862444]
@@ -86,34 +85,34 @@ text = "CLICK TO PLAY LEVEL"
 
 [node name="btnPrev" type="TextureButton" parent="Control" unique_id=35426253]
 layout_mode = 0
-offset_left = 216.0
-offset_top = 230.0
-offset_right = 256.0
-offset_bottom = 270.0
+offset_left = 230.0
+offset_top = 240.0
+offset_right = 270.0
+offset_bottom = 280.0
 texture_normal = ExtResource("4_4mpcx")
 texture_pressed = ExtResource("5_1o3hr")
 
 [node name="btnNext" type="TextureButton" parent="Control" unique_id=426910332]
 layout_mode = 0
-offset_left = 600.0
-offset_top = 230.0
-offset_right = 640.0
-offset_bottom = 270.0
+offset_left = 610.0
+offset_top = 240.0
+offset_right = 650.0
+offset_bottom = 280.0
 texture_normal = ExtResource("6_pwkbp")
 texture_pressed = ExtResource("7_7s5k5")
 
 [node name="mapImg" type="TextureRect" parent="Control" unique_id=225127661]
 layout_mode = 0
-offset_left = 244.0
+offset_left = 256.0
 offset_top = 168.0
-offset_right = 284.0
+offset_right = 296.0
 offset_bottom = 208.0
 
 [node name="mapBorderImg" type="TextureRect" parent="Control" unique_id=405035913]
 layout_mode = 0
-offset_left = 244.0
+offset_left = 256.0
 offset_top = 168.0
-offset_right = 745.0
+offset_right = 757.0
 offset_bottom = 429.0
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_p7kmg")
@@ -127,6 +126,70 @@ offset_bottom = 348.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
+uppercase = true
+
+[node name="mapIndex" type="Label" parent="Control" unique_id=1399317026]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 167.0
+offset_right = 272.0
+offset_bottom = 183.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="Control" unique_id=1223512664]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 144.0
+offset_right = 167.0
+offset_bottom = 187.0
+selected = 0
+item_count = 4
+popup/item_0/text = "1 player"
+popup/item_0/id = 0
+popup/item_1/text = "2 player"
+popup/item_1/id = 1
+popup/item_2/text = "3 player"
+popup/item_2/id = 2
+popup/item_3/text = "4 player"
+popup/item_3/id = 3
+
+[node name="characterCard" parent="Control" unique_id=481343798 instance=ExtResource("9_1o3hr")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 200.0
+offset_right = 16.0
+offset_bottom = 200.0
+scale = Vector2(0.5, 0.5)
+
+[node name="characterCard2" parent="Control" unique_id=202548650 instance=ExtResource("9_1o3hr")]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 200.0
+offset_right = 128.0
+offset_bottom = 200.0
+scale = Vector2(0.5, 0.5)
+ids = 2
+
+[node name="characterCard3" parent="Control" unique_id=2015239848 instance=ExtResource("9_1o3hr")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 312.0
+offset_right = 16.0
+offset_bottom = 312.0
+scale = Vector2(0.5, 0.5)
+ids = 3
+
+[node name="characterCard4" parent="Control" unique_id=766357521 instance=ExtResource("9_1o3hr")]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 312.0
+offset_right = 128.0
+offset_bottom = 312.0
+scale = Vector2(0.5, 0.5)
+ids = 4
 
 [node name="gameSetting" parent="." unique_id=1401346272 instance=ExtResource("2_wbm38")]
 visible = false

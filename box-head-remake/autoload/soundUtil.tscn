@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bmhmxhlfsbq1d"]
+
+[ext_resource type="Script" uid="uid://colcd2j05d43" path="res://autoload/sound_util.gd" id="1_465xq"]
+[ext_resource type="AudioStream" uid="uid://blgosxo8icnbj" path="res://sound/564_564 CLICK.mp3" id="2_qp57m"]
+
+[node name="SoundUtil" type="Node2D" unique_id=43124588]
+script = ExtResource("1_465xq")
+
+[node name="click" type="AudioStreamPlayer2D" parent="." unique_id=1930912817]
+stream = ExtResource("2_qp57m")
+bus = &"sfx"
