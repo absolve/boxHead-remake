@@ -2,9 +2,17 @@ extends Node
 
 const cellSize: float = 30 # 每个格子大小
 
+#武器基本参数信息
 var allWeaponData = {
 	
 }
+
+#地图配置
+var mapConfig={'difficulty':1,'collision':'','Devils':'','friendlyFire':'',
+				'Game speed':1}
+
+var currKillStreak=0
+var killStreak=0
 
 var mapSize: Vector2 # 地图大小
 

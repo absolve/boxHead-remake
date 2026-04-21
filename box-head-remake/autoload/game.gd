@@ -52,7 +52,10 @@ var mapId=[{'name':'Boxy','id':0,'img':"res://sprite/409.jpg"},{'name':'Buttons'
 			,{'name':'Thin line','id':15,'img':"res://sprite/480.png"},{'name':'4 Castles','id':16,'img':"res://sprite/484.png"}
 			,{'name':'The strips','id':17,'img':"res://sprite/488.png"},{'name':'Big one','id':18,'img':"res://sprite/492.jpg"}]
 
-var playerName=[{'name':'bambo','id':1},{'name':'bon','id':2},{'name':'bind','id':3},{'name':'bert','id':4}]
+var playerName=[{'name':'bambo','id':1,'img':"res://sprite/ui/12.png"},
+				{'name':'bon','id':2,'img':"res://sprite/ui/2.png"},
+				{'name':'bind','id':3,'img':"res://sprite/ui/3.png"},
+				{'name':'bert','id':4,'img':"res://sprite/ui/4.png"}]
 
 @warning_ignore("unused_signal")
 signal weaponUpgrade

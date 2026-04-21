@@ -60,3 +60,7 @@ func _on_btn_instructions_mouse_exited():
 	if tween!=null:
 		tween.stop()
 	btn_instructions.position=originalPos
+
+
+func _on_btn_start_pressed():
+	get_tree().change_scene_to_file("res://scene/map_select.tscn")
