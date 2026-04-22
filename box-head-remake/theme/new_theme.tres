@@ -19,25 +19,25 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0vngn"]
 texture = ExtResource("1_l8uce")
-texture_margin_left = 20.0
-texture_margin_top = 10.0
-texture_margin_right = 20.0
-texture_margin_bottom = 10.0
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
 modulate_color = Color(0.7372549, 0.84313726, 0.99607843, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_td8pf"]
 texture = ExtResource("1_l8uce")
-texture_margin_left = 20.0
-texture_margin_top = 10.0
-texture_margin_right = 20.0
-texture_margin_bottom = 10.0
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2wqca"]
 texture = ExtResource("1_l8uce")
-texture_margin_left = 20.0
-texture_margin_top = 10.0
-texture_margin_right = 20.0
-texture_margin_bottom = 10.0
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
 modulate_color = Color(0.9019608, 0, 0, 0.3529412)
 
 [resource]

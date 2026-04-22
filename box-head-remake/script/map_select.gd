@@ -42,4 +42,10 @@ func _on_btn_next_pressed() -> void:
 	SoundUtil.playClick()
 
 func _on_btn_option_pressed() -> void:
+	SoundUtil.playClick()
 	setting.popup_centered()
+
+
+func _on_btn_back_pressed() -> void:
+	SoundUtil.playChange()
+	get_tree().change_scene_to_file("res://scene/welcome.tscn")

@@ -24,8 +24,9 @@ corner_radius_bottom_left = 10
 
 [node name="gameSetting" type="PopupPanel" unique_id=1401346272]
 oversampling_override = 1.0
-size = Vector2i(571, 7133)
+size = Vector2i(571, 435)
 visible = true
+max_size = Vector2i(32768, 435)
 keep_title_visible = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_4cn6t")
 script = ExtResource("1_iclba")
@@ -33,7 +34,8 @@ script = ExtResource("1_iclba")
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1117909959]
 offset_top = 10.0
 offset_right = 571.0
-offset_bottom = 7123.0
+offset_bottom = 425.0
+size_flags_vertical = 8
 theme = ExtResource("1_4cn6t")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1594162035]
@@ -45,10 +47,10 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=933662978]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.4
+size_flags_stretch_ratio = 0.3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 10
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1658052564]
@@ -61,7 +63,7 @@ text = "Difficulty:"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=655337159]
+[node name="btnLevel1" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=655337159]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -70,7 +72,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "BEGINNER"
 
-[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=376156077]
+[node name="btnLevel2" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=376156077]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -78,7 +80,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "INTERMEDIATE"
 
-[node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1532622018]
+[node name="btnLevel3" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1532622018]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -86,7 +88,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_4cn6t")
 text = "EXPERT"
 
-[node name="Button4" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1103318192]
+[node name="btnLevel4" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1103318192]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -97,7 +99,6 @@ text = "NIGHTMARE"
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer" unique_id=1180526818]
 layout_mode = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/MarginContainer" unique_id=1772745371]
 layout_mode = 2
@@ -116,7 +117,7 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=614938067]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.4
+size_flags_stretch_ratio = 0.3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -132,27 +133,26 @@ text = "Object collision"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1712377451]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-toggle_mode = true
-button_group = SubResource("ButtonGroup_iclba")
-text = "OFF"
-
-[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1320224333]
+[node name="btnCollisionOff" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1712377451]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_pressed = true
 button_group = SubResource("ButtonGroup_iclba")
+text = "OFF"
+
+[node name="btnCollisionOn" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1320224333]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+toggle_mode = true
+button_group = SubResource("ButtonGroup_iclba")
 text = "ON"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer2" unique_id=268850659]
 layout_mode = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer2/MarginContainer" unique_id=1780794088]
 layout_mode = 2
@@ -171,7 +171,7 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1108967364]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.4
+size_flags_stretch_ratio = 0.3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -181,13 +181,13 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 14
-text = "Devils:"
+text = "Devils"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1646063319]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=1258132104]
+[node name="btnDevilsOff" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=1258132104]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -196,7 +196,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_uq3fg")
 text = "OFF"
 
-[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=345582191]
+[node name="btnDevilsOn" type="Button" parent="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer" unique_id=345582191]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -207,7 +207,6 @@ text = "ON"
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer3" unique_id=138769229]
 layout_mode = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer3/MarginContainer" unique_id=642874317]
 layout_mode = 2
@@ -226,7 +225,7 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer4/HBoxContainer" unique_id=1602551332]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.4
+size_flags_stretch_ratio = 0.3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -242,7 +241,7 @@ text = "Friendly Fire"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=1890063601]
+[node name="btnFireOff" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=1890063601]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -251,7 +250,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_qri7q")
 text = "OFF"
 
-[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=589469415]
+[node name="btnFireOn" type="Button" parent="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer" unique_id=589469415]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -262,7 +261,6 @@ text = "ON"
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer4" unique_id=1253474164]
 layout_mode = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/VBoxContainer4/MarginContainer" unique_id=370494591]
 layout_mode = 2
@@ -281,7 +279,7 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer5/HBoxContainer" unique_id=1165375500]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.4
+size_flags_stretch_ratio = 0.3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -297,7 +295,7 @@ text = "Game speed"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1831986015]
+[node name="btnSlow" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1831986015]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -306,7 +304,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_78oiq")
 text = "SLOW"
 
-[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=499809297]
+[node name="btnNormal" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=499809297]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -314,7 +312,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_78oiq")
 text = "NORMAL"
 
-[node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1615732297]
+[node name="btnFast" type="Button" parent="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer" unique_id=1615732297]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -350,4 +348,5 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "CLOSE"
 
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/btnClose" to="." method="_on_btn_close_pressed"]

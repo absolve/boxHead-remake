@@ -8,7 +8,7 @@ var allWeaponData = {
 }
 
 #地图配置
-var mapConfig={'difficulty':1,'collision':'','Devils':'','friendlyFire':'',
+var mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
 				'Game speed':1}
 
 var currKillStreak=0
@@ -56,6 +56,11 @@ func findPath(start: Vector2, end: Vector2):
 	var s = Vector2(floori(start.x / cellSize), floori(start.y / cellSize))
 	var e = Vector2(floori(end.x / cellSize), floori(end.y / cellSize))
 	return astarGrid.get_point_path(s, e)
+
+#重置配置
+func resetMapConfig():
+	mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
+				'Game speed':1}
 
 
 '''

@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_4kp6q"]
 [ext_resource type="PackedScene" uid="uid://bo4bw166k8ygy" path="res://scene/game_setting.tscn" id="2_wbm38"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="3_81sah"]
-[ext_resource type="Texture2D" uid="uid://cyfocfrypvwns" path="res://sprite/ui/44.png" id="4_4mpcx"]
+[ext_resource type="Texture2D" uid="uid://dof3s3g5tsf5u" path="res://sprite/ui/44.png" id="4_4mpcx"]
 [ext_resource type="Texture2D" uid="uid://b74f3kywxt0ly" path="res://sprite/ui/419.png" id="4_p7kmg"]
 [ext_resource type="Texture2D" uid="uid://b4pojcu1cnbt3" path="res://sprite/ui/442.png" id="5_1o3hr"]
-[ext_resource type="Texture2D" uid="uid://buws1x6y0b5m" path="res://sprite/ui/33.png" id="6_pwkbp"]
+[ext_resource type="Texture2D" uid="uid://fr8u4yllgc4g" path="res://sprite/ui/33.png" id="6_pwkbp"]
 [ext_resource type="Texture2D" uid="uid://fbvggpyqds52" path="res://sprite/ui/331.png" id="7_7s5k5"]
 [ext_resource type="PackedScene" uid="uid://mjmgeklu220x" path="res://scene/character_card.tscn" id="9_1o3hr"]
 
@@ -15,7 +15,6 @@
 script = ExtResource("1_wdws0")
 
 [node name="bg" type="Sprite2D" parent="." unique_id=998481139]
-visible = false
 texture = ExtResource("2_4kp6q")
 centered = false
 metadata/_edit_lock_ = true
@@ -130,9 +129,9 @@ uppercase = true
 
 [node name="mapIndex" type="Label" parent="Control" unique_id=1399317026]
 layout_mode = 0
-offset_left = 240.0
+offset_left = 251.0
 offset_top = 167.0
-offset_right = 272.0
+offset_right = 283.0
 offset_bottom = 183.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 10
@@ -195,6 +194,7 @@ ids = 4
 visible = false
 
 [connection signal="pressed" from="Control/btnOption" to="." method="_on_btn_option_pressed"]
+[connection signal="pressed" from="Control/btnBack" to="." method="_on_btn_back_pressed"]
 [connection signal="pressed" from="Control/btnPrev" to="." method="_on_btn_prev_pressed"]
 [connection signal="pressed" from="Control/btnNext" to="." method="_on_btn_next_pressed"]
 [connection signal="mouse_entered" from="Control/mapBorderImg" to="." method="_on_map_img_mouse_entered"]

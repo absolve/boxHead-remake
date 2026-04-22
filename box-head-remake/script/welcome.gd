@@ -63,4 +63,5 @@ func _on_btn_instructions_mouse_exited():
 
 
 func _on_btn_start_pressed():
+	SoundUtil.playChange()
 	get_tree().change_scene_to_file("res://scene/map_select.tscn")
