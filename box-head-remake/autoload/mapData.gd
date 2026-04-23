@@ -4,15 +4,24 @@ const cellSize: float = 30 # 每个格子大小
 
 #武器基本参数信息
 var allWeaponData = {
-	
+	Game.weaponType.Pistol:{'damage':1,'wRange':10,'delay':0.1,'maxAmmoNum':0},
+	Game.weaponType.UZI:{},
+	Game.weaponType.Shotgun:{},
+	Game.weaponType.Mine:{},
+	Game.weaponType.Wall:{},
+	Game.weaponType.Barrel:{},
+	Game.weaponType.Grenade:{},
+	Game.weaponType.Rocket:{},
+	Game.weaponType.Railgun:{},
+	Game.weaponType.ChargePack:{}
 }
 
 #地图配置
 var mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
 				'Game speed':1}
 
-var currKillStreak=0
-var killStreak=0
+var currKillStreak=0  #当前连杀
+var killStreak=0  #连杀
 
 var mapSize: Vector2 # 地图大小
 
@@ -60,9 +69,129 @@ func findPath(start: Vector2, end: Vector2):
 #重置配置
 func resetMapConfig():
 	mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
-				'Game speed':1}
+				'gameSpeed':1}
+
+func countKillStreak():
+	match killStreak:
+		3:
+			pass
+		5:
+			pass
+		8:
+			pass
+		10:
+			pass
+		13:
+			pass
+		15:
+			pass
+		17:
+			pass
+		18:
+			pass
+		20:
+			pass
+		21:
+			pass
+		23:
+			pass
+		26:
+			pass
+		30:
+			pass
+		31:
+			pass
+		32:
+			pass
+		33:
+			pass
+		35:
+			pass
+		36:
+			pass
+		37:
+			pass
+		39:
+			pass
+		40:
+			pass
+		41:
+			pass
+		42:
+			pass
+		43:
+			pass
+		44:
+			pass
+		45:
+			pass	
+		47:
+			pass	
+		48:
+			pass
+		50:
+			pass
+		51:
+			pass			
+		52:
+			pass
+		53:
+			pass
+		54:
+			pass		
+		55:
+			pass
+		56:
+			pass
+		57:
+			pass
+		58:
+			pass
+		59:
+			pass
+		61:
+			pass
+		62:
+			pass
+		63:
+			pass
+		64:
+			pass
+		66:
+			pass				
+		68:
+			pass
+		70:
+			pass
+		72:
+			pass
+		74:
+			pass
+		76:
+			pass
+		78:
+			pass
+		80:
+			pass
+		85:
+			pass
+		90:
+			pass								
+		95:
+			pass
+		100:
+			pass
+		105:
+			pass
+		110:
+			pass	
+		120:
+			pass			
+		125:
+			pass
 
 
+																																	
 '''
 3	Pistol+: Fast Fire
 5	New Weapon: UZI (Key 2)
@@ -122,6 +251,4 @@ func resetMapConfig():
 110	Railgun+: Quad Ammo
 120	Rocket+: Rapid Fire
 125	Railgun+: Long Shot
-
-
 '''

@@ -1,9 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://s86phpj82qgc"]
+[gd_scene format=3 uid="uid://s86phpj82qgc"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_qsh4t"]
 [ext_resource type="Script" uid="uid://74q1qmyciesl" path="res://script/hand_gun.gd" id="2_6jonc"]
 [ext_resource type="AudioStream" uid="uid://bs2r67xh0f8ew" path="res://sound/558_558 Weapon.Pistol.Fire.mp3" id="3_ktkaf"]
-[ext_resource type="Texture2D" uid="uid://dwlebvethbqw0" path="res://sprite/shape/DefineSprite_2309/1.png" id="4_splcp"]
+[ext_resource type="Texture2D" uid="uid://gypb2ausmi4k" path="res://sprite/shape/DefineSprite_2309/1.png" id="4_splcp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4ftkp"]
 animations = [{
@@ -77,23 +77,21 @@ _data = {
 &"fire": SubResource("Animation_f186g")
 }
 
-[node name="Pistol" instance=ExtResource("1_qsh4t")]
+[node name="Pistol" unique_id=1406526228 instance=ExtResource("1_qsh4t")]
 script = ExtResource("2_6jonc")
 damage = 1
 wRange = 300
 delay = 0.6
 hitFeedback = 100
 
-[node name="sound" parent="." index="0"]
+[node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_ktkaf")
 
-[node name="ani" type="AnimatedSprite2D" parent="." index="2"]
+[node name="ani" type="AnimatedSprite2D" parent="." index="2" unique_id=2040335453]
 visible = false
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_4ftkp")
 
-[node name="player" type="AnimationPlayer" parent="." index="3"]
-libraries = {
-&"": SubResource("AnimationLibrary_06x5y")
-}
+[node name="player" type="AnimationPlayer" parent="." index="3" unique_id=400112271]
+libraries/ = SubResource("AnimationLibrary_06x5y")
 speed_scale = 5.0

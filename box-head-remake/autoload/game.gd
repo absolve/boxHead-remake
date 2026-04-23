@@ -2,13 +2,13 @@ extends Node
 
 #武器类型
 enum weaponType {Pistol, Railgun, Rocket, Shotgun,
-				UZI, Mine, RemoteMine, Wall, Barrel, Grenade}
+				UZI, Mine, ChargePack, Wall, Barrel, Grenade}
 #物体类型
-enum itemType {Box = 99, Mine, RemoteMine, Wall, Barrel, Grenade, RocketBullet, Explosion}
+enum itemType {Box = 99, Mine, ChargePack, Wall, Barrel, Grenade, RocketBullet, Explosion}
 
 #奖励箱子的内容
 enum boxContent {Railgun = 500, Rocket, Shotgun,
-				UZI, Mine, RemoteMine, Wall, Barrel, Grenade}
+				UZI, Mine, ChargePack, Wall, Barrel, Grenade}
 
 #角色类型
 enum roleType {Player = 400, Zombie, Devil}
@@ -21,7 +21,7 @@ const weaponName = {
 	weaponType.Shotgun: 'Shotgun',
 	weaponType.UZI: 'UZI',
 	weaponType.Mine: 'Mine',
-	weaponType.RemoteMine: 'RemoteMine',
+	weaponType.ChargePack: 'ChargePack',
 	weaponType.Wall: 'Wall',
 	weaponType.Barrel: 'Barrel',
 	weaponType.Grenade: 'Grenade',
@@ -61,3 +61,5 @@ var playerName=[{'name':'bambo','id':1,'img':"res://sprite/ui/12.png"},
 signal weaponUpgrade
 @warning_ignore("unused_signal")
 signal pickItem
+@warning_ignore("unused_signal")
+signal enemyKilled

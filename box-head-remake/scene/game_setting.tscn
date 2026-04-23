@@ -26,7 +26,7 @@ corner_radius_bottom_left = 10
 oversampling_override = 1.0
 size = Vector2i(571, 435)
 visible = true
-max_size = Vector2i(32768, 435)
+max_size = Vector2i(16384, 435)
 keep_title_visible = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_4cn6t")
 script = ExtResource("1_iclba")
@@ -348,5 +348,18 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "CLOSE"
 
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/btnLevel1" to="." method="_on_btn_level_1_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/btnLevel2" to="." method="_on_btn_level_2_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/btnLevel3" to="." method="_on_btn_level_3_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/btnLevel4" to="." method="_on_btn_level_4_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer/btnCollisionOff" to="." method="_on_btn_collision_off_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer/btnCollisionOn" to="." method="_on_btn_collision_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer/btnDevilsOff" to="." method="_on_btn_devils_off_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer3/HBoxContainer/HBoxContainer/btnDevilsOn" to="." method="_on_btn_devils_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer/btnFireOff" to="." method="_on_btn_fire_off_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer4/HBoxContainer/HBoxContainer/btnFireOn" to="." method="_on_btn_fire_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer/btnSlow" to="." method="_on_btn_slow_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer/btnNormal" to="." method="_on_btn_normal_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer5/HBoxContainer/HBoxContainer/btnFast" to="." method="_on_btn_fast_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/btnClose" to="." method="_on_btn_close_pressed"]
