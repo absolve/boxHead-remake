@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ot86m473600h"]
+[gd_scene format=3 uid="uid://ot86m473600h"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_cl2vf"]
 [ext_resource type="Script" uid="uid://bxc8ywt451s7f" path="res://script/uzi.gd" id="2_pygel"]
@@ -77,7 +77,7 @@ _data = {
 &"fire": SubResource("Animation_tg1ja")
 }
 
-[node name="uzi" instance=ExtResource("1_cl2vf")]
+[node name="uzi" unique_id=199571579 instance=ExtResource("1_cl2vf")]
 script = ExtResource("2_pygel")
 type = 4
 damage = 1
@@ -85,17 +85,17 @@ wRange = 400
 delay = 0.1
 ammoNum = 50
 maxAmmoNum = 50
+hitFeedback = 50
+automatic = true
 
-[node name="sound" parent="." index="0"]
+[node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_jn77h")
 
-[node name="ani" type="AnimatedSprite2D" parent="." index="2"]
+[node name="ani" type="AnimatedSprite2D" parent="." index="2" unique_id=1657868889]
 visible = false
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_pygel")
 
-[node name="player" type="AnimationPlayer" parent="." index="3"]
-libraries = {
-&"": SubResource("AnimationLibrary_3bh8r")
-}
+[node name="player" type="AnimationPlayer" parent="." index="3" unique_id=1845743171]
+libraries/ = SubResource("AnimationLibrary_3bh8r")
 speed_scale = 5.0

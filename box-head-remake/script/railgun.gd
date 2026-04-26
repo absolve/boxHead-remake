@@ -22,9 +22,21 @@ func _ready():
 func _physics_process(_delta):
 	if detecframes>0:
 		detecframes-=1
-	
-		
+		var r=ray.get_overlapping_areas()
+		if r:
+			for i in r:
+				if i.get("type") && i.type in [Game.itemType.Barrel,
+									Game.itemType.Wall]:
+					if !excludeObj.has(i.get_rid()):
+						i.hit(damage)	
+						excludeObj.append(i.get_rid())
+				elif i.owner.type&&i.owner.type in [Game.roleType.Player,
+					Game.roleType.Zombie,Game.roleType.Devil]:
+					if !excludeObj.has(i.get_rid()):
+						i.owner.hit(damage,global_position,hitFeedback)
+						excludeObj.append(i.get_rid())		
 		queue_redraw()
+
 
 func fire(_v):
 	if ammoNum<=0:

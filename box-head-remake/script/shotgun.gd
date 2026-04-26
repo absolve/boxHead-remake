@@ -42,12 +42,20 @@ func _physics_process(_delta: float) -> void:
 				#if !excludeObj.has(result.collider):	
 				if 	result.collider is StaticBody2D:
 					targetPosList[i]=result.position
-				elif result.collider.type &&result.collider.type in [Game.itemType.Barrel,Game.itemType.Wall]:
-					if !excludeObj.has(result.collider):
+				elif result.collider.get("type") &&result.collider.type in [Game.itemType.Barrel,
+									Game.itemType.Wall]:
+					if !excludeObj.has(result.collider_id):
 						result.collider.hit(damage)
-						excludeObj.append(result.collider)
+						excludeObj.append(result.collider_id)
 					targetPosList[i]=result.position
-						
+				elif result.collider is Area2D:
+					if result.collider.owner.type && result.collider.owner.type in [Game.roleType.Player,
+						Game.roleType.Zombie,Game.roleType.Devil]:
+						if !excludeObj.has(result.collider_id):
+							result.collider.owner.hit(damage,result.position,hitFeedback)
+							excludeObj.append(result.collider_id)
+						targetPosList[i]=result.position
+						addSmoke(result.position)			
 		queue_redraw()			
 
 func fire(_v):

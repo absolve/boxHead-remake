@@ -1,16 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://feads1ttn854"]
+[gd_scene format=3 uid="uid://feads1ttn854"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_j20b5"]
 [ext_resource type="Script" uid="uid://g1w6fx1ucsi2" path="res://script/rocket.gd" id="2_ncccc"]
 [ext_resource type="AudioStream" uid="uid://lhp8g4vorjvt" path="res://sound/556_556 Shot.Rocket.Fire.mp3" id="3_xdddg"]
 
-[node name="rocket" instance=ExtResource("1_j20b5")]
+[node name="rocket" unique_id=1344745383 instance=ExtResource("1_j20b5")]
 script = ExtResource("2_ncccc")
 type = 2
 damage = 10
 delay = 1.2
-ammoNum = 10
-maxAmmoNum = 10
+ammoNum = 15
+maxAmmoNum = 15
 
-[node name="sound" parent="." index="0"]
+[node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_xdddg")

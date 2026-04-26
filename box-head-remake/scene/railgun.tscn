@@ -83,10 +83,12 @@ _data = {
 [node name="railgun" unique_id=892343169 instance=ExtResource("1_g1vjg")]
 script = ExtResource("2_p8kex")
 type = 1
+damage = 5
 wRange = 300
 delay = 0.5
 ammoNum = 20
 maxAmmoNum = 20
+hitFeedback = 50
 
 [node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_6a3wx")

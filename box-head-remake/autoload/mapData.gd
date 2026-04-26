@@ -4,16 +4,16 @@ const cellSize: float = 30 # 每个格子大小
 
 #武器基本参数信息
 var allWeaponData = {
-	Game.weaponType.Pistol:{'damage':1,'wRange':10,'delay':0.1,'maxAmmoNum':0},
-	Game.weaponType.UZI:{},
-	Game.weaponType.Shotgun:{},
-	Game.weaponType.Mine:{},
-	Game.weaponType.Wall:{},
-	Game.weaponType.Barrel:{},
-	Game.weaponType.Grenade:{},
-	Game.weaponType.Rocket:{},
-	Game.weaponType.Railgun:{},
-	Game.weaponType.ChargePack:{}
+	Game.weaponType.Pistol:{'damage':1,'wRange':300,'delay':0.6,'maxAmmoNum':0,'automatic':false},
+	Game.weaponType.UZI:{'damage':1,'wRange':400,'delay':0.1,'maxAmmoNum':50,'automatic':true},
+	Game.weaponType.Shotgun:{'damage':2,'wRange':300,'delay':0.1,'maxAmmoNum':15,'splitAngle':30,'automatic':false},
+	Game.weaponType.Mine:{'damage':4,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false},
+	Game.weaponType.Wall:{'damage':0,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false},
+	Game.weaponType.Barrel:{'damage':4,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false},
+	Game.weaponType.Grenade:{'damage':4,'wRange':0,'delay':1,'maxAmmoNum':15,'automatic':false},
+	Game.weaponType.Rocket:{'damage':10,'wRange':0,'delay':1.2,'maxAmmoNum':15,'automatic':false},
+	Game.weaponType.Railgun:{'damage':5,'wRange':300,'delay':0.5,'maxAmmoNum':20,'automatic':false},
+	Game.weaponType.ChargePack:{'damage':0,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false}
 }
 
 #地图配置
@@ -71,10 +71,13 @@ func resetMapConfig():
 	mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
 				'gameSpeed':1}
 
+#计算连杀数
 func countKillStreak():
 	match killStreak:
-		3:
-			pass
+		3: # Pistol+: Fast Fire
+			allWeaponData[Game.weaponType.Pistol].delay=0.3
+			Game.weaponUpgrade.emit(Game.weaponType.Pistol)
+			Game.notice.emit(tr("Pistol+: Fast Fire"))
 		5:
 			pass
 		8:

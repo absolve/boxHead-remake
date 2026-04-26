@@ -63,3 +63,5 @@ signal weaponUpgrade
 signal pickItem
 @warning_ignore("unused_signal")
 signal enemyKilled
+@warning_ignore("unused_signal")
+signal notice  #消息通知

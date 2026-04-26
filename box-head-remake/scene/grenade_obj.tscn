@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://censblqiwd0yh"]
+[gd_scene format=3 uid="uid://censblqiwd0yh"]
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_2ur3v"]
 [ext_resource type="Script" uid="uid://b1l8uktple0ay" path="res://script/grenade_obj.gd" id="2_bvu5d"]
@@ -19,8 +19,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="grenadeObj" instance=ExtResource("1_2ur3v")]
-collision_mask = 15
+[node name="grenadeObj" unique_id=2034097950 instance=ExtResource("1_2ur3v")]
+collision_mask = 60
 script = ExtResource("2_bvu5d")
 type = 104
 itemSize = Vector2(4, 4)
@@ -31,5 +31,5 @@ shape = SubResource("CircleShape2D_gvnf3")
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_tna8y")
 
-[node name="sound" type="AudioStreamPlayer2D" parent="." index="2"]
+[node name="sound" type="AudioStreamPlayer2D" parent="." index="2" unique_id=1287520925]
 stream = ExtResource("4_gvnf3")

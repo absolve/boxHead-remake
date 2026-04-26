@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://we6mc6ojy8ac"]
+[gd_scene format=3 uid="uid://we6mc6ojy8ac"]
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_egs87"]
 [ext_resource type="Script" uid="uid://cb4yk42lll8vi" path="res://script/shotgun.gd" id="2_v3i1e"]
@@ -77,7 +77,7 @@ _data = {
 &"fire": SubResource("Animation_eb14o")
 }
 
-[node name="shotgun" instance=ExtResource("1_egs87")]
+[node name="shotgun" unique_id=1862275640 instance=ExtResource("1_egs87")]
 script = ExtResource("2_v3i1e")
 type = 3
 damage = 2
@@ -85,17 +85,16 @@ wRange = 300
 delay = 0.6
 ammoNum = 15
 maxAmmoNum = 15
+hitFeedback = 150
 
-[node name="sound" parent="." index="0"]
+[node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_yha0r")
 
-[node name="ani" type="AnimatedSprite2D" parent="." index="2"]
+[node name="ani" type="AnimatedSprite2D" parent="." index="2" unique_id=733022032]
 visible = false
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_yha0r")
 
-[node name="player" type="AnimationPlayer" parent="." index="3"]
-libraries = {
-&"": SubResource("AnimationLibrary_b407g")
-}
+[node name="player" type="AnimationPlayer" parent="." index="3" unique_id=542132484]
+libraries/ = SubResource("AnimationLibrary_b407g")
 speed_scale = 5.0

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_qsh4t"]
 [ext_resource type="Script" uid="uid://74q1qmyciesl" path="res://script/hand_gun.gd" id="2_6jonc"]
 [ext_resource type="AudioStream" uid="uid://bs2r67xh0f8ew" path="res://sound/558_558 Weapon.Pistol.Fire.mp3" id="3_ktkaf"]
-[ext_resource type="Texture2D" uid="uid://gypb2ausmi4k" path="res://sprite/shape/DefineSprite_2309/1.png" id="4_splcp"]
+[ext_resource type="Texture2D" uid="uid://dwlebvethbqw0" path="res://sprite/shape/DefineSprite_2309/1.png" id="4_splcp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4ftkp"]
 animations = [{

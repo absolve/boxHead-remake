@@ -2,7 +2,6 @@ extends "res://script/item.gd"
 
 var smoke=preload("res://scene/smoke.tscn")
 var explosion=preload("res://scene/explosion.tscn")
-var ownerId=null
 var vector=Vector2.ZERO
 var speed=700
 

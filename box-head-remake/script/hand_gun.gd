@@ -51,10 +51,9 @@ func _physics_process(_delta: float) -> void:
 			elif result.collider is Area2D:
 				if result.collider.owner.type && result.collider.owner.type in [Game.roleType.Player,
 				Game.roleType.Zombie,Game.roleType.Devil]:
-					print(result.collider_id)
-					print(excludeObj)
+					print(result.position)
 					if !excludeObj.has(result.collider_id):
-						result.collider.owner.hit(damage,global_position,hitFeedback)
+						result.collider.owner.hit(damage,result.position,hitFeedback)
 						excludeObj.append(result.collider_id)
 					targetPos=result.position
 					addSmoke(targetPos)

@@ -11,6 +11,7 @@ var tween=null
 var floorPos=Vector2.ZERO
 var isOnFloor=false
 var angle=0
+var gVec=Vector2(0,-1)  #重力速度
 
 
 func _ready() -> void:
@@ -20,22 +21,22 @@ func _ready() -> void:
 	#vector.x*=speed	
 	angle=vector.angle()
 	vector*=speed
-	vector.y+=-150*abs(cos(angle))
+	#vector.y+=-150*abs(cos(angle))
 	#floorPos=global_position+Vector2(0,height)
 	#print(floorPos)
-	
-	print(angle)
-	print(cos(angle))
+	print(ownerId)
 	
 func _physics_process(delta: float) -> void:
 	if !isOnFloor:
-		vector.y += gravity*abs(cos(angle)) * delta
+		#vector.y += gravity*abs(cos(angle)) * delta
 		#height-=gravity * delta
-		height-=vector.y* delta
+		gVec.y+=gravity* delta
+		height-=gVec.y* delta
 		if height<=0:
 			isOnFloor=true
-			vector.y*=sin(angle)
-			print('===',abs(sin(angle)))
+			gVec=Vector2.ZERO
+			#vector.y*=sin(angle)
+			#print('===',abs(sin(angle)))
 	if isOnFloor:
 		vector=vector.lerp(Vector2.ZERO,0.05)
 	
@@ -48,32 +49,30 @@ func _physics_process(delta: float) -> void:
 		vector.y*=-1
 		sound.play()
 	
-	var result=has_overlapping_areas()
-	var result2=has_overlapping_bodies()
-	if result||result2:
-		var space = get_world_2d().direct_space_state
-		var params = PhysicsShapeQueryParameters2D.new()
-		#params.exclude=[self]
-		params.shape=shape.shape
-		params.transform=Transform2D(global_rotation,global_position)
-		params.collision_mask = collision_mask
-		params.collide_with_areas=true
-		var collision = space.get_rest_info(params)  # 只取第一个碰撞
-		if collision:
-			var normal = collision.normal
-			print('normal',normal)
-			
-			var safe_motion = vector.project(normal)
-			print(safe_motion)
-			#position-=safe_motion
-			vector=vector.bounce(normal)
+	
+	var space = get_world_2d().direct_space_state
+	var params = PhysicsShapeQueryParameters2D.new()
+	params.exclude=[ownerId]
+	params.shape=shape.shape
+	params.transform=Transform2D(global_rotation,global_position)
+	params.collision_mask = collision_mask
+	params.collide_with_areas=true
+	var collision = space.get_rest_info(params)  # 只取第一个碰撞
+	if collision:
+		var normal = collision.normal
+		print('normal',normal)
+		
+		var safe_motion = vector.project(normal)
+		print(safe_motion)
+		#position-=safe_motion
+		vector=vector.bounce(normal)
 
 	
 	position.x=clamp(position.x,itemSize.x/2,MapData.mapSize.x-itemSize.x/2)
 	position.y=clamp(position.y,itemSize.y/2,MapData.mapSize.y-itemSize.y/2)
 	
 	
-	position+=vector*delta
+	position+=vector*delta+gVec* delta
 	if vector.length()<=0.1&&tween==null:
 		print('addExplosion')
 		addExplosion()

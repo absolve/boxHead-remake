@@ -5,6 +5,8 @@ extends "res://script/character.gd"
 @onready var txt = $txt
 @onready var body = $body
 @onready var bodyShape = $body/bodyShape
+@onready var lifeBar=$lifeBar
+@onready var deadSound=$dead
 
 @export var playerId = 1
 var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
@@ -34,16 +36,17 @@ func _ready():
 	weaponBackpack.add_child(gun)
 	#currWeapon=gun
 	#txt.text=Game.weaponName[currWeapon.type]
-	#var t=load("res://scene/uzi.tscn")
-	#var g=t.instantiate()
-	#g.ownerId=get_rid()
-	#weaponList.push_back(g)
-	#weaponBackpack.add_child(g)
-	#var r= load("res://scene/rocket.tscn")
-	#var rocket=r.instantiate()
-	#rocket.ownerId=get_rid()
-	#weaponList.push_back(rocket)
-	#weaponBackpack.add_child(rocket)
+	var t=load("res://scene/uzi.tscn")
+	var u=t.instantiate()
+	u.ownerId=get_rid()
+	weaponList.push_back(u)
+	weaponBackpack.add_child(u)
+	
+	var r= load("res://scene/rocket.tscn")
+	var rocket=r.instantiate()
+	rocket.ownerId=get_rid()
+	weaponList.push_back(rocket)
+	weaponBackpack.add_child(rocket)
 	
 	var b=load("res://scene/barrel.tscn")
 	var barrel=b.instantiate()
@@ -51,40 +54,41 @@ func _ready():
 	weaponList.push_back(barrel)
 	weaponBackpack.add_child(barrel)
 	
-	#var w=load("res://scene/wall.tscn")
-	#var wall=w.instantiate()
-	#wall.ownerId=get_rid()
-	#weaponList.push_back(wall)
-	#weaponBackpack.add_child(wall)
+	var w=load("res://scene/wall.tscn")
+	var wall=w.instantiate()
+	wall.ownerId=get_rid()
+	weaponList.push_back(wall)
+	weaponBackpack.add_child(wall)
 	
-	#var m=load("res://scene/mine.tscn")
-	#var mine=m.instantiate()
-	#mine.ownerId=get_rid()
-	#weaponList.push_back(mine)
-	#weaponBackpack.add_child(mine)
+	var m=load("res://scene/mine.tscn")
+	var mine=m.instantiate()
+	mine.ownerId=get_rid()
+	weaponList.push_back(mine)
+	weaponBackpack.add_child(mine)
 
-	#var s=load("res://scene/shotgun.tscn")
-	#var shortGun=s.instantiate()
-	#shortGun.ownerId=get_rid()
-	#weaponList.push_back(shortGun)
-	#weaponBackpack.add_child(shortGun)
+	var s=load("res://scene/shotgun.tscn")
+	var shortGun=s.instantiate()
+	shortGun.ownerId=get_rid()
+	weaponList.push_back(shortGun)
+	weaponBackpack.add_child(shortGun)
 	
-	#var g = load("res://scene/grenade.tscn")
-	#var grenade = g.instantiate()
-	#grenade.ownerId = get_rid()
-	#weaponList.push_back(grenade)
-	#weaponBackpack.add_child(grenade)
+	var g = load("res://scene/grenade.tscn")
+	var grenade = g.instantiate()
+	grenade.ownerId = body.get_rid()
+	weaponList.push_back(grenade)
+	weaponBackpack.add_child(grenade)
 
 	
-	#var rg=load("res://scene/railgun.tscn")
-	#var railgun=rg.instantiate()
-	#railgun.ownerId=get_rid()
-	#weaponList.push_back(railgun)
-	#weaponBackpack.add_child(railgun)
+	var rg=load("res://scene/railgun.tscn")
+	var railgun=rg.instantiate()
+	railgun.ownerId=get_rid()
+	weaponList.push_back(railgun)
+
+	weaponBackpack.add_child(railgun)
 	
-	currWeapon = barrel
+	currWeapon =grenade
 	
-	print(playerId)
+	print(playerId) 
 	txt.text = Game.weaponName[currWeapon.type]
 	if playerId == 1:
 		keyMap.left = "p1_left"
@@ -135,8 +139,10 @@ func switchWeapon(next: bool = true):
 
 func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	hp -= damage
+	lifeBar.hp=hp
 	if hp <= 0:
 		state=Game.playerState.dead
+		deadSound.play()
 		ani.play("fallDown_%s" % [roundi(angle/2.0)])	
 		shape.disabled = true
 		bodyShape.disabled = true
@@ -149,13 +155,15 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	else:
 		state=Game.playerState.hurt
 		hurtTimer = 0
-		var attacker=(attackPos-global_position).normalized()
+		print("----",global_position,' ',attackPos)
+		var attacker=((global_position+bodyShape.position)-attackPos).normalized()
+		print("----",attacker)
 		var dot = velocity.normalized().dot(attacker)
 		if dot>0: #正面击中
 			ani.play("hitFront_%s" % [angle])
 		else: #背面 侧面击中
 			ani.play("hitRear_%s" % [angle])	
-		velocity=Vector2.RIGHT.rotated(velocity.angle())*-recoil
+		velocity=attacker*recoil
 		
 	
 func _physics_process(_delta):
@@ -227,18 +235,20 @@ func _physics_process(_delta):
 			if currWeapon.type == Game.weaponType.Grenade:
 				currWeapon.increase()
 			else:
-				currWeapon.fire(vector)
+				if currWeapon.automatic:
+					currWeapon.fire(vector)
+				elif Input.is_action_just_pressed(keyMap.fire):
+					currWeapon.fire(vector)	
 		if Input.is_action_just_released(keyMap.fire):
 			if currWeapon.type == Game.weaponType.Grenade:
 				currWeapon.fire(vector)
-
-		
+			
+				
 		if Input.is_action_just_pressed(keyMap.nextWeapon):
 			switchWeapon()
 		if Input.is_action_just_pressed(keyMap.prevWeapon):
 			switchWeapon(false)	
-		position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
-		position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
+		
 	elif state==Game.playerState.hurt:
 		hurtTimer += _delta
 		if hurtTimer > hurtDelay:
@@ -249,6 +259,7 @@ func _physics_process(_delta):
 	elif state==Game.playerState.dead:
 		pass
 	
-		
+	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
+	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	
