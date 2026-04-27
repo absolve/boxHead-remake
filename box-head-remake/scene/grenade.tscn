@@ -6,6 +6,7 @@
 [node name="grenade" unique_id=1100697544 instance=ExtResource("1_n8g3t")]
 script = ExtResource("2_gt16k")
 type = 9
+damage = 4
 delay = 1.0
 ammoNum = 15
 maxAmmoNum = 15

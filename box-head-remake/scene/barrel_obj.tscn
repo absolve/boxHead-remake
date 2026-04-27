@@ -21,12 +21,12 @@ animations = [{
 [node name="barrelObj" unique_id=693086546 instance=ExtResource("1_226e6")]
 collision_layer = 4
 script = ExtResource("2_j1kyk")
+damage = 0
 type = 103
 
 [node name="shape" parent="." index="0"]
 shape = SubResource("RectangleShape2D_j1kyk")
 
 [node name="ani" parent="." index="1"]
-visible = false
 sprite_frames = SubResource("SpriteFrames_hwscq")
 offset = Vector2(-3, -5)

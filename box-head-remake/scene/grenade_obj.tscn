@@ -22,6 +22,7 @@ animations = [{
 [node name="grenadeObj" unique_id=2034097950 instance=ExtResource("1_2ur3v")]
 collision_mask = 60
 script = ExtResource("2_bvu5d")
+damage = 0
 type = 104
 itemSize = Vector2(4, 4)
 

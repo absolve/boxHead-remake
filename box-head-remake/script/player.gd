@@ -31,44 +31,44 @@ func _ready():
 	
 	var temp = load("res://scene/pistol.tscn")
 	var gun = temp.instantiate()
-	gun.ownerId = get_rid()
+	gun.ownerId =body.get_rid()
 	weaponList.push_back(gun)
 	weaponBackpack.add_child(gun)
 	#currWeapon=gun
 	#txt.text=Game.weaponName[currWeapon.type]
 	var t=load("res://scene/uzi.tscn")
 	var u=t.instantiate()
-	u.ownerId=get_rid()
+	u.ownerId=body.get_rid()
 	weaponList.push_back(u)
 	weaponBackpack.add_child(u)
 	
 	var r= load("res://scene/rocket.tscn")
 	var rocket=r.instantiate()
-	rocket.ownerId=get_rid()
+	rocket.ownerId=body.get_rid()
 	weaponList.push_back(rocket)
 	weaponBackpack.add_child(rocket)
 	
 	var b=load("res://scene/barrel.tscn")
 	var barrel=b.instantiate()
-	barrel.ownerId=get_rid()
+	barrel.ownerId=body.get_rid()
 	weaponList.push_back(barrel)
 	weaponBackpack.add_child(barrel)
 	
 	var w=load("res://scene/wall.tscn")
 	var wall=w.instantiate()
-	wall.ownerId=get_rid()
+	wall.ownerId=body.get_rid()
 	weaponList.push_back(wall)
 	weaponBackpack.add_child(wall)
 	
 	var m=load("res://scene/mine.tscn")
 	var mine=m.instantiate()
-	mine.ownerId=get_rid()
+	mine.ownerId=body.get_rid()
 	weaponList.push_back(mine)
 	weaponBackpack.add_child(mine)
 
 	var s=load("res://scene/shotgun.tscn")
 	var shortGun=s.instantiate()
-	shortGun.ownerId=get_rid()
+	shortGun.ownerId=body.get_rid()
 	weaponList.push_back(shortGun)
 	weaponBackpack.add_child(shortGun)
 	
@@ -86,7 +86,7 @@ func _ready():
 
 	weaponBackpack.add_child(railgun)
 	
-	currWeapon =grenade
+	currWeapon =gun
 	
 	print(playerId) 
 	txt.text = Game.weaponName[currWeapon.type]
@@ -159,7 +159,7 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 		var attacker=((global_position+bodyShape.position)-attackPos).normalized()
 		print("----",attacker)
 		var dot = velocity.normalized().dot(attacker)
-		if dot>0: #正面击中
+		if dot>=0: #正面击中
 			ani.play("hitFront_%s" % [angle])
 		else: #背面 侧面击中
 			ani.play("hitRear_%s" % [angle])	

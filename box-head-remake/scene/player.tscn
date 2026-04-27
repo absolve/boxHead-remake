@@ -2540,7 +2540,6 @@ collision_mask = 0
 [node name="bodyShape" type="CollisionShape2D" parent="body" index="0" unique_id=1646115459]
 position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_206a0")
-disabled = true
 
 [node name="dead" type="AudioStreamPlayer2D" parent="." index="6" unique_id=647566734]
 stream = ExtResource("428_vluh7")

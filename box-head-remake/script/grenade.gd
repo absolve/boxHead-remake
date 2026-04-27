@@ -29,6 +29,7 @@ func fire(_v):
 	temp.global_position=global_position-Vector2(0,height)
 	temp.collision_mask=collisionMask
 	temp.ownerId=ownerId
+	temp.damage=damage
 	speed=minSpeed
 	get_tree().root.add_child(temp)
 

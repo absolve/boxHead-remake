@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dik6ckgmdhf4q"]
+[gd_scene format=3 uid="uid://dik6ckgmdhf4q"]
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_xjdxb"]
 [ext_resource type="Texture2D" uid="uid://bft78t8iq5bjb" path="res://sprite/shape/DefineSprite_2081_Effect.Explosion/1.png" id="2_0a5ud"]
@@ -40,7 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://bwa6ae22k1ax" path="res://sprite/shape/DefineSprite_2207_Effect.Explosion_MidAir/18.png" id="38_pd0cl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_x5v5o"]
-radius = 30.0
+radius = 70.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8vwec"]
 animations = [{
@@ -163,8 +163,8 @@ animations = [{
 "speed": 60.0
 }]
 
-[node name="explosion" instance=ExtResource("1_xjdxb")]
-collision_mask = 3
+[node name="explosion" unique_id=739039582 instance=ExtResource("1_xjdxb")]
+collision_mask = 52
 script = ExtResource("2_c5443")
 damage = 0
 type = 106
@@ -174,4 +174,4 @@ shape = SubResource("CircleShape2D_x5v5o")
 
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_8vwec")
-animation = &"1"
+animation = &"0"
