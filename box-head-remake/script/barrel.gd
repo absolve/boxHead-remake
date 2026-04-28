@@ -1,6 +1,7 @@
 extends "res://script/weapon.gd"
 
 var barrelObj=preload("res://scene/barrel_obj.tscn")
+var splitExplosion=0  #分裂爆炸
 
 func _ready() -> void:
 	
@@ -18,6 +19,7 @@ func fire(_v):
 				Vector2(MapData.cellSize/2,MapData.cellSize/2)
 		temp.z_index=floori(pos.y/MapData.cellSize)
 		temp.damage=damage
+		temp.splitExplosion=splitExplosion
 		get_tree().root.add_child(temp)
 		MapData.addMapItem(pos,temp.get_instance_id())
 		sound.play()

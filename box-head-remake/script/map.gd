@@ -23,7 +23,7 @@ func loadLevel():
 
 func _physics_process(_delta: float) -> void:
 	queue_redraw()
-
+	pass
 
 func _draw() -> void:
 	var width = floor(MapData.mapSize.x / MapData.cellSize)

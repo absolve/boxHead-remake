@@ -422,7 +422,6 @@ animations = [{
 script = ExtResource("1_rgtto")
 
 [node name="room001" parent="." unique_id=1385345681 instance=ExtResource("2_wpp1k")]
-visible = false
 
 [node name="player" parent="." unique_id=1459092181 instance=ExtResource("3_h0nt1")]
 position = Vector2(131, 278)
@@ -467,4 +466,4 @@ position = Vector2(229, 104)
 position = Vector2(229, 135)
 
 [node name="barrelObj3" parent="." unique_id=1826973742 instance=ExtResource("4_nf54y")]
-position = Vector2(229, 166)
+position = Vector2(357, 229)

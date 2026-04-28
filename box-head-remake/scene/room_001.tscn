@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d0mwo6kivhnbp"]
+[gd_scene format=3 uid="uid://d0mwo6kivhnbp"]
 
 [ext_resource type="PackedScene" uid="uid://b01bq1bbbw1hm" path="res://scene/level.tscn" id="1_kwe3j"]
 [ext_resource type="Texture2D" uid="uid://dyngry0tm5ya4" path="res://sprite/shape/1.png" id="2_1p7uw"]
@@ -6,56 +6,57 @@
 [ext_resource type="Script" uid="uid://cistay3mih2i4" path="res://script/room_001.gd" id="2_xslsq"]
 [ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/wall_shape_003.tscn" id="3_1p7uw"]
 
-[node name="room001" instance=ExtResource("1_kwe3j")]
+[node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+[node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=409961369]
+visible = false
 position = Vector2(300, 240)
 texture = ExtResource("2_1p7uw")
 
-[node name="wallShape001" parent="." index="1" instance=ExtResource("2_dxvdj")]
+[node name="wallShape001" parent="." index="1" unique_id=619895859 instance=ExtResource("2_dxvdj")]
 z_index = 1
 position = Vector2(126, 7)
 
-[node name="wallShape003" parent="." index="2" instance=ExtResource("3_1p7uw")]
+[node name="wallShape003" parent="." index="2" unique_id=1769587618 instance=ExtResource("3_1p7uw")]
 z_index = 2
 position = Vector2(-4, 0)
 
-[node name="wallShape004" parent="." index="3" instance=ExtResource("3_1p7uw")]
+[node name="wallShape004" parent="." index="3" unique_id=828812098 instance=ExtResource("3_1p7uw")]
 position = Vector2(253, 0)
 
-[node name="wallShape002" parent="." index="4" instance=ExtResource("2_dxvdj")]
+[node name="wallShape002" parent="." index="4" unique_id=7436709 instance=ExtResource("2_dxvdj")]
 z_index = 1
 position = Vector2(510, 7)
 
-[node name="wallShape005" parent="." index="5" instance=ExtResource("3_1p7uw")]
+[node name="wallShape005" parent="." index="5" unique_id=1971123739 instance=ExtResource("3_1p7uw")]
 z_index = 2
 position = Vector2(380, 0)
 
-[node name="wallShape006" parent="." index="6" instance=ExtResource("3_1p7uw")]
+[node name="wallShape006" parent="." index="6" unique_id=935145210 instance=ExtResource("3_1p7uw")]
 position = Vector2(637, 0)
 
-[node name="wallShape007" parent="." index="7" instance=ExtResource("2_dxvdj")]
+[node name="wallShape007" parent="." index="7" unique_id=97024381 instance=ExtResource("2_dxvdj")]
 z_index = 21
 position = Vector2(128, 487)
 
-[node name="wallShape008" parent="." index="8" instance=ExtResource("3_1p7uw")]
+[node name="wallShape008" parent="." index="8" unique_id=43138273 instance=ExtResource("3_1p7uw")]
 z_index = 22
 position = Vector2(-4, 480)
 
-[node name="wallShape009" parent="." index="9" instance=ExtResource("3_1p7uw")]
+[node name="wallShape009" parent="." index="9" unique_id=1495899912 instance=ExtResource("3_1p7uw")]
 z_index = 20
 position = Vector2(255, 480)
 
-[node name="wallShape010" parent="." index="10" instance=ExtResource("2_dxvdj")]
+[node name="wallShape010" parent="." index="10" unique_id=68072621 instance=ExtResource("2_dxvdj")]
 z_index = 21
 position = Vector2(510, 487)
 
-[node name="wallShape011" parent="." index="11" instance=ExtResource("3_1p7uw")]
+[node name="wallShape011" parent="." index="11" unique_id=1605333051 instance=ExtResource("3_1p7uw")]
 z_index = 22
 position = Vector2(378, 480)
 
-[node name="wallShape012" parent="." index="12" instance=ExtResource("3_1p7uw")]
+[node name="wallShape012" parent="." index="12" unique_id=2103650403 instance=ExtResource("3_1p7uw")]
 z_index = 20
 position = Vector2(637, 480)

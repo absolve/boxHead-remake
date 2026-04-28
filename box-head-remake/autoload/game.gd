@@ -41,6 +41,8 @@ enum playerState{Idle,hurt,dead}
 
 enum enemyState {Idle, hurt, fallDown, dead,attack,rotate}
 
+#地图标志
+enum mapSign{Player = 700, Zombie, Devil,Item}
 
 var mapId=[{'name':'Boxy','id':0,'img':"res://sprite/409.jpg"},{'name':'Buttons','id':2,'img':"res://sprite/427.png"},
 			{'name':'Mazey','id':3,'img':"res://sprite/431.png"},{'name':'Gladiator','id':4,'img':"res://sprite/435.jpg"}
