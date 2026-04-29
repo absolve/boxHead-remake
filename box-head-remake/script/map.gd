@@ -8,9 +8,11 @@ extends Node2D
 
 #@onready var enemy=$zombie
 var font: FontFile
-
 var score=0
 var count=0
+var currLevel=1  #当前关卡
+
+
 
 func _ready() -> void:
 	MapData.mapSize = room.mapSize

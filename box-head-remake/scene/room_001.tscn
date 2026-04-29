@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://enp6h28qyi1b" path="res://scene/wall_shape_001.tscn" id="2_dxvdj"]
 [ext_resource type="Script" uid="uid://cistay3mih2i4" path="res://script/room_001.gd" id="2_xslsq"]
 [ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/wall_shape_003.tscn" id="3_1p7uw"]
+[ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/map_sign.tscn" id="6_fbdb3"]
 
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
@@ -60,3 +61,9 @@ position = Vector2(378, 480)
 [node name="wallShape012" parent="." index="12" unique_id=2103650403 instance=ExtResource("3_1p7uw")]
 z_index = 20
 position = Vector2(637, 480)
+
+[node name="mapSign" parent="." index="13" unique_id=1830752461 instance=ExtResource("6_fbdb3")]
+position = Vector2(315, 0)
+
+[node name="mapSign2" parent="." index="14" unique_id=433052721 instance=ExtResource("6_fbdb3")]
+position = Vector2(345, 0)

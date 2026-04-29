@@ -1,9 +1,9 @@
 extends Node2D
 
-var playerSpawnPoint:Array[Vector2]=[]  #玩家出生点
-var zombieSpawnPoint:Array[Vector2]=[]  #僵尸出生点
-var devilSpawnPoint:Array[Vector2]=[]	#恶魔出生点
-var itemSpawnPoint:Array[Vector2]=[] #物品刷新点
+var playerSpawnPoint:Array=[]  #玩家出生点
+var zombieSpawnPoint:Array=[]  #僵尸出生点
+var devilSpawnPoint:Array=[]	#恶魔出生点
+var itemSpawnPoint:Array=[] #物品刷新点
 @export var mapSize:Vector2=Vector2(640,480)
 @export var debug=false
 

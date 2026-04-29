@@ -15,6 +15,11 @@ var allWeaponData = {
 	Game.weaponType.Railgun:{'damage':5,'wRange':300,'delay':0.5,'maxAmmoNum':20,'automatic':false},
 	Game.weaponType.ChargePack:{'damage':0,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false}
 }
+#敌人基本参数信息
+var enemyData={
+	Game.roleType.Zombie:{},
+	Game.roleType.Devil:{}
+}
 
 #地图配置
 var mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
