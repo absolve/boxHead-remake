@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon.tscn" id="1_egs87"]
 [ext_resource type="Script" uid="uid://cb4yk42lll8vi" path="res://script/shotgun.gd" id="2_v3i1e"]
-[ext_resource type="AudioStream" uid="uid://bia5hx4npxwl5" path="res://sound/561_561 Weapon.ShotGun.Fire.mp3" id="3_yha0r"]
-[ext_resource type="Texture2D" uid="uid://4iyfwuc7fkc3" path="res://sprite/shape/DefineSprite_2321_UZI.MuzzleFlash/1.png" id="4_eb14o"]
+[ext_resource type="AudioStream" uid="uid://cx8e1vaxi1yff" path="res://sound/561_561 Weapon.ShotGun.Fire.mp3" id="3_yha0r"]
+[ext_resource type="Texture2D" uid="uid://br6mmi5rjigw4" path="res://sprite/shape/DefineSprite_2321_UZI.MuzzleFlash/1.png" id="4_eb14o"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yha0r"]
 animations = [{

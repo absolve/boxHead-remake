@@ -11,7 +11,7 @@ var active=false	#是否激活
 @export var automatic=false #连发
 var canShoot=true #是否可以射击
 var detecframes=0 #检测是否与物体碰撞的帧数
-var vector:Vector2=Vector2.RIGHT
+var vector:Vector2=Vector2.RIGHT  #武器方向
 var offsetDir={0:Vector2.ZERO,1:Vector2.ZERO,2:Vector2.ZERO,
 				3:Vector2.ZERO,4:Vector2.ZERO,5:Vector2.ZERO,
 				6:Vector2.ZERO,7:Vector2.ZERO}

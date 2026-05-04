@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://c7k16hr0444et" path="res://script/map_sign.gd" id="5_h3bpn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kiqpt"]
-radius = 15.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kiqpt"]
 animations = [{
@@ -51,7 +50,7 @@ animations = [{
 
 [node name="mapSign" type="Area2D" unique_id=1830752461 groups=["sign"]]
 collision_layer = 0
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("5_h3bpn")
 
 [node name="shape" type="CollisionShape2D" parent="." unique_id=437827136]

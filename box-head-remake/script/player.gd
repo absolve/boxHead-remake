@@ -226,9 +226,9 @@ func _physics_process(_delta):
 			if currWeapon.ammoNum <= 0:
 				txt.modulate = Color.RED
 			else:
-				txt.modulate = Color.BLACK
+				txt.modulate = Color.WHITE
 		else:
-			txt.modulate = Color.BLACK
+			txt.modulate = Color.WHITE
 		
 		
 		if Input.is_action_pressed(keyMap.fire):

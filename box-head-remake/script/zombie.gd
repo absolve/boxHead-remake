@@ -44,6 +44,7 @@ var directions:Array[eightDir]=[]
 var recentPos:Array[Vector2]=[]  #旧的格子位置
 var recentMax=30  #最大记录数
 var isBlocked=false #前进方向被阻挡
+var initPos=Vector2.ZERO #抵达初始点后开始寻找玩家
 
 class eightDir:
 	var dir:Vector2
@@ -68,9 +69,8 @@ var attackPosAngle={2:90,6:90}
 
 
 func _ready():
-	state = Game.enemyState.Idle
-	font = load("res://font/AlibabaPuHuiTi-3-85-Bold.ttf")
-	#font = ThemeDB.fallback_font
+	#state = Game.enemyState.Idle
+	font = ThemeDB.fallback_font
 	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
 	shapeQuery.collision_mask=1+2+4
@@ -248,6 +248,7 @@ func _physics_process(_delta: float) -> void:
 			if angle != oldAngle:
 				#velocity = Vector2.ZERO
 				playRotateAni(angle)
+				pass
 			oldAngle = angle
 		
 		if tween == null || !tween.is_valid():
@@ -258,7 +259,7 @@ func _physics_process(_delta: float) -> void:
 		pass
 	elif state == Game.enemyState.hurt:
 		hurtTimer += _delta
-		if hurtTimer > hurtDelay:
+		if hurtTimer >= hurtDelay:
 			hurtTimer = 0
 			state = Game.enemyState.Idle
 		velocity=velocity.lerp(Vector2.ZERO,hurtTimer)
@@ -272,7 +273,36 @@ func _physics_process(_delta: float) -> void:
 	elif state==Game.enemyState.rotate:
 		
 		pass			
-				
+	elif state==Game.enemyState.init:
+		currAni = "walk"
+		var space_state = get_world_2d().direct_space_state
+		#判断是否发生碰撞	
+		shapeQuery.transform=Transform2D(global_rotation,global_position)
+		var result=space_state.intersect_shape(shapeQuery,1)
+		if result:
+			var r=result[0]
+			if r.collider.get('type')&&r.collider.type in [Game.itemType.Barrel,
+								Game.itemType.Wall,Game.roleType.Player,
+								Game.roleType.Zombie,Game.roleType.Devil]:
+				var shape1=r.collider.get_node("shape").shape
+				var delta=global_position-r.collider.global_position
+				#if abs(delta.x)>shape1.size.x/2&&abs(delta.y)>shape1.size.y/2:
+				if abs(delta.x) > abs(delta.y):
+					# 左右边
+					var signx = sign(delta.x)
+					global_position.x =r.collider.global_position.x+signx*(shape1.size.x/2+shape.shape.size.x/2)
+				else:
+					# 上下边
+					var signy = sign(delta.y)	
+					global_position.y =r.collider.global_position.y+signy*(shape1.size.y/2+shape.shape.size.y/2)
+				currAni = "stand"
+		
+		ani.play(currAni + "_%s"%angle)
+		move_and_collide(velocity *speed* _delta)	
+		if global_position.distance_to(initPos)<1:
+			state=Game.enemyState.Idle
+		
+		
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	queue_redraw()
 	
@@ -327,16 +357,23 @@ func _on_tween_step(_idx):
 	
 #被击中	
 func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
+	if isDead:
+		return
 	hp -= damage
 	print("hit", hp)
+	if tween != null && tween.is_valid():
+		tween.kill()
 	if hp <= 0:
+		isDead=true
 		state = Game.enemyState.dead
 		ani.play("fallDown_%s" % [angle / 2])
+		body.monitorable=false
+		body.monitoring=false
+		bodyShape.disabled=true
 		shape.disabled = true
-		bodyShape.disabled = true
-		await ani.animation_finished
+		Game.enemyKilled.emit(global_position)
 		var temp = create_tween()
-		temp.tween_interval(2)
+		temp.tween_interval(5)
 		temp.tween_property(ani, "modulate:a", 0, 1)
 		temp.tween_callback(queue_free)
 	else:

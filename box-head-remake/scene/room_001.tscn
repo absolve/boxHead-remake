@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cistay3mih2i4" path="res://script/room_001.gd" id="2_xslsq"]
 [ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/wall_shape_003.tscn" id="3_1p7uw"]
 [ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/map_sign.tscn" id="6_fbdb3"]
+[ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/barrel_obj.tscn" id="7_viuee"]
 
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
@@ -32,7 +33,7 @@ z_index = 1
 position = Vector2(510, 7)
 
 [node name="wallShape005" parent="." index="5" unique_id=1971123739 instance=ExtResource("3_1p7uw")]
-z_index = 2
+z_index = 1
 position = Vector2(380, 0)
 
 [node name="wallShape006" parent="." index="6" unique_id=935145210 instance=ExtResource("3_1p7uw")]
@@ -63,7 +64,73 @@ z_index = 20
 position = Vector2(637, 480)
 
 [node name="mapSign" parent="." index="13" unique_id=1830752461 instance=ExtResource("6_fbdb3")]
-position = Vector2(315, 0)
+position = Vector2(311, 10)
+debug = true
 
 [node name="mapSign2" parent="." index="14" unique_id=433052721 instance=ExtResource("6_fbdb3")]
-position = Vector2(345, 0)
+position = Vector2(342, 10)
+debug = true
+
+[node name="mapSign3" parent="." index="15" unique_id=1840325871 instance=ExtResource("6_fbdb3")]
+position = Vector2(310, 470)
+dir = 2
+debug = true
+
+[node name="mapSign4" parent="." index="16" unique_id=210654166 instance=ExtResource("6_fbdb3")]
+position = Vector2(342, 470)
+dir = 2
+debug = true
+
+[node name="mapSign5" parent="." index="17" unique_id=139307322 instance=ExtResource("6_fbdb3")]
+position = Vector2(10, 240)
+type = 702
+dir = 1
+debug = true
+
+[node name="mapSign6" parent="." index="18" unique_id=1957171103 instance=ExtResource("6_fbdb3")]
+position = Vector2(630, 240)
+type = 702
+dir = 0
+debug = true
+
+[node name="barrelObj" parent="." index="19" unique_id=693086546 instance=ExtResource("7_viuee")]
+position = Vector2(285, 72)
+
+[node name="barrelObj2" parent="." index="20" unique_id=1918741387 instance=ExtResource("7_viuee")]
+z_index = 2
+position = Vector2(375, 72)
+
+[node name="barrelObj3" parent="." index="21" unique_id=1339563997 instance=ExtResource("7_viuee")]
+position = Vector2(285, 100)
+
+[node name="barrelObj4" parent="." index="22" unique_id=1730262420 instance=ExtResource("7_viuee")]
+position = Vector2(285, 128)
+
+[node name="barrelObj5" parent="." index="23" unique_id=1533076146 instance=ExtResource("7_viuee")]
+z_index = 3
+position = Vector2(375, 100)
+
+[node name="barrelObj6" parent="." index="24" unique_id=2095808526 instance=ExtResource("7_viuee")]
+z_index = 4
+position = Vector2(375, 128)
+
+[node name="barrelObj7" parent="." index="25" unique_id=1434905937 instance=ExtResource("7_viuee")]
+position = Vector2(285, 392)
+
+[node name="barrelObj8" parent="." index="26" unique_id=1936413872 instance=ExtResource("7_viuee")]
+position = Vector2(285, 420)
+
+[node name="barrelObj9" parent="." index="27" unique_id=7033540 instance=ExtResource("7_viuee")]
+position = Vector2(285, 448)
+
+[node name="barrelObj10" parent="." index="28" unique_id=1497706740 instance=ExtResource("7_viuee")]
+z_index = 2
+position = Vector2(375, 392)
+
+[node name="barrelObj11" parent="." index="29" unique_id=1044442315 instance=ExtResource("7_viuee")]
+z_index = 3
+position = Vector2(375, 420)
+
+[node name="barrelObj12" parent="." index="30" unique_id=2123256976 instance=ExtResource("7_viuee")]
+z_index = 4
+position = Vector2(375, 448)

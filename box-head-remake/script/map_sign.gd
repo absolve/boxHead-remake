@@ -17,4 +17,6 @@ func _ready() -> void:
 			ani.play("3")
 		elif type==Game.mapSign.Item:	
 			ani.play("2")		
-		
+
+func hasBlock():
+	return has_overlapping_areas()||has_overlapping_bodies()

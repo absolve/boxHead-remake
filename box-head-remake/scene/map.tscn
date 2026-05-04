@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://d0mwo6kivhnbp" path="res://scene/room_001.tscn" id="2_wpp1k"]
 [ext_resource type="PackedScene" uid="uid://ctuwqq3bh161h" path="res://scene/player.tscn" id="3_h0nt1"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="4_bq37x"]
-[ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/barrel_obj.tscn" id="4_nf54y"]
 [ext_resource type="Texture2D" uid="uid://36efgdakiyfu" path="res://sprite/ui/DefineSprite_59/1.png" id="5_hk4qc"]
 [ext_resource type="Texture2D" uid="uid://dxbilfahnud2g" path="res://sprite/ui/DefineSprite_59/2.png" id="6_5tpms"]
 [ext_resource type="Texture2D" uid="uid://bq3f0aqxml87v" path="res://sprite/ui/DefineSprite_59/3.png" id="7_6mx45"]
@@ -424,7 +423,7 @@ script = ExtResource("1_rgtto")
 [node name="room001" parent="." unique_id=1385345681 instance=ExtResource("2_wpp1k")]
 
 [node name="player" parent="." unique_id=1459092181 instance=ExtResource("3_h0nt1")]
-position = Vector2(131, 278)
+position = Vector2(112, 215)
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 
@@ -457,13 +456,16 @@ horizontal_alignment = 1
 position = Vector2(448, 50)
 scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_6l1jt")
+frame = 100
+frame_progress = 1.0
 metadata/_edit_lock_ = true
 
-[node name="barrelObj" parent="." unique_id=354021201 instance=ExtResource("4_nf54y")]
-position = Vector2(229, 104)
+[node name="spawnTimer" type="Timer" parent="." unique_id=1956362601]
+one_shot = true
 
-[node name="barrelObj2" parent="." unique_id=328134751 instance=ExtResource("4_nf54y")]
-position = Vector2(229, 135)
+[node name="nextWaveTimer" type="Timer" parent="." unique_id=286966049]
+one_shot = true
 
-[node name="barrelObj3" parent="." unique_id=1826973742 instance=ExtResource("4_nf54y")]
-position = Vector2(357, 229)
+[connection signal="animation_finished" from="ui/countAni" to="." method="_on_count_ani_animation_finished"]
+[connection signal="timeout" from="spawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="nextWaveTimer" to="." method="_on_next_wave_timer_timeout"]

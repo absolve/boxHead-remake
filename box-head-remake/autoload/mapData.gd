@@ -25,8 +25,10 @@ var enemyData={
 var mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
 				'Game speed':1}
 
-var currKillStreak=0  #当前连杀
+#当前连杀
+var currKillStreak=0
 var killStreak=0  #连杀
+var score=0 #分数
 
 var mapSize: Vector2 # 地图大小
 
@@ -75,6 +77,12 @@ func findPath(start: Vector2, end: Vector2):
 func resetMapConfig():
 	mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
 				'gameSpeed':1}
+
+func addKillStreak(val):
+	currKillStreak+=val
+	if currKillStreak>killStreak:
+		killStreak= currKillStreak
+		countKillStreak()
 
 #计算连杀数
 func countKillStreak():

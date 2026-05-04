@@ -4,7 +4,7 @@ extends "res://script/weapon.gd"
 @onready var player=$player
 
 var bulletNum=4  #散弹数量
-var splitAngle=30.0  #散弹分裂最大角度
+var splitAngle=10.0  #散弹分裂最大角度
 var targetPosList=[]  #射线列表
 
 
@@ -23,7 +23,6 @@ func _ready():
 
 func _physics_process(_delta: float) -> void:
 	if detecframes>0:
-	
 		detecframes-=1
 		#if detecframes<=0:
 			#excludeObj.clear()
@@ -33,6 +32,7 @@ func _physics_process(_delta: float) -> void:
 			var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 			targetPosList[i]=global_position+vector.rotated(deg_to_rad(-splitAngle/2+i*splitAngle/bulletNum+randi_range(-2,2)))\
 			*wRange+offset
+			#targetPosList[i]=global_position+vector*wRange+offset
 			var query = PhysicsRayQueryParameters2D.create(global_position+offset, 
 			targetPosList[i],collisionMask)
 			query.collide_with_areas=true
@@ -59,12 +59,15 @@ func _physics_process(_delta: float) -> void:
 		queue_redraw()			
 
 func fire(_v):
+	if ammoNum<=0:
+		return
 	if canShoot:
+		ammoNum-=1
 		detecframes=2
 		vector=_v
 		#queue_redraw()
 		canShoot=false
-		timer.start(delay)	
+		timer.start(delay)		
 		ani.position=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
 		ani.rotation=vector.angle()
 		player.play("fire")
@@ -76,6 +79,4 @@ func _draw() -> void:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
 		for i in targetPosList:
 			draw_line(offset,
-			i-global_position
-			*wRange,Color.WHITE,1.5)
-		
+				i-global_position,Color.WHITE,1)	
