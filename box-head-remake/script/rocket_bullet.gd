@@ -4,7 +4,7 @@ var smoke=preload("res://scene/smoke.tscn")
 var explosion=preload("res://scene/explosion.tscn")
 var vector=Vector2.ZERO
 var speed=700
-
+var damage=0 #伤害
 
 func  _ready() -> void:
 	ani.play("default")
@@ -24,12 +24,14 @@ func _physics_process(delta: float) -> void:
 	if body:
 		var temp=explosion.instantiate()
 		temp.global_position=global_position
+		temp.damage=damage
 		get_tree().root.add_child(temp)
 		queue_free()
 	var area= get_overlapping_areas()
 	if area:
 		var temp=explosion.instantiate()
 		temp.global_position=global_position
+		temp.damage=damage
 		get_tree().root.add_child(temp)
 		queue_free()	
 		

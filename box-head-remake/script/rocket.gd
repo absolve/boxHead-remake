@@ -27,5 +27,6 @@ func fire(v):
 		temp.vector=vector
 		var offset=offsetDir[wrapi(int(vector.angle() / (PI/4)), 0, 8)]
 		temp.global_position=global_position+offset
+		temp.damage=damage
 		get_tree().root.add_child(temp)
 		

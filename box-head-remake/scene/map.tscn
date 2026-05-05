@@ -105,6 +105,7 @@
 [ext_resource type="Texture2D" uid="uid://c0up8dgyffewc" path="res://sprite/ui/DefineSprite_59/99.png" id="103_cit1n"]
 [ext_resource type="Texture2D" uid="uid://cmyre3d7hujup" path="res://sprite/ui/DefineSprite_59/100.png" id="104_3viba"]
 [ext_resource type="Texture2D" uid="uid://bwusuar42jv2c" path="res://sprite/ui/DefineSprite_59/101.png" id="105_2aykm"]
+[ext_resource type="PackedScene" uid="uid://dqmrgv2icdlwv" path="res://scene/toast_info.tscn" id="106_84l46"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6l1jt"]
 animations = [{
@@ -459,6 +460,8 @@ sprite_frames = SubResource("SpriteFrames_6l1jt")
 frame = 100
 frame_progress = 1.0
 metadata/_edit_lock_ = true
+
+[node name="toastInfo" parent="ui" unique_id=119413426 instance=ExtResource("106_84l46")]
 
 [node name="spawnTimer" type="Timer" parent="." unique_id=1956362601]
 one_shot = true

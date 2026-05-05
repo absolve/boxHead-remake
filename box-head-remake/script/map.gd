@@ -6,6 +6,7 @@ extends Node2D
 @onready var countAniNode=$ui/countAni
 @onready var spawnTimer=$spawnTimer
 @onready var nextWaveTimer=$nextWaveTimer
+@onready var toastInfo=$ui/toastInfo
 @export var isDebug=true
 
 var zombie=preload("res://scene/zombie.tscn")
@@ -87,6 +88,7 @@ func weaponUpgrade(type):
 
 func notice(s):
 	print('notice',s)
+	toastInfo.display(s)
 	pass
 
 func _physics_process(_delta: float) -> void:
