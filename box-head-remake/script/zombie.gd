@@ -18,7 +18,7 @@ var pathUpdateInterval = 0.5
 var pathTimer = 0
 var pathPointIndex = 0
 var oldAngle = 0 # 之前的角度
-var tween: Tween = null
+#var tween: Tween = null
 var hurtTimer = 0
 var hurtDelay = 0.5
 var attackTimer = 0
@@ -248,12 +248,12 @@ func _physics_process(_delta: float) -> void:
 			if angle != oldAngle:
 				#velocity = Vector2.ZERO
 				playRotateAni(angle)
-				pass
+				return
 			oldAngle = angle
 		
-		if tween == null || !tween.is_valid():
-			ani.play(currAni + "_%s"%angle)
-			move_and_collide(velocity *speed* _delta)
+		#if tween == null || !tween.is_valid():
+		ani.play(currAni + "_%s"%angle)
+		move_and_collide(velocity *speed* _delta)
 		
 	elif state == Game.enemyState.dead:
 		pass
@@ -271,8 +271,12 @@ func _physics_process(_delta: float) -> void:
 				attackTimer=0
 				state=Game.enemyState.Idle
 	elif state==Game.enemyState.rotate:
-		
-		pass			
+		if angle<oldAngle || abs(angle-oldAngle)>=4:
+			ani.frame=wrapi(ani.frame-1,0,32)
+		else:
+			ani.frame=wrapi(ani.frame+1,0,32)
+		if ani.frame==angle*4:
+			state=Game.enemyState.Idle			
 	elif state==Game.enemyState.init:
 		currAni = "walk"
 		var space_state = get_world_2d().direct_space_state
@@ -323,25 +327,25 @@ func findTarget():
 		return null
 
 #播放旋转动画
-func playRotateAni(newAngle):
-	if tween != null && tween.is_valid():
-		tween.kill()
-	
-	tween = create_tween()
+func playRotateAni(_newAngle):
+	#if tween != null && tween.is_valid():
+		#tween.kill()
+	#
+	#tween = create_tween()
 	ani.stop()
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4
-	
+	state=Game.enemyState.rotate
 	#print(oldAngle,' ',newAngle)
 	#print(oldAngle * 4,' ',newAngle*4,' ',abs(newAngle*4-oldAngle*4))
 	#print(sign(newAngle-oldAngle))
-	var add=1
-	if newAngle<oldAngle || abs(newAngle-oldAngle)>=4:
-		add=-1
-	tween.set_loops()	
-	tween.step_finished.connect(_on_tween_step)
-	tween.tween_callback(changeFrame.bind(add))
-	tween.tween_interval(0.05)
+	#var add=1
+	#if newAngle<oldAngle || abs(newAngle-oldAngle)>=4:
+		#add=-1
+	#tween.set_loops()	
+	#tween.step_finished.connect(_on_tween_step)
+	#tween.tween_callback(changeFrame.bind(add))
+	#tween.tween_interval(0.05)
 	
 	#tween.tween_property(ani, "frame", newAngle * 4, 0.2)
 
@@ -350,10 +354,9 @@ func changeFrame(val):
 	ani.frame=wrapi(ani.frame+val,0,32)
 	#print(ani.frame)
 
-func _on_tween_step(_idx):
-	#print(angle)
-	if ani.frame==angle*4:
-		tween.kill()
+#func _on_tween_step(_idx):
+	#if ani.frame==angle*4:
+		#tween.kill()
 	
 #被击中	
 func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
@@ -361,8 +364,10 @@ func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
 		return
 	hp -= damage
 	print("hit", hp)
-	if tween != null && tween.is_valid():
-		tween.kill()
+	#if tween != null && tween.is_valid():
+		#tween.kill()
+	if oldAngle!=angle:
+		oldAngle=angle
 	if hp <= 0:
 		isDead=true
 		state = Game.enemyState.dead
