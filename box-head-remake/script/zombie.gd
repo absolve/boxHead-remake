@@ -14,7 +14,7 @@ var targetOldPos = Vector2.ZERO
 var attackRange = 35 # 攻击范围
 var path = [] # 路径点
 var targetPos = null
-var pathUpdateInterval = 0.5
+var pathUpdateInterval = 1
 var pathTimer = 0
 var pathPointIndex = 0
 var oldAngle = 0 # 之前的角度
@@ -57,7 +57,7 @@ class eightDir:
 		self.dir=_dir
 
 	func _to_string() -> String:
-		return 'dir %s canMove %s distance %s'%[dir,canMove,distance]
+		return 'dir %s canMove %s distance %s  dot %s'%[dir,canMove,distance,dot]
 
 
 
@@ -69,11 +69,11 @@ var attackPosAngle={2:90,6:90}
 
 
 func _ready():
-	#state = Game.enemyState.Idle
+	state = Game.enemyState.Idle
 	font = ThemeDB.fallback_font
 	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
-	shapeQuery.collision_mask=1+2+4
+	shapeQuery.collision_mask=1+2+4+8
 	shapeQuery.exclude=[get_rid()]
 	shapeQuery.shape=shape.shape
 	
@@ -88,30 +88,9 @@ func _physics_process(_delta: float) -> void:
 		pathTimer += _delta
 		if pathTimer > pathUpdateInterval:
 			target = findTarget()
-			#if target:
-				#if targetOldPos != target.global_position:
-					#targetOldPos = target.global_position
-					#path = MapData.findPath(global_position, target.global_position)
-					#if path.size() > 0:
-						##pathPointIndex = 1
-						#nextPoint=path[1]
-			#else:
-				#path = []
 			pathTimer = 0
 	
 		
-		
-		#if path.size() > 0:
-			#velocity = (nextPoint- global_position).normalized()
-			#if global_position.distance_to(nextPoint)<1:
-				#if path.size()<2:
-					#velocity = Vector2.ZERO
-				#else:
-					#path.remove_at(0)
-					#nextPoint=path[1]
-		#else:
-			#velocity = Vector2.ZERO
-			
 		var space_state = get_world_2d().direct_space_state
 		
 		#简单的寻路
@@ -128,7 +107,7 @@ func _physics_process(_delta: float) -> void:
 								-Vector2(floori(global_position.x/ MapData.cellSize),floori(global_position.y/ MapData.cellSize)) 
 			#向目标前进的最佳方向
 			bestDir=Vector2(sign(to_target.x), sign(to_target.y))
-			
+			#print('to_target',to_target)
 			#print('bestDir ',bestDir)
 			for i in directions: 	#判断8个方向是否可以移动
 				shapeQuery.transform=Transform2D(global_rotation,global_position+
@@ -137,7 +116,7 @@ func _physics_process(_delta: float) -> void:
 				var nextPos=Vector2(floori(global_position.x/ MapData.cellSize),
 							floori(global_position.y/ MapData.cellSize))+i.dir
 				i.distance=(nextPos-to_target).length_squared() #当前方向移动后距离目标的距离
-				i.dot=to_target.dot(i.dir)
+				i.dot=to_target.normalized().dot(i.dir)
 				if predictionResult:
 					i.canMove=false
 					#i.normal=predictionResult.normal
@@ -151,6 +130,8 @@ func _physics_process(_delta: float) -> void:
 			for i in directions: 
 				if i.canMove:
 					canMoveDir.append(i)
+			
+			#print(canMoveDir)
 			#当前最佳方向是否被阻挡	
 			isBlocked=true
 			for i in canMoveDir:
@@ -162,6 +143,7 @@ func _physics_process(_delta: float) -> void:
 				else:
 					#canMoveDir.sort_custom(func(a, b): return a.distance < b.distance)
 					canMoveDir.sort_custom(func(a, b): return a.dot > b.dot)
+					#print('====',canMoveDir)
 					#bestDir=canMoveDir[0].dir
 					#判断上一帧的方向有没有阻挡，可以行走就不需要更换方向
 					#print('last ',velocity)	
@@ -174,7 +156,7 @@ func _physics_process(_delta: float) -> void:
 							canMove=true
 							break
 					if !canMove:		
-						print(canMoveDir)
+				
 						for i in canMoveDir:
 							#如果新方向是之前的路径就跳过
 							#var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
@@ -195,7 +177,7 @@ func _physics_process(_delta: float) -> void:
 				if recentPos.size()>recentMax:
 					recentPos.pop_back()
 				
-			#print('final ',bestDir)
+		
 			if !bestDir.is_normalized():  #设置成单位向量
 				bestDir=bestDir.normalized()
 			velocity=bestDir
@@ -249,7 +231,7 @@ func _physics_process(_delta: float) -> void:
 				#velocity = Vector2.ZERO
 				playRotateAni(angle)
 				return
-			oldAngle = angle
+			#oldAngle = angle
 		
 		#if tween == null || !tween.is_valid():
 		ani.play(currAni + "_%s"%angle)
@@ -271,11 +253,18 @@ func _physics_process(_delta: float) -> void:
 				attackTimer=0
 				state=Game.enemyState.Idle
 	elif state==Game.enemyState.rotate:
-		if angle<oldAngle || abs(angle-oldAngle)>=4:
+		#print(angle,'   ',oldAngle)
+		if abs(angle-oldAngle)==7:  #特殊情况
+			if angle<oldAngle:
+				ani.frame=wrapi(ani.frame+1,0,32)
+			else:
+				ani.frame=wrapi(ani.frame-1,0,32)	
+		elif  angle<oldAngle || abs(angle-oldAngle)>=4:
 			ani.frame=wrapi(ani.frame-1,0,32)
 		else:
 			ani.frame=wrapi(ani.frame+1,0,32)
 		if ani.frame==angle*4:
+			oldAngle=angle
 			state=Game.enemyState.Idle			
 	elif state==Game.enemyState.init:
 		currAni = "walk"
@@ -349,9 +338,9 @@ func playRotateAni(_newAngle):
 	
 	#tween.tween_property(ani, "frame", newAngle * 4, 0.2)
 
-func changeFrame(val):
+#func changeFrame(val):
 	#print(val)
-	ani.frame=wrapi(ani.frame+val,0,32)
+	#ani.frame=wrapi(ani.frame+val,0,32)
 	#print(ani.frame)
 
 #func _on_tween_step(_idx):

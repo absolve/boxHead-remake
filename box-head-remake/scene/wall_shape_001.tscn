@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://enp6h28qyi1b"]
+[gd_scene format=3 uid="uid://enp6h28qyi1b"]
 
 [ext_resource type="PackedScene" uid="uid://chj3ogfpmj4mk" path="res://scene/wall_shape.tscn" id="1_o5dyx"]
 [ext_resource type="Texture2D" uid="uid://dwq8p7mxgdql" path="res://sprite/shape/71.png" id="2_rcw8i"]
@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ot2uj"]
 size = Vector2(193, 64)
 
-[node name="wallShape001" instance=ExtResource("1_o5dyx")]
+[node name="wallShape001" unique_id=1532828226 instance=ExtResource("1_o5dyx")]
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_rcw8i")

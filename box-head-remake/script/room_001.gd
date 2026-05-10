@@ -4,7 +4,7 @@ extends "res://script/level.gd"
 
 func _ready() -> void:
 	var nodes=get_tree().get_nodes_in_group("sign")	
-	print(nodes)
+	#print(nodes)
 	for i in nodes:
 		if i.type==Game.mapSign.Zombie:
 			zombieSpawnPoint.append(i)

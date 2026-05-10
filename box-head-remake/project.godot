@@ -24,7 +24,6 @@ config/icon="res://icon.svg"
 Game="*res://autoload/game.gd"
 MapData="*res://autoload/mapData.gd"
 SfxManage="*res://autoload/sfxManage.gd"
-PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 SoundUtil="*uid://bmhmxhlfsbq1d"
 
 [display]
@@ -32,10 +31,6 @@ SoundUtil="*uid://bmhmxhlfsbq1d"
 window/size/viewport_width=640
 window/size/viewport_height=480
 window/stretch/mode="viewport"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
 
 [global_group]
 

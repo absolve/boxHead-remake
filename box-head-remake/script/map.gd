@@ -25,8 +25,8 @@ func _ready() -> void:
 	#MapData.astarGrid.region = Rect2i(0, 0, room.mapSize.x, room.mapSize.y)
 	#MapData.astarGrid.update()
 	font = ThemeDB.fallback_font
-	await get_tree().create_timer(1).timeout
-	startNextWave()
+	#await get_tree().create_timer(1).timeout
+	#startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
 	Game.weaponUpgrade.connect(weaponUpgrade)
 	Game.notice.connect(notice)

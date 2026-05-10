@@ -106,6 +106,7 @@
 [ext_resource type="Texture2D" uid="uid://cmyre3d7hujup" path="res://sprite/ui/DefineSprite_59/100.png" id="104_3viba"]
 [ext_resource type="Texture2D" uid="uid://bwusuar42jv2c" path="res://sprite/ui/DefineSprite_59/101.png" id="105_2aykm"]
 [ext_resource type="PackedScene" uid="uid://dqmrgv2icdlwv" path="res://scene/toast_info.tscn" id="106_84l46"]
+[ext_resource type="PackedScene" uid="uid://b86sppt7keut0" path="res://scene/zombie.tscn" id="107_hk4qc"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6l1jt"]
 animations = [{
@@ -424,7 +425,7 @@ script = ExtResource("1_rgtto")
 [node name="room001" parent="." unique_id=1385345681 instance=ExtResource("2_wpp1k")]
 
 [node name="player" parent="." unique_id=1459092181 instance=ExtResource("3_h0nt1")]
-position = Vector2(112, 215)
+position = Vector2(252, 232)
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 
@@ -468,6 +469,9 @@ one_shot = true
 
 [node name="nextWaveTimer" type="Timer" parent="." unique_id=286966049]
 one_shot = true
+
+[node name="zombie" parent="." unique_id=1183646961 instance=ExtResource("107_hk4qc")]
+position = Vector2(89, 168)
 
 [connection signal="animation_finished" from="ui/countAni" to="." method="_on_count_ani_animation_finished"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawn_timer_timeout"]
