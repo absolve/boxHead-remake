@@ -131,7 +131,7 @@ func _physics_process(_delta: float) -> void:
 				if i.canMove:
 					canMoveDir.append(i)
 			
-			#print(canMoveDir)
+			print(canMoveDir)
 			#当前最佳方向是否被阻挡	
 			isBlocked=true
 			for i in canMoveDir:
@@ -161,26 +161,29 @@ func _physics_process(_delta: float) -> void:
 							#如果新方向是之前的路径就跳过
 							#var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
 								#floori(global_position.y/ MapData.cellSize))+i.dir
-							#if recentPos.has(nPos):
+							#print("nPos",nPos)
+							#if !recentPos.is_empty() && recentPos.has(nPos):
 								#continue
 							bestDir=i.dir	#找到一个方向就行了
 							break
 					else:
 						bestDir=velocity		
-				#保存当前格子位置
-				var currPos=Vector2(floori(global_position.x/ MapData.cellSize),
-							floori(global_position.y/ MapData.cellSize))
-				if !recentPos.is_empty() && !recentPos[0].is_equal_approx(currPos):
-					recentPos.push_front(currPos)	
-				if recentPos.is_empty():
-					recentPos.push_front(currPos)		
-				if recentPos.size()>recentMax:
-					recentPos.pop_back()
+				
 				
 		
 			if !bestDir.is_normalized():  #设置成单位向量
 				bestDir=bestDir.normalized()
 			velocity=bestDir
+		
+		#保存当前格子位置
+		var currPos=Vector2(floori(global_position.x/ MapData.cellSize),
+					floori(global_position.y/ MapData.cellSize))
+		if recentPos.is_empty():
+			recentPos.push_front(currPos)		
+		elif !recentPos.has(currPos):
+			recentPos.push_front(currPos)	
+		if recentPos.size()>recentMax:
+			recentPos.pop_back()
 		
 			
 		if target != null:

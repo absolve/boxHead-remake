@@ -63,4 +63,4 @@ func _draw() -> void:
 	if detecframes>0:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
 		draw_line(offset,
-			targetPos-global_position,Color.BLUE_VIOLET,2)	
+			targetPos-global_position,Color.BLUE_VIOLET,3)	
