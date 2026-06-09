@@ -106,6 +106,7 @@
 [ext_resource type="Texture2D" uid="uid://cmyre3d7hujup" path="res://sprite/ui/DefineSprite_59/100.png" id="104_3viba"]
 [ext_resource type="Texture2D" uid="uid://bwusuar42jv2c" path="res://sprite/ui/DefineSprite_59/101.png" id="105_2aykm"]
 [ext_resource type="PackedScene" uid="uid://dqmrgv2icdlwv" path="res://scene/toast_info.tscn" id="106_84l46"]
+[ext_resource type="PackedScene" uid="uid://b86sppt7keut0" path="res://scene/zombie.tscn" id="107_hk4qc"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6l1jt"]
 animations = [{
@@ -468,6 +469,18 @@ one_shot = true
 
 [node name="nextWaveTimer" type="Timer" parent="." unique_id=286966049]
 one_shot = true
+
+[node name="zombie" parent="." unique_id=1183646961 instance=ExtResource("107_hk4qc")]
+position = Vector2(514, 309)
+
+[node name="zombie2" parent="." unique_id=597048025 instance=ExtResource("107_hk4qc")]
+position = Vector2(433, 301)
+
+[node name="zombie3" parent="." unique_id=1883127014 instance=ExtResource("107_hk4qc")]
+position = Vector2(162, 322)
+
+[node name="zombie4" parent="." unique_id=822716689 instance=ExtResource("107_hk4qc")]
+position = Vector2(203, 234)
 
 [connection signal="animation_finished" from="ui/countAni" to="." method="_on_count_ani_animation_finished"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawn_timer_timeout"]
