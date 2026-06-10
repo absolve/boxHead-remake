@@ -28,6 +28,11 @@ type = 103
 shape = SubResource("RectangleShape2D_j1kyk")
 
 [node name="ani" parent="." index="1"]
-visible = false
 sprite_frames = SubResource("SpriteFrames_hwscq")
 offset = Vector2(-3, -5)
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." index="2" unique_id=1739783979]
+radius = 15.0
+vertices = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+affect_navigation_mesh = true
+avoidance_layers = 2

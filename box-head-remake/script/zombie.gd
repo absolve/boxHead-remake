@@ -46,6 +46,8 @@ var recentPos:Array[Vector2]=[]  #旧的格子位置
 var recentMax=30  #最大记录数
 var isBlocked=false #前进方向被阻挡
 var initPos=Vector2.ZERO #抵达初始点后开始寻找玩家
+var delta=0
+
 
 class eightDir:
 	var dir:Vector2
@@ -70,7 +72,7 @@ var attackPosAngle={2:90,6:90}
 
 
 func _ready():
-	state = Game.enemyState.Idle
+	state = Game.enemyState.hurt
 	font = ThemeDB.fallback_font
 	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
@@ -80,10 +82,11 @@ func _ready():
 	
 	for i in dir:
 		directions.append(eightDir.new(i))
-	
+	delta=get_physics_process_delta_time()
 
 	
 func _physics_process(_delta: float) -> void:
+	delta=_delta
 	if state == Game.enemyState.Idle:
 		#velocity=Vector2.ZERO
 		pathTimer += _delta
@@ -95,89 +98,11 @@ func _physics_process(_delta: float) -> void:
 			velocity=Vector2.ZERO
 			return
 		var next_path_position: Vector2 = navigationAgent2D.get_next_path_position()
-		velocity=global_position.direction_to(next_path_position)
-		var octant: int = wrapi(int(velocity.angle() / (PI / 4.0)),0,8)
-		velocity=dir[octant].normalized()
-		navigationAgent2D.set_velocity(velocity*speed)
+		var newVelocity=global_position.direction_to(next_path_position)
+		#var octant: int = wrapi(int(velocity.angle() / (PI / 4.0)),0,8)
+		#velocity=dir[octant].normalized()
+		navigationAgent2D.set_velocity(newVelocity*speed)
 		
-		
-		#var space_state = get_world_2d().direct_space_state
-		#
-		##简单的寻路
-		#if target != null:
-			#var bestDir=Vector2.ZERO
-			## 计算到目标的向量 根据网格来计算位置
-			#var to_target = Vector2(floori(target.global_position.x/ MapData.cellSize),floori(target.global_position.y/ MapData.cellSize))\
-								#-Vector2(floori(global_position.x/ MapData.cellSize),floori(global_position.y/ MapData.cellSize)) 
-			##向目标前进的最佳方向
-			#bestDir=Vector2(sign(to_target.x), sign(to_target.y))
-			#for i in directions: 	#判断8个方向是否可以移动
-				#shapeQuery.transform=Transform2D(global_rotation,global_position+
-												#i.dir.normalized()*speed*_delta)
-				#var predictionResult=space_state.intersect_shape(shapeQuery,4)
-				#var nextPos=Vector2(floori(global_position.x/ MapData.cellSize),
-							#floori(global_position.y/ MapData.cellSize))+i.dir
-				#i.distance=(nextPos-to_target).length_squared() #当前方向移动后距离目标的距离
-				#i.dot=to_target.normalized().dot(i.dir)
-				#if predictionResult:
-					#i.canMove=false
-					##i.normal=predictionResult.normal
-				#else:
-					#i.canMove=true	
-					##i.normal=Vector2.ZERO
-			#
-			##如果当前的方向遇到障碍物 就沿着障碍物边缘的方向移动 方向为左侧或者右侧
-			##记录之前走过的格子 防止重复回头的问题
-			#var canMoveDir:Array[eightDir]=[]
-			#for i in directions: 
-				#if i.canMove:
-					#canMoveDir.append(i)
-			#
-			#print(canMoveDir)
-			##当前最佳方向是否被阻挡	
-			#isBlocked=true
-			#for i in canMoveDir:
-				#if i.dir.is_equal_approx(bestDir):
-					#isBlocked=false
-			#if isBlocked: #被阻挡 寻找一个可以移动的位置 距离目标更进 记录之前的方向避免回头
-				#if canMoveDir.is_empty():
-					#bestDir=Vector2.ZERO
-				#else:
-					#canMoveDir.sort_custom(func(a, b): return a.dot > b.dot)
-					##判断上一帧的方向有没有阻挡，可以行走就不需要更换方向
-					#var canMove=false
-					#for i in canMoveDir:
-						#var tempDir=i.dir
-						#if !i.dir.is_normalized():
-							#tempDir=i.dir.normalized()
-						#if tempDir.is_equal_approx(velocity):
-							#canMove=true
-							#break
-					#if !canMove:		
-						#for i in canMoveDir:
-							##如果新方向是之前的路径就跳过
-							##var nPos=Vector2(floori(global_position.x/ MapData.cellSize),
-								##floori(global_position.y/ MapData.cellSize))+i.dir
-							##print("nPos",nPos)
-							##if !recentPos.is_empty() && recentPos.has(nPos):
-								##continue
-							#bestDir=i.dir	#找到一个方向就行了
-							#break
-					#else:
-						#bestDir=velocity		
-			#if !bestDir.is_normalized():  #设置成单位向量
-				#bestDir=bestDir.normalized()
-			#velocity=bestDir
-		#
-		##保存当前格子位置
-		#var currPos=Vector2(floori(global_position.x/ MapData.cellSize),
-					#floori(global_position.y/ MapData.cellSize))
-		#if recentPos.is_empty():
-			#recentPos.push_front(currPos)		
-		#elif !recentPos.has(currPos):
-			#recentPos.push_front(currPos)	
-		#if recentPos.size()>recentMax:
-			#recentPos.pop_back()
 			
 		#if target != null:
 			#var dis = global_position.distance_to(target.global_position)
@@ -213,25 +138,21 @@ func _physics_process(_delta: float) -> void:
 					#var signy = sign(delta.y)	
 					#global_position.y =r.collider.global_position.y+signy*(shape1.size.y/2+shape.shape.size.y/2)
 		
-		if velocity.length() > 0:
-			currAni = "walk"
-		else:
-			currAni = "stand"
-	
-		if velocity.length() != 0:
-			#print(velocity.angle())
-			angle = round(velocity.angle() / (PI / 4))
-			angle = wrapi(int(angle), 0, 8)
-			if angle != oldAngle:
-				#velocity = Vector2.ZERO
-				playRotateAni(angle)
-				return
-			#oldAngle = angle
-		
-		
-		ani.play(currAni + "_%s"%angle)
-		#move_and_collide(velocity *speed* _delta)
-		
+		#if velocity.length() > 0:
+			#currAni = "walk"
+		#else:
+			#currAni = "stand"
+
+		#if velocity.length() != 0:
+			##print(velocity.angle())
+			#angle = round(velocity.angle() / (PI / 4))
+			#angle = wrapi(int(angle), 0, 8)
+			#if angle != oldAngle:
+				##velocity = Vector2.ZERO
+				#playRotateAni(angle)
+				#return
+			##oldAngle = angle
+		#ani.play(currAni + "_%s"%angle)
 	elif state == Game.enemyState.dead:
 		pass
 	elif state == Game.enemyState.hurt:
@@ -383,6 +304,27 @@ func _draw() -> void:
 
 
 func _on_navigation_agent_2d_velocity_computed(_safe_velocity: Vector2) -> void:
-	velocity=_safe_velocity
-	#move_and_collide(velocity *speed* _delta)
-	move_and_slide()
+	#var octant: int = wrapi(int(_safe_velocity.angle() / (PI / 4.0)),0,8)
+	#velocity=dir[octant].normalized()
+	#velocity=_safe_velocity.snapped(Vector2.RIGHT.rotated(TAU / 8.0))
+	if state == Game.enemyState.Idle:
+		#velocity=_safe_velocity.normalized()
+		velocity=_safe_velocity.snapped(Vector2.RIGHT.rotated(TAU / 8.0)).normalized()
+		if velocity.length() > 0:
+			currAni = "walk"
+		else:
+			currAni = "stand"
+
+		if velocity.length() != 0:
+			#print(velocity.angle())
+			angle = round(velocity.angle() / (PI / 4))
+			angle = wrapi(int(angle), 0, 8)
+			if angle != oldAngle:
+				#velocity = Vector2.ZERO
+				playRotateAni(angle)
+				return
+			#oldAngle = angle
+		ani.play(currAni + "_%s"%angle)
+		
+
+		move_and_collide(velocity *speed*delta)
