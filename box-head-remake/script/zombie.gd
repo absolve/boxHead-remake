@@ -32,14 +32,14 @@ var findPathDelay=2
 var nextPoint=Vector2.ZERO
 #方向
 var dir = [
-	Vector2(0, -1),      # up
-	Vector2(1, -1),      # up-right
 	Vector2(1, 0),       # right
 	Vector2(1, 1),       # down-right
 	Vector2(0, 1),       # down
 	Vector2(-1, 1),      # down-left
 	Vector2(-1, 0),      # left
-	Vector2(-1, -1)      # up-left
+	Vector2(-1, -1),      # up-left
+	Vector2(0, -1),      # up
+	Vector2(1, -1),      # up-right
 ]
 var directions:Array[eightDir]=[]
 var recentPos:Array[Vector2]=[]  #旧的格子位置
@@ -96,6 +96,8 @@ func _physics_process(_delta: float) -> void:
 			return
 		var next_path_position: Vector2 = navigationAgent2D.get_next_path_position()
 		velocity=global_position.direction_to(next_path_position)
+		var octant: int = wrapi(int(velocity.angle() / (PI / 4.0)),0,8)
+		velocity=dir[octant].normalized()
 		navigationAgent2D.set_velocity(velocity*speed)
 		
 		
@@ -289,7 +291,7 @@ func _physics_process(_delta: float) -> void:
 			state=Game.enemyState.Idle
 		
 		
-	z_index = floori(global_position.y / MapData.cellSize) + 1
+	z_index = roundi(global_position.y / MapData.cellSize) + 1
 	queue_redraw()
 	
 	
