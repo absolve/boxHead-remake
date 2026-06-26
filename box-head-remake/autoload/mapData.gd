@@ -35,14 +35,83 @@ var mapSize: Vector2 # 地图大小
 #以x-y为key用来快速判断地图上物体位置
 var mapTile = {}
 
-var astarGrid: AStarGrid2D = AStarGrid2D.new()
+# CAUTION 流场方向 key是x-y  value为方向
+var flowFieldDir={}
+# CAUTION 流场方向 key是x-y  value为距目标点的距离
+var flowFieldDistance={}
+# CAUTION 目标
+var targets=[]
+
+#障碍物 key 为x-y value为方向
+var obstacle:Dictionary={}
+#流场编号 key为id  value 为流场方向
+var flowFieldDict={}
+
+#var astarGrid: AStarGrid2D = AStarGrid2D.new()
 
 func _ready() -> void:
-	astarGrid.cell_size = Vector2(cellSize, cellSize)
-	astarGrid.default_estimate_heuristic = AStarGrid2D.HEURISTIC_CHEBYSHEV
-	astarGrid.default_compute_heuristic = AStarGrid2D.HEURISTIC_CHEBYSHEV
-	astarGrid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
-	astarGrid.offset = Vector2(cellSize, cellSize) * 0.5
+	#astarGrid.cell_size = Vector2(cellSize, cellSize)
+	#astarGrid.default_estimate_heuristic = AStarGrid2D.HEURISTIC_CHEBYSHEV
+	#astarGrid.default_compute_heuristic = AStarGrid2D.HEURISTIC_CHEBYSHEV
+	#astarGrid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
+	#astarGrid.offset = Vector2(cellSize, cellSize) * 0.5
+	pass
+
+#计算流场  id为玩家id 个玩家生成一个单独的流场
+func computeFields(id,_target:Vector2=Vector2.INF):
+	var distanceField={}
+	#初始化每个格子的距离
+	for x in range(mapSize.x):
+		for y in range(mapSize.y):
+			distanceField["%s-%s"%[x,y]]=INF
+	# 8方向搜索
+	var dirs = [Vector2(-1,0),Vector2(1,0),Vector2(0,-1),Vector2(0,1),
+		Vector2(-1,-1),Vector2(-1,1),Vector2(1,-1),Vector2(1,1)]
+	distanceField["%s-%s"%[_target.x,_target.y]]=0 #目标点距离为0
+	var t:Array[Vector2] =[]
+	t.append(_target)
+	while t.size()>0:
+		var p=t.pop_front()
+		for i in dirs:  #获取邻居格子
+			var pos:Vector2=p+i
+			if pos.x<0||pos.y<0||pos.x>=mapSize.x||pos.y>=mapSize.y:
+				continue
+			if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
+				continue
+			if distanceField["%s-%s"%[int(pos.x),int(pos.y)]]==INF:
+				distanceField["%s-%s"%[int(pos.x),int(pos.y)]]=distanceField["%s-%s"%[int(p.x),int(p.y)]]+1
+				if i.x!=0||i.y!=0: #对角线加0.5
+					distanceField["%s-%s"%[int(pos.x),int(pos.y)]]+=0.5
+				t.append(pos)
+				
+	#计算流场方向
+	for x in range(mapSize.x):
+		for y in range(mapSize.y):
+			var mindistance=INF
+			var bestDir=Vector2.ZERO		
+			var pos=Vector2(x,y)
+			for i in dirs:
+				var n=pos+i
+				if n.x<0||n.y<0||n.x>=mapSize.x||n.y>=mapSize.y:
+					continue
+				if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
+					continue	
+				if distanceField["%s-%s"%[int(n.x),int(n.y)]]<mindistance:
+					mindistance=distanceField["%s-%s"%[int(n.x),int(n.y)]]
+					bestDir=i
+			#根据id 设置流场方向
+			if flowFieldDict.has(id):
+				flowFieldDict[id]["%s-%s"%[int(pos.x),int(pos.y)]]=bestDir
+
+#获取流场方向 
+func getFlowDir(pos:Vector2,id):
+	var x=floori(pos.x/cellSize)
+	var y=floori(pos.y/cellSize)
+	if flowFieldDict.has(id)&&flowFieldDict[id].has("%s-%s"%[x,y]):
+		return flowFieldDict[id]["%s-%s"%[x,y]]
+	else:
+		return Vector2.ZERO	
+
 
 
 func clearMapTile():
@@ -68,10 +137,10 @@ func addMapItem(pos: Vector2, id: int):
 	mapTile["%s-%s" % [x, y]] = id
 
 ## 查找路径
-func findPath(start: Vector2, end: Vector2):
-	var s = Vector2(floori(start.x / cellSize), floori(start.y / cellSize))
-	var e = Vector2(floori(end.x / cellSize), floori(end.y / cellSize))
-	return astarGrid.get_point_path(s, e)
+#func findPath(start: Vector2, end: Vector2):
+	#var s = Vector2(floori(start.x / cellSize), floori(start.y / cellSize))
+	#var e = Vector2(floori(end.x / cellSize), floori(end.y / cellSize))
+	#return astarGrid.get_point_path(s, e)
 
 #重置配置
 func resetMapConfig():

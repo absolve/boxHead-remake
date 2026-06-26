@@ -8,7 +8,7 @@ extends "res://script/character.gd"
 @onready var lifeBar=$lifeBar
 @onready var deadSound=$dead
 
-@export var playerId = 1
+@export var playerId = 1   #玩家一个标记 
 var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
 var currWeapon = null
 var weaponList = []
