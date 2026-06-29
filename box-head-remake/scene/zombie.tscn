@@ -1049,7 +1049,7 @@ height = 35.0
 collision_layer = 2
 collision_mask = 11
 script = ExtResource("2_tet0w")
-hp = 8
+hp = 4
 speed = 20
 type = 401
 
@@ -1083,14 +1083,5 @@ position = Vector2(-11, -5)
 shape = SubResource("CapsuleShape2D_keefw")
 debug_color = Color(0.93937767, 0.20114002, 0.3741672, 0.41960785)
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="4" unique_id=536375965]
-target_desired_distance = 45.0
-path_postprocessing = 2
-avoidance_enabled = true
-radius = 20.0
-avoidance_layers = 3
-avoidance_mask = 3
-debug_enabled = true
-
-[node name="ShapeCast2D" type="ShapeCast2D" parent="." index="5" unique_id=1684440021]
+[node name="ShapeCast2D" type="ShapeCast2D" parent="." index="4" unique_id=1684440021]
 shape = SubResource("RectangleShape2D_jegkb")

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_226e6"]
 [ext_resource type="Script" uid="uid://dcb61sk60lst1" path="res://script/barrel_obj.gd" id="2_j1kyk"]
-[ext_resource type="Texture2D" uid="uid://c2njujhx24wur" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
+[ext_resource type="Texture2D" uid="uid://b18staaklk5tu" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j1kyk"]
 size = Vector2(25, 25)
@@ -13,7 +13,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_j1kyk")
 }],
-"loop": false,
+"loop": 0,
 "name": &"default",
 "speed": 5.0
 }]
@@ -30,9 +30,3 @@ shape = SubResource("RectangleShape2D_j1kyk")
 [node name="ani" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_hwscq")
 offset = Vector2(-3, -5)
-
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." index="2" unique_id=1739783979]
-radius = 15.0
-vertices = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
-affect_navigation_mesh = true
-avoidance_layers = 2

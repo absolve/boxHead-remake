@@ -8,12 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/map_sign.tscn" id="6_fbdb3"]
 [ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/barrel_obj.tscn" id="7_viuee"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_viuee"]
-vertices = PackedVector2Array(342, 74, 630, 74, 630, 454, 342, 454, 342, 526, 306, 526, 306, 454, 306, 74, 10, 454, 10, 74, 342, 10, 306, 10)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(3, 4, 5, 6), PackedInt32Array(0, 3, 6, 7), PackedInt32Array(6, 8, 9, 7), PackedInt32Array(10, 0, 7, 11)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(0, 64, 296, 64, 296, 0, 352, 0, 352, 64, 640, 64, 640, 464, 352, 464, 352, 536, 296, 536, 296, 464, 0, 464)])
-agent_radius = 30.0
-
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
 metadata/_edit_lock_ = true
@@ -140,6 +134,3 @@ position = Vector2(375, 420)
 [node name="barrelObj12" parent="." index="30" unique_id=2123256976 instance=ExtResource("7_viuee")]
 z_index = 4
 position = Vector2(375, 448)
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." index="31" unique_id=238886310]
-navigation_polygon = SubResource("NavigationPolygon_viuee")

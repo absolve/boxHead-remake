@@ -5,7 +5,7 @@ extends "res://script/item.gd"
 var explosion=preload("res://scene/explosion.tscn")
 #var splitNum=4  #分裂成小爆炸
 #var splitRadius=30 #分裂半径
-var startExploding=false
+var startExploding=false  #是否被击中爆炸
 var splitExplosion=0  #分裂爆炸
 
 func _ready():

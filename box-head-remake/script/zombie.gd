@@ -31,7 +31,7 @@ var findPathTimer=0
 var findPathDelay=2
 var nextPoint=Vector2.ZERO
 #方向
-var dir = [
+var dirs = [
 	Vector2(1, 0),       # right
 	Vector2(1, 1),       # down-right
 	Vector2(0, 1),       # down
@@ -41,7 +41,7 @@ var dir = [
 	Vector2(0, -1),      # up
 	Vector2(1, -1),      # up-right
 ]
-var directions:Array[eightDir]=[]
+#var directions:Array[eightDir]=[]
 var recentPos:Array[Vector2]=[]  #旧的格子位置
 var recentMax=30  #最大记录数
 var isBlocked=false #前进方向被阻挡
@@ -54,24 +54,25 @@ var lastGrid:Vector2i=Vector2.ZERO  #上一次网格位置
 var minMoveGrid=2 #最少移动格子位置 如果流场方向无法移动
 
 
-class eightDir:
-	var dir:Vector2
-	var dot:float
-	var canMove:bool #是否可以移动
-	var normal:Vector2  #碰到障碍物的法线
-	var distance:float #距离目标位置的距离
-	
-	func _init(_dir:Vector2):
-		self.dir=_dir
+#class eightDir:
+	#var dir:Vector2
+	#var dot:float
+	#var canMove:bool #是否可以移动
+	#var normal:Vector2  #碰到障碍物的法线
+	#var distance:float #距离目标位置的距离
+	#
+	#func _init(_dir:Vector2):
+		#self.dir=_dir
+#
+	#func _to_string() -> String:
+		#return 'dir %s canMove %s distance %s  dot %s'%[dir,canMove,distance,dot]
 
-	func _to_string() -> String:
-		return 'dir %s canMove %s distance %s  dot %s'%[dir,canMove,distance,dot]
-
+# 方向信息类：用于存储候选方向的评分信息
 class dirInfo:
-	var dir:Vector2
-	var dot:float
-	var canMove:bool #是否可以移动
-	var distance  #距离目标的距离
+	var dir: Vector2 # 方向向量
+	var dot: float # 与原方向的点积（用于排序，值越大越接近原方向）
+	var canMove: bool # 是否可以移动
+	var distance # 距离目标的距离
 	func _init(_dir:Vector2):
 		self.dir=_dir
 	func _to_string():
@@ -93,14 +94,14 @@ func _ready():
 	shapeQuery.exclude=[get_rid()]
 	shapeQuery.shape=shape.shape
 	
-	for i in dir:
-		directions.append(eightDir.new(i))
+	#for i in dir:
+		#directions.append(eightDir.new(i))
 	delta=get_physics_process_delta_time()
 
 	
 func _physics_process(_delta: float) -> void:
 	delta=_delta
-	if state == Game.enemyState.Idle:
+	if state == Game.enemyState.Idle||state==Game.enemyState.ffp||state==Game.enemyState.findDir:
 		#velocity=Vector2.ZERO
 		pathTimer += _delta
 		if pathTimer > pathUpdateInterval:
@@ -115,22 +116,44 @@ func _physics_process(_delta: float) -> void:
 		#var octant: int = wrapi(int(velocity.angle() / (PI / 4.0)),0,8)
 		#velocity=dir[octant].normalized()
 		#navigationAgent2D.set_velocity(newVelocity*speed)
-		
+		if state==Game.enemyState.ffp:
+			currDir=findDir()
+		elif state==Game.enemyState.findDir:
+			currDir=findDir()
 			
-		#if target != null:
-			#var dis = global_position.distance_to(target.global_position)
-			#if dis < attackRange:
+		# 设置速度并移动
+		velocity = currDir * speed
+					
+		if target != null:
+			var dis = global_position.distance_squared_to(target.global_position)
+			if dis < attackRange*attackRange:
+				velocity = Vector2.ZERO
+				ani.play("attack" + "_%s"%angle)
+				attackArea.position=attackPos[angle]
+				attackTimer=0
+				if attackPosAngle.has(angle):
+					attackArea.rotation=deg_to_rad(attackPosAngle[angle])
+				else:
+					attackArea.rotation=0	
+				state=Game.enemyState.attack
+				return
+		
+		if velocity.length() > 0:
+			currAni = "walk"
+		else:
+			currAni = "stand"
+		if velocity.length() != 0:
+			#print(velocity.angle())
+			angle = round(velocity.angle() / (PI / 4))
+			angle = wrapi(int(angle), 0, 8)
+			if angle != oldAngle:
 				#velocity = Vector2.ZERO
-				#ani.play("attack" + "_%s"%angle)
-				#attackArea.position=attackPos[angle]
-				#attackTimer=0
-				#if attackPosAngle.has(angle):
-					#attackArea.rotation=deg_to_rad(attackPosAngle[angle])
-				#else:
-					#attackArea.rotation=0	
-				#state=Game.enemyState.attack
-				#return
-		#
+				playRotateAni(angle)
+				return
+			#oldAngle = angle
+		ani.play(currAni + "_%s"%angle)
+		move_and_collide(velocity * _delta)
+		
 		##判断是否发生碰撞	
 		#shapeQuery.transform=Transform2D(global_rotation,global_position)
 		#var result=space_state.intersect_shape(shapeQuery,1)
@@ -244,6 +267,7 @@ func findTarget():
 	else:
 		return null
 
+
 func getFlowField():
 	var current_grid =Vector2i(floori(global_position.x/MapData.cellSize)	
 		,floori(global_position.y/MapData.cellSize))
@@ -269,7 +293,7 @@ func getFlowField():
 		canMoveDir.sort_custom(func(a, b): return a.dot >= b.dot)
 		if canMoveDir.size()>0:
 			bestDir=canMoveDir[0].dir
-			#state=Game.enemyState.findDir
+			state=Game.enemyState.ffp
 		else:
 			bestDir= Vector2.ZERO	
 		lastGrid =Vector2i(floori(global_position.x/MapData.cellSize)	
@@ -314,8 +338,7 @@ func findDir():
 				bestDir= Vector2.ZERO	
 			lastGrid=current_grid  #记录当前位置
 	else:
-		#state=Game.enemyState.move
-		pass
+		state=Game.enemyState.ffp
 		
 	if lastGrid.distance_squared_to(current_grid)>minMoveGrid*minMoveGrid:
 		var dir=MapData.getFlowDir(global_position,0)  #获取流场提供的方向

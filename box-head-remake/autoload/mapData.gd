@@ -42,7 +42,7 @@ var flowFieldDistance={}
 # CAUTION 目标
 var targets=[]
 
-#障碍物 key 为x-y value为方向
+#障碍物 key 为x-y value为格子坐标
 var obstacle:Dictionary={}
 #流场编号 key为id  value 为流场方向
 var flowFieldDict={}
