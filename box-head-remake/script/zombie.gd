@@ -26,7 +26,7 @@ var attackTimer = 0
 var attackDelay=1
 var shapeQuery=PhysicsShapeQueryParameters2D.new()
 var lastVelocity=Vector2.ZERO
-var searchOrder=true #查找方向  true为顺时针
+#var searchOrder=true #查找方向  true为顺时针
 var findPathTimer=0
 var findPathDelay=2
 var nextPoint=Vector2.ZERO
@@ -42,9 +42,9 @@ var dirs = [
 	Vector2(1, -1),      # up-right
 ]
 #var directions:Array[eightDir]=[]
-var recentPos:Array[Vector2]=[]  #旧的格子位置
-var recentMax=30  #最大记录数
-var isBlocked=false #前进方向被阻挡
+#var recentPos:Array[Vector2]=[]  #旧的格子位置
+#var recentMax=30  #最大记录数
+#var isBlocked=false #前进方向被阻挡
 var initPos=Vector2.ZERO #抵达初始点后开始寻找玩家
 var delta=0
 var size:Vector2=Vector2(32,32)
@@ -86,7 +86,7 @@ var attackPosAngle={2:90,6:90}
 
 
 func _ready():
-	state = Game.enemyState.hurt
+	state = Game.enemyState.ffp
 	font = ThemeDB.fallback_font
 	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas=true
@@ -271,7 +271,7 @@ func findTarget():
 func getFlowField():
 	var current_grid =Vector2i(floori(global_position.x/MapData.cellSize)	
 		,floori(global_position.y/MapData.cellSize))
-	var dir=MapData.getFlowDir(global_position,0)  #获取流场提供的方向
+	var dir=MapData.getFlowDir(global_position,target.playerId)  #获取流场提供的方向
 	shapeCast.target_position=size*dir
 	shapeCast.force_shapecast_update()
 	if shapeCast.is_colliding():
@@ -341,7 +341,7 @@ func findDir():
 		state=Game.enemyState.ffp
 		
 	if lastGrid.distance_squared_to(current_grid)>minMoveGrid*minMoveGrid:
-		var dir=MapData.getFlowDir(global_position,0)  #获取流场提供的方向
+		var dir=MapData.getFlowDir(global_position,target.playerId)  #获取流场提供的方向
 		shapeCast.target_position=size/2*dir
 		shapeCast.force_shapecast_update()
 		if !shapeCast.is_colliding():

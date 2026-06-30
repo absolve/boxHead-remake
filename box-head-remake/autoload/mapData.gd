@@ -1,6 +1,6 @@
 extends Node
 
-const cellSize: float = 30 # 每个格子大小
+const cellSize: float = 32 # 每个格子大小
 
 #武器基本参数信息
 var allWeaponData = {
@@ -36,11 +36,11 @@ var mapSize: Vector2 # 地图大小
 var mapTile = {}
 
 # CAUTION 流场方向 key是x-y  value为方向
-var flowFieldDir={}
+#var flowFieldDir={}
 # CAUTION 流场方向 key是x-y  value为距目标点的距离
-var flowFieldDistance={}
+#var flowFieldDistance={}
 # CAUTION 目标
-var targets=[]
+#var targets=[]
 
 #障碍物 key 为x-y value为格子坐标
 var obstacle:Dictionary={}
@@ -60,21 +60,23 @@ func _ready() -> void:
 #计算流场  id为玩家id 个玩家生成一个单独的流场
 func computeFields(id,_target:Vector2=Vector2.INF):
 	var distanceField={}
+	var cellX=int(mapSize.x/cellSize)
+	var cellY=int(mapSize.y/cellSize)
 	#初始化每个格子的距离
-	for x in range(mapSize.x):
-		for y in range(mapSize.y):
+	for x in range(cellX):
+		for y in range(cellY):
 			distanceField["%s-%s"%[x,y]]=INF
 	# 8方向搜索
 	var dirs = [Vector2(-1,0),Vector2(1,0),Vector2(0,-1),Vector2(0,1),
 		Vector2(-1,-1),Vector2(-1,1),Vector2(1,-1),Vector2(1,1)]
-	distanceField["%s-%s"%[_target.x,_target.y]]=0 #目标点距离为0
+	distanceField["%s-%s"%[int(_target.x),int(_target.y)]]=0 #目标点距离为0
 	var t:Array[Vector2] =[]
 	t.append(_target)
 	while t.size()>0:
 		var p=t.pop_front()
 		for i in dirs:  #获取邻居格子
 			var pos:Vector2=p+i
-			if pos.x<0||pos.y<0||pos.x>=mapSize.x||pos.y>=mapSize.y:
+			if pos.x<0||pos.y<0||pos.x>=cellX||pos.y>=cellY:
 				continue
 			if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
 				continue
@@ -85,14 +87,14 @@ func computeFields(id,_target:Vector2=Vector2.INF):
 				t.append(pos)
 				
 	#计算流场方向
-	for x in range(mapSize.x):
-		for y in range(mapSize.y):
+	for x in range(cellX):
+		for y in range(cellY):
 			var mindistance=INF
 			var bestDir=Vector2.ZERO		
 			var pos=Vector2(x,y)
 			for i in dirs:
 				var n=pos+i
-				if n.x<0||n.y<0||n.x>=mapSize.x||n.y>=mapSize.y:
+				if n.x<0||n.y<0||n.x>=cellX||n.y>=cellY:
 					continue
 				if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
 					continue	
@@ -102,7 +104,10 @@ func computeFields(id,_target:Vector2=Vector2.INF):
 			#根据id 设置流场方向
 			if flowFieldDict.has(id):
 				flowFieldDict[id]["%s-%s"%[int(pos.x),int(pos.y)]]=bestDir
-
+			else:
+				flowFieldDict[id]={}	
+				
+				
 #获取流场方向 
 func getFlowDir(pos:Vector2,id):
 	var x=floori(pos.x/cellSize)

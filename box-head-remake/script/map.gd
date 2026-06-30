@@ -18,12 +18,14 @@ var currWave=0  #当前波次
 var zombieCount=20  #每波次加2
 var devilCount=2	#每波次加2
 var allSpawnPoint=[]
-
+var updateFlowFieldDelay=60 #60帧
+var updateTimer=0
 
 func _ready() -> void:
 	MapData.mapSize = room.mapSize
 	#MapData.astarGrid.region = Rect2i(0, 0, room.mapSize.x, room.mapSize.y)
 	#MapData.astarGrid.update()
+	updateFlowField()
 	font = ThemeDB.fallback_font
 	#await get_tree().create_timer(1).timeout
 	#startNextWave()
@@ -89,12 +91,23 @@ func weaponUpgrade(type):
 func notice(s):
 	print('notice',s)
 	toastInfo.display(s)
-	pass
+
+func updateFlowField():
+	var players=get_tree().get_nodes_in_group("player")
+	for i in players:
+		var x=floori(i.global_position.x/MapData.cellSize)
+		var y=floori(i.global_position.y/MapData.cellSize)
+		MapData.computeFields(i.playerId,Vector2(x,y))
+	
 
 func _physics_process(_delta: float) -> void:
 	if isDebug:
 		queue_redraw()
-	pass
+	updateTimer+=1
+	if updateTimer>updateFlowFieldDelay:
+		updateTimer=0
+		updateFlowField()
+	
 
 func _draw() -> void:
 	var width = floor(MapData.mapSize.x / MapData.cellSize)

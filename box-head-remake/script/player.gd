@@ -146,11 +146,11 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 		ani.play("fallDown_%s" % [roundi(angle/2.0)])	
 		shape.disabled = true
 		bodyShape.disabled = true
-		await ani.animation_finished
-		var temp = create_tween()
-		temp.tween_interval(2)
-		temp.tween_property(ani, "modulate:a", 0, 1)
-		temp.tween_callback(queue_free)
+		#await ani.animation_finished
+		#var temp = create_tween()
+		#temp.tween_interval(2)
+		#temp.tween_property(ani, "modulate:a", 0, 1)
+		#temp.tween_callback(queue_free)
 		#发送玩家死亡的消息
 	else:
 		state=Game.playerState.hurt
@@ -259,7 +259,7 @@ func _physics_process(_delta):
 	elif state==Game.playerState.dead:
 		pass
 	
-	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
-	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
+	#position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
+	#position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 	
