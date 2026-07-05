@@ -10,6 +10,7 @@
 
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
+debug = true
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=409961369]

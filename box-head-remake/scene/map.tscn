@@ -470,9 +470,6 @@ one_shot = true
 [node name="nextWaveTimer" type="Timer" parent="." unique_id=286966049]
 one_shot = true
 
-[node name="zombie" parent="." unique_id=1183646961 instance=ExtResource("107_hk4qc")]
-position = Vector2(514, 309)
-
 [node name="zombie2" parent="." unique_id=597048025 instance=ExtResource("107_hk4qc")]
 position = Vector2(433, 301)
 
