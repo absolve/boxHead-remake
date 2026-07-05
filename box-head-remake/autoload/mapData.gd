@@ -4,31 +4,32 @@ const cellSize: float = 32 # 每个格子大小
 
 #武器基本参数信息
 var allWeaponData = {
-	Game.weaponType.Pistol:{'damage':1,'wRange':300,'delay':0.6,'maxAmmoNum':0,'automatic':false},
-	Game.weaponType.UZI:{'damage':1,'wRange':400,'delay':0.1,'maxAmmoNum':50,'automatic':true},
-	Game.weaponType.Shotgun:{'damage':2,'wRange':300,'delay':0.1,'maxAmmoNum':15,'splitAngle':30,'automatic':false},
-	Game.weaponType.Mine:{'damage':4,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false},
-	Game.weaponType.Wall:{'damage':0,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false},
-	Game.weaponType.Barrel:{'damage':4,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false},
-	Game.weaponType.Grenade:{'damage':4,'wRange':0,'delay':1,'maxAmmoNum':15,'automatic':false},
-	Game.weaponType.Rocket:{'damage':10,'wRange':0,'delay':1.2,'maxAmmoNum':15,'automatic':false},
-	Game.weaponType.Railgun:{'damage':5,'wRange':300,'delay':0.5,'maxAmmoNum':20,'automatic':false},
-	Game.weaponType.ChargePack:{'damage':0,'wRange':0,'delay':0,'maxAmmoNum':10,'automatic':false}
+	Game.weaponType.Pistol: {'damage': 1, 'wRange': 300, 'delay': 0.6, 'maxAmmoNum': 0, 'automatic': false},
+	Game.weaponType.UZI: {'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 50, 'automatic': true},
+	Game.weaponType.Shotgun: {'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 15, 'splitAngle': 30, 'automatic': false},
+	Game.weaponType.Mine: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
+	Game.weaponType.Wall: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
+	Game.weaponType.Barrel: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
+	Game.weaponType.Grenade: {'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 15, 'automatic': false},
+	Game.weaponType.Rocket: {'damage': 10, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 15, 'automatic': false},
+	Game.weaponType.Railgun: {'damage': 5, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 20, 'automatic': false},
+	Game.weaponType.ChargePack: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false}
 }
+
 #敌人基本参数信息
-var enemyData={
-	Game.roleType.Zombie:{},
-	Game.roleType.Devil:{}
+var enemyData = {
+	Game.roleType.Zombie: {},
+	Game.roleType.Devil: {}
 }
 
 #地图配置
-var mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
-				'Game speed':1}
+var mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFire': true,
+				'Game speed': 1}
 
 #当前连杀
-var currKillStreak=0
-var killStreak=0  #连杀
-var score=0 #分数
+var currKillStreak = 0
+var killStreak = 0 # 连杀
+var score = 0 # 分数
 
 var mapSize: Vector2 # 地图大小
 
@@ -43,9 +44,9 @@ var mapTile = {}
 #var targets=[]
 
 #障碍物 key 为x-y value为格子坐标
-var obstacle:Dictionary={}
+var obstacle: Dictionary = {}
 #流场编号 key为id  value 为流场方向
-var flowFieldDict={}
+var flowFieldDict = {}
 
 #var astarGrid: AStarGrid2D = AStarGrid2D.new()
 
@@ -58,65 +59,64 @@ func _ready() -> void:
 	pass
 
 #计算流场  id为玩家id 个玩家生成一个单独的流场
-func computeFields(id,_target:Vector2=Vector2.INF):
-	var distanceField={}
-	var cellX=int(mapSize.x/cellSize)
-	var cellY=int(mapSize.y/cellSize)
+func computeFields(id, _target: Vector2 = Vector2.INF):
+	var distanceField = {}
+	var cellX = int(mapSize.x / cellSize)
+	var cellY = int(mapSize.y / cellSize)
 	#初始化每个格子的距离
 	for x in range(cellX):
 		for y in range(cellY):
-			distanceField["%s-%s"%[x,y]]=INF
+			distanceField["%s-%s" % [x, y]] = INF
 	# 8方向搜索
-	var dirs = [Vector2(-1,0),Vector2(1,0),Vector2(0,-1),Vector2(0,1),
-		Vector2(-1,-1),Vector2(-1,1),Vector2(1,-1),Vector2(1,1)]
-	distanceField["%s-%s"%[int(_target.x),int(_target.y)]]=0 #目标点距离为0
-	var t:Array[Vector2] =[]
+	var dirs = [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1),
+		Vector2(-1, -1), Vector2(-1, 1), Vector2(1, -1), Vector2(1, 1)]
+	distanceField["%s-%s" % [int(_target.x), int(_target.y)]] = 0 # 目标点距离为0
+	var t: Array[Vector2] = []
 	t.append(_target)
-	while t.size()>0:
-		var p=t.pop_front()
-		for i in dirs:  #获取邻居格子
-			var pos:Vector2=p+i
-			if pos.x<0||pos.y<0||pos.x>=cellX||pos.y>=cellY:
+	while t.size() > 0:
+		var p = t.pop_front()
+		for i in dirs: # 获取邻居格子
+			var pos: Vector2 = p + i
+			if pos.x < 0 || pos.y < 0 || pos.x >= cellX || pos.y >= cellY:
 				continue
-			if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
+			if obstacle.has("%s-%s" % [int(pos.x), int(pos.y)]):
 				continue
-			if distanceField["%s-%s"%[int(pos.x),int(pos.y)]]==INF:
-				distanceField["%s-%s"%[int(pos.x),int(pos.y)]]=distanceField["%s-%s"%[int(p.x),int(p.y)]]+1
-				if i.x!=0||i.y!=0: #对角线加0.5
-					distanceField["%s-%s"%[int(pos.x),int(pos.y)]]+=0.5
+			if distanceField["%s-%s" % [int(pos.x), int(pos.y)]] == INF:
+				distanceField["%s-%s" % [int(pos.x), int(pos.y)]] = distanceField["%s-%s" % [int(p.x), int(p.y)]] + 1
+				if i.x != 0 || i.y != 0: # 对角线加0.5
+					distanceField["%s-%s" % [int(pos.x), int(pos.y)]] += 0.5
 				t.append(pos)
 				
 	#计算流场方向
 	for x in range(cellX):
 		for y in range(cellY):
-			var mindistance=INF
-			var bestDir=Vector2.ZERO		
-			var pos=Vector2(x,y)
+			var mindistance = INF
+			var bestDir = Vector2.ZERO
+			var pos = Vector2(x, y)
 			for i in dirs:
-				var n=pos+i
-				if n.x<0||n.y<0||n.x>=cellX||n.y>=cellY:
+				var n = pos + i
+				if n.x < 0 || n.y < 0 || n.x >= cellX || n.y >= cellY:
 					continue
-				if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
-					continue	
-				if distanceField["%s-%s"%[int(n.x),int(n.y)]]<mindistance:
-					mindistance=distanceField["%s-%s"%[int(n.x),int(n.y)]]
-					bestDir=i
+				if obstacle.has("%s-%s" % [int(pos.x), int(pos.y)]):
+					continue
+				if distanceField["%s-%s" % [int(n.x), int(n.y)]] < mindistance:
+					mindistance = distanceField["%s-%s" % [int(n.x), int(n.y)]]
+					bestDir = i
 			#根据id 设置流场方向
 			if flowFieldDict.has(id):
-				flowFieldDict[id]["%s-%s"%[int(pos.x),int(pos.y)]]=bestDir
+				flowFieldDict[id]["%s-%s" % [int(pos.x), int(pos.y)]] = bestDir
 			else:
-				flowFieldDict[id]={}	
+				flowFieldDict[id] = {}
 				
 				
 #获取流场方向 
-func getFlowDir(pos:Vector2,id):
-	var x=floori(pos.x/cellSize)
-	var y=floori(pos.y/cellSize)
-	if flowFieldDict.has(id)&&flowFieldDict[id].has("%s-%s"%[x,y]):
-		return flowFieldDict[id]["%s-%s"%[x,y]]
+func getFlowDir(pos: Vector2, id):
+	var x = floori(pos.x / cellSize)
+	var y = floori(pos.y / cellSize)
+	if flowFieldDict.has(id) && flowFieldDict[id].has("%s-%s" % [x, y]):
+		return flowFieldDict[id]["%s-%s" % [x, y]]
 	else:
-		return Vector2.ZERO	
-
+		return Vector2.ZERO
 
 
 func clearMapTile():
@@ -149,20 +149,20 @@ func addMapItem(pos: Vector2, id: int):
 
 #重置配置
 func resetMapConfig():
-	mapConfig={'difficulty':1,'collision':true,'Devils':true,'friendlyFire':true,
-				'gameSpeed':1}
+	mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFire': true,
+				'gameSpeed': 1}
 
 func addKillStreak(val):
-	currKillStreak+=val
-	if currKillStreak>killStreak:
-		killStreak= currKillStreak
+	currKillStreak += val
+	if currKillStreak > killStreak:
+		killStreak = currKillStreak
 		countKillStreak()
 
 #计算连杀数
 func countKillStreak():
 	match killStreak:
 		3: # Pistol+: Fast Fire
-			allWeaponData[Game.weaponType.Pistol].delay=0.3
+			allWeaponData[Game.weaponType.Pistol].delay = 0.3
 			Game.weaponUpgrade.emit(Game.weaponType.Pistol)
 			Game.notice.emit(tr("Pistol+: Fast Fire"))
 		5:
@@ -214,21 +214,21 @@ func countKillStreak():
 		44:
 			pass
 		45:
-			pass	
+			pass
 		47:
-			pass	
+			pass
 		48:
 			pass
 		50:
 			pass
 		51:
-			pass			
+			pass
 		52:
 			pass
 		53:
 			pass
 		54:
-			pass		
+			pass
 		55:
 			pass
 		56:
@@ -248,7 +248,7 @@ func countKillStreak():
 		64:
 			pass
 		66:
-			pass				
+			pass
 		68:
 			pass
 		70:
@@ -266,7 +266,7 @@ func countKillStreak():
 		85:
 			pass
 		90:
-			pass								
+			pass
 		95:
 			pass
 		100:
@@ -274,14 +274,13 @@ func countKillStreak():
 		105:
 			pass
 		110:
-			pass	
+			pass
 		120:
-			pass			
+			pass
 		125:
 			pass
 
 
-																																	
 '''
 3	Pistol+: Fast Fire
 5	New Weapon: UZI (Key 2)

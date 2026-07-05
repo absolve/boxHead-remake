@@ -9,8 +9,8 @@ func _ready() -> void:
 	offsetDir[0]=Vector2(45,-15)
 	offsetDir[1]=Vector2(20,0)
 	offsetDir[2]=Vector2(-10,10)
-	offsetDir[3]=Vector2(-35,-5)
-	offsetDir[4]=Vector2(-40,-35)
+	offsetDir[3]=Vector2(-35,-20)
+	offsetDir[4]=Vector2(-40,5)
 	offsetDir[5]=Vector2(-18,-45)
 	offsetDir[6]=Vector2(15,-50)
 	offsetDir[7]=Vector2(40,-35)
@@ -77,11 +77,11 @@ func fire(v):
 func _draw() -> void:
 	if detecframes>0:
 		var offset=offsetDir[wrapi(int(vector.angle()/ (PI/4)), 0, 8)]
-		
+		print(offset)
 		#if intersectPos!=null:
 			#draw_line(offset,
 				#intersectPos-global_position,Color.WHITE)
 		#else:	
-		print(targetPos)
+		#print(targetPos)
 		draw_line(offset,
 			targetPos-global_position,Color.WHITE,1.5)

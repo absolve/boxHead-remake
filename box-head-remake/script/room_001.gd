@@ -14,3 +14,15 @@ func _ready() -> void:
 			playerSpawnPoint.append(i)
 		elif i.type==Game.mapSign.Item:
 			itemSpawnPoint.append(i)
+	MapData.mapSize = mapSize
+	queue_redraw()
+
+
+#func _draw() -> void:
+	#var width = floor(MapData.mapSize.x / MapData.cellSize)
+	#var height = floor(MapData.mapSize.y / MapData.cellSize)
+	#for i in range(width + 1):
+		#draw_line(Vector2(i * MapData.cellSize, 0), Vector2(i * MapData.cellSize, MapData.cellSize * height), Color.GRAY, 1, true)
+	#for i in range(height + 1):
+		#draw_line(Vector2(0, i * MapData.cellSize), Vector2(MapData.cellSize * width, i * MapData.cellSize), Color.GRAY, 1, true)
+	#draw_rect(Rect2(0,0,100,100),Color.WHITE)
