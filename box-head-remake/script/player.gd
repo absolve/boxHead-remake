@@ -240,7 +240,11 @@ func _physics_process(_delta):
 			switchWeapon()
 		if Input.is_action_just_pressed(keyMap.prevWeapon):
 			switchWeapon(false)
-		move_and_collide(velocity * _delta)
+
+		var displacement = velocity * _delta
+		if displacement != Vector2.ZERO:
+			displacement = _resolve_area_blockers(displacement)
+		move_and_collide(displacement)
 	elif state == Game.playerState.hurt:
 		hurtTimer += _delta
 		if hurtTimer > hurtDelay:
@@ -254,3 +258,45 @@ func _physics_process(_delta):
 	#position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
 	#position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
 	z_index = floori(global_position.y / MapData.cellSize) + 1
+
+	
+func _resolve_area_blockers(displacement: Vector2) -> Vector2:
+	var target_position = global_position + displacement
+	shapeQuery.transform = Transform2D(global_rotation, target_position)
+	var results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
+	if results.is_empty():
+		return displacement
+
+	var adjusted_position = target_position
+	for i in range(3):
+		var made_adjustment = false
+		shapeQuery.transform = Transform2D(global_rotation, adjusted_position)
+		results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
+		for r in results:
+			if not (r.collider and r.collider.has_method("get")):
+				continue
+			var collider_type = r.collider.get("type")
+			if collider_type == null:
+				continue
+			if collider_type in [Game.itemType.Barrel, Game.itemType.Wall]:
+				if not r.collider.has_node("shape"):
+					continue
+				var area_shape = r.collider.get_node("shape").shape
+				if area_shape is RectangleShape2D:
+					var area_extents = area_shape.size * 0.5
+					var self_extents = shape.shape.size * 0.5
+					var delta = adjusted_position - r.collider.global_position
+					var overlap_x = (area_extents.x + self_extents.x) - abs(delta.x)
+					var overlap_y = (area_extents.y + self_extents.y) - abs(delta.y)
+					if overlap_x > 0 and overlap_y > 0:
+						var move_x = sign(delta.x) if delta.x != 0 else sign(displacement.x) if displacement.x != 0 else 1
+						var move_y = sign(delta.y) if delta.y != 0 else sign(displacement.y) if displacement.y != 0 else 1
+						if overlap_x < overlap_y:
+							adjusted_position.x += move_x * overlap_x
+						else:
+							adjusted_position.y += move_y * overlap_y
+						made_adjustment = true
+		if not made_adjustment:
+			break
+
+	return adjusted_position - global_position
