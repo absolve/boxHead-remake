@@ -86,7 +86,7 @@ var attackPosAngle = {2: 90, 6: 90}
 
 
 func _ready():
-	state = Game.enemyState.ffp
+	#state = Game.enemyState.ffp
 	font = ThemeDB.fallback_font
 	#shapeQuery.collide_with_bodies=false
 	shapeQuery.collide_with_areas = true
@@ -96,7 +96,7 @@ func _ready():
 	
 	#for i in dir:
 		#directions.append(eightDir.new(i))
-	delta = get_physics_process_delta_time()
+	#delta = get_physics_process_delta_time()
 
 	
 func _physics_process(_delta: float) -> void:
@@ -119,7 +119,7 @@ func _physics_process(_delta: float) -> void:
 		if target == null:
 			return
 		if state == Game.enemyState.ffp:
-			currDir = findDir()
+			currDir = getFlowField()
 		elif state == Game.enemyState.findDir:
 			currDir = findDir()
 			
@@ -243,7 +243,7 @@ func _physics_process(_delta: float) -> void:
 					var signy = sign(d.y)
 					global_position.y = r.collider.global_position.y + signy * (shape1.size.y / 2 + shape.shape.size.y / 2)
 				currAni = "stand"
-		
+		#print(velocity)
 		ani.play(currAni + "_%s"%angle)
 		move_and_collide(velocity * speed * _delta)
 		if global_position.distance_to(initPos) < 1:
@@ -362,28 +362,8 @@ func playRotateAni(_newAngle):
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4
 	state = Game.enemyState.rotate
-	#print(oldAngle,' ',newAngle)
-	#print(oldAngle * 4,' ',newAngle*4,' ',abs(newAngle*4-oldAngle*4))
-	#print(sign(newAngle-oldAngle))
-	#var add=1
-	#if newAngle<oldAngle || abs(newAngle-oldAngle)>=4:
-		#add=-1
-	#tween.set_loops()	
-	#tween.step_finished.connect(_on_tween_step)
-	#tween.tween_callback(changeFrame.bind(add))
-	#tween.tween_interval(0.05)
-	
-	#tween.tween_property(ani, "frame", newAngle * 4, 0.2)
 
-#func changeFrame(val):
-	#print(val)
-	#ani.frame=wrapi(ani.frame+val,0,32)
-	#print(ani.frame)
 
-#func _on_tween_step(_idx):
-	#if ani.frame==angle*4:
-		#tween.kill()
-	
 #被击中	
 func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
 	if isDead:

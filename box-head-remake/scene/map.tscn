@@ -427,6 +427,7 @@ script = ExtResource("1_rgtto")
 position = Vector2(203, 105)
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
+visible = false
 
 [node name="score" type="Label" parent="ui" unique_id=1367829159]
 anchors_preset = 5

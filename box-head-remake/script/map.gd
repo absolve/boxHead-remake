@@ -15,7 +15,7 @@ var font: FontFile
 #var score=0 
 var count=0
 var currWave=0  #当前波次
-var zombieCount=20  #每波次加2
+var zombieCount=1  #每波次加2
 var devilCount=2	#每波次加2
 var allSpawnPoint=[]
 var updateFlowFieldDelay=60 #60帧
@@ -28,7 +28,7 @@ func _ready() -> void:
 	updateFlowField()
 	font = ThemeDB.fallback_font
 	#await get_tree().create_timer(1).timeout
-	#startNextWave()
+	startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
 	Game.weaponUpgrade.connect(weaponUpgrade)
 	Game.notice.connect(notice)
@@ -54,6 +54,7 @@ func addEnemy(p):
 		z.position=p.position
 		z.state=Game.enemyState.init
 		z.initPos=p.position
+		print(z.initPos)
 		if p.dir==Game.mapSignDir.Down:
 			z.velocity=Vector2.DOWN
 			z.position-=Vector2(0,20)
