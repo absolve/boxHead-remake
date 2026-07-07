@@ -9,8 +9,14 @@ var startExploding=false  #是否被击中爆炸
 var splitExplosion=0  #分裂爆炸
 
 func _ready():
-	print(global_position)
-	print(("type"))
+	Game.weaponUpgrade.connect(weaponUpgrade)
+	pass
+
+
+func weaponUpgrade(_type):
+	if _type==Game.weaponType.Barrel:
+		splitExplosion=MapData.allWeaponData.type['splitExplosion']
+		damage=MapData.allWeaponData.type['damage']
 	
 
 func hit(_value):

@@ -255,8 +255,8 @@ func _physics_process(_delta):
 	elif state == Game.playerState.dead:
 		pass
 	
-	#position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
-	#position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
+	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
+	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
 	z_index = floori(global_position.y / MapData.cellSize) + 1
 
 	

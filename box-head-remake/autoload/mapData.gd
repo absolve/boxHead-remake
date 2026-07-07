@@ -7,19 +7,19 @@ var allWeaponData = {
 	Game.weaponType.Pistol: {'damage': 1, 'wRange': 300, 'delay': 0.6, 'maxAmmoNum': 0, 'automatic': false},
 	Game.weaponType.UZI: {'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 50, 'automatic': true},
 	Game.weaponType.Shotgun: {'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 15, 'splitAngle': 30, 'automatic': false},
-	Game.weaponType.Mine: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
+	Game.weaponType.Mine: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
 	Game.weaponType.Wall: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
-	Game.weaponType.Barrel: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
+	Game.weaponType.Barrel: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
 	Game.weaponType.Grenade: {'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 15, 'automatic': false},
-	Game.weaponType.Rocket: {'damage': 10, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 15, 'automatic': false},
-	Game.weaponType.Railgun: {'damage': 5, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 20, 'automatic': false},
+	Game.weaponType.Rocket: {'damage': 5, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 15, 'automatic': false},
+	Game.weaponType.Railgun: {'damage': 4, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 20, 'automatic': false},
 	Game.weaponType.ChargePack: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false}
 }
 
 #敌人基本参数信息
 var enemyData = {
-	Game.roleType.Zombie: {},
-	Game.roleType.Devil: {}
+	Game.roleType.Zombie: {'speed': 20},
+	Game.roleType.Devil: {'speed': 30}
 }
 
 #地图配置
@@ -30,6 +30,8 @@ var mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFi
 var currKillStreak = 0
 var killStreak = 0 # 连杀
 var score = 0 # 分数
+
+var weaponUnlock = [] # 武器解锁
 
 var mapSize: Vector2 # 地图大小
 
@@ -165,119 +167,187 @@ func countKillStreak():
 			allWeaponData[Game.weaponType.Pistol].delay = 0.3
 			Game.weaponUpgrade.emit(Game.weaponType.Pistol)
 			Game.notice.emit(tr("Pistol+: Fast Fire"))
-		5:
+		5: # New Weapon: UZI (Key 2)
+			weaponUnlock.append(Game.weaponType.UZI)
+			Game.notice.emit(tr("New Weapon: UZI"))
+		8: # Pistol+: Double Damage
+			allWeaponData[Game.weaponType.Pistol].damage *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Pistol)
+			Game.notice.emit(tr("Pistol+: Double Damage"))
+		10: # New Weapon: Shotgun
+			weaponUnlock.append(Game.weaponType.UZI)
+			Game.notice.emit(tr("New Weapon: Shotgun"))
+		13: # UZI+: Rapid Fire
+			allWeaponData[Game.weaponType.Pistol].delay = 0.1
+			Game.weaponUpgrade.emit(Game.weaponType.UZI)
+			Game.notice.emit(tr("UZI+: Rapid Fire"))
+		15: # New Wepon: Barrel
+			weaponUnlock.append(Game.weaponType.Barrel)
+			Game.notice.emit(tr("New Wepon: Barrel"))
+		17: # UZI+: Double Ammo
+			allWeaponData[Game.weaponType.UZI].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.UZI)
+			Game.notice.emit(tr("UZI+: Double Ammo"))
+		18: # Shotgun+: Fast Fire
+			allWeaponData[Game.weaponType.Shotgun].delay = 0.3
+			allWeaponData[Game.weaponType.Shotgun].automatic = true
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Fast Fire"))
+		20: # New Weapon: Grenade
+			weaponUnlock.append(Game.weaponType.Grenade)
+			Game.notice.emit(tr("New Weapon: Grenade"))
+		21: # Shotgun+: Double Ammo
+			allWeaponData[Game.weaponType.Shotgun].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Double Ammo"))
+		23: # UZI+: Long Shot
+			allWeaponData[Game.weaponType.UZI].wRange *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.UZI)
+			Game.notice.emit(tr("UZI+: Long Shot"))
+		26: # Barrel+: Double Ammo
+			allWeaponData[Game.weaponType.Barrel].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Barrel)
+			Game.notice.emit(tr("Barrel+: Double Ammo"))
+		30: # New Weapon: Fake walls
+			weaponUnlock.append(Game.weaponType.Wall)
+			Game.notice.emit(tr("New Weapon: Fake walls"))
+		31: # Shotgun+: Wide Shot
+			allWeaponData[Game.weaponType.Shotgun].splitAngle *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Wide Shot"))
+		32: # Barrel+: Big Bang
 			pass
-		8:
+		33: # Grenade+: Cluster Explode
 			pass
-		10:
+		35: # Shotgun+: Long Shot
+			allWeaponData[Game.weaponType.Shotgun].wRange = 600
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Long Shot"))
+		36: # Barrel+: Quad Ammo
+			allWeaponData[Game.weaponType.Barrel].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Barrel)
+			Game.notice.emit(tr("Barrel+: Quad Ammo"))
+		37: # Fake Wall+: Double Ammo
+			allWeaponData[Game.weaponType.Wall].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Wall)
+			Game.notice.emit(tr("Fake Wall+: Double Ammo"))
+		39: # UZI+: Quad Ammo
+			allWeaponData[Game.weaponType.UZI].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.UZI)
+			Game.notice.emit(tr("UZI+: Quad Ammo"))
+		40: # New Weapon: Claymore
+			weaponUnlock.append(Game.weaponType.Mine)
+			Game.notice.emit(tr("New Weapon: Claymore"))
+		41: # Shotgun+: Quad Ammo
+			allWeaponData[Game.weaponType.Shotgun].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Quad Ammo"))
+		42: # Grenade+: Double Ammo
+			allWeaponData[Game.weaponType.Grenade].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Grenade)
+			Game.notice.emit(tr("Grenade+: Double Ammo"))
+		43: # Shotgun+: Rapid Fire
+			allWeaponData[Game.weaponType.Shotgun].delay = 0.3
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Rapid Fire"))
+		44: # Barrel+: Bigger Bang
 			pass
-		13:
+		45: # Grenade+: Big Bang
 			pass
-		15:
+		47: # Claymore+: Cluster Explode
 			pass
-		17:
+		48: # UZI+: Double Damager
+			allWeaponData[Game.weaponType.UZI].damage *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.UZI)
+			Game.notice.emit(tr("UZI+: Double Damager"))
+		50: # New Weapon: Rocket
+			weaponUnlock.append(Game.weaponType.Rocket)
+			Game.notice.emit(tr("New Weapon: Rocket"))
+		51: # Shotgun+: Wider Shot
 			pass
-		18:
+		52: # Grenade+: Quad Ammo
+			allWeaponData[Game.weaponType.Grenade].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Grenade)
+			Game.notice.emit(tr("Grenade+: Quad Ammo"))
+		53: # Fake Wall+: Quad Ammo
+			allWeaponData[Game.weaponType.Wall].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Wall)
+			Game.notice.emit(tr("Fake Wall+: Quad Ammo"))
+		54: # Claymore+: Double Ammo
+			allWeaponData[Game.weaponType.Mine].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Mine)
+			Game.notice.emit(tr("Claymore+: Double Ammo"))
+		55: # New Weapon: Chargepack
+			weaponUnlock.append(Game.weaponType.ChargePack)
+			Game.notice.emit(tr("New Weapon: Chargepack"))
+		56: # Shotgun+: Double Damage
+			allWeaponData[Game.weaponType.Shotgun].damage *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
+			Game.notice.emit(tr("Shotgun+: Double Damage"))
+		57: # Grenade+: Bigger Bang
 			pass
-		20:
+		58: # Claymore+: Big Bang
 			pass
-		21:
+		59: # Rocket+: Fast Fire
+			allWeaponData[Game.weaponType.Rocket].delay = 0.3
+			Game.weaponUpgrade.emit(Game.weaponType.Rocket)
+			Game.notice.emit(tr("Rocket+: Fast Fire"))
+		61: # UZI+: Infinate Range
 			pass
-		23:
+		62: # Claymore+: Bigger Bang
 			pass
-		26:
+		63: # Charge Pack+: Cluster Explode
 			pass
-		30:
+		64: # Claymore+: Quad Ammo
+			allWeaponData[Game.weaponType.Mine].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Mine)
+			Game.notice.emit(tr("Claymore+: Quad Ammo"))
+		66: # Rocket+: Double Ammo
+			allWeaponData[Game.weaponType.Rocket].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Rocket)
+			Game.notice.emit(tr("Rocket+: Double Ammo"))
+		68: # Charge Pack+: Double Ammo
+			allWeaponData[Game.weaponType.ChargePack].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.ChargePack)
+			Game.notice.emit(tr("Charge Pack+: Double Ammo"))
+		70: # New Weapon: Railgun
+			weaponUnlock.append(Game.weaponType.Railgun)
+			Game.notice.emit(tr("New Weapon: Railgun"))
+		72: # Rocket+: Big Bang
 			pass
-		31:
+		74: # Charge Pack+: Big Bang
 			pass
-		32:
+		76: # Charge Pack+: Quad Ammo
+			allWeaponData[Game.weaponType.ChargePack].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.ChargePack)
+			Game.notice.emit(tr("Charge Pack+: Quad Ammo"))
+		78: # Railgun+: Fast Fire
 			pass
-		33:
+		80: # Railgun+: Double Ammo
+			allWeaponData[Game.weaponType.Railgun].maxAmmoNum *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.Railgun)
+			Game.notice.emit(tr("Railgun+: Double Ammo"))
+		85: # Rocket+: Quad Ammo
+			allWeaponData[Game.weaponType.Rocket].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Rocket)
+			Game.notice.emit(tr("Rocket+: Quad Ammo"))
+		90: # UZI+: Quad Damage
+			allWeaponData[Game.weaponType.UZI].damage *= 2
+			Game.weaponUpgrade.emit(Game.weaponType.UZI)
+			Game.notice.emit(tr("UZI+: Quad Damage"))
+		95: # Charge Pack+: Bigger Bang
 			pass
-		35:
+		100: # Railgun+: Rapid Fire
 			pass
-		36:
+		105: # Rocket+: Bigger Bang
 			pass
-		37:
+		110: # Railgun+: Quad Ammo
+			allWeaponData[Game.weaponType.Railgun].maxAmmoNum *= 4
+			Game.weaponUpgrade.emit(Game.weaponType.Railgun)
+			Game.notice.emit(tr("Railgun+: Quad Ammo"))
+		120: # Rocket+: Rapid Fire
 			pass
-		39:
-			pass
-		40:
-			pass
-		41:
-			pass
-		42:
-			pass
-		43:
-			pass
-		44:
-			pass
-		45:
-			pass
-		47:
-			pass
-		48:
-			pass
-		50:
-			pass
-		51:
-			pass
-		52:
-			pass
-		53:
-			pass
-		54:
-			pass
-		55:
-			pass
-		56:
-			pass
-		57:
-			pass
-		58:
-			pass
-		59:
-			pass
-		61:
-			pass
-		62:
-			pass
-		63:
-			pass
-		64:
-			pass
-		66:
-			pass
-		68:
-			pass
-		70:
-			pass
-		72:
-			pass
-		74:
-			pass
-		76:
-			pass
-		78:
-			pass
-		80:
-			pass
-		85:
-			pass
-		90:
-			pass
-		95:
-			pass
-		100:
-			pass
-		105:
-			pass
-		110:
-			pass
-		120:
-			pass
-		125:
+		125: # Railgun+: Long Shot
 			pass
 
 
