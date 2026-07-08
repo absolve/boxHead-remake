@@ -15,6 +15,14 @@ func _ready() -> void:
 		elif i.type==Game.mapSign.Item:
 			itemSpawnPoint.append(i)
 	MapData.mapSize = mapSize
+	MapData.clearObstacle()
+	for i in range(9):
+		for y in range(2):
+			MapData.addObstacle(Vector2(i,y))
+			
+	for i in range(11,20):
+		for y in range(2):	
+			MapData.addObstacle(Vector2(i,y))		
 	queue_redraw()
 
 

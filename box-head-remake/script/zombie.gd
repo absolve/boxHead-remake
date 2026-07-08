@@ -94,10 +94,12 @@ func _ready():
 	shapeQuery.exclude = [get_rid()]
 	shapeQuery.shape = shape.shape
 	
-	#for i in dir:
-		#directions.append(eightDir.new(i))
-	#delta = get_physics_process_delta_time()
-
+	if velocity.length()!=0:
+		angle = round(velocity.angle() / (PI / 4))
+		angle = wrapi(int(angle), 0, 8)
+		oldAngle=angle
+		pathTimer=pathUpdateInterval
+	
 	
 func _physics_process(_delta: float) -> void:
 	delta = _delta
@@ -244,6 +246,9 @@ func _physics_process(_delta: float) -> void:
 					global_position.y = r.collider.global_position.y + signy * (shape1.size.y / 2 + shape.shape.size.y / 2)
 				currAni = "stand"
 		#print(velocity)
+		if velocity.length()!=0:
+			angle = round(velocity.angle() / (PI / 4))
+			angle = wrapi(int(angle), 0, 8)
 		ani.play(currAni + "_%s"%angle)
 		move_and_collide(velocity * speed * _delta)
 		if global_position.distance_to(initPos) < 1:
@@ -354,10 +359,6 @@ func findDir():
 
 #播放旋转动画
 func playRotateAni(_newAngle):
-	#if tween != null && tween.is_valid():
-		#tween.kill()
-	#
-	#tween = create_tween()
 	ani.stop()
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4

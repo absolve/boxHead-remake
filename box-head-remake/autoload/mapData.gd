@@ -120,6 +120,14 @@ func getFlowDir(pos: Vector2, id):
 	else:
 		return Vector2.ZERO
 
+#添加障碍物
+func addObstacle(pos:Vector2):
+	if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
+		obstacle["%s-%s"%[int(pos.x),int(pos.y)]]=pos
+
+
+func clearObstacle():
+	obstacle.clear()
 
 func clearMapTile():
 	pass

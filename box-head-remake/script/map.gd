@@ -27,7 +27,6 @@ func _ready() -> void:
 	#MapData.astarGrid.update()
 	updateFlowField()
 	font = ThemeDB.fallback_font
-	#await get_tree().create_timer(1).timeout
 	startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
 	Game.weaponUpgrade.connect(weaponUpgrade)
@@ -69,7 +68,7 @@ func addEnemy(p):
 			z.position+=Vector2(20,0)
 		get_tree().root.add_child(z)
 		
-		
+#载入关卡		
 func loadLevel():
 	pass
 
