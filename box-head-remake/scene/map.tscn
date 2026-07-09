@@ -427,7 +427,6 @@ script = ExtResource("1_rgtto")
 position = Vector2(203, 105)
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
-visible = false
 
 [node name="score" type="Label" parent="ui" unique_id=1367829159]
 anchors_preset = 5
@@ -464,6 +463,13 @@ metadata/_edit_lock_ = true
 
 [node name="toastInfo" parent="ui" unique_id=119413426 instance=ExtResource("106_84l46")]
 
+[node name="Button" type="Button" parent="ui" unique_id=1464114085]
+offset_left = 25.0
+offset_top = 80.0
+offset_right = 63.0
+offset_bottom = 111.0
+text = "test"
+
 [node name="spawnTimer" type="Timer" parent="." unique_id=1956362601]
 one_shot = true
 
@@ -471,5 +477,6 @@ one_shot = true
 one_shot = true
 
 [connection signal="animation_finished" from="ui/countAni" to="." method="_on_count_ani_animation_finished"]
+[connection signal="pressed" from="ui/Button" to="." method="_on_button_pressed"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="nextWaveTimer" to="." method="_on_next_wave_timer_timeout"]

@@ -15,7 +15,7 @@ var font: FontFile
 #var score=0 
 var count=0
 var currWave=0  #当前波次
-var zombieCount=1  #每波次加2
+var zombieCount=20  #每波次加2
 var devilCount=2	#每波次加2
 var allSpawnPoint=[]
 var updateFlowFieldDelay=60 #60帧
@@ -27,7 +27,7 @@ func _ready() -> void:
 	#MapData.astarGrid.update()
 	updateFlowField()
 	font = ThemeDB.fallback_font
-	startNextWave()
+	#startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
 	Game.weaponUpgrade.connect(weaponUpgrade)
 	Game.notice.connect(notice)
@@ -159,3 +159,8 @@ func _on_next_wave_timer_timeout() -> void:
 	else:
 		
 		pass
+
+
+func _on_button_pressed() -> void:
+	toastInfo.display('11111111111')
+	pass # Replace with function body.
