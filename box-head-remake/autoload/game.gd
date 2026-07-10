@@ -39,7 +39,7 @@ enum markerPointType {ZombieSpawnPoint, DevilSpawnPoint}
 #玩家状态
 enum playerState {Idle, hurt, dead}
 
-enum enemyState {Idle, ffp, findDir, hurt, fallDown, dead, attack, rotate, init}
+enum enemyState {Idle, ffp, findDir, hurt, fallDown, dead, attack, rotate, rotate_wait, init}
 
 #地图标志
 enum mapSign {Player = 700, Zombie, Devil, Item}

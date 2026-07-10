@@ -261,6 +261,15 @@ func _physics_process(_delta):
 
 	
 func _resolve_area_blockers(displacement: Vector2) -> Vector2:
+	# 如果起始位置就在 Area2D 内，则不进行纠正（允许从内部自由移动/离开）
+	shapeQuery.transform = Transform2D(global_rotation, global_position)
+	var start_results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
+	for sr in start_results:
+		if sr.collider and sr.collider.has_method("get"):
+			var stype = sr.collider.get("type")
+			if stype != null and stype in [Game.itemType.Barrel, Game.itemType.Wall]:
+				return displacement
+
 	var target_position = global_position + displacement
 	shapeQuery.transform = Transform2D(global_rotation, target_position)
 	var results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)

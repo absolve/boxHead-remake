@@ -26,6 +26,10 @@ var attackTimer = 0
 var attackDelay = 1
 var shapeQuery = PhysicsShapeQueryParameters2D.new()
 var lastVelocity = Vector2.ZERO
+var rotate_target_frame = 0
+var rotate_step = 1
+var rotate_wait_timer = 0.0
+var rotate_wait_duration = 0.2 # seconds to wait after rotation before resuming pathfinding
 #var searchOrder=true #查找方向  true为顺时针
 var findPathTimer = 0
 var findPathDelay = 2
@@ -46,7 +50,7 @@ var dirs = [
 #var recentMax=30  #最大记录数
 #var isBlocked=false #前进方向被阻挡
 var initPos = Vector2.ZERO # 抵达初始点后开始寻找玩家
-var delta = 0
+# var delta = 0
 var size: Vector2 = Vector2(32, 32)
 var bestDir: Vector2 = Vector2.ZERO
 var currDir: Vector2 = Vector2.ZERO # 当前移动方向
@@ -102,7 +106,7 @@ func _ready():
 	
 	
 func _physics_process(_delta: float) -> void:
-	delta = _delta
+	# delta = _delta
 	if state == Game.enemyState.Idle || state == Game.enemyState.ffp || state == Game.enemyState.findDir:
 		#velocity=Vector2.ZERO
 		pathTimer += _delta
@@ -209,18 +213,17 @@ func _physics_process(_delta: float) -> void:
 				attackTimer = 0
 				state = Game.enemyState.ffp
 	elif state == Game.enemyState.rotate:
-		#print(angle,'   ',oldAngle)
-		if abs(angle - oldAngle) == 7: # 特殊情况
-			if angle < oldAngle:
-				ani.frame = wrapi(ani.frame + 1, 0, 32)
-			else:
-				ani.frame = wrapi(ani.frame - 1, 0, 32)
-		elif angle < oldAngle || abs(angle - oldAngle) >= 4:
-			ani.frame = wrapi(ani.frame - 1, 0, 32)
-		else:
-			ani.frame = wrapi(ani.frame + 1, 0, 32)
-		if ani.frame == angle * 4:
+		# advance one frame per physics step toward rotate_target_frame using rotate_step
+		ani.frame = wrapi(ani.frame + rotate_step, 0, 32)
+		if ani.frame == rotate_target_frame:
 			oldAngle = angle
+			# wait a short duration before resuming pathfinding to avoid rapid flips
+			rotate_wait_timer = 0.0
+			state = Game.enemyState.rotate_wait
+
+	elif state == Game.enemyState.rotate_wait:
+		rotate_wait_timer += _delta
+		if rotate_wait_timer >= rotate_wait_duration:
 			state = Game.enemyState.ffp
 	elif state == Game.enemyState.init:
 		currAni = "walk"
@@ -362,6 +365,16 @@ func playRotateAni(_newAngle):
 	ani.stop()
 	ani.animation = "rotate"
 	ani.frame = oldAngle * 4
+	# 目标帧（0..31）
+	rotate_target_frame = (_newAngle * 4) % 32
+	# 计算最短方向（顺时针为 +1，逆时针为 -1）
+	var delta = (rotate_target_frame - ani.frame + 32) % 32
+	if delta == 0:
+		rotate_step = 1
+	elif delta <= 16:
+		rotate_step = 1
+	else:
+		rotate_step = -1
 	state = Game.enemyState.rotate
 
 
