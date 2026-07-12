@@ -20,6 +20,8 @@ var devilCount = 2 # 每波次加2
 var allSpawnPoint = []
 var updateFlowFieldDelay = 60 # 60帧
 var updateTimer = 0
+var maxZombieCount = 0 # 最大僵尸数量
+var maxDevilCount = 0 # 最大恶魔数量
 
 func _ready() -> void:
 	MapData.mapSize = room.mapSize
@@ -27,13 +29,17 @@ func _ready() -> void:
 	#MapData.astarGrid.update()
 	updateFlowField()
 	font = ThemeDB.fallback_font
-	startNextWave()
+	#startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
 	Game.weaponUpgrade.connect(weaponUpgrade)
 	Game.notice.connect(notice)
+	maxZombieCount = int(MapData.mapSize.x * MapData.mapSize.y / MapData.cellSize)
+	maxDevilCount = int(maxZombieCount / 5.0)
+	print(maxZombieCount, ' ', maxDevilCount)
 	
 	
 func startNextWave():
+	SoundUtil.playStartLevel()
 	##获取所有的敌人出生点，每个出生点分配敌人产生数量
 	##如果出生点被遮挡等没有遮挡后在添加敌人
 	allSpawnPoint = []
@@ -110,64 +116,55 @@ func _physics_process(_delta: float) -> void:
 	
 
 func _draw() -> void:
-	var width = floor(MapData.mapSize.x / MapData.cellSize)
-	var height = floor(MapData.mapSize.y / MapData.cellSize)
-	for i in range(width + 1):
-		draw_line(Vector2(i * MapData.cellSize, 0), Vector2(i * MapData.cellSize, MapData.cellSize * height), Color.GRAY, 0.5, true)
-	for i in range(height + 1):
-		draw_line(Vector2(0, i * MapData.cellSize), Vector2(MapData.cellSize * width, i * MapData.cellSize), Color.GRAY, 0.5, true)
+	if isDebug:
+		var width = floor(MapData.mapSize.x / MapData.cellSize)
+		var height = floor(MapData.mapSize.y / MapData.cellSize)
+		for i in range(width + 1):
+			draw_line(Vector2(i * MapData.cellSize, 0), Vector2(i * MapData.cellSize, MapData.cellSize * height), Color.GRAY, 0.5, true)
+		for i in range(height + 1):
+			draw_line(Vector2(0, i * MapData.cellSize), Vector2(MapData.cellSize * width, i * MapData.cellSize), Color.GRAY, 0.5, true)
 
-	# draw obstacle cells
-	for key in MapData.obstacle.keys():
-		var parts = key.split("-")
-		if parts.size() != 2:
-			continue
-		var ox = int(parts[0])
-		var oy = int(parts[1])
-		draw_rect(Rect2(ox * MapData.cellSize, oy * MapData.cellSize, MapData.cellSize, MapData.cellSize),
-		 Color(1, 0, 0, 0.15), false, 1.0)
+		# draw obstacle cells
+		for key in MapData.obstacle.keys():
+			var parts = key.split("-")
+			if parts.size() != 2:
+				continue
+			var ox = int(parts[0])
+			var oy = int(parts[1])
+			draw_rect(Rect2(ox * MapData.cellSize, oy * MapData.cellSize, MapData.cellSize, MapData.cellSize),
+			 Color(1, 0, 0, 0.5), true)
 
-	# draw map tile items
-	for key in MapData.mapTile.keys():
-		var parts = key.split("-")
-		if parts.size() != 2:
-			continue
-		var tx = int(parts[0])
-		var ty = int(parts[1])
-		draw_rect(Rect2(tx * MapData.cellSize, ty * MapData.cellSize, MapData.cellSize, MapData.cellSize),
-		 Color(0, 0, 1, 0.12), false, 1.0)
+		# draw flow field arrows for each player flow field
+		for id in MapData.flowFieldDict.keys():
+			var field = MapData.flowFieldDict[id]
+			if typeof(field) != TYPE_DICTIONARY:
+				continue
+			var color = Color(0, 1, 0, 0.8)
+			if id != 1:
+				color = Color(1, 0.7, 0, 0.8)
+			for x in range(width):
+				for y in range(height):
+					var key = "%s-%s" % [x, y]
+					if not field.has(key):
+						continue
+					var dir = field[key]
+					if dir == Vector2.ZERO:
+						continue
+					var center = Vector2(x * MapData.cellSize + MapData.cellSize * 0.5, y * MapData.cellSize + MapData.cellSize * 0.5)
+					var arrow_len = MapData.cellSize * 0.35
+					var tip = center + dir.normalized() * arrow_len
+					draw_line(center, tip, color, 1.2, true)
+					var left = tip + dir.normalized().rotated(-PI * 0.2) * (MapData.cellSize * 0.12)
+					var right = tip + dir.normalized().rotated(PI * 0.2) * (MapData.cellSize * 0.12)
+					draw_line(tip, left, color, 1.2, true)
+					draw_line(tip, right, color, 1.2, true)
 
-	# draw flow field arrows for each player flow field
-	for id in MapData.flowFieldDict.keys():
-		var field = MapData.flowFieldDict[id]
-		if typeof(field) != TYPE_DICTIONARY:
-			continue
-		var color = Color(0, 1, 0, 0.8) 
-		if id != 1:
-			color= Color(1, 0.7, 0, 0.8)
-		for x in range(width):
-			for y in range(height):
-				var key = "%s-%s" % [x, y]
-				if not field.has(key):
-					continue
-				var dir = field[key]
-				if dir == Vector2.ZERO:
-					continue
-				var center = Vector2(x * MapData.cellSize + MapData.cellSize * 0.5, y * MapData.cellSize + MapData.cellSize * 0.5)
-				var arrow_len = MapData.cellSize * 0.35
-				var tip = center + dir.normalized() * arrow_len
-				draw_line(center, tip, color, 1.2, true)
-				var left = tip + dir.normalized().rotated(-PI * 0.2) * (MapData.cellSize * 0.12)
-				var right = tip + dir.normalized().rotated(PI * 0.2) * (MapData.cellSize * 0.12)
-				draw_line(tip, left, color, 1.2, true)
-				draw_line(tip, right, color, 1.2, true)
-
-	var x = floor(get_local_mouse_position().x)
-	var y = floor(get_local_mouse_position().y)
-	draw_string(font, get_local_mouse_position(), "%s-%s" % [x, y],
-	HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
-	draw_string(font, get_local_mouse_position() + Vector2(20, 20), "%s-%s" % [floori(x / MapData.cellSize), floori(y / MapData.cellSize)],
-	HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
+		var x = floor(get_local_mouse_position().x)
+		var y = floor(get_local_mouse_position().y)
+		draw_string(font, get_local_mouse_position(), "%s-%s" % [x, y],
+		HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
+		draw_string(font, get_local_mouse_position() + Vector2(20, 20), "%s-%s" % [floori(x / MapData.cellSize), floori(y / MapData.cellSize)],
+		HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHEAT)
 
 
 func _on_count_ani_animation_finished() -> void:
@@ -204,11 +201,12 @@ func _on_next_wave_timer_timeout() -> void:
 	else:
 		currWave += 1
 		zombieCount += 2
+		zombieCount = min(zombieCount, maxZombieCount)
 		devilCount += 2
+		devilCount = min(devilCount, maxDevilCount)
 		notice('+++Level %d started!+++' % (currWave + 1), Color.GREEN)
 		startNextWave()
 	
-
 
 func _on_button_pressed() -> void:
 	toastInfo.display('11111111111', Color.RED)

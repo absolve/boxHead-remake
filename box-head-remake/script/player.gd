@@ -14,7 +14,7 @@ var currWeapon = null
 var weaponList = []
 var currWeaponIndex = 0
 var vector = Vector2.RIGHT
-var aniException = ['Mine', 'RemoteMine', 'Wall', 'Barrel', 'Grenade']
+var aniException = ['Mine', 'ChargePack', 'Wall', 'Barrel', 'Grenade']
 var shapeQuery = PhysicsShapeQueryParameters2D.new()
 var hurtTimer = 0
 var hurtDelay = 0.5
@@ -22,10 +22,10 @@ var hurtDelay = 0.5
 
 func _ready():
 	state = Game.playerState.Idle
-	#shapeQuery.collide_with_bodies=false
+	shapeQuery.collide_with_bodies = true
 	shapeQuery.collide_with_areas = true
 	shapeQuery.collision_mask = 1 + 2 + 4
-	shapeQuery.exclude = [get_rid()]
+	shapeQuery.exclude = [get_rid(), body.get_rid()]
 	shapeQuery.shape = shape.shape
 
 	
@@ -83,9 +83,15 @@ func _ready():
 	var railgun = rg.instantiate()
 	railgun.ownerId = get_rid()
 	weaponList.push_back(railgun)
-
 	weaponBackpack.add_child(railgun)
 	
+	var cp = load("res://scene/chargePack.tscn")
+	var chargePack = cp.instantiate()
+	chargePack.ownerId = get_rid()
+	weaponList.push_back(chargePack)
+	weaponBackpack.add_child(chargePack)
+
+
 	currWeapon = gun
 	
 	print(playerId)
@@ -123,7 +129,28 @@ func _ready():
 		keyMap.nextWeapon = 'p4_nextWeapon'
 		keyMap.prevWeapon = 'p4_prevWeapon'
 	print(currWeapon)
-	
+	Game.weaponUpgrade.connect(weaponUpgrade)
+
+#武器升级
+func weaponUpgrade(_type):
+	if _type == [Game.weaponType.Pistol, Game.weaponType.UZI, Game.weaponType.Rocket,
+	 Game.weaponType.Barrel, Game.weaponType.Wall, Game.weaponType.Mine, Game.weaponType.
+	 Shotgun, Game.weaponType.Grenade, Game.weaponType.Railgun, Game.weaponType.ChargePack]:
+		for i in weaponList:
+			if i.type == _type:
+				i.damage = MapData.allWeaponData._type['damage']
+				# i.ammoNum = MapData.allWeaponData._type['ammoNum']
+				i.maxAmmoNum = MapData.allWeaponData._type['maxAmmoNum']
+				i.automatic = MapData.allWeaponData._type['automatic']
+				i.wrange = MapData.allWeaponData._type['wRange']
+				i.delay = MapData.allWeaponData._type['delay']
+				if _type == Game.weaponType.Shotgun:
+					i.splitAngle = MapData.allWeaponData._type['splitAngle']
+				if _type == [Game.weaponType.Mine, Game.weaponType.ChargePack]:
+					i.splitExplosion = MapData.allWeaponData._type['splitExplosion']
+				break
+
+#切换武器	
 func switchWeapon(next: bool = true):
 	if weaponList.size() > 1:
 		if next:
@@ -132,7 +159,7 @@ func switchWeapon(next: bool = true):
 			currWeaponIndex -= 1
 		currWeaponIndex = wrapi(currWeaponIndex, 0, weaponList.size())
 		currWeapon = weaponList[currWeaponIndex]
-	
+		Game.notice.emit("%s:%s" % [tr("Switch"), Game.weaponName[currWeapon.type]])
 		#txt.text=Game.weaponName[currWeapon.type]	
 
 func hit(damage: int, attackPos: Vector2, recoil: float = 0):
@@ -153,9 +180,9 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	else:
 		state = Game.playerState.hurt
 		hurtTimer = 0
-		print("----", global_position, ' ', attackPos)
+		# print("----", global_position, ' ', attackPos)
 		var attacker = ((global_position + bodyShape.position) - attackPos).normalized()
-		print("----", attacker)
+		# print("----", attacker)
 		var dot = velocity.normalized().dot(attacker)
 		if dot >= 0: # 正面击中
 			ani.play("hitFront_%s" % [angle])
@@ -256,55 +283,52 @@ func _physics_process(_delta):
 		pass
 	
 	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
-	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)	
+	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
 	z_index = floori(global_position.y / MapData.cellSize) + 1
-
+	#var dir = MapData.getFlowDir(global_position, playerId) 
+	#print(dir)
 	
 func _resolve_area_blockers(displacement: Vector2) -> Vector2:
-	# 如果起始位置就在 Area2D 内，则不进行纠正（允许从内部自由移动/离开）
+	# 起始位置：只有在实际矩形重叠时才认为在内部，允许从内部离开
 	shapeQuery.transform = Transform2D(global_rotation, global_position)
 	var start_results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
 	for sr in start_results:
-		if sr.collider and sr.collider.has_method("get"):
-			var stype = sr.collider.get("type")
-			if stype != null and stype in [Game.itemType.Barrel, Game.itemType.Wall]:
+		var area_shape = null
+		if sr.collider.has_node("shape"):
+			area_shape = sr.collider.get_node("shape").shape
+		if area_shape is RectangleShape2D:
+			var area_extents = area_shape.size * 0.5
+			var self_extents = shape.shape.size * 0.5
+			var delta = global_position - sr.collider.global_position
+			var overlap_x = (area_extents.x + self_extents.x) - abs(delta.x)
+			var overlap_y = (area_extents.y + self_extents.y) - abs(delta.y)
+			if overlap_x > 0 and overlap_y > 0:
 				return displacement
 
-	var target_position = global_position + displacement
-	shapeQuery.transform = Transform2D(global_rotation, target_position)
-	var results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
-	if results.is_empty():
-		return displacement
-
-	var adjusted_position = target_position
+	# 目标位置纠正：最多迭代几次以收敛
+	var adjusted_position = global_position + displacement
 	for i in range(3):
 		var made_adjustment = false
 		shapeQuery.transform = Transform2D(global_rotation, adjusted_position)
-		results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
+		var results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
 		for r in results:
-			if not (r.collider and r.collider.has_method("get")):
-				continue
-			var collider_type = r.collider.get("type")
-			if collider_type == null:
-				continue
-			if collider_type in [Game.itemType.Barrel, Game.itemType.Wall]:
-				if not r.collider.has_node("shape"):
-					continue
-				var area_shape = r.collider.get_node("shape").shape
-				if area_shape is RectangleShape2D:
-					var area_extents = area_shape.size * 0.5
-					var self_extents = shape.shape.size * 0.5
-					var delta = adjusted_position - r.collider.global_position
-					var overlap_x = (area_extents.x + self_extents.x) - abs(delta.x)
-					var overlap_y = (area_extents.y + self_extents.y) - abs(delta.y)
-					if overlap_x > 0 and overlap_y > 0:
-						var move_x = sign(delta.x) if delta.x != 0 else sign(displacement.x) if displacement.x != 0 else 1
-						var move_y = sign(delta.y) if delta.y != 0 else sign(displacement.y) if displacement.y != 0 else 1
-						if overlap_x < overlap_y:
-							adjusted_position.x += move_x * overlap_x
-						else:
-							adjusted_position.y += move_y * overlap_y
-						made_adjustment = true
+			var area_shape = null
+			if r.collider.has_node("shape"):
+				area_shape = r.collider.get_node("shape").shape
+			if area_shape is RectangleShape2D:
+				var area_extents = area_shape.size * 0.5
+				var self_extents = shape.shape.size * 0.5
+				var delta = adjusted_position - r.collider.global_position
+				var overlap_x = (area_extents.x + self_extents.x) - abs(delta.x)
+				var overlap_y = (area_extents.y + self_extents.y) - abs(delta.y)
+				if overlap_x > 0 and overlap_y > 0:
+					var move_x = sign(delta.x) if delta.x != 0 else sign(displacement.x) if displacement.x != 0 else 1
+					var move_y = sign(delta.y) if delta.y != 0 else sign(displacement.y) if displacement.y != 0 else 1
+					if overlap_x < overlap_y:
+						adjusted_position.x += move_x * overlap_x
+					else:
+						adjusted_position.y += move_y * overlap_y
+					made_adjustment = true
 		if not made_adjustment:
 			break
 

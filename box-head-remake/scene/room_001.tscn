@@ -19,25 +19,31 @@ position = Vector2(300, 240)
 texture = ExtResource("2_1p7uw")
 
 [node name="wallShape001" parent="." index="1" unique_id=619895859 instance=ExtResource("2_dxvdj")]
+visible = false
 z_index = 1
 position = Vector2(116, 14)
 
 [node name="wallShape003" parent="." index="2" unique_id=1769587618 instance=ExtResource("3_1p7uw")]
+visible = false
 z_index = 2
 position = Vector2(-14, 7)
 
 [node name="wallShape004" parent="." index="3" unique_id=828812098 instance=ExtResource("3_1p7uw")]
+visible = false
 position = Vector2(243, 7)
 
 [node name="wallShape002" parent="." index="4" unique_id=7436709 instance=ExtResource("2_dxvdj")]
+visible = false
 z_index = 1
 position = Vector2(510, 7)
 
 [node name="wallShape005" parent="." index="5" unique_id=1971123739 instance=ExtResource("3_1p7uw")]
+visible = false
 z_index = 1
 position = Vector2(380, 7)
 
 [node name="wallShape006" parent="." index="6" unique_id=935145210 instance=ExtResource("3_1p7uw")]
+visible = false
 position = Vector2(637, 7)
 
 [node name="wallShape007" parent="." index="7" unique_id=97024381 instance=ExtResource("2_dxvdj")]

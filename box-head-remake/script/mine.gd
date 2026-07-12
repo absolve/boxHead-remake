@@ -13,6 +13,7 @@ func fire(_v):
 				floori(pos.y/MapData.cellSize)*MapData.cellSize)+\
 				Vector2(MapData.cellSize/2,MapData.cellSize/2)
 		temp.z_index=floori(pos.y/MapData.cellSize)	
+		temp.damage=damage
 		get_tree().root.add_child(temp)
 		MapData.addMapItem(pos,temp.get_instance_id())
 		sound.play()

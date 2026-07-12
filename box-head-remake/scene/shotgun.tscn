@@ -11,7 +11,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("4_eb14o")
 }],
-"loop": false,
+"loop": 0,
 "name": &"default",
 "speed": 5.0
 }]
@@ -85,7 +85,7 @@ wRange = 300
 delay = 0.6
 ammoNum = 15
 maxAmmoNum = 15
-hitFeedback = 150
+hitFeedback = 200
 
 [node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_yha0r")

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bmhmxhlfsbq1d"]
 
 [ext_resource type="Script" uid="uid://colcd2j05d43" path="res://autoload/sound_util.gd" id="1_465xq"]
-[ext_resource type="AudioStream" uid="uid://blgosxo8icnbj" path="res://sound/564_564 CLICK.mp3" id="2_qp57m"]
-[ext_resource type="AudioStream" uid="uid://tyu4gia5qxar" path="res://sound/563_563 World.End.mp3" id="3_qp57m"]
+[ext_resource type="AudioStream" uid="uid://dsstqxvfkhllo" path="res://sound/564_564 CLICK.mp3" id="2_qp57m"]
+[ext_resource type="AudioStream" uid="uid://3foqaave14ap" path="res://sound/563_563 World.End.mp3" id="3_qp57m"]
 
 [node name="SoundUtil" type="Node2D" unique_id=43124588]
 script = ExtResource("1_465xq")
@@ -12,5 +12,9 @@ stream = ExtResource("2_qp57m")
 bus = &"sfx"
 
 [node name="change" type="AudioStreamPlayer2D" parent="." unique_id=413982877]
+stream = ExtResource("3_qp57m")
+bus = &"sfx"
+
+[node name="startLevel" type="AudioStreamPlayer2D" parent="." unique_id=1576179764]
 stream = ExtResource("3_qp57m")
 bus = &"sfx"

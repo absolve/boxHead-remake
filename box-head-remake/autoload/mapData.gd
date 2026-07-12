@@ -122,7 +122,7 @@ func getFlowDir(pos: Vector2, id):
 
 #添加障碍物
 func addObstacle(pos:Vector2):
-	if obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
+	if !obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
 		obstacle["%s-%s"%[int(pos.x),int(pos.y)]]=pos
 
 

@@ -98,11 +98,11 @@ func _ready():
 	shapeQuery.exclude = [get_rid()]
 	shapeQuery.shape = shape.shape
 	
-	if velocity.length()!=0:
+	if velocity.length() != 0:
 		angle = round(velocity.angle() / (PI / 4))
 		angle = wrapi(int(angle), 0, 8)
-		oldAngle=angle
-		pathTimer=pathUpdateInterval
+		oldAngle = angle
+		pathTimer = pathUpdateInterval
 	
 	
 func _physics_process(_delta: float) -> void:
@@ -249,7 +249,7 @@ func _physics_process(_delta: float) -> void:
 					global_position.y = r.collider.global_position.y + signy * (shape1.size.y / 2 + shape.shape.size.y / 2)
 				currAni = "stand"
 		#print(velocity)
-		if velocity.length()!=0:
+		if velocity.length() != 0:
 			angle = round(velocity.angle() / (PI / 4))
 			angle = wrapi(int(angle), 0, 8)
 		ani.play(currAni + "_%s"%angle)
@@ -277,7 +277,7 @@ func findTarget():
 	else:
 		return null
 
-
+#获取流场方向
 func getFlowField():
 	var current_grid = Vector2i(floori(global_position.x / MapData.cellSize)
 		, floori(global_position.y / MapData.cellSize))
@@ -303,7 +303,7 @@ func getFlowField():
 		canMoveDir.sort_custom(func(a, b): return a.dot >= b.dot)
 		if canMoveDir.size() > 0:
 			bestDir = canMoveDir[0].dir
-			state = Game.enemyState.ffp
+			state = Game.enemyState.findDir
 		else:
 			bestDir = Vector2.ZERO
 		lastGrid = Vector2i(floori(global_position.x / MapData.cellSize)
@@ -313,7 +313,7 @@ func getFlowField():
 		bestDir = dir
 	return bestDir.normalized()
 
-
+#寻找新的可以移动方向
 func findDir():
 	var current_grid = Vector2i(floori(global_position.x / MapData.cellSize)
 		, floori(global_position.y / MapData.cellSize))
