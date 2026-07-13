@@ -5,14 +5,14 @@ const cellSize: float = 32 # 每个格子大小
 #武器基本参数信息
 var allWeaponData = {
 	Game.weaponType.Pistol: {'damage': 1, 'wRange': 300, 'delay': 0.6, 'maxAmmoNum': 0, 'automatic': false},
-	Game.weaponType.UZI: {'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 50, 'automatic': true},
-	Game.weaponType.Shotgun: {'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 15, 'splitAngle': 30, 'automatic': false},
+	Game.weaponType.UZI: {'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 100, 'automatic': true},
+	Game.weaponType.Shotgun: {'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 20, 'splitAngle': 30, 'automatic': false},
 	Game.weaponType.Mine: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
-	Game.weaponType.Wall: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false},
+	Game.weaponType.Wall: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 5, 'automatic': false},
 	Game.weaponType.Barrel: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
-	Game.weaponType.Grenade: {'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 15, 'automatic': false},
-	Game.weaponType.Rocket: {'damage': 5, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 15, 'automatic': false},
-	Game.weaponType.Railgun: {'damage': 4, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 20, 'automatic': false},
+	Game.weaponType.Grenade: {'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 20, 'automatic': false},
+	Game.weaponType.Rocket: {'damage': 5, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 20, 'automatic': false},
+	Game.weaponType.Railgun: {'damage': 4, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 15, 'automatic': false},
 	Game.weaponType.ChargePack: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false}
 }
 
@@ -121,9 +121,9 @@ func getFlowDir(pos: Vector2, id):
 		return Vector2.ZERO
 
 #添加障碍物
-func addObstacle(pos:Vector2):
-	if !obstacle.has("%s-%s"%[int(pos.x),int(pos.y)]):
-		obstacle["%s-%s"%[int(pos.x),int(pos.y)]]=pos
+func addObstacle(pos: Vector2):
+	if !obstacle.has("%s-%s" % [int(pos.x), int(pos.y)]):
+		obstacle["%s-%s" % [int(pos.x), int(pos.y)]] = pos
 
 
 func clearObstacle():
@@ -357,6 +357,21 @@ func countKillStreak():
 			pass
 		125: # Railgun+: Long Shot
 			pass
+
+#重置武器数据
+func resetAllWeaponData():
+	allWeaponData = {
+		Game.weaponType.Pistol: {'damage': 1, 'wRange': 300, 'delay': 0.6, 'maxAmmoNum': 0, 'automatic': false},
+		Game.weaponType.UZI: {'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 100, 'automatic': true},
+		Game.weaponType.Shotgun: {'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 20, 'splitAngle': 30, 'automatic': false},
+		Game.weaponType.Mine: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
+		Game.weaponType.Wall: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 5, 'automatic': false},
+		Game.weaponType.Barrel: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
+		Game.weaponType.Grenade: {'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 20, 'automatic': false},
+		Game.weaponType.Rocket: {'damage': 5, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 20, 'automatic': false},
+		Game.weaponType.Railgun: {'damage': 4, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 15, 'automatic': false},
+		Game.weaponType.ChargePack: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false}
+	}
 
 
 '''

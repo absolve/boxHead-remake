@@ -162,6 +162,129 @@ func switchWeapon(next: bool = true):
 		Game.notice.emit("%s:%s" % [tr("Switch"), Game.weaponName[currWeapon.type]])
 		#txt.text=Game.weaponName[currWeapon.type]	
 
+func pickItem(_type):
+	if _type in [Game.boxContent.Railgun, Game.boxContent.Rocket,
+	 Game.boxContent.Shotgun, Game.boxContent.UZI, 
+	 Game.boxContent.Mine, Game.boxContent.ChargePack, 
+	 Game.boxContent.Wall, Game.boxContent.Barrel, Game.boxContent.Grenade]:
+		var w=getWeapon(Game.getBoxContentWeaponType(_type))
+		if w!=null:
+			# w.damage = MapData.allWeaponData._type['damage']
+			w.ammoNum = MapData.allWeaponData._type['ammoNum']
+			w.maxAmmoNum = MapData.allWeaponData._type['maxAmmoNum']
+			# w.automatic = MapData.allWeaponData._type['automatic']
+			# w.wrange = MapData.allWeaponData._type['wRange']
+			# w.delay = MapData.allWeaponData._type['delay']
+		else:
+			if type == Game.boxContent.Railgun:
+				var temp = load("res://scene/railgun.tscn")
+				var railgun = temp.instantiate()
+				railgun.ownerId = get_rid()
+				railgun.damage = MapData.allWeaponData.Railgun['damage']
+				railgun.ammoNum = MapData.allWeaponData.Railgun['ammoNum']
+				railgun.maxAmmoNum = MapData.allWeaponData.Railgun['maxAmmoNum']
+				railgun.automatic = MapData.allWeaponData.Railgun['automatic']
+				railgun.wrange = MapData.allWeaponData.Railgun['wRange']
+				railgun.delay = MapData.allWeaponData.Railgun['delay']
+				weaponList.push_back(railgun)
+				weaponBackpack.add_child(railgun)
+			elif type == Game.boxContent.Rocket:
+				var temp = load("res://scene/rocket.tscn")
+				var rocket = temp.instantiate()
+				rocket.ownerId = body.get_rid()
+				rocket.damage = MapData.allWeaponData.Rocket['damage']
+				rocket.ammoNum = MapData.allWeaponData.Rocket['ammoNum']
+				rocket.maxAmmoNum = MapData.allWeaponData.Rocket['maxAmmoNum']
+				rocket.automatic = MapData.allWeaponData.Rocket['automatic']
+				rocket.wrange = MapData.allWeaponData.Rocket['wRange']
+				rocket.delay = MapData.allWeaponData.Rocket['delay']
+				weaponList.push_back(rocket)
+				weaponBackpack.add_child(rocket)
+			elif type == Game.boxContent.Shotgun:
+				var temp = load("res://scene/shotgun.tscn")
+				var shotgun = temp.instantiate()
+				shotgun.ownerId = body.get_rid()
+				shotgun.damage = MapData.allWeaponData.Shotgun['damage']
+				shotgun.ammoNum = MapData.allWeaponData.Shotgun['ammoNum']
+				shotgun.maxAmmoNum = MapData.allWeaponData.Shotgun['maxAmmoNum']
+				shotgun.automatic = MapData.allWeaponData.Shotgun['automatic']
+				shotgun.wrange = MapData.allWeaponData.Shotgun['wRange']
+				shotgun.delay = MapData.allWeaponData.Shotgun['delay']
+				shotgun.splitAngle = MapData.allWeaponData.Shotgun['splitAngle']
+				weaponList.push_back(shotgun)
+				weaponBackpack.add_child(shotgun)
+			elif type == Game.boxContent.UZI:
+				var temp = load("res://scene/uzi.tscn")
+				var uzi = temp.instantiate()
+				uzi.ownerId = body.get_rid()
+				uzi.damage = MapData.allWeaponData.UZI['damage']
+				uzi.ammoNum = MapData.allWeaponData.UZI['ammoNum']
+				uzi.maxAmmoNum = MapData.allWeaponData.UZI['maxAmmoNum']
+				uzi.automatic = MapData.allWeaponData.UZI['automatic']
+				uzi.wrange = MapData.allWeaponData.UZI['wRange']
+				uzi.delay = MapData.allWeaponData.UZI['delay']
+				weaponList.push_back(uzi)
+				weaponBackpack.add_child(uzi)
+			elif type == Game.boxContent.Mine:
+				var temp = load("res://scene/mine.tscn")
+				var mine = temp.instantiate()
+				mine.ownerId = body.get_rid()
+				mine.damage = MapData.allWeaponData.Mine['damage']
+				mine.ammoNum = MapData.allWeaponData.Mine['ammoNum']
+				mine.maxAmmoNum = MapData.allWeaponData.Mine['maxAmmoNum']
+				mine.splitExplosion = MapData.allWeaponData.Mine['splitExplosion']
+				weaponList.push_back(mine)
+				weaponBackpack.add_child(mine)
+			elif type == Game.boxContent.ChargePack:
+				var temp = load("res://scene/chargePack.tscn")
+				var chargePack = temp.instantiate()
+				chargePack.ownerId = get_rid()
+				chargePack.damage = MapData.allWeaponData.ChargePack['damage']
+				chargePack.ammoNum = MapData.allWeaponData.ChargePack['ammoNum']
+				chargePack.maxAmmoNum = MapData.allWeaponData.ChargePack['maxAmmoNum']
+				chargePack.splitExplosion = MapData.allWeaponData.ChargePack['splitExplosion']
+				weaponList.push_back(chargePack)
+				weaponBackpack.add_child(chargePack)
+			elif type == Game.boxContent.Wall:
+				var temp = load("res://scene/wall.tscn")
+				var wall = temp.instantiate()
+				wall.ownerId = body.get_rid()
+				# wall.damage = MapData.allWeaponData.Wall['damage']
+				wall.ammoNum = MapData.allWeaponData.Wall['ammoNum']
+				wall.maxAmmoNum = MapData.allWeaponData.Wall['maxAmmoNum']
+				weaponList.push_back(wall)
+				weaponBackpack.add_child(wall)
+			elif type == Game.boxContent.Barrel:
+				var temp = load("res://scene/barrel.tscn")
+				var barrel = temp.instantiate()
+				barrel.ownerId = body.get_rid()
+				barrel.damage = MapData.allWeaponData.Barrel['damage']
+				barrel.ammoNum = MapData.allWeaponData.Barrel['ammoNum']
+				barrel.maxAmmoNum = MapData.allWeaponData.Barrel['maxAmmoNum']
+				barrel.splitExplosion = MapData.allWeaponData.Barrel['splitExplosion']
+				weaponList.push_back(barrel)
+				weaponBackpack.add_child(barrel)
+			elif type == Game.boxContent.Grenade:
+				var temp = load("res://scene/grenade.tscn")
+				var grenade = temp.instantiate()
+				grenade.ownerId = body.get_rid()
+				grenade.damage = MapData.allWeaponData.Grenade['damage']
+				grenade.ammoNum = MapData.allWeaponData.Grenade['ammoNum']
+				grenade.maxAmmoNum = MapData.allWeaponData.Grenade['maxAmmoNum']
+				grenade.splitExplosion = MapData.allWeaponData.Grenade['splitExplosion']
+				weaponList.push_back(grenade)
+				weaponBackpack.add_child(grenade)
+
+	elif _type==Game.boxContent.Life:
+		hp=maxHp
+
+
+func getWeapon(_type):
+	for i in weaponList:
+		if i.type == _type:
+			return i
+	return null
+
 func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	hp -= damage
 	lifeBar.hp = hp

@@ -1,13 +1,14 @@
 extends CharacterBody2D
 
-var angle=0  #角度
-var currAni=""
-var isDead=false
-var invincible=false
-var state   #状态
+var angle = 0 # 角度
+var currAni = ""
+var isDead = false
+var invincible = false
+var state # 状态
 
-@onready var shape=$shape
-@export var bodySize:Vector2=Vector2(20,25)
-@export var hp:int=10 #血量
-@export var speed=120 #移动速度
-@export var type:Game.roleType=Game.roleType.Player
+@onready var shape = $shape
+@export var bodySize: Vector2 = Vector2(20, 25)
+@export var hp: int = 10 # 血量
+@export var speed = 120 # 移动速度
+@export var type: Game.roleType = Game.roleType.Player
+@export var maxHp: int = 10 # 最大血量

@@ -8,7 +8,7 @@ enum itemType {Box = 99, Mine, ChargePack, Wall, Barrel, Grenade, RocketBullet, 
 
 #奖励箱子的内容
 enum boxContent {Railgun = 500, Rocket, Shotgun,
-				UZI, Mine, ChargePack, Wall, Barrel, Grenade}
+				UZI, Mine, ChargePack, Wall, Barrel, Grenade, Life}
 
 #角色类型
 enum roleType {Player = 400, Zombie, Devil}
@@ -70,3 +70,67 @@ signal pickItem
 signal enemyKilled
 @warning_ignore("unused_signal")
 signal notice # 消息通知
+
+
+func getBoxContentName(type):
+	if type == boxContent.Railgun:
+		return 'Railgun'
+	elif type == boxContent.Rocket:
+		return 'Rocket'
+	elif type == boxContent.Shotgun:
+		return 'Shotgun'
+	elif type == boxContent.UZI:
+		return 'UZI'
+	elif type == boxContent.Mine:
+		return 'Mine'
+	elif type == boxContent.ChargePack:
+		return 'ChargePack'
+	elif type == boxContent.Wall:
+		return 'Wall'
+	elif type == boxContent.Barrel:
+		return 'Barrel'
+	elif type == boxContent.Grenade:
+		return 'Grenade'
+	elif type == boxContent.Life:
+		return 'Life'
+	
+func getBoxContentWeaponType(type):
+	if type == boxContent.Railgun:
+		return weaponType.Railgun
+	elif type == boxContent.Rocket:
+		return weaponType.Rocket
+	elif type == boxContent.Shotgun:
+		return weaponType.Shotgun
+	elif type == boxContent.UZI:
+		return weaponType.UZI
+	elif type == boxContent.Mine:
+		return weaponType.Mine
+	elif type == boxContent.ChargePack:
+		return weaponType.ChargePack
+	elif type == boxContent.Wall:
+		return weaponType.Wall
+	elif type == boxContent.Barrel:
+		return weaponType.Barrel
+	elif type == boxContent.Grenade:
+		return weaponType.Grenade
+
+# 武器类型转成盒子内容类型
+func WeaponType2BoxContent(type):
+	if type == weaponType.Railgun:
+		return boxContent.Railgun
+	elif type == weaponType.Rocket:
+		return boxContent.Rocket
+	elif type == weaponType.Shotgun:
+		return boxContent.Shotgun
+	elif type == weaponType.UZI:
+		return boxContent.UZI
+	elif type == weaponType.Mine:
+		return boxContent.Mine
+	elif type == weaponType.ChargePack:
+		return boxContent.ChargePack
+	elif type == weaponType.Wall:
+		return boxContent.Wall
+	elif type == weaponType.Barrel:
+		return boxContent.Barrel
+	elif type == weaponType.Grenade:
+		return boxContent.Grenade
