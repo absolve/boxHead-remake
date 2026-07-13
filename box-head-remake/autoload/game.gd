@@ -42,7 +42,7 @@ enum playerState {Idle, hurt, dead}
 enum enemyState {Idle, ffp, findDir, hurt, fallDown, dead, attack, rotate, rotate_wait, init}
 
 #地图标志
-enum mapSign {Player = 700, Zombie, Devil, Item}
+enum mapSign {Player = 700, Zombie, Devil, Box}
 
 #地图标志方向
 enum mapSignDir {Left, Right, Up, Down}

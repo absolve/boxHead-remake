@@ -7,6 +7,7 @@ extends "res://script/character.gd"
 @onready var bodyShape = $body/bodyShape
 @onready var lifeBar = $lifeBar
 @onready var deadSound = $dead
+@onready var pickupSound=$pickup
 
 @export var playerId = 1 # 玩家一个标记
 var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
@@ -22,7 +23,7 @@ var hurtDelay = 0.5
 
 func _ready():
 	state = Game.playerState.Idle
-	shapeQuery.collide_with_bodies = true
+	# shapeQuery.collide_with_bodies = true
 	shapeQuery.collide_with_areas = true
 	shapeQuery.collision_mask = 1 + 2 + 4
 	shapeQuery.exclude = [get_rid(), body.get_rid()]
@@ -277,7 +278,7 @@ func pickItem(_type):
 
 	elif _type==Game.boxContent.Life:
 		hp=maxHp
-
+	pickupSound.play()
 
 func getWeapon(_type):
 	for i in weaponList:

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b8tgtwj8ccifs"]
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_dmwsn"]
-[ext_resource type="Texture2D" uid="uid://d0bh33rndc8k" path="res://sprite/shape/DefineSprite_2279_Object.Pickup/1.png" id="2_3tsfx"]
+[ext_resource type="Texture2D" uid="uid://by0qa7my0tv7f" path="res://sprite/shape/DefineSprite_2279_Object.Pickup/1.png" id="2_3tsfx"]
 [ext_resource type="Script" uid="uid://dno0de4rob60m" path="res://script/box.gd" id="2_5jxcw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5jxcw"]
@@ -54,6 +54,7 @@ _data = {
 }
 
 [node name="box" unique_id=847192445 instance=ExtResource("1_dmwsn")]
+collision_layer = 64
 collision_mask = 1
 script = ExtResource("2_5jxcw")
 expiredTime = 0

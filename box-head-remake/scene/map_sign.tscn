@@ -14,7 +14,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("1_7v1ok")
 }],
-"loop": false,
+"loop": 0,
 "name": &"0",
 "speed": 5.0
 }, {
@@ -22,7 +22,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_h3bpn")
 }],
-"loop": false,
+"loop": 0,
 "name": &"1",
 "speed": 5.0
 }, {
@@ -30,7 +30,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("3_6k787")
 }],
-"loop": false,
+"loop": 0,
 "name": &"2",
 "speed": 5.0
 }, {
@@ -38,19 +38,19 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("4_4h2jg")
 }],
-"loop": false,
+"loop": 0,
 "name": &"3",
 "speed": 5.0
 }, {
 "frames": [],
-"loop": true,
+"loop": 1,
 "name": &"4",
 "speed": 5.0
 }]
 
 [node name="mapSign" type="Area2D" unique_id=1830752461 groups=["sign"]]
 collision_layer = 0
-collision_mask = 7
+collision_mask = 0
 script = ExtResource("5_h3bpn")
 
 [node name="shape" type="CollisionShape2D" parent="." unique_id=437827136]

@@ -180,6 +180,7 @@ locale/test="zh"
 2d_physics/layer_4="staticWall"
 2d_physics/layer_5="playerBody"
 2d_physics/layer_6="enemyBody"
+2d_physics/layer_7="box"
 
 [rendering]
 

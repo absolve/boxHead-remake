@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/wall_shape_003.tscn" id="3_1p7uw"]
 [ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/map_sign.tscn" id="6_fbdb3"]
 [ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/barrel_obj.tscn" id="7_viuee"]
+[ext_resource type="PackedScene" uid="uid://b8tgtwj8ccifs" path="res://scene/box.tscn" id="8_qucu1"]
 
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
@@ -14,36 +15,30 @@ debug = true
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=409961369]
-visible = false
 position = Vector2(300, 240)
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_1p7uw")
 
 [node name="wallShape001" parent="." index="1" unique_id=619895859 instance=ExtResource("2_dxvdj")]
-visible = false
 z_index = 1
 position = Vector2(116, 14)
 
 [node name="wallShape003" parent="." index="2" unique_id=1769587618 instance=ExtResource("3_1p7uw")]
-visible = false
 z_index = 2
 position = Vector2(-14, 7)
 
 [node name="wallShape004" parent="." index="3" unique_id=828812098 instance=ExtResource("3_1p7uw")]
-visible = false
 position = Vector2(243, 7)
 
 [node name="wallShape002" parent="." index="4" unique_id=7436709 instance=ExtResource("2_dxvdj")]
-visible = false
 z_index = 1
 position = Vector2(510, 7)
 
 [node name="wallShape005" parent="." index="5" unique_id=1971123739 instance=ExtResource("3_1p7uw")]
-visible = false
 z_index = 1
 position = Vector2(380, 7)
 
 [node name="wallShape006" parent="." index="6" unique_id=935145210 instance=ExtResource("3_1p7uw")]
-visible = false
 position = Vector2(637, 7)
 
 [node name="wallShape007" parent="." index="7" unique_id=97024381 instance=ExtResource("2_dxvdj")]
@@ -141,3 +136,19 @@ position = Vector2(368, 400)
 [node name="barrelObj12" parent="." index="30" unique_id=2123256976 instance=ExtResource("7_viuee")]
 z_index = 4
 position = Vector2(368, 432)
+
+[node name="mapSign7" parent="." index="31" unique_id=306067898 instance=ExtResource("6_fbdb3")]
+position = Vector2(304, 39)
+type = 703
+debug = true
+
+[node name="box" parent="." index="32" unique_id=847192445 instance=ExtResource("8_qucu1")]
+position = Vector2(304, 40)
+
+[node name="mapSign8" parent="." index="33" unique_id=1640443326 instance=ExtResource("6_fbdb3")]
+position = Vector2(338, 440)
+type = 703
+dir = 2
+
+[node name="box2" parent="." index="34" unique_id=2000918025 instance=ExtResource("8_qucu1")]
+position = Vector2(338, 440)

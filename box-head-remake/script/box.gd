@@ -1,11 +1,11 @@
 extends "res://script/item.gd"
 
-@onready var timer=$Timer
-@onready var player=$player
+@onready var timer = $Timer
+@onready var player = $player
 @export var expiredTime = 0 # 过期时间
 
 func _ready():
-	if expiredTime!=0:
+	if expiredTime != 0:
 		timer.start(expiredTime)
 	if MapData.weaponUnlock.size() > 0:
 		content = Game.WeaponType2BoxContent(MapData.weaponUnlock[randi()%MapData.weaponUnlock.size()])

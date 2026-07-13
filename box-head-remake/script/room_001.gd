@@ -12,7 +12,7 @@ func _ready() -> void:
 			devilSpawnPoint.append(i)
 		elif i.type==Game.mapSign.Player:
 			playerSpawnPoint.append(i)
-		elif i.type==Game.mapSign.Item:
+		elif i.type==Game.mapSign.Box:
 			itemSpawnPoint.append(i)
 	MapData.mapSize = mapSize
 	MapData.clearObstacle()
