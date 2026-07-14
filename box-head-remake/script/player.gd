@@ -8,6 +8,7 @@ extends "res://script/character.gd"
 @onready var lifeBar = $lifeBar
 @onready var deadSound = $dead
 @onready var pickupSound=$pickup
+@onready var player=$player
 
 @export var playerId = 1 # 玩家一个标记
 var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
@@ -37,60 +38,60 @@ func _ready():
 	weaponBackpack.add_child(gun)
 	#currWeapon=gun
 	#txt.text=Game.weaponName[currWeapon.type]
-	var t = load("res://scene/uzi.tscn")
-	var u = t.instantiate()
-	u.ownerId = body.get_rid()
-	weaponList.push_back(u)
-	weaponBackpack.add_child(u)
-	
-	var r = load("res://scene/rocket.tscn")
-	var rocket = r.instantiate()
-	rocket.ownerId = body.get_rid()
-	weaponList.push_back(rocket)
-	weaponBackpack.add_child(rocket)
-	
-	var b = load("res://scene/barrel.tscn")
-	var barrel = b.instantiate()
-	barrel.ownerId = body.get_rid()
-	weaponList.push_back(barrel)
-	weaponBackpack.add_child(barrel)
-	
-	var w = load("res://scene/wall.tscn")
-	var wall = w.instantiate()
-	wall.ownerId = body.get_rid()
-	weaponList.push_back(wall)
-	weaponBackpack.add_child(wall)
-	
-	var m = load("res://scene/mine.tscn")
-	var mine = m.instantiate()
-	mine.ownerId = body.get_rid()
-	weaponList.push_back(mine)
-	weaponBackpack.add_child(mine)
-
-	var s = load("res://scene/shotgun.tscn")
-	var shortGun = s.instantiate()
-	shortGun.ownerId = body.get_rid()
-	weaponList.push_back(shortGun)
-	weaponBackpack.add_child(shortGun)
-	
-	var g = load("res://scene/grenade.tscn")
-	var grenade = g.instantiate()
-	grenade.ownerId = body.get_rid()
-	weaponList.push_back(grenade)
-	weaponBackpack.add_child(grenade)
-
-	
-	var rg = load("res://scene/railgun.tscn")
-	var railgun = rg.instantiate()
-	railgun.ownerId = get_rid()
-	weaponList.push_back(railgun)
-	weaponBackpack.add_child(railgun)
-	
-	var cp = load("res://scene/chargePack.tscn")
-	var chargePack = cp.instantiate()
-	chargePack.ownerId = get_rid()
-	weaponList.push_back(chargePack)
-	weaponBackpack.add_child(chargePack)
+	#var t = load("res://scene/uzi.tscn")
+	#var u = t.instantiate()
+	#u.ownerId = body.get_rid()
+	#weaponList.push_back(u)
+	#weaponBackpack.add_child(u)
+	#
+	#var r = load("res://scene/rocket.tscn")
+	#var rocket = r.instantiate()
+	#rocket.ownerId = body.get_rid()
+	#weaponList.push_back(rocket)
+	#weaponBackpack.add_child(rocket)
+	#
+	#var b = load("res://scene/barrel.tscn")
+	#var barrel = b.instantiate()
+	#barrel.ownerId = body.get_rid()
+	#weaponList.push_back(barrel)
+	#weaponBackpack.add_child(barrel)
+	#
+	#var w = load("res://scene/wall.tscn")
+	#var wall = w.instantiate()
+	#wall.ownerId = body.get_rid()
+	#weaponList.push_back(wall)
+	#weaponBackpack.add_child(wall)
+	#
+	#var m = load("res://scene/mine.tscn")
+	#var mine = m.instantiate()
+	#mine.ownerId = body.get_rid()
+	#weaponList.push_back(mine)
+	#weaponBackpack.add_child(mine)
+#
+	#var s = load("res://scene/shotgun.tscn")
+	#var shortGun = s.instantiate()
+	#shortGun.ownerId = body.get_rid()
+	#weaponList.push_back(shortGun)
+	#weaponBackpack.add_child(shortGun)
+	#
+	#var g = load("res://scene/grenade.tscn")
+	#var grenade = g.instantiate()
+	#grenade.ownerId = body.get_rid()
+	#weaponList.push_back(grenade)
+	#weaponBackpack.add_child(grenade)
+#
+	#
+	#var rg = load("res://scene/railgun.tscn")
+	#var railgun = rg.instantiate()
+	#railgun.ownerId = get_rid()
+	#weaponList.push_back(railgun)
+	#weaponBackpack.add_child(railgun)
+	#
+	#var cp = load("res://scene/chargePack.tscn")
+	#var chargePack = cp.instantiate()
+	#chargePack.ownerId = get_rid()
+	#weaponList.push_back(chargePack)
+	#weaponBackpack.add_child(chargePack)
 
 
 	currWeapon = gun
@@ -134,21 +135,21 @@ func _ready():
 
 #武器升级
 func weaponUpgrade(_type):
-	if _type == [Game.weaponType.Pistol, Game.weaponType.UZI, Game.weaponType.Rocket,
+	if _type in [Game.weaponType.Pistol, Game.weaponType.UZI, Game.weaponType.Rocket,
 	 Game.weaponType.Barrel, Game.weaponType.Wall, Game.weaponType.Mine, Game.weaponType.
 	 Shotgun, Game.weaponType.Grenade, Game.weaponType.Railgun, Game.weaponType.ChargePack]:
 		for i in weaponList:
 			if i.type == _type:
-				i.damage = MapData.allWeaponData._type['damage']
+				i.damage = MapData.allWeaponData[_type]['damage']
 				# i.ammoNum = MapData.allWeaponData._type['ammoNum']
-				i.maxAmmoNum = MapData.allWeaponData._type['maxAmmoNum']
-				i.automatic = MapData.allWeaponData._type['automatic']
-				i.wrange = MapData.allWeaponData._type['wRange']
-				i.delay = MapData.allWeaponData._type['delay']
+				i.maxAmmoNum = MapData.allWeaponData[_type]['maxAmmoNum']
+				i.automatic = MapData.allWeaponData[_type]['automatic']
+				i.wRange = MapData.allWeaponData[_type]['wRange']
+				i.delay = MapData.allWeaponData[_type]['delay']
 				if _type == Game.weaponType.Shotgun:
-					i.splitAngle = MapData.allWeaponData._type['splitAngle']
-				if _type == [Game.weaponType.Mine, Game.weaponType.ChargePack]:
-					i.splitExplosion = MapData.allWeaponData._type['splitExplosion']
+					i.splitAngle = MapData.allWeaponData[_type]['splitAngle']
+				if _type in [Game.weaponType.Mine, Game.weaponType.ChargePack]:
+					i.splitExplosion = MapData.allWeaponData[_type]['splitExplosion']
 				break
 
 #切换武器	
@@ -172,7 +173,7 @@ func pickItem(_type):
 		if w!=null:
 			# w.damage = MapData.allWeaponData._type['damage']
 			w.ammoNum = MapData.allWeaponData._type['ammoNum']
-			w.maxAmmoNum = MapData.allWeaponData._type['maxAmmoNum']
+			#w.maxAmmoNum = MapData.allWeaponData._type['maxAmmoNum']
 			# w.automatic = MapData.allWeaponData._type['automatic']
 			# w.wrange = MapData.allWeaponData._type['wRange']
 			# w.delay = MapData.allWeaponData._type['delay']

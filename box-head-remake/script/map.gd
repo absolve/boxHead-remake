@@ -29,7 +29,7 @@ func _ready() -> void:
 	#MapData.astarGrid.update()
 	updateFlowField()
 	font = ThemeDB.fallback_font
-	#startNextWave()
+	startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
 	Game.weaponUpgrade.connect(weaponUpgrade)
 	Game.notice.connect(notice)
