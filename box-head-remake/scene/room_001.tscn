@@ -15,6 +15,7 @@ debug = true
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=409961369]
+visible = false
 position = Vector2(300, 240)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_1p7uw")

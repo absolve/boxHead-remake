@@ -10,7 +10,7 @@ func _ready() -> void:
 	offsetDir[1]=Vector2(20,0)
 	offsetDir[2]=Vector2(-10,10)
 	offsetDir[3]=Vector2(-35,-20)
-	offsetDir[4]=Vector2(-40,5)
+	offsetDir[4]=Vector2(-40,-35)
 	offsetDir[5]=Vector2(-18,-45)
 	offsetDir[6]=Vector2(15,-50)
 	offsetDir[7]=Vector2(40,-35)

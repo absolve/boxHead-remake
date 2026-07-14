@@ -7,37 +7,44 @@ extends Node2D
 @onready var spawnTimer = $spawnTimer
 @onready var nextWaveTimer = $nextWaveTimer
 @onready var toastInfo = $ui/toastInfo
+@onready var refreshTimer = $refreshTimer
 @export var isDebug = true
 
+
 var zombie = preload("res://scene/zombie.tscn")
+var box = preload("res://scene/box.tscn")
 #@onready var enemy=$zombie
 var font: FontFile
 #var score=0 
 var count = 0
 var currWave = 0 # 当前波次
-var zombieCount = 20 # 每波次加2
+var zombieCount = 2 # 每波次加2
 var devilCount = 2 # 每波次加2
 var allSpawnPoint = []
 var updateFlowFieldDelay = 60 # 60帧
 var updateTimer = 0
 var maxZombieCount = 0 # 最大僵尸数量
 var maxDevilCount = 0 # 最大恶魔数量
+var pickupRefreshTime = 20 # 20秒刷新一下补给
+var itemSpawnPoint = [] # 固定箱子刷新点
+
 
 func _ready() -> void:
 	MapData.mapSize = room.mapSize
-	#MapData.astarGrid.region = Rect2i(0, 0, room.mapSize.x, room.mapSize.y)
-	#MapData.astarGrid.update()
 	updateFlowField()
 	font = ThemeDB.fallback_font
-	startNextWave()
 	Game.enemyKilled.connect(enemyKilled)
-	Game.weaponUpgrade.connect(weaponUpgrade)
+	#Game.weaponUpgrade.connect(weaponUpgrade)
 	Game.notice.connect(notice)
 	maxZombieCount = int(MapData.mapSize.x * MapData.mapSize.y / MapData.cellSize)
 	maxDevilCount = int(maxZombieCount / 5.0)
+	startNextWave()
 	print(maxZombieCount, ' ', maxDevilCount)
+	itemSpawnPoint = room.itemSpawnPoint
+	refreshTimer.wait_time = pickupRefreshTime
+	refreshTimer.start()
 	
-	
+
 func startNextWave():
 	SoundUtil.playStartLevel()
 	##获取所有的敌人出生点，每个出生点分配敌人产生数量
@@ -89,12 +96,12 @@ func enemyKilled(pos):
 	countAniNode.speed_scale = 1 + 0.1 * (MapData.currKillStreak / 10)
 	countAniNode.play("default")
 
-func weaponUpgrade(type):
-	print('weaponUpgrade', type)
-	pass
+#func weaponUpgrade(type):
+	#print('weaponUpgrade', type)
+	#pass
 
 #通知信息
-func notice(s, color: Color = Color.WHITE):
+func notice(s, color: Color = Color.CORAL):
 	print('notice', s)
 	toastInfo.display(s, color)
 
@@ -204,10 +211,19 @@ func _on_next_wave_timer_timeout() -> void:
 		zombieCount = min(zombieCount, maxZombieCount)
 		devilCount += 2
 		devilCount = min(devilCount, maxDevilCount)
-		notice('+++Level %d started!+++' % (currWave + 1), Color.GREEN)
+		#notice('+++Level %d started!+++' % (currWave + 1), Color.GREEN)
 		startNextWave()
 	
 
 func _on_button_pressed() -> void:
 	toastInfo.display('11111111111', Color.RED)
 	pass # Replace with function body.
+
+
+func _on_refresh_timer_timeout() -> void:
+	refreshTimer.start()
+	for i in itemSpawnPoint:
+		if !i.hasBlock():
+			var b = box.instantiate()
+			b.global_position = i.global_position
+			get_tree().root.add_child(b)
