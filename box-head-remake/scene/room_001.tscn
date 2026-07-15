@@ -153,3 +153,23 @@ dir = 2
 
 [node name="box2" parent="." index="34" unique_id=2000918025 instance=ExtResource("8_qucu1")]
 position = Vector2(338, 440)
+
+[node name="mapSign9" parent="." index="35" unique_id=1862779200 instance=ExtResource("6_fbdb3")]
+position = Vector2(300, 240)
+type = 700
+dir = 1
+
+[node name="mapSign10" parent="." index="36" unique_id=304784552 instance=ExtResource("6_fbdb3")]
+position = Vector2(300, 280)
+type = 700
+dir = 1
+
+[node name="mapSign11" parent="." index="37" unique_id=2070025851 instance=ExtResource("6_fbdb3")]
+position = Vector2(340, 240)
+type = 700
+dir = 0
+
+[node name="mapSign12" parent="." index="38" unique_id=859361351 instance=ExtResource("6_fbdb3")]
+position = Vector2(340, 280)
+type = 700
+dir = 0
