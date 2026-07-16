@@ -11,89 +11,62 @@ extends "res://script/character.gd"
 
 ## 动画节点
 @onready var ani = $ani
-
 ## 身体碰撞体节点
 @onready var body = $body
-
 ## 身体碰撞形状节点
 @onready var bodyShape = $body/bodyShape
-
 ## 攻击碰撞区域节点
 @onready var attackArea = $attackArea
-
 ## 形状投射节点（用于碰撞检测）
 @onready var shapeCast = $ShapeCast2D
 
 
 ## 字体资源
 var font: FontFile
-
 ## 当前追踪目标（玩家）
 var target = null
-
 ## 目标上一帧位置
 var targetOldPos = Vector2.ZERO
-
 ## 攻击范围（像素）
 var attackRange = 35
-
 ## 路径点列表
 var path = []
-
 ## 目标位置
 var targetPos = null
-
 ## 路径更新间隔（秒）
 var pathUpdateInterval = 1
-
 ## 路径更新计时器
 var pathTimer = 0
-
 ## 当前路径点索引
 var pathPointIndex = 0
-
 ## 上一帧朝向角度
 var oldAngle = 0
-
 ## 受伤计时器
 var hurtTimer = 0
-
 ## 受伤持续时间（秒）
 var hurtDelay = 0.5
-
 ## 攻击冷却计时器
 var attackTimer = 0
-
 ## 攻击冷却时间（秒）
 var attackDelay = 1
-
 ## 形状查询参数（用于碰撞检测）
 var shapeQuery = PhysicsShapeQueryParameters2D.new()
-
-## 上一帧速度
+## 上一帧速
 var lastVelocity = Vector2.ZERO
-
 ## 旋转目标帧（动画帧）
 var rotate_target_frame = 0
-
 ## 旋转步长（每帧移动的帧数）
 var rotate_step = 1
-
 ## 旋转等待计时器
 var rotate_wait_timer = 0.0
-
 ## 旋转等待持续时间（秒）
 var rotate_wait_duration = 0.2
-
 ## 旋转后是否需要立即攻击
 var rotate_to_attack = false
-
 ## 寻路计时器
 var findPathTimer = 0
-
 ## 寻路间隔（秒）
 var findPathDelay = 2
-
 ## 下一个移动点
 var nextPoint = Vector2.ZERO
 
@@ -111,19 +84,14 @@ var dirs = [
 
 ## 初始出生位置（僵尸需要先移动到这里）
 var initPos = Vector2.ZERO
-
 ## 碰撞体大小
 var size: Vector2 = Vector2(32, 32)
-
 ## 最佳移动方向
 var bestDir: Vector2 = Vector2.ZERO
-
 ## 当前移动方向
 var currDir: Vector2 = Vector2.ZERO
-
 ## 上一次所在的网格位置
 var lastGrid: Vector2i = Vector2.ZERO
-
 ## 最少移动格子数（用于判断是否脱离了原方向的阻塞）
 var minMoveGrid = 2
 
@@ -154,7 +122,13 @@ var attackPos = {
 ## 攻击区域旋转角度调整表
 # 某些角度需要额外旋转攻击区域
 var attackPosAngle = {2: 90, 6: 90}
-
+## 是否已在当前攻击动画中执行过攻击判定
+# 防止同一攻击动画多次触发伤害
+var hasAttacked = false
+## 攻击判定帧（动画帧索引）
+# 攻击动画共5帧（0-4），在第2帧进行攻击判定（攻击动作最关键的时刻）
+var attackHitFrame = 2
+var damage=2
 
 ## 初始化
 func _ready():
@@ -261,7 +235,11 @@ func _physics_process(_delta: float) -> void:
 			if attackTimer > attackDelay:
 				attackTimer = 0
 				ani.play("attack" + "_%s" % angle)
-		
+				hasAttacked = false  # 重置攻击判定标志
+		# 攻击动画播放中：在关键帧进行攻击判定
+		if ani.is_playing() && ani.frame == attackHitFrame && !hasAttacked:
+			hasAttacked = true
+			doAttack()		
 		# 检测目标是否仍在攻击范围内
 		var dis = global_position.distance_squared_to(target.global_position)
 		if dis > attackRange * attackRange:
@@ -338,7 +316,7 @@ func _physics_process(_delta: float) -> void:
 	z_index = roundi(global_position.y / MapData.cellSize) + 1
 	
 	# 请求重绘（调试信息）
-	queue_redraw()
+	# queue_redraw()
 
 
 ## 寻找目标玩家
@@ -503,11 +481,11 @@ func playRotateAni(_newAngle):
 # @param damage 伤害值（int）
 # @param _attackPos 攻击来源位置（Vector2）
 # @param recoil 击退力度（float，默认0）
-func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
+func hit(_damage: int, _attackPos: Vector2, recoil: float = 0):
 	if isDead:
 		return
 	
-	hp -= damage
+	hp -= _damage
 	
 	if oldAngle != angle:
 		oldAngle = angle
@@ -548,7 +526,13 @@ func hit(damage: int, _attackPos: Vector2, recoil: float = 0):
 		# 应用击退
 		velocity = Vector2.RIGHT.rotated(velocity.angle()) * -recoil
 
-
+## 执行攻击判定
+func doAttack():
+	var p=attackArea.get_overlapping_areas()
+	for  i in p:
+		if i.owner.has_method("hit"):
+			i.owner.hit(damage, global_position, 5)
+	
 ## 绘制调试信息
 # 显示当前网格坐标
 func _draw() -> void:
