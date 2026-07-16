@@ -48,37 +48,26 @@ var player = preload("res://scene/player.tscn")
 
 ## 字体资源
 var font: FontFile
-
 ## 当前波次序号
 var currWave = 0
-
 ## 当前波次僵尸数量（每波+2）
 var zombieCount = 2
-
 ## 当前波次恶魔数量（每波+2）
 var devilCount = 2
-
 ## 所有出生点及其分配的敌人数量
 var allSpawnPoint = []
-
 ## 流场更新延迟（帧数）
 var updateFlowFieldDelay = 60
-
 ## 流场更新计时器
 var updateTimer = 0
-
 ## 最大僵尸数量限制（基于地图大小计算）
 var maxZombieCount = 0
-
 ## 最大恶魔数量限制（基于地图大小计算）
 var maxDevilCount = 0
-
 ## 补给刷新时间（秒）
 var pickupRefreshTime = 20
-
 ## 固定箱子刷新点列表
 var itemSpawnPoint = []
-
 ## 玩家出生点列表
 var playerSpawnPoint = []
 
@@ -177,7 +166,7 @@ func loadLevel():
 ## 敌人被击杀处理
 # 更新分数和连杀数，播放连杀动画
 # @param pos 被击杀敌人的位置（Vector2）
-func enemyKilled(pos):
+func enemyKilled(_pos):
 	# 增加连杀数
 	MapData.addKillStreak(1)
 	# 计算分数（基础分100 * 当前连杀倍数）

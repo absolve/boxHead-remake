@@ -19,6 +19,7 @@ extends "res://script/character.gd"
 @onready var attackArea = $attackArea
 ## 形状投射节点（用于碰撞检测）
 @onready var shapeCast = $ShapeCast2D
+@onready var attackSound=$attackSound
 
 
 ## 字体资源
@@ -224,7 +225,7 @@ func _physics_process(_delta: float) -> void:
 		hurtTimer += _delta
 		if hurtTimer >= hurtDelay:
 			hurtTimer = 0
-			state = Game.enemyState.ffp
+			state = lastState
 		velocity = velocity.lerp(Vector2.ZERO, hurtTimer)
 		move_and_collide(velocity * _delta)
 	
@@ -235,11 +236,26 @@ func _physics_process(_delta: float) -> void:
 			if attackTimer > attackDelay:
 				attackTimer = 0
 				ani.play("attack" + "_%s" % angle)
+				attackArea.position = attackPos[angle]
+				if attackPosAngle.has(angle):
+					attackArea.rotation = deg_to_rad(attackPosAngle[angle])
+				else:
+					attackArea.rotation = 0
 				hasAttacked = false  # 重置攻击判定标志
 		# 攻击动画播放中：在关键帧进行攻击判定
 		if ani.is_playing() && ani.frame == attackHitFrame && !hasAttacked:
 			hasAttacked = true
-			doAttack()		
+			doAttack()	
+		# 计算朝向玩家的角度
+		var dir_to_player = global_position.direction_to(target.global_position)
+		var target_angle = wrapi(int(round(dir_to_player.angle() / (PI / 4))), 0, 8)
+		
+		if angle != target_angle:
+			# 需要先旋转面向玩家
+			angle = target_angle
+			playRotateAni(target_angle)
+			rotate_to_attack = true
+			return		
 		# 检测目标是否仍在攻击范围内
 		var dis = global_position.distance_squared_to(target.global_position)
 		if dis > attackRange * attackRange:
@@ -510,6 +526,7 @@ func hit(_damage: int, _attackPos: Vector2, recoil: float = 0):
 		temp.tween_callback(queue_free)
 	else:
 		# 受伤处理
+		lastState=state
 		state = Game.enemyState.hurt
 		hurtTimer = 0
 		
@@ -531,7 +548,8 @@ func doAttack():
 	var p=attackArea.get_overlapping_areas()
 	for  i in p:
 		if i.owner.has_method("hit"):
-			i.owner.hit(damage, global_position, 5)
+			i.owner.hit(damage, global_position, 20)
+	#attackSound.play()
 	
 ## 绘制调试信息
 # 显示当前网格坐标
