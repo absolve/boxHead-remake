@@ -225,7 +225,7 @@ func _physics_process(_delta: float) -> void:
 		hurtTimer += _delta
 		if hurtTimer >= hurtDelay:
 			hurtTimer = 0
-			state = lastState
+			state = Game.enemyState.ffp
 		velocity = velocity.lerp(Vector2.ZERO, hurtTimer)
 		move_and_collide(velocity * _delta)
 	
@@ -526,7 +526,7 @@ func hit(_damage: int, _attackPos: Vector2, recoil: float = 0):
 		temp.tween_callback(queue_free)
 	else:
 		# 受伤处理
-		lastState=state
+		#lastState=state
 		state = Game.enemyState.hurt
 		hurtTimer = 0
 		

@@ -7,13 +7,10 @@ extends Area2D
 
 ## 标志类型（Game.mapSign枚举值）
 @export var type: Game.mapSign = Game.mapSign.Zombie
-
 ## 标志方向（Game.mapSignDir枚举值，用于敌人出生方向）
 @export var dir: Game.mapSignDir = Game.mapSignDir.Down
-
 ## 是否开启调试模式（显示标志点动画）
 @export var debug = false
-
 ## 动画节点
 @onready var ani = $ani
 
