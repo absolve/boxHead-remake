@@ -176,27 +176,27 @@ func _physics_process(_delta: float) -> void:
 			var dis = global_position.distance_squared_to(target.global_position)
 			if dis < attackRange * attackRange:
 				# 计算朝向玩家的角度
-				var dir_to_player = global_position.direction_to(target.global_position)
-				var target_angle = wrapi(int(round(dir_to_player.angle() / (PI / 4))), 0, 8)
-				
-				if angle != target_angle:
-					# 需要先旋转面向玩家
-					angle = target_angle
-					playRotateAni(target_angle)
-					rotate_to_attack = true
-					return
+				#var dir_to_player = global_position.direction_to(target.global_position)
+				#var target_angle = wrapi(int(round(dir_to_player.angle() / (PI / 4))), 0, 8)
+				#
+				#if angle != target_angle:
+					## 需要先旋转面向玩家
+					#angle = target_angle
+					#playRotateAni(target_angle)
+					#rotate_to_attack = true
+					#return
+				#else:
+				# 已面向玩家，执行攻击
+				velocity = Vector2.ZERO
+				ani.play("attack" + "_%s" % angle)
+				attackArea.position = attackPos[angle]
+				attackTimer = 0
+				if attackPosAngle.has(angle):
+					attackArea.rotation = deg_to_rad(attackPosAngle[angle])
 				else:
-					# 已面向玩家，执行攻击
-					velocity = Vector2.ZERO
-					ani.play("attack" + "_%s" % angle)
-					attackArea.position = attackPos[angle]
-					attackTimer = 0
-					if attackPosAngle.has(angle):
-						attackArea.rotation = deg_to_rad(attackPosAngle[angle])
-					else:
-						attackArea.rotation = 0
-					state = Game.enemyState.attack
-					return
+					attackArea.rotation = 0
+				state = Game.enemyState.attack
+				return
 		
 		# 更新动画状态
 		if velocity.length() > 0:
@@ -246,6 +246,7 @@ func _physics_process(_delta: float) -> void:
 		if ani.is_playing() && ani.frame == attackHitFrame && !hasAttacked:
 			hasAttacked = true
 			doAttack()	
+			
 		# 计算朝向玩家的角度
 		var dir_to_player = global_position.direction_to(target.global_position)
 		var target_angle = wrapi(int(round(dir_to_player.angle() / (PI / 4))), 0, 8)
@@ -258,7 +259,7 @@ func _physics_process(_delta: float) -> void:
 			return		
 		# 检测目标是否仍在攻击范围内
 		var dis = global_position.distance_squared_to(target.global_position)
-		if dis > attackRange * attackRange:
+		if dis > attackRange * attackRange &&!ani.is_playing():
 			state = Game.enemyState.ffp
 	
 	elif state == Game.enemyState.rotate:
@@ -267,27 +268,28 @@ func _physics_process(_delta: float) -> void:
 		if ani.frame == rotate_target_frame:
 			oldAngle = angle
 			rotate_wait_timer = 0.0
-			state = Game.enemyState.rotate_wait
-	
-	elif state == Game.enemyState.rotate_wait:
-		# 旋转等待状态：旋转后短暂停顿再继续行动
-		rotate_wait_timer += _delta
-		if rotate_wait_timer >= rotate_wait_duration:
-			if rotate_to_attack:
-				# 旋转后需要攻击
-				rotate_to_attack = false
-				velocity = Vector2.ZERO
-				ani.play("attack" + "_%s" % angle)
-				attackArea.position = attackPos[angle]
-				attackTimer = 0
-				if attackPosAngle.has(angle):
-					attackArea.rotation = deg_to_rad(attackPosAngle[angle])
-				else:
-					attackArea.rotation = 0
-				state = Game.enemyState.attack
-			else:
-				# 旋转后继续寻路
-				state = Game.enemyState.ffp
+			#state = Game.enemyState.rotate_wait
+			state = Game.enemyState.ffp
+			
+	#elif state == Game.enemyState.rotate_wait:
+		## 旋转等待状态：旋转后短暂停顿再继续行动
+		#rotate_wait_timer += _delta
+		#if rotate_wait_timer >= rotate_wait_duration:
+			##if rotate_to_attack:
+				### 旋转后需要攻击
+				##rotate_to_attack = false
+				##velocity = Vector2.ZERO
+				##ani.play("attack" + "_%s" % angle)
+				##attackArea.position = attackPos[angle]
+				##attackTimer = 0
+				##if attackPosAngle.has(angle):
+					##attackArea.rotation = deg_to_rad(attackPosAngle[angle])
+				##else:
+					##attackArea.rotation = 0
+				##state = Game.enemyState.attack
+			##else:
+			## 旋转后继续寻路
+			#state = Game.enemyState.ffp
 	
 	elif state == Game.enemyState.init:
 		# 初始化状态：移动到初始位置
@@ -379,8 +381,8 @@ func getFlowField():
 			newGrid = Vector2(current_grid) + newDir
 			
 			# 边界检查
-			if newGrid.x < 0 || newGrid.x > MapData.mapSize.x - 1 || \
-				newGrid.y < 0 || newGrid.y > MapData.mapSize.y - 1:
+			if newGrid.x < 0 || newGrid.x > int(MapData.mapSize.x / MapData.cellSize)  - 1 || \
+				newGrid.y < 0 || newGrid.y > int(MapData.mapSize.y / MapData.cellSize) - 1:
 					continue
 			
 			# 检测该方向是否可通行
@@ -392,8 +394,7 @@ func getFlowField():
 				canMoveDir.append(d)
 		
 		# 按与原方向的相似度排序
-		canMoveDir.sort_custom(func(a, b): return a.dot >= b.dot)
-		
+		canMoveDir.sort_custom(func(a, b): return a.dot >= b.dot)		
 		if canMoveDir.size() > 0:
 			bestDir = canMoveDir[0].dir
 			state = Game.enemyState.findDir
@@ -423,8 +424,8 @@ func findDir():
 		shapeCast.force_shapecast_update()
 		newGrid = Vector2(current_grid) + currDir
 		
-		if !shapeCast.is_colliding() && newGrid.x >= 0 && newGrid.x <= MapData.mapSize.x - 1 && \
-				newGrid.y >= 0 && newGrid.y <= MapData.mapSize.y - 1:
+		if !shapeCast.is_colliding() && newGrid.x >= 0 && newGrid.x <= int(MapData.mapSize.x / MapData.cellSize) - 1 && \
+				newGrid.y >= 0 && newGrid.y <= int(MapData.mapSize.y / MapData.cellSize) - 1:
 			bestDir = currDir
 		else:
 			# 当前方向被阻挡，寻找新方向
@@ -435,8 +436,8 @@ func findDir():
 				newDir = newDir.rotated(PI / 4)
 				newGrid = Vector2(current_grid) + newDir
 				
-				if newGrid.x < 0 || newGrid.x > MapData.mapSize.x - 1 || \
-					newGrid.y < 0 || newGrid.y > MapData.mapSize.y - 1:
+				if newGrid.x < 0 || newGrid.x > int(MapData.mapSize.x / MapData.cellSize) - 1 || \
+					newGrid.y < 0 || newGrid.y > int(MapData.mapSize.y / MapData.cellSize) - 1:
 						continue
 				
 				shapeCast.target_position = size / 2 * newDir

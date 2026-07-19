@@ -7,10 +7,8 @@ extends "res://script/item.gd"
 
 ## 计时器节点
 @onready var timer = $Timer
-
 ## 动画节点
 @onready var player = $player
-
 ## 过期时间（秒，0表示永不过期）
 @export var expiredTime = 0
 

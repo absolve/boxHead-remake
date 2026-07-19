@@ -7,62 +7,43 @@ extends "res://script/character.gd"
 # - 受伤和死亡处理
 # - 碰撞检测
 
-
 ## 动画节点
 @onready var ani = $ani
-
 ## 武器背包节点（存放所有武器）
 @onready var weaponBackpack = $weaponBackpack
-
 ## 武器名称显示节点
 @onready var txt = $txt
-
 ## 身体碰撞体节点
 @onready var body = $body
-
 ## 身体碰撞形状节点
 @onready var bodyShape = $body/bodyShape
-
 ## 血条节点
 @onready var lifeBar = $lifeBar
-
 ## 死亡音效节点
 @onready var deadSound = $dead
-
 ## 拾取音效节点
 @onready var pickupSound = $pickup
-
 ## 玩家精灵节点
 @onready var player = $player
-
-
 ## 玩家ID（用于多人游戏区分）
 @export var playerId = 1
 
 ## 按键映射（根据玩家ID分配不同按键）
 var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
-
 ## 当前使用的武器
 var currWeapon = null
-
 ## 武器列表（玩家拥有的所有武器）
 var weaponList = []
-
 ## 当前武器索引
 var currWeaponIndex = 0
-
 ## 当前朝向向量
 var vector = Vector2.RIGHT
-
 ## 不需要显示武器的动画例外列表
 var aniException = ['Mine', 'ChargePack', 'Wall', 'Barrel', 'Grenade']
-
 ## 形状查询参数（用于碰撞检测）
 var shapeQuery = PhysicsShapeQueryParameters2D.new()
-
 ## 受伤计时器
 var hurtTimer = 0
-
 ## 受伤持续时间（秒）
 var hurtDelay = 0.5
 
@@ -184,7 +165,7 @@ func pickItem(_type):
 			w.ammoNum = MapData.allWeaponData[_type]['ammoNum']
 		else:
 			# 没有该武器，创建新武器实例
-			if type == Game.boxContent.Railgun:
+			if _type == Game.boxContent.Railgun:
 				var temp = load("res://scene/railgun.tscn")
 				var railgun = temp.instantiate()
 				railgun.ownerId = get_rid()
@@ -196,7 +177,7 @@ func pickItem(_type):
 				railgun.delay = MapData.allWeaponData.Railgun['delay']
 				weaponList.push_back(railgun)
 				weaponBackpack.add_child(railgun)
-			elif type == Game.boxContent.Rocket:
+			elif _type == Game.boxContent.Rocket:
 				var temp = load("res://scene/rocket.tscn")
 				var rocket = temp.instantiate()
 				rocket.ownerId = body.get_rid()
@@ -208,7 +189,7 @@ func pickItem(_type):
 				rocket.delay = MapData.allWeaponData.Rocket['delay']
 				weaponList.push_back(rocket)
 				weaponBackpack.add_child(rocket)
-			elif type == Game.boxContent.Shotgun:
+			elif _type == Game.boxContent.Shotgun:
 				var temp = load("res://scene/shotgun.tscn")
 				var shotgun = temp.instantiate()
 				shotgun.ownerId = body.get_rid()
@@ -221,7 +202,7 @@ func pickItem(_type):
 				shotgun.splitAngle = MapData.allWeaponData.Shotgun['splitAngle']
 				weaponList.push_back(shotgun)
 				weaponBackpack.add_child(shotgun)
-			elif type == Game.boxContent.UZI:
+			elif _type == Game.boxContent.UZI:
 				var temp = load("res://scene/uzi.tscn")
 				var uzi = temp.instantiate()
 				uzi.ownerId = body.get_rid()
@@ -233,7 +214,7 @@ func pickItem(_type):
 				uzi.delay = MapData.allWeaponData.UZI['delay']
 				weaponList.push_back(uzi)
 				weaponBackpack.add_child(uzi)
-			elif type == Game.boxContent.Mine:
+			elif _type == Game.boxContent.Mine:
 				var temp = load("res://scene/mine.tscn")
 				var mine = temp.instantiate()
 				mine.ownerId = body.get_rid()
@@ -243,7 +224,7 @@ func pickItem(_type):
 				mine.splitExplosion = MapData.allWeaponData.Mine['splitExplosion']
 				weaponList.push_back(mine)
 				weaponBackpack.add_child(mine)
-			elif type == Game.boxContent.ChargePack:
+			elif _type == Game.boxContent.ChargePack:
 				var temp = load("res://scene/chargePack.tscn")
 				var chargePack = temp.instantiate()
 				chargePack.ownerId = get_rid()
@@ -253,7 +234,7 @@ func pickItem(_type):
 				chargePack.splitExplosion = MapData.allWeaponData.ChargePack['splitExplosion']
 				weaponList.push_back(chargePack)
 				weaponBackpack.add_child(chargePack)
-			elif type == Game.boxContent.Wall:
+			elif _type == Game.boxContent.Wall:
 				var temp = load("res://scene/wall.tscn")
 				var wall = temp.instantiate()
 				wall.ownerId = body.get_rid()
@@ -261,7 +242,7 @@ func pickItem(_type):
 				wall.maxAmmoNum = MapData.allWeaponData.Wall['maxAmmoNum']
 				weaponList.push_back(wall)
 				weaponBackpack.add_child(wall)
-			elif type == Game.boxContent.Barrel:
+			elif _type == Game.boxContent.Barrel:
 				var temp = load("res://scene/barrel.tscn")
 				var barrel = temp.instantiate()
 				barrel.ownerId = body.get_rid()
@@ -271,7 +252,7 @@ func pickItem(_type):
 				barrel.splitExplosion = MapData.allWeaponData.Barrel['splitExplosion']
 				weaponList.push_back(barrel)
 				weaponBackpack.add_child(barrel)
-			elif type == Game.boxContent.Grenade:
+			elif _type == Game.boxContent.Grenade:
 				var temp = load("res://scene/grenade.tscn")
 				var grenade = temp.instantiate()
 				grenade.ownerId = body.get_rid()

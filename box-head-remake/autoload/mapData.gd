@@ -230,18 +230,19 @@ func addKillStreak(val):
 func countKillStreak():
 	match killStreak:
 		3: # Pistol+: Fast Fire - 手枪射速提升
-			allWeaponData[Game.weaponType.Pistol].delay = 0.3
+			allWeaponData[Game.weaponType.Pistol].delay = 0.4
+			allWeaponData[Game.weaponType.Pistol].automatic = true
 			Game.weaponUpgrade.emit(Game.weaponType.Pistol)
 			Game.notice.emit(tr("Pistol+: Fast Fire"))
 		5: # New Weapon: UZI - 解锁UZI
 			weaponUnlock.append(Game.weaponType.UZI)
 			Game.notice.emit(tr("New Weapon: UZI"))
 		8: # Pistol+: Double Damage - 手枪伤害翻倍
-			allWeaponData[Game.weaponType.Pistol].damage *= 2
+			allWeaponData[Game.weaponType.Pistol].damage = 2
 			Game.weaponUpgrade.emit(Game.weaponType.Pistol)
 			Game.notice.emit(tr("Pistol+: Double Damage"))
 		10: # New Weapon: Shotgun - 解锁霰弹枪
-			weaponUnlock.append(Game.weaponType.UZI)
+			weaponUnlock.append(Game.weaponType.Shotgun)
 			Game.notice.emit(tr("New Weapon: Shotgun"))
 		13: # UZI+: Rapid Fire - UZI射速提升
 			allWeaponData[Game.weaponType.Pistol].delay = 0.1
@@ -251,7 +252,7 @@ func countKillStreak():
 			weaponUnlock.append(Game.weaponType.Barrel)
 			Game.notice.emit(tr("New Wepon: Barrel"))
 		17: # UZI+: Double Ammo - UZI弹药翻倍
-			allWeaponData[Game.weaponType.UZI].maxAmmoNum *= 2
+			allWeaponData[Game.weaponType.UZI].maxAmmoNum = 100*2
 			Game.weaponUpgrade.emit(Game.weaponType.UZI)
 			Game.notice.emit(tr("UZI+: Double Ammo"))
 		18: # Shotgun+: Fast Fire - 霰弹枪射速提升
@@ -263,7 +264,7 @@ func countKillStreak():
 			weaponUnlock.append(Game.weaponType.Grenade)
 			Game.notice.emit(tr("New Weapon: Grenade"))
 		21: # Shotgun+: Double Ammo - 霰弹枪弹药翻倍
-			allWeaponData[Game.weaponType.Shotgun].maxAmmoNum *= 2
+			allWeaponData[Game.weaponType.Shotgun].maxAmmoNum = 20*2
 			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
 			Game.notice.emit(tr("Shotgun+: Double Ammo"))
 		23: # UZI+: Long Shot - UZI射程翻倍
@@ -271,7 +272,7 @@ func countKillStreak():
 			Game.weaponUpgrade.emit(Game.weaponType.UZI)
 			Game.notice.emit(tr("UZI+: Long Shot"))
 		26: # Barrel+: Double Ammo - 油桶弹药翻倍
-			allWeaponData[Game.weaponType.Barrel].maxAmmoNum *= 2
+			allWeaponData[Game.weaponType.Barrel].maxAmmoNum =10* 2
 			Game.weaponUpgrade.emit(Game.weaponType.Barrel)
 			Game.notice.emit(tr("Barrel+: Double Ammo"))
 		30: # New Weapon: Fake walls - 解锁墙壁
@@ -305,7 +306,7 @@ func countKillStreak():
 			weaponUnlock.append(Game.weaponType.Mine)
 			Game.notice.emit(tr("New Weapon: Claymore"))
 		41: # Shotgun+: Quad Ammo - 霰弹枪弹药4倍
-			allWeaponData[Game.weaponType.Shotgun].maxAmmoNum *= 4
+			allWeaponData[Game.weaponType.Shotgun].maxAmmoNum = 10*4
 			Game.weaponUpgrade.emit(Game.weaponType.Shotgun)
 			Game.notice.emit(tr("Shotgun+: Quad Ammo"))
 		42: # Grenade+: Double Ammo - 手榴弹弹药翻倍
@@ -411,7 +412,10 @@ func countKillStreak():
 			allWeaponData[Game.weaponType.Railgun].maxAmmoNum *= 4
 			Game.weaponUpgrade.emit(Game.weaponType.Railgun)
 			Game.notice.emit(tr("Railgun+: Quad Ammo"))
-		120: # Rocket+: Rapid Fire - 火箭快速射击（未实现）
+		120: # Rocket+: Rapid Fire - 火箭快速射击
+			allWeaponData[Game.weaponType.Rocket].delay=0.3
+			Game.weaponUpgrade.emit(Game.weaponType.Rocket)
+			Game.notice.emit(tr("Rocket+: Rapid Fire"))
 			pass
 		125: # Railgun+: Long Shot - 轨道炮长射程（未实现）
 			pass

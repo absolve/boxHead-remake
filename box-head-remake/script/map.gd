@@ -11,47 +11,35 @@ extends Node2D
 
 ## 房间节点
 @onready var room = $room001
-
 ## 分数显示节点
 @onready var scoreNode = $ui/score
-
 ## 连杀数显示节点
 @onready var countNode = $ui/count
-
 ## 连杀动画节点
 @onready var countAniNode = $ui/countAni
-
 ## 敌人生成计时器
 @onready var spawnTimer = $spawnTimer
-
 ## 下一波次等待计时器
 @onready var nextWaveTimer = $nextWaveTimer
-
 ## 消息提示节点
 @onready var toastInfo = $ui/toastInfo
-
 ## 补给刷新计时器
 @onready var refreshTimer = $refreshTimer
-
 ## 是否开启调试模式（显示网格和流场）
 @export var isDebug = true
 
-
 ## 僵尸场景预加载
 var zombie = preload("res://scene/zombie.tscn")
-
 ## 箱子场景预加载
 var box = preload("res://scene/box.tscn")
-
 ## 玩家场景预加载
 var player = preload("res://scene/player.tscn")
-
 ## 字体资源
 var font: FontFile
 ## 当前波次序号
 var currWave = 0
 ## 当前波次僵尸数量（每波+2）
-var zombieCount = 2
+var zombieCount = 10
 ## 当前波次恶魔数量（每波+2）
 var devilCount = 2
 ## 所有出生点及其分配的敌人数量
