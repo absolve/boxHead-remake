@@ -25,6 +25,9 @@ extends Node2D
 @onready var toastInfo = $ui/toastInfo
 ## 补给刷新计时器
 @onready var refreshTimer = $refreshTimer
+## 僵尸声音播放计时器
+@onready var soundTimer = $soundTimer
+
 ## 是否开启调试模式（显示网格和流场）
 @export var isDebug = true
 
@@ -58,7 +61,7 @@ var pickupRefreshTime = 20
 var itemSpawnPoint = []
 ## 玩家出生点列表
 var playerSpawnPoint = []
-
+var zombieSound = [] # 僵尸声音列表
 
 ## 初始化
 func _ready() -> void:
@@ -94,8 +97,11 @@ func _ready() -> void:
 	tween.tween_interval(3.0)
 	tween.tween_callback(startNextWave)
 	tween.play()
+	# 初始化僵尸声音列表
+	zombieSound.append($zombieSound)
+	zombieSound.append($zombieSound2)
 
-
+	
 ## 开始下一波敌人刷新
 # 分配出生点和敌人数量，启动生成计时器
 func startNextWave():
@@ -161,7 +167,7 @@ func enemyKilled(_pos):
 	MapData.score += 100 * MapData.currKillStreak
 	
 	# 更新UI显示
-	scoreNode.text = str('%14d' % MapData.score)
+	scoreNode.text = str('%d' % MapData.score).pad_zeros(14)
 	countNode.text = str('x', MapData.currKillStreak)
 	
 	# 根据连杀数调整动画速度
@@ -264,9 +270,9 @@ func _draw() -> void:
 
 
 ## 连杀动画结束回调
-# 递减连杀计数，直到归零
+# 递减连杀计数，最小减到1
 func _on_count_ani_animation_finished() -> void:
-	if MapData.currKillStreak - 1 >= 0:
+	if MapData.currKillStreak - 1 >= 1:
 		MapData.currKillStreak -= 1
 		countNode.text = str('x', MapData.currKillStreak)
 		
@@ -331,3 +337,9 @@ func _on_refresh_timer_timeout() -> void:
 			var b = box.instantiate()
 			b.global_position = i.global_position
 			get_tree().root.add_child(b)
+
+
+func _on_sound_timer_timeout():
+	soundTimer.start(randi() % 7 + 7)
+	if get_tree().get_nodes_in_group("enemy").size() > 0:
+		zombieSound[randi()%zombieSound.size()].play()
