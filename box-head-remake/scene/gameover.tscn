@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dhrxpo5ksgimn"]
+
+[ext_resource type="Script" uid="uid://i3diquaj6t0d" path="res://script/gameover.gd" id="1_roxl8"]
+[ext_resource type="AudioStream" uid="uid://tyu4gia5qxar" path="res://sound/563_563 World.End.mp3" id="2_igyxd"]
+
+[node name="gameover" type="Node2D" unique_id=1271576597]
+script = ExtResource("1_roxl8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=450519774]
+
+[node name="Control" type="Control" parent="." unique_id=660871813]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control" unique_id=1198675188]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="sound" type="AudioStreamPlayer2D" parent="." unique_id=2038489947]
+stream = ExtResource("2_igyxd")
+bus = &"sfx"
