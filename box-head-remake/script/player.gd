@@ -173,7 +173,7 @@ func pickItem(_type):
 				railgun.ammoNum = MapData.allWeaponData.get(Game.weaponType.Railgun)['maxAmmoNum']
 				railgun.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Railgun)['maxAmmoNum']
 				railgun.automatic = MapData.allWeaponData.get(Game.weaponType.Railgun)['automatic']
-				railgun.wrange = MapData.allWeaponData.get(Game.weaponType.Railgun)['wRange']
+				railgun.wRange = MapData.allWeaponData.get(Game.weaponType.Railgun)['wRange']
 				railgun.delay = MapData.allWeaponData.get(Game.weaponType.Railgun)['delay']
 				weaponList.push_back(railgun)
 				weaponBackpack.add_child(railgun)
@@ -185,7 +185,6 @@ func pickItem(_type):
 				rocket.ammoNum = MapData.allWeaponData.get(Game.weaponType.Rocket)['maxAmmoNum']
 				rocket.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Rocket)['maxAmmoNum']
 				rocket.automatic = MapData.allWeaponData.get(Game.weaponType.Rocket)['automatic']
-				rocket.wrange = MapData.allWeaponData.get(Game.weaponType.Rocket)['wRange']
 				rocket.delay = MapData.allWeaponData.get(Game.weaponType.Rocket)['delay']
 				weaponList.push_back(rocket)
 				weaponBackpack.add_child(rocket)
@@ -197,7 +196,7 @@ func pickItem(_type):
 				shotgun.ammoNum = MapData.allWeaponData.get(Game.weaponType.Shotgun)['maxAmmoNum']
 				shotgun.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Shotgun)['maxAmmoNum']
 				shotgun.automatic = MapData.allWeaponData.get(Game.weaponType.Shotgun)['automatic']
-				shotgun.wrange = MapData.allWeaponData.get(Game.weaponType.Shotgun)['wRange']
+				shotgun.wRange = MapData.allWeaponData.get(Game.weaponType.Shotgun)['wRange']
 				shotgun.delay = MapData.allWeaponData.get(Game.weaponType.Shotgun)['delay']
 				shotgun.splitAngle = MapData.allWeaponData.get(Game.weaponType.Shotgun)['splitAngle']
 				weaponList.push_back(shotgun)
@@ -210,8 +209,8 @@ func pickItem(_type):
 				uzi.ammoNum = MapData.allWeaponData.get(Game.weaponType.UZI)['maxAmmoNum']
 				uzi.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.UZI)['maxAmmoNum']
 				uzi.automatic = MapData.allWeaponData.get(Game.weaponType.UZI)['automatic']
-				uzi.wrange = MapData.allWeaponData.get(Game.weaponType.UZI)['wRange']
 				uzi.delay = MapData.allWeaponData.get(Game.weaponType.UZI)['delay']
+				uzi.wRange = MapData.allWeaponData.get(Game.weaponType.UZI)['wRange']
 				weaponList.push_back(uzi)
 				weaponBackpack.add_child(uzi)
 			elif _type == Game.boxContent.Mine:

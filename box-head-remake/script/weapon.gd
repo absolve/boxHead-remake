@@ -9,25 +9,18 @@ var active = false
 
 ## 武器类型（Game.weaponType枚举值）
 @export var type: Game.weaponType
-
 ## 伤害值
 @export var damage = 0
-
 ## 射程（像素）
 @export var wRange = 0
-
 ## 开火延迟（秒）
 @export var delay = .0
-
 ## 当前弹药量
 @export var ammoNum: int = 0
-
 ## 最大弹药量（0表示无限弹药）
 @export var maxAmmoNum: int = 0
-
 ## 被击中目标的反馈速度（击退效果）
 @export var hitFeedback = 0
-
 ## 是否自动连射
 @export var automatic = false
 

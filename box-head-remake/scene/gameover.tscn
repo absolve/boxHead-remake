@@ -1,24 +1,78 @@
 [gd_scene format=3 uid="uid://dhrxpo5ksgimn"]
 
 [ext_resource type="Script" uid="uid://i3diquaj6t0d" path="res://script/gameover.gd" id="1_roxl8"]
-[ext_resource type="AudioStream" uid="uid://tyu4gia5qxar" path="res://sound/563_563 World.End.mp3" id="2_igyxd"]
+[ext_resource type="Texture2D" uid="uid://2ae1jpidyqy5" path="res://sprite/shape/DefineSprite_198/1.png" id="2_73nri"]
+[ext_resource type="AudioStream" uid="uid://3foqaave14ap" path="res://sound/563_563 World.End.mp3" id="2_igyxd"]
+[ext_resource type="Texture2D" uid="uid://b14bsre7btxpb" path="res://sprite/ui/44444.png" id="3_0yr2k"]
+[ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="4_prwty"]
+[ext_resource type="PackedScene" uid="uid://cw2kaq6myj37i" path="res://scene/ui_label.tscn" id="5_88lim"]
 
 [node name="gameover" type="Node2D" unique_id=1271576597]
 script = ExtResource("1_roxl8")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=450519774]
+[node name="bg" type="Sprite2D" parent="." unique_id=450519774]
+texture = ExtResource("2_73nri")
+centered = false
+metadata/_edit_lock_ = true
+
+[node name="bg1" type="Sprite2D" parent="." unique_id=570518530]
+modulate = Color(1, 1, 1, 0.78431374)
+texture = ExtResource("3_0yr2k")
+centered = false
 
 [node name="Control" type="Control" parent="." unique_id=660871813]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme = ExtResource("4_prwty")
 
 [node name="Label" type="Label" parent="Control" unique_id=1198675188]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="score" type="Label" parent="Control" unique_id=862642233]
+layout_mode = 0
+offset_left = 195.0
+offset_top = 121.0
+offset_right = 459.0
+offset_bottom = 191.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "000000000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UILabel" parent="Control" unique_id=1516334346 instance=ExtResource("5_88lim")]
+layout_mode = 0
+offset_left = 210.0
+offset_top = 225.0
+offset_right = 448.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 30
+text = "select new Level"
+
+[node name="UILabel2" parent="Control" unique_id=1643537606 instance=ExtResource("5_88lim")]
+layout_mode = 0
+offset_left = 291.0
+offset_top = 275.0
+offset_right = 360.0
+offset_bottom = 318.0
+theme_override_font_sizes/font_size = 30
+text = "retry"
+
+[node name="UILabel3" parent="Control" unique_id=1648868306 instance=ExtResource("5_88lim")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 213.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 30
+text = "back to menu"
+
 [node name="sound" type="AudioStreamPlayer2D" parent="." unique_id=2038489947]
 stream = ExtResource("2_igyxd")
 bus = &"sfx"
+
+[connection signal="gui_input" from="Control/UILabel3" to="." method="_on_ui_label_3_gui_input"]

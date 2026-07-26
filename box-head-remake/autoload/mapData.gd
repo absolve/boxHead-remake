@@ -59,37 +59,29 @@ var enemyData = {
 var mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFire': true,
 				'Game speed': 1}
 
-
 ## 当前连杀数（显示用）
 var currKillStreak = 0
-
 ## 累计连杀数（记录最高值）
 var killStreak = 0
-
 ## 当前分数
 var score = 0
-
 ## 已解锁武器列表
 var weaponUnlock = []
-
 ## 当前地图大小
 var mapSize: Vector2
-
 ## 地图格子占用记录
 # 键："x-y"格式的格子坐标字符串
 # 值：占用该格子的物体实例ID
 var mapTile = {}
-
 ## 障碍物集合
 # 键："x-y"格式的格子坐标字符串
 # 值：障碍物位置（Vector2）
 var obstacle: Dictionary = {}
-
 ## 流场字典（多玩家支持）
 # 键：玩家ID（int）
 # 值：流场方向字典，键为"x-y"格式的格子坐标，值为方向向量（Vector2）
 var flowFieldDict = {}
-
+var killRewardBox=30 #击杀数是当前数的倍数就有补给箱
 
 ## 初始化
 func _ready() -> void:

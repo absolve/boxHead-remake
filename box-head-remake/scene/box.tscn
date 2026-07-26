@@ -53,7 +53,7 @@ _data = {
 &"fadeOut": SubResource("Animation_05o4f")
 }
 
-[node name="box" unique_id=847192445 instance=ExtResource("1_dmwsn")]
+[node name="box" unique_id=847192445 groups=["box"] instance=ExtResource("1_dmwsn")]
 collision_layer = 64
 collision_mask = 1
 script = ExtResource("2_5jxcw")

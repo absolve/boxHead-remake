@@ -37,6 +37,7 @@ window/stretch/mode="viewport"
 player=""
 markerPoint=""
 enemy=""
+box=""
 
 [input]
 

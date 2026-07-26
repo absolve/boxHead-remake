@@ -63,8 +63,11 @@ var itemSpawnPoint = []
 var playerSpawnPoint = []
 var zombieSound = [] # 僵尸声音列表
 
+
+
 ## 初始化
 func _ready() -> void:
+	RenderingServer.set_default_clear_color(Color("#EDE2CF"))
 	# 设置地图大小
 	MapData.mapSize = room.mapSize
 	# 初始化流场
@@ -175,7 +178,22 @@ func enemyKilled(_pos):
 	countAniNode.speed_scale = 1 + 0.1 * (MapData.currKillStreak / 10)
 	countAniNode.play("default")
 
-
+	if MapData.currKillStreak>0&&MapData.currKillStreak%MapData.killRewardBox==0:
+		var boxs=get_tree().get_nodes_in_group("box")
+		var flag=true
+		var tempPos=Vector2(int(_pos.x/MapData.cellSize),int(_pos.y/MapData.cellSize))
+		for i in boxs:
+			if tempPos.is_equal_approx(Vector2(int(i.global_position.x/MapData.cellSize),
+					int(i.global_position.x/MapData.cellSize))):
+				flag=true
+				break
+		if !flag:
+			var temp=box.instantiate()
+			temp.global_position=tempPos*MapData.cellSize+MapData.cellSize/2
+			temp.expiredTime=15
+			add_child(temp)
+			
+			
 ## 显示消息通知
 # 在屏幕底部显示一条带颜色的提示消息
 # @param s 消息文本（String）

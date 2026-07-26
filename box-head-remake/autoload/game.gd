@@ -187,6 +187,9 @@ signal enemyKilled
 @warning_ignore("unused_signal")
 signal notice
 
+#玩家死亡
+@warning_ignore("unused_signal")
+signal playerDead
 
 ## 将箱子内容类型转换为名称
 # @param type 箱子内容类型（boxContent枚举值）

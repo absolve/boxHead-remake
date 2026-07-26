@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cw2kaq6myj37i"]
+
+[ext_resource type="Script" uid="uid://ddmokkeu338nw" path="res://script/ui_label.gd" id="1_s5w40"]
+
+[node name="UILabel" type="Label" unique_id=1516334346]
+modulate = Color(0, 0, 0, 1)
+offset_right = 40.0
+offset_bottom = 23.0
+mouse_filter = 0
+text = "1111111"
+script = ExtResource("1_s5w40")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

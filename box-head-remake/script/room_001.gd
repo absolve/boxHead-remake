@@ -37,4 +37,4 @@ func _ready() -> void:
 			MapData.addObstacle(Vector2(i, y))
 	
 	# 请求重绘
-	queue_redraw()
+	#queue_redraw()
