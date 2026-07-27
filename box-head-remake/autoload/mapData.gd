@@ -57,7 +57,7 @@ var enemyData = {
 #   friendlyFire:   是否启用友军伤害
 #   Game speed:     游戏速度倍率
 var mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFire': true,
-				'Game speed': 1}
+				'gameSpeed': 1}
 
 ## 当前连杀数（显示用）
 var currKillStreak = 0

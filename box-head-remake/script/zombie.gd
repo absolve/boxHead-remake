@@ -218,7 +218,6 @@ func _physics_process(_delta: float) -> void:
 	elif state == Game.enemyState.dead:
 		# 死亡状态：无操作
 		pass
-	
 	elif state == Game.enemyState.hurt:
 		# 受伤状态：减速恢复
 		hurtTimer += _delta
@@ -254,7 +253,7 @@ func _physics_process(_delta: float) -> void:
 			# 需要先旋转面向玩家
 			angle = target_angle
 			playRotateAni(target_angle)
-			rotate_to_attack = true
+			#rotate_to_attack = true
 			return		
 		# 检测目标是否仍在攻击范围内
 		var dis = global_position.distance_squared_to(target.global_position)
@@ -266,7 +265,7 @@ func _physics_process(_delta: float) -> void:
 		ani.frame = wrapi(ani.frame + rotate_step, 0, 32)
 		if ani.frame == rotate_target_frame:
 			oldAngle = angle
-			rotate_wait_timer = 0.0
+			#rotate_wait_timer = 0.0
 			#state = Game.enemyState.rotate_wait
 			state = Game.enemyState.ffp
 			
@@ -296,33 +295,33 @@ func _physics_process(_delta: float) -> void:
 		var should_move = true
 		
 		if velocity.length() != 0:
-			var old_mask = shapeCast.collision_mask
-			shapeCast.collision_mask = 14 + 16
+			#var old_mask = shapeCast.collision_mask
+			#shapeCast.collision_mask = 14 + 16
 			shapeCast.target_position = size / 2 * velocity.normalized()
 			shapeCast.force_shapecast_update()
 			
 			if shapeCast.is_colliding():
-				for i in range(shapeCast.get_collider_count()):
-					var collider = shapeCast.get_collider(i)
-					if collider.get('type'):
-						if collider.type == Game.roleType.Player:
-							var dis = global_position.distance_squared_to(collider.global_position)
-							if dis < attackRange * attackRange:
-								shapeCast.collision_mask = old_mask
-								target = collider
-								velocity = Vector2.ZERO
-								ani.play("attack" + "_%s" % angle)
-								attackArea.position = attackPos[angle]
-								attackTimer = 0
-								if attackPosAngle.has(angle):
-									attackArea.rotation = deg_to_rad(attackPosAngle[angle])
-								else:
-									attackArea.rotation = 0
-								state = Game.enemyState.attack
-								return
+				#for i in range(shapeCast.collision_result):
+					#var collider = shapeCast.get_collider(i)
+					#if collider.get('type'):
+						#if collider.type == Game.roleType.Player:
+							#var dis = global_position.distance_squared_to(collider.global_position)
+							#if dis < attackRange * attackRange:
+								#shapeCast.collision_mask = old_mask
+								#target = collider
+								#velocity = Vector2.ZERO
+								#ani.play("attack" + "_%s" % angle)
+								#attackArea.position = attackPos[angle]
+								#attackTimer = 0
+								#if attackPosAngle.has(angle):
+									#attackArea.rotation = deg_to_rad(attackPosAngle[angle])
+								#else:
+									#attackArea.rotation = 0
+								#state = Game.enemyState.attack
+								#return
 				
-				for i in range(shapeCast.get_collider_count()):
-					var collider = shapeCast.get_collider(i)
+				for i in shapeCast.collision_result:
+					var collider = i.collider
 					if collider.get('type'):
 						if collider.type in [Game.itemType.Barrel, Game.itemType.Wall,
 											Game.roleType.Zombie, Game.roleType.Devil]:
@@ -330,7 +329,7 @@ func _physics_process(_delta: float) -> void:
 							currAni = "stand"
 							break
 			
-			shapeCast.collision_mask = old_mask
+			#shapeCast.collision_mask = old_mask
 		
 		if velocity.length() != 0:
 			angle = round(velocity.angle() / (PI / 4))
@@ -573,6 +572,7 @@ func doAttack():
 ## 绘制调试信息
 # 显示当前网格坐标
 func _draw() -> void:
-	draw_string(font, Vector2(30, 10), "%s-%s" % \
-	[floori(global_position.x / MapData.cellSize), floori(global_position.y / MapData.cellSize)]
-	, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
+	#draw_string(font, Vector2(30, 10), "%s-%s" % \
+	#[floori(global_position.x / MapData.cellSize), floori(global_position.y / MapData.cellSize)]
+	#, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
+	pass

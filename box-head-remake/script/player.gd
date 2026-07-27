@@ -147,7 +147,7 @@ func resurrection():
 	isDead = false
 	state = Game.playerState.Idle
 	hp = maxHp
-	lifeBar.progress = hp / maxHp
+	lifeBar.hp = hp
 
 	
 ## 武器升级处理
@@ -331,6 +331,8 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 		ani.play("fallDown_%s" % [roundi(angle / 2.0)])
 		shape.disabled = true
 		bodyShape.disabled = true
+		isDead=true
+		Game.playerDead.emit()
 	else:
 		# 受伤处理
 		state = Game.playerState.hurt

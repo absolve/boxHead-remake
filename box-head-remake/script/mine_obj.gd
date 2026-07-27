@@ -46,7 +46,7 @@ func addExplosion():
 	var temp = explosion.instantiate()
 	temp.global_position = global_position
 	temp.damage = damage
-	get_tree().root.add_child(temp)
+	get_tree().current_scene.add_child(temp)
 	
 	# 如果配置了分裂爆炸，创建多个手榴弹向四周飞散
 	if splitExplosion > 0:
@@ -57,7 +57,7 @@ func addExplosion():
 			var angle = Vector2.RIGHT.rotated(2 * PI / splitExplosion * i)
 			t.vector = angle.normalized()
 			t.speed = 50
-			get_tree().root.add_child(t)
+			get_tree().current_scene.add_child(t)
 
 
 ## 物体进入碰撞区域时触发

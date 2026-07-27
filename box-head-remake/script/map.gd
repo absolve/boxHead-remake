@@ -79,6 +79,7 @@ func _ready() -> void:
 	# 连接全局信号
 	Game.enemyKilled.connect(enemyKilled)
 	Game.notice.connect(notice)
+	Game.playerDead.connect(playerDead)
 	
 	# 计算最大敌人数量
 	maxZombieCount = int(MapData.mapSize.x * MapData.mapSize.y / MapData.cellSize)
@@ -94,7 +95,7 @@ func _ready() -> void:
 	for i in range(MapData.playerCount):
 		var p = player.instantiate()
 		p.global_position = playerSpawnPoint[i].global_position
-		get_tree().root.call_deferred("add_child", p)
+		get_tree().current_scene.call_deferred("add_child", p)
 	
 	# 延迟3秒后开始第一波
 	var tween = create_tween()
@@ -126,7 +127,7 @@ func startNextWave():
 	spawnTimer.start()
 	
 	# 显示波次开始提示
-	notice('+++Level %d started!+++' % (currWave + 1), Color.GREEN)
+	notice('+++Level %d +++' % (currWave + 1), Color.GREEN)
 
 
 ## 添加敌人到场景
@@ -153,8 +154,8 @@ func addEnemy(p):
 			z.velocity = Vector2.RIGHT
 			z.position += Vector2(20, 0)
 		
-		get_tree().root.add_child(z)
-
+		get_tree().current_scene.add_child(z)
+		
 
 ## 载入关卡（预留接口）
 func loadLevel():
@@ -224,9 +225,9 @@ func playerDead():
 		isGameOver = true
 		print("游戏结束")
 		var tween = create_tween()
-		tween.tween_interval(2.0)
+		tween.tween_interval(5.0)
 		tween.tween_callback(func():
-			get_tree().change_scene("res://scenes/gameover.tscn")
+			get_tree().change_scene_to_file("res://scene/gameover.tscn")
 		)
 		tween.play()
 	else:
@@ -374,7 +375,7 @@ func _on_refresh_timer_timeout() -> void:
 		if !i.hasBlock():
 			var b = box.instantiate()
 			b.global_position = i.global_position
-			get_tree().root.add_child(b)
+			get_tree().current_scene.add_child(b)
 
 
 func _on_sound_timer_timeout():

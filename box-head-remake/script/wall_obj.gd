@@ -22,7 +22,7 @@ func hit(_value):
 		# 创建烟雾效果
 		var temp = smoke.instantiate()
 		temp.global_position = global_position
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)
 		
 		# 销毁墙壁
 		queue_free()

@@ -35,5 +35,5 @@ func _ready() -> void:
 func addExplosion():
 	var temp = explosion.instantiate()
 	temp.global_position = global_position
-	get_tree().root.add_child(temp)
+	get_tree().current_scene.add_child(temp)
 	queue_free()

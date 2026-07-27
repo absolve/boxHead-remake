@@ -43,7 +43,7 @@ func fire(_v):
 		temp.damage = damage
 		temp.splitExplosion = splitExplosion
 		
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)
 		
 		# 记录到地图物品列表
 		MapData.addMapItem(pos, temp.get_instance_id())

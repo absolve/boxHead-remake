@@ -44,4 +44,4 @@ func fire(v):
 		temp.global_position = global_position + offset
 		temp.damage = damage
 		
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)

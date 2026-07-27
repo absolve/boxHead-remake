@@ -46,7 +46,7 @@ func hit(_value):
 	var temp = explosion.instantiate()
 	temp.global_position = global_position
 	temp.damage = damage
-	get_tree().root.add_child(temp)
+	get_tree().current_scene.add_child(temp)
 	
 	# 如果配置了分裂爆炸，创建多个小爆炸
 	if splitExplosion > 0:
@@ -54,7 +54,7 @@ func hit(_value):
 			var t = explosion.instantiate()
 			t.damage = damage
 			t.global_position = global_position + Vector2.RIGHT.rotated(i * ((2 * PI) / splitExplosion)) * 15
-			get_tree().root.add_child(t)
+			get_tree().current_scene.add_child(t)
 			for z in range(3):
 				await get_tree().physics_frame
 	

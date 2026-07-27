@@ -107,6 +107,6 @@ func addExplosion():
 		temp.global_position = global_position
 		temp.collision_mask = collision_mask
 		temp.damage = damage
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)
 		)
 	tween.tween_callback(queue_free)

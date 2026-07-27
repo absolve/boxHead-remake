@@ -51,7 +51,7 @@ func fire(_v):
 	# 重置投掷速度
 	speed = minSpeed
 	
-	get_tree().root.add_child(temp)
+	get_tree().current_scene.add_child(temp)
 
 
 ## 蓄力增加速度

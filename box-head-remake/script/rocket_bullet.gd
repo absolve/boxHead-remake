@@ -38,7 +38,7 @@ func _ready() -> void:
 func addSmoke():
 	var temp = smoke.instantiate()
 	temp.global_position = global_position
-	get_tree().root.add_child(temp)
+	get_tree().current_scene.add_child(temp)
 
 
 ## 物理帧更新
@@ -49,7 +49,7 @@ func _physics_process(delta: float) -> void:
 		var temp = explosion.instantiate()
 		temp.global_position = global_position
 		temp.damage = damage
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)
 		queue_free()
 	
 	# 检测与区域的碰撞
@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 		var temp = explosion.instantiate()
 		temp.global_position = global_position
 		temp.damage = damage
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)
 		queue_free()
 	
 	# 到达地图边界时爆炸
@@ -67,7 +67,7 @@ func _physics_process(delta: float) -> void:
 		var temp = explosion.instantiate()
 		temp.global_position = global_position
 		temp.damage = damage
-		get_tree().root.add_child(temp)
+		get_tree().current_scene.add_child(temp)
 		queue_free()
 	
 	# 沿方向移动
