@@ -7,13 +7,11 @@ extends "res://script/item.gd"
 
 ## 伤害值
 @export var damage = 0
-
 ## 爆炸类型
 var explosionType = Game.explosionType.normal
-
 ## 已处理碰撞的对象列表（避免重复伤害）
 var excludeObj = []
-
+@export var wRange = 0
 
 ## 初始化
 func _ready() -> void:

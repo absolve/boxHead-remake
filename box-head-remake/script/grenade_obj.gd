@@ -4,46 +4,35 @@ extends "res://script/item.gd"
 # 继承自item.gd，实现手榴弹的物理行为和爆炸逻辑
 # 手榴弹会在空中飞行、落地后弹跳，最终停止并爆炸
 
-
 ## 爆炸效果场景预加载
 var explosion = preload("res://scene/explosion.tscn")
 
 ## 音效节点
 @onready var sound = $sound
-
 ## 碰撞形状节点
 @onready var shape = $shape
-
 ## 伤害值
 @export var damage = 0
 
 ## 飞行方向向量
 var vector = Vector2.ZERO
-
 ## 初始高度
 var height = 25
-
 ## 飞行速度
 var speed = 50
-
 ## 动画补间节点（用于延迟爆炸）
 var tween = null
-
 ## 落地位置
 var floorPos = Vector2.ZERO
-
 ## 是否已落地
 var isOnFloor = false
-
 ## 飞行角度
 var angle = 0
-
 ## 重力向量
 var gVec = Vector2(0, -100)
-
 ## 物理形状查询参数
 var params = PhysicsShapeQueryParameters2D.new()
-
+@export var wRange = 0
 
 ## 初始化
 func _ready() -> void:

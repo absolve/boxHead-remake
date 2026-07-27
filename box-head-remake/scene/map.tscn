@@ -105,8 +105,8 @@
 [ext_resource type="Texture2D" uid="uid://cmyre3d7hujup" path="res://sprite/ui/DefineSprite_59/100.png" id="104_3viba"]
 [ext_resource type="Texture2D" uid="uid://bwusuar42jv2c" path="res://sprite/ui/DefineSprite_59/101.png" id="105_2aykm"]
 [ext_resource type="PackedScene" uid="uid://dqmrgv2icdlwv" path="res://scene/toast_info.tscn" id="106_84l46"]
-[ext_resource type="AudioStream" uid="uid://cjobw7gfvu5c8" path="res://sound/543_543 Creature.Zombie.Ambience.2.mp3" id="106_hk4qc"]
-[ext_resource type="AudioStream" uid="uid://ct4qhcn8xlwi6" path="res://sound/544_544 Creature.Zombie.Ambience.3.mp3" id="107_5tpms"]
+[ext_resource type="AudioStream" uid="uid://dit4umussp6c4" path="res://sound/543_543 Creature.Zombie.Ambience.2.mp3" id="106_hk4qc"]
+[ext_resource type="AudioStream" uid="uid://cg7bq2b1oljdc" path="res://sound/544_544 Creature.Zombie.Ambience.3.mp3" id="107_5tpms"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6l1jt"]
 animations = [{
@@ -482,6 +482,10 @@ one_shot = true
 wait_time = 7.0
 one_shot = true
 
+[node name="resurrectionTimer" type="Timer" parent="." unique_id=746757202]
+wait_time = 3.0
+one_shot = true
+
 [node name="zombieSound" type="AudioStreamPlayer2D" parent="." unique_id=5520653]
 stream = ExtResource("106_hk4qc")
 
@@ -494,3 +498,4 @@ stream = ExtResource("107_5tpms")
 [connection signal="timeout" from="nextWaveTimer" to="." method="_on_next_wave_timer_timeout"]
 [connection signal="timeout" from="refreshTimer" to="." method="_on_refresh_timer_timeout"]
 [connection signal="timeout" from="soundTimer" to="." method="_on_sound_timer_timeout"]
+[connection signal="timeout" from="resurrectionTimer" to="." method="_on_resurrection_timer_timeout"]

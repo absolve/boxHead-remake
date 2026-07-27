@@ -22,6 +22,7 @@ animations = [{
 collision_layer = 4
 script = ExtResource("2_j1kyk")
 damage = 4
+wRange = 0
 type = 103
 
 [node name="shape" parent="." index="0"]

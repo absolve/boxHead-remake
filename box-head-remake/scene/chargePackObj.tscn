@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item.tscn" id="1_rfdii"]
 [ext_resource type="Script" uid="uid://6edsg3gk1ug8" path="res://script/chargePackObj.gd" id="2_62ch0"]
-[ext_resource type="Texture2D" uid="uid://bt7ockj3q1ogu" path="res://sprite/shape/DefineSprite_2271_Object.ChargePack/1.png" id="3_p7d0r"]
-[ext_resource type="AudioStream" uid="uid://bj5rqh4nm0u3c" path="res://sound/550_550 Object.Mine.Detonate.mp3" id="3_pt3ct"]
-[ext_resource type="Texture2D" uid="uid://cdsoi08yeq125" path="res://sprite/shape/DefineSprite_2271_Object.ChargePack/2.png" id="4_nfdou"]
+[ext_resource type="Texture2D" uid="uid://dmanu6t8ugb6v" path="res://sprite/shape/DefineSprite_2271_Object.ChargePack/1.png" id="3_p7d0r"]
+[ext_resource type="AudioStream" uid="uid://c7i0l6xp3ycg5" path="res://sound/550_550 Object.Mine.Detonate.mp3" id="3_pt3ct"]
+[ext_resource type="Texture2D" uid="uid://ckj84vr8r34hi" path="res://sprite/shape/DefineSprite_2271_Object.ChargePack/2.png" id="4_nfdou"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_edhcj"]
 radius = 20.0
@@ -27,6 +27,7 @@ animations = [{
 collision_mask = 2
 script = ExtResource("2_62ch0")
 damage = 0
+wRange = 0
 type = 101
 
 [node name="shape" parent="." index="0"]

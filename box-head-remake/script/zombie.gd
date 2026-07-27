@@ -133,16 +133,15 @@ var damage=2
 
 ## 初始化
 func _ready():
-	# 获取字体
 	font = ThemeDB.fallback_font
 	
-	# 配置形状查询参数
 	shapeQuery.collide_with_areas = true
 	shapeQuery.collision_mask = 1 + 2 + 4 + 8
 	shapeQuery.exclude = [get_rid()]
 	shapeQuery.shape = shape.shape
 	
-	# 如果初始速度不为零，设置初始朝向
+
+	
 	if velocity.length() != 0:
 		angle = round(velocity.angle() / (PI / 4))
 		angle = wrapi(int(angle), 0, 8)
@@ -292,36 +291,55 @@ func _physics_process(_delta: float) -> void:
 			#state = Game.enemyState.ffp
 	
 	elif state == Game.enemyState.init:
-		# 初始化状态：移动到初始位置
 		currAni = "walk"
 		
-		# 碰撞检测和位置修正
-		var space_state = get_world_2d().direct_space_state
-		shapeQuery.transform = Transform2D(global_rotation, global_position)
-		var result = space_state.intersect_shape(shapeQuery, 1)
-		if result:
-			var r = result[0]
-			if r.collider.get('type') && r.collider.type in [Game.itemType.Barrel,
-								Game.itemType.Wall, Game.roleType.Player,
-								Game.roleType.Zombie, Game.roleType.Devil]:
-				var shape1 = r.collider.get_node("shape").shape
-				var d = global_position - r.collider.global_position
-				if abs(d.x) > abs(d.y):
-					var signx = sign(d.x)
-					global_position.x = r.collider.global_position.x + signx * (shape1.size.x / 2 + shape.shape.size.x / 2)
-				else:
-					var signy = sign(d.y)
-					global_position.y = r.collider.global_position.y + signy * (shape1.size.y / 2 + shape.shape.size.y / 2)
-				currAni = "stand"
+		var should_move = true
 		
-		# 更新朝向和动画
+		if velocity.length() != 0:
+			var old_mask = shapeCast.collision_mask
+			shapeCast.collision_mask = 14 + 16
+			shapeCast.target_position = size / 2 * velocity.normalized()
+			shapeCast.force_shapecast_update()
+			
+			if shapeCast.is_colliding():
+				for i in range(shapeCast.get_collider_count()):
+					var collider = shapeCast.get_collider(i)
+					if collider.get('type'):
+						if collider.type == Game.roleType.Player:
+							var dis = global_position.distance_squared_to(collider.global_position)
+							if dis < attackRange * attackRange:
+								shapeCast.collision_mask = old_mask
+								target = collider
+								velocity = Vector2.ZERO
+								ani.play("attack" + "_%s" % angle)
+								attackArea.position = attackPos[angle]
+								attackTimer = 0
+								if attackPosAngle.has(angle):
+									attackArea.rotation = deg_to_rad(attackPosAngle[angle])
+								else:
+									attackArea.rotation = 0
+								state = Game.enemyState.attack
+								return
+				
+				for i in range(shapeCast.get_collider_count()):
+					var collider = shapeCast.get_collider(i)
+					if collider.get('type'):
+						if collider.type in [Game.itemType.Barrel, Game.itemType.Wall,
+											Game.roleType.Zombie, Game.roleType.Devil]:
+							should_move = false
+							currAni = "stand"
+							break
+			
+			shapeCast.collision_mask = old_mask
+		
 		if velocity.length() != 0:
 			angle = round(velocity.angle() / (PI / 4))
 			angle = wrapi(int(angle), 0, 8)
 		ani.play(currAni + "_%s" % angle)
-		move_and_collide(velocity * speed * _delta)
 		
-		# 到达初始位置后切换到流场寻路状态
+		if should_move:
+			move_and_collide(velocity * speed * _delta)
+		
 		if global_position.distance_to(initPos) < 1:
 			state = Game.enemyState.ffp
 	

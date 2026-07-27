@@ -7,28 +7,22 @@ extends "res://script/item.gd"
 
 ## 爆炸延迟时间（秒）
 var delay = 1
-
 ## 动画补间节点
 var tween: Tween = null
 
 ## 音效节点
 @onready var sound = $sound
-
 ## 伤害值
 @export var damage = 0
-
 ## 分裂爆炸数量
 var splitExplosion = 0
-
 ## 分裂半径
 var splitRadius = 80
-
 ## 爆炸效果场景预加载
 var explosion = preload("res://scene/explosion.tscn")
-
 ## 手榴弹物体场景预加载（用于分裂爆炸）
 var grenadeObj = preload("res://scene/grenade_obj.tscn")
-
+@export var wRange = 0
 
 ## 初始化
 func _ready() -> void:

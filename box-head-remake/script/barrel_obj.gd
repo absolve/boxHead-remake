@@ -7,16 +7,13 @@ extends "res://script/item.gd"
 
 ## 伤害值
 @export var damage = 0
-
 ## 爆炸效果场景预加载
 var explosion = preload("res://scene/explosion.tscn")
-
 ## 是否正在爆炸中
 var startExploding = false
-
 ## 分裂爆炸数量
 var splitExplosion = 0
-
+@export var wRange = 0 #爆炸范围
 
 ## 初始化
 func _ready():

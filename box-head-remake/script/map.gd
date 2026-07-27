@@ -27,6 +27,7 @@ extends Node2D
 @onready var refreshTimer = $refreshTimer
 ## 僵尸声音播放计时器
 @onready var soundTimer = $soundTimer
+@onready var resurrectionTimer = $resurrectionTimer
 
 ## 是否开启调试模式（显示网格和流场）
 @export var isDebug = true
@@ -62,8 +63,8 @@ var itemSpawnPoint = []
 ## 玩家出生点列表
 var playerSpawnPoint = []
 var zombieSound = [] # 僵尸声音列表
-
-
+var isGameOver = false # 游戏结束
+var awaitingResurrectionPlayer = [] # 等待复活的玩家列表
 
 ## 初始化
 func _ready() -> void:
@@ -178,19 +179,19 @@ func enemyKilled(_pos):
 	countAniNode.speed_scale = 1 + 0.1 * (MapData.currKillStreak / 10)
 	countAniNode.play("default")
 
-	if MapData.currKillStreak>0&&MapData.currKillStreak%MapData.killRewardBox==0:
-		var boxs=get_tree().get_nodes_in_group("box")
-		var flag=true
-		var tempPos=Vector2(int(_pos.x/MapData.cellSize),int(_pos.y/MapData.cellSize))
+	if MapData.currKillStreak > 0 && MapData.currKillStreak%MapData.killRewardBox == 0:
+		var boxs = get_tree().get_nodes_in_group("box")
+		var flag = true
+		var tempPos = Vector2(int(_pos.x / MapData.cellSize), int(_pos.y / MapData.cellSize))
 		for i in boxs:
-			if tempPos.is_equal_approx(Vector2(int(i.global_position.x/MapData.cellSize),
-					int(i.global_position.x/MapData.cellSize))):
-				flag=true
+			if tempPos.is_equal_approx(Vector2(int(i.global_position.x / MapData.cellSize),
+					int(i.global_position.x / MapData.cellSize))):
+				flag = true
 				break
 		if !flag:
-			var temp=box.instantiate()
-			temp.global_position=tempPos*MapData.cellSize+MapData.cellSize/2
-			temp.expiredTime=15
+			var temp = box.instantiate()
+			temp.global_position = tempPos * MapData.cellSize + MapData.cellSize / 2
+			temp.expiredTime = 15
 			add_child(temp)
 			
 			
@@ -211,6 +212,25 @@ func updateFlowField():
 		var y = floori(i.global_position.y / MapData.cellSize)
 		MapData.computeFields(i.playerId, Vector2(x, y))
 
+#玩家死亡处理
+func playerDead():
+	var players = get_tree().get_nodes_in_group("player")
+	var num = 0
+	for i in players:
+		if i.isDead:
+			awaitingResurrectionPlayer.append(i)
+			num += 1
+	if num == MapData.playerCount:
+		isGameOver = true
+		print("游戏结束")
+		var tween = create_tween()
+		tween.tween_interval(2.0)
+		tween.tween_callback(func():
+			get_tree().change_scene("res://scenes/gameover.tscn")
+		)
+		tween.play()
+	else:
+		resurrectionTimer.start()
 
 ## 物理帧更新
 func _physics_process(_delta: float) -> void:
@@ -361,3 +381,52 @@ func _on_sound_timer_timeout():
 	soundTimer.start(randi() % 7 + 7)
 	if get_tree().get_nodes_in_group("enemy").size() > 0:
 		zombieSound[randi()%zombieSound.size()].play()
+
+
+func _on_resurrection_timer_timeout():
+	if isGameOver:
+		return
+	
+	var alive_players = []
+	for p in get_tree().get_nodes_in_group("player"):
+		if not p.isDead:
+			alive_players.append(p)
+	
+	var space_state = get_world_2d().direct_space_state
+	var shape_query = PhysicsShapeQueryParameters2D.new()
+	shape_query.collide_with_areas = true
+	shape_query.collision_mask = 1 + 2 + 4 + 8
+	
+	for i in awaitingResurrectionPlayer:
+		i.resurrection()
+		
+		if alive_players.size() > 0:
+			var target_player = alive_players[randi() % alive_players.size()]
+			var spawn_pos = Vector2.ZERO
+			var valid_pos = false
+			
+			for attempt in range(10):
+				var offset_angle = randi() % 360
+				var offset_distance = randi() % 30 + 30
+				var offset = Vector2(cos(deg_to_rad(offset_angle)), sin(deg_to_rad(offset_angle))) * offset_distance
+				spawn_pos = target_player.global_position + offset
+				spawn_pos.x = clamp(spawn_pos.x, i.bodySize.x / 2, MapData.mapSize.x - i.bodySize.x / 2)
+				spawn_pos.y = clamp(spawn_pos.y, i.bodySize.y / 2, MapData.mapSize.y - i.bodySize.y / 2)
+				
+				shape_query.shape = i.shape.shape
+				shape_query.transform = Transform2D(0, spawn_pos)
+				shape_query.exclude = [i.get_rid()]
+				
+				var result = space_state.intersect_shape(shape_query, 1)
+				if not result:
+					valid_pos = true
+					break
+			
+			if not valid_pos:
+				spawn_pos = playerSpawnPoint[i.playerId].global_position
+			
+			i.global_position = spawn_pos
+		else:
+			i.global_position = playerSpawnPoint[i.playerId].global_position
+	
+	awaitingResurrectionPlayer.clear()

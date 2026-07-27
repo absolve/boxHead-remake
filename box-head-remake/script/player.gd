@@ -60,16 +60,16 @@ func _ready():
 	shapeQuery.shape = shape.shape
 	
 	# 初始化武器列表（默认装备手枪）
-	var temp = load("res://scene/pistol.tscn")
-	var gun = temp.instantiate()
-	gun.ownerId = body.get_rid()
-	weaponList.push_back(gun)
-	weaponBackpack.add_child(gun)
+	# var temp = load("res://scene/pistol.tscn")
+	# var gun = temp.instantiate()
+	# gun.ownerId = body.get_rid()
+	# weaponList.push_back(gun)
+	# weaponBackpack.add_child(gun)
 	
-	currWeapon = gun
+	# currWeapon = gun
 	
-	# 设置武器名称显示
-	txt.text = Game.weaponName[currWeapon.type]
+	initWeapon()
+
 	
 	# 根据玩家ID配置按键映射
 	if playerId == 1:
@@ -115,7 +115,41 @@ func _ready():
 	tween.tween_callback(func(): player.play("RESET"))
 	tween.play()
 
+#初始化武器
+func initWeapon():
+	weaponList.clear()
+	for i in weaponBackpack.get_children():
+		weaponBackpack.remove_child(i)
+	# 初始化武器列表（默认装备手枪）
+	var temp = load("res://scene/pistol.tscn")
+	var gun = temp.instantiate()
+	gun.ownerId = body.get_rid()
+	gun.damage = MapData.allWeaponData[Game.weaponType.Pistol]['damage']
+	gun.maxAmmoNum = MapData.allWeaponData[Game.weaponType.Pistol]['maxAmmoNum']
+	gun.automatic = MapData.allWeaponData[Game.weaponType.Pistol]['automatic']
+	gun.wRange = MapData.allWeaponData[Game.weaponType.Pistol]['wRange']
+	gun.delay = MapData.allWeaponData[Game.weaponType.Pistol]['delay']
+	weaponList.push_back(gun)
+	weaponBackpack.add_child(gun)
+	
+	currWeapon = gun
+	# 设置武器名称显示
+	txt.text = Game.weaponName[currWeapon.type]
 
+func resurrection():
+	initWeapon()
+	# 播放出生闪烁动画
+	player.play("flash")
+	var tween = create_tween()
+	tween.tween_interval(3.0)
+	tween.tween_callback(func(): player.play("RESET"))
+	tween.play()
+	isDead = false
+	state = Game.playerState.Idle
+	hp = maxHp
+	lifeBar.progress = hp / maxHp
+
+	
 ## 武器升级处理
 # 根据武器类型更新武器属性
 # @param _type 武器类型（Game.weaponType枚举值）
