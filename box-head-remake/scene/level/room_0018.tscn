@@ -1,0 +1,803 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
+[ext_resource type="PackedScene" path="res://scene/level/wall_shape_004.tscn" id="2_block"]
+[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="3_sign"]
+[ext_resource type="Texture2D" path="res://sprite/shape/1.png" id="4_bg"]
+
+[node name="room0018" type="Node2D"]
+script = ExtResource("1_room")
+mapSize = Vector2(3296, 3136)
+
+[node name="bg" type="Sprite2D" parent="."]
+texture = ExtResource("4_bg")
+position = Vector2(1648, 1568)
+scale = Vector2(5.4933, 5.2267)
+
+[node name="block0" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 137)
+hitLift = 40.0
+
+[node name="block1" parent="." instance=ExtResource("2_block")]
+position = Vector2(689, 137)
+hitLift = 40.0
+
+[node name="block2" parent="." instance=ExtResource("2_block")]
+position = Vector2(1138, 137)
+hitLift = 40.0
+
+[node name="block3" parent="." instance=ExtResource("2_block")]
+position = Vector2(1618, 137)
+hitLift = 40.0
+
+[node name="block4" parent="." instance=ExtResource("2_block")]
+position = Vector2(2131, 137)
+hitLift = 40.0
+
+[node name="block5" parent="." instance=ExtResource("2_block")]
+position = Vector2(2580, 137)
+hitLift = 40.0
+
+[node name="block6" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 137)
+hitLift = 40.0
+
+[node name="block7" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 551)
+hitLift = 40.0
+
+[node name="block8" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 555)
+hitLift = 40.0
+
+[node name="block9" parent="." instance=ExtResource("2_block")]
+position = Vector2(1775, 656)
+hitLift = 40.0
+
+[node name="block10" parent="." instance=ExtResource("2_block")]
+position = Vector2(1042, 808)
+hitLift = 40.0
+
+[node name="block11" parent="." instance=ExtResource("2_block")]
+position = Vector2(2512, 816)
+hitLift = 40.0
+
+[node name="block12" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 973)
+hitLift = 40.0
+
+[node name="block13" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 973)
+hitLift = 40.0
+
+[node name="block14" parent="." instance=ExtResource("2_block")]
+position = Vector2(1522, 1001)
+hitLift = 40.0
+
+[node name="block15" parent="." instance=ExtResource("2_block")]
+position = Vector2(2324, 1098)
+hitLift = 40.0
+
+[node name="block16" parent="." instance=ExtResource("2_block")]
+position = Vector2(785, 1291)
+hitLift = 40.0
+
+[node name="block17" parent="." instance=ExtResource("2_block")]
+position = Vector2(1298, 1388)
+hitLift = 40.0
+
+[node name="block18" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 1484)
+hitLift = 40.0
+
+[node name="block19" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 1484)
+hitLift = 40.0
+
+[node name="block20" parent="." instance=ExtResource("2_block")]
+position = Vector2(2516, 1581)
+hitLift = 40.0
+
+[node name="block21" parent="." instance=ExtResource("2_block")]
+position = Vector2(1330, 1902)
+hitLift = 40.0
+
+[node name="block22" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 2031)
+hitLift = 40.0
+
+[node name="block23" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 2039)
+hitLift = 40.0
+
+[node name="block24" parent="." instance=ExtResource("2_block")]
+position = Vector2(1779, 2095)
+hitLift = 40.0
+
+[node name="block25" parent="." instance=ExtResource("2_block")]
+position = Vector2(2420, 2095)
+hitLift = 40.0
+
+[node name="block26" parent="." instance=ExtResource("2_block")]
+position = Vector2(1006, 2168)
+hitLift = 40.0
+
+[node name="block27" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 2453)
+hitLift = 40.0
+
+[node name="block28" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 2453)
+hitLift = 40.0
+
+[node name="block29" parent="." instance=ExtResource("2_block")]
+position = Vector2(1935, 2457)
+hitLift = 40.0
+
+[node name="block30" parent="." instance=ExtResource("2_block")]
+position = Vector2(240, 2872)
+hitLift = 40.0
+
+[node name="block31" parent="." instance=ExtResource("2_block")]
+position = Vector2(689, 2872)
+hitLift = 40.0
+
+[node name="block32" parent="." instance=ExtResource("2_block")]
+position = Vector2(1138, 2872)
+hitLift = 40.0
+
+[node name="block33" parent="." instance=ExtResource("2_block")]
+position = Vector2(1618, 2872)
+hitLift = 40.0
+
+[node name="block34" parent="." instance=ExtResource("2_block")]
+position = Vector2(2131, 2872)
+hitLift = 40.0
+
+[node name="block35" parent="." instance=ExtResource("2_block")]
+position = Vector2(2580, 2872)
+hitLift = 40.0
+
+[node name="block36" parent="." instance=ExtResource("2_block")]
+position = Vector2(3029, 2872)
+hitLift = 40.0
+
+[node name="sign37" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1986, 134)
+type = 701
+
+[node name="sign38" parent="." instance=ExtResource("3_sign")]
+position = Vector2(381, 138)
+type = 701
+
+[node name="sign39" parent="." instance=ExtResource("3_sign")]
+position = Vector2(414, 138)
+type = 701
+
+[node name="sign40" parent="." instance=ExtResource("3_sign")]
+position = Vector2(446, 138)
+type = 701
+
+[node name="sign41" parent="." instance=ExtResource("3_sign")]
+position = Vector2(478, 138)
+type = 701
+
+[node name="sign42" parent="." instance=ExtResource("3_sign")]
+position = Vector2(510, 138)
+type = 701
+
+[node name="sign43" parent="." instance=ExtResource("3_sign")]
+position = Vector2(540, 138)
+type = 701
+
+[node name="sign44" parent="." instance=ExtResource("3_sign")]
+position = Vector2(827, 140)
+type = 701
+
+[node name="sign45" parent="." instance=ExtResource("3_sign")]
+position = Vector2(862, 140)
+type = 701
+
+[node name="sign46" parent="." instance=ExtResource("3_sign")]
+position = Vector2(894, 139)
+type = 701
+
+[node name="sign47" parent="." instance=ExtResource("3_sign")]
+position = Vector2(926, 139)
+type = 701
+
+[node name="sign48" parent="." instance=ExtResource("3_sign")]
+position = Vector2(959, 140)
+type = 701
+
+[node name="sign49" parent="." instance=ExtResource("3_sign")]
+position = Vector2(991, 140)
+type = 701
+
+[node name="sign50" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1277, 139)
+type = 701
+
+[node name="sign51" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1310, 140)
+type = 701
+
+[node name="sign52" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1342, 140)
+type = 701
+
+[node name="sign53" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1376, 140)
+type = 701
+
+[node name="sign54" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1408, 140)
+type = 701
+
+[node name="sign55" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1440, 140)
+type = 701
+
+[node name="sign56" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1472, 140)
+type = 701
+
+[node name="sign57" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1759, 139)
+type = 701
+
+[node name="sign58" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1792, 139)
+type = 701
+
+[node name="sign59" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1822, 139)
+type = 701
+
+[node name="sign60" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1856, 140)
+type = 701
+
+[node name="sign61" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1889, 140)
+type = 701
+
+[node name="sign62" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1921, 140)
+type = 701
+
+[node name="sign63" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1951, 140)
+type = 701
+
+[node name="sign64" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2271, 139)
+type = 701
+
+[node name="sign65" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2304, 139)
+type = 701
+
+[node name="sign66" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2336, 139)
+type = 701
+
+[node name="sign67" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2369, 140)
+type = 701
+
+[node name="sign68" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2402, 140)
+type = 701
+
+[node name="sign69" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2434, 140)
+type = 701
+
+[node name="sign70" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2718, 140)
+type = 701
+
+[node name="sign71" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2750, 140)
+type = 701
+
+[node name="sign72" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2782, 140)
+type = 701
+
+[node name="sign73" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2815, 140)
+type = 701
+
+[node name="sign74" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2849, 139)
+type = 701
+
+[node name="sign75" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2880, 139)
+type = 701
+
+[node name="sign76" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 263)
+type = 701
+
+[node name="sign77" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 263)
+type = 701
+
+[node name="sign78" parent="." instance=ExtResource("3_sign")]
+position = Vector2(258, 298)
+type = 701
+
+[node name="sign79" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 298)
+type = 701
+
+[node name="sign80" parent="." instance=ExtResource("3_sign")]
+position = Vector2(258, 330)
+type = 701
+
+[node name="sign81" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 329)
+type = 701
+
+[node name="sign82" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 362)
+type = 701
+
+[node name="sign83" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 362)
+type = 701
+
+[node name="sign84" parent="." instance=ExtResource("3_sign")]
+position = Vector2(258, 396)
+type = 701
+
+[node name="sign85" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 396)
+type = 701
+
+[node name="sign86" parent="." instance=ExtResource("3_sign")]
+position = Vector2(258, 428)
+type = 701
+
+[node name="sign87" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 428)
+type = 701
+
+[node name="sign88" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 686)
+type = 701
+
+[node name="sign89" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 686)
+type = 701
+
+[node name="sign90" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 720)
+type = 701
+
+[node name="sign91" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 720)
+type = 701
+
+[node name="sign92" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 752)
+type = 701
+
+[node name="sign93" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 752)
+type = 701
+
+[node name="sign94" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 785)
+type = 701
+
+[node name="sign95" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 786)
+type = 701
+
+[node name="sign96" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 818)
+type = 701
+
+[node name="sign97" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 818)
+type = 701
+
+[node name="sign98" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 851)
+type = 701
+
+[node name="sign99" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 851)
+type = 701
+
+[node name="sign100" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1104)
+type = 701
+
+[node name="sign101" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 1105)
+type = 701
+
+[node name="sign102" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1139)
+type = 701
+
+[node name="sign103" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 1139)
+type = 701
+
+[node name="sign104" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1171)
+type = 701
+
+[node name="sign105" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 1170)
+type = 701
+
+[node name="sign106" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1203)
+type = 701
+
+[node name="sign107" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 1204)
+type = 701
+
+[node name="sign108" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1237)
+type = 701
+
+[node name="sign109" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 1237)
+type = 701
+
+[node name="sign110" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1276)
+type = 701
+
+[node name="sign111" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3010, 1276)
+type = 701
+
+[node name="sign112" parent="." instance=ExtResource("3_sign")]
+position = Vector2(257, 1320)
+type = 701
+
+[node name="sign113" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 1320)
+type = 701
+
+[node name="sign114" parent="." instance=ExtResource("3_sign")]
+position = Vector2(258, 1358)
+type = 701
+
+[node name="sign115" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3009, 1359)
+type = 701
+
+[node name="sign116" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 1622)
+type = 701
+
+[node name="sign117" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3008, 1622)
+type = 701
+
+[node name="sign118" parent="." instance=ExtResource("3_sign")]
+position = Vector2(256, 1655)
+type = 701
+
+[node name="sign119" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3008, 1658)
+type = 701
+
+[node name="sign120" parent="." instance=ExtResource("3_sign")]
+position = Vector2(256, 1687)
+type = 701
+
+[node name="sign121" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 1691)
+type = 701
+
+[node name="sign122" parent="." instance=ExtResource("3_sign")]
+position = Vector2(256, 1721)
+type = 701
+
+[node name="sign123" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 1721)
+type = 701
+
+[node name="sign124" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 1754)
+type = 701
+
+[node name="sign125" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 1754)
+type = 701
+
+[node name="sign126" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 1794)
+type = 701
+
+[node name="sign127" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 1795)
+type = 701
+
+[node name="sign128" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 1838)
+type = 701
+
+[node name="sign129" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 1839)
+type = 701
+
+[node name="sign130" parent="." instance=ExtResource("3_sign")]
+position = Vector2(256, 1876)
+type = 701
+
+[node name="sign131" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3008, 1876)
+type = 701
+
+[node name="sign132" parent="." instance=ExtResource("3_sign")]
+position = Vector2(256, 1908)
+type = 701
+
+[node name="sign133" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3008, 1908)
+type = 701
+
+[node name="sign134" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2165)
+type = 701
+
+[node name="sign135" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2165)
+type = 701
+
+[node name="sign136" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2204)
+type = 701
+
+[node name="sign137" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2205)
+type = 701
+
+[node name="sign138" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 2248)
+type = 701
+
+[node name="sign139" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2248)
+type = 701
+
+[node name="sign140" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2285)
+type = 701
+
+[node name="sign141" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2286)
+type = 701
+
+[node name="sign142" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2317)
+type = 701
+
+[node name="sign143" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2318)
+type = 701
+
+[node name="sign144" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 2583)
+type = 701
+
+[node name="sign145" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2583)
+type = 701
+
+[node name="sign146" parent="." instance=ExtResource("3_sign")]
+position = Vector2(255, 2624)
+type = 701
+
+[node name="sign147" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3007, 2623)
+type = 701
+
+[node name="sign148" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2667)
+type = 701
+
+[node name="sign149" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3006, 2668)
+type = 701
+
+[node name="sign150" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2705)
+type = 701
+
+[node name="sign151" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3006, 2705)
+type = 701
+
+[node name="sign152" parent="." instance=ExtResource("3_sign")]
+position = Vector2(254, 2737)
+type = 701
+
+[node name="sign153" parent="." instance=ExtResource("3_sign")]
+position = Vector2(3006, 2737)
+type = 701
+
+[node name="sign154" parent="." instance=ExtResource("3_sign")]
+position = Vector2(386, 2902)
+type = 701
+
+[node name="sign155" parent="." instance=ExtResource("3_sign")]
+position = Vector2(418, 2902)
+type = 701
+
+[node name="sign156" parent="." instance=ExtResource("3_sign")]
+position = Vector2(450, 2902)
+type = 701
+
+[node name="sign157" parent="." instance=ExtResource("3_sign")]
+position = Vector2(482, 2902)
+type = 701
+
+[node name="sign158" parent="." instance=ExtResource("3_sign")]
+position = Vector2(514, 2902)
+type = 701
+
+[node name="sign159" parent="." instance=ExtResource("3_sign")]
+position = Vector2(547, 2903)
+type = 701
+
+[node name="sign160" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1993, 2901)
+type = 701
+
+[node name="sign161" parent="." instance=ExtResource("3_sign")]
+position = Vector2(832, 2905)
+type = 701
+
+[node name="sign162" parent="." instance=ExtResource("3_sign")]
+position = Vector2(866, 2905)
+type = 701
+
+[node name="sign163" parent="." instance=ExtResource("3_sign")]
+position = Vector2(898, 2905)
+type = 701
+
+[node name="sign164" parent="." instance=ExtResource("3_sign")]
+position = Vector2(931, 2905)
+type = 701
+
+[node name="sign165" parent="." instance=ExtResource("3_sign")]
+position = Vector2(964, 2905)
+type = 701
+
+[node name="sign166" parent="." instance=ExtResource("3_sign")]
+position = Vector2(996, 2905)
+type = 701
+
+[node name="sign167" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1283, 2905)
+type = 701
+
+[node name="sign168" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1316, 2905)
+type = 701
+
+[node name="sign169" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1348, 2905)
+type = 701
+
+[node name="sign170" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1381, 2905)
+type = 701
+
+[node name="sign171" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1414, 2905)
+type = 701
+
+[node name="sign172" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1451, 2905)
+type = 701
+
+[node name="sign173" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1480, 2904)
+type = 701
+
+[node name="sign174" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1762, 2905)
+type = 701
+
+[node name="sign175" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1796, 2905)
+type = 701
+
+[node name="sign176" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1828, 2905)
+type = 701
+
+[node name="sign177" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1860, 2905)
+type = 701
+
+[node name="sign178" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1893, 2905)
+type = 701
+
+[node name="sign179" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1926, 2905)
+type = 701
+
+[node name="sign180" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1957, 2904)
+type = 701
+
+[node name="sign181" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2276, 2905)
+type = 701
+
+[node name="sign182" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2309, 2905)
+type = 701
+
+[node name="sign183" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2341, 2905)
+type = 701
+
+[node name="sign184" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2374, 2905)
+type = 701
+
+[node name="sign185" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2408, 2905)
+type = 701
+
+[node name="sign186" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2440, 2905)
+type = 701
+
+[node name="sign187" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2723, 2905)
+type = 701
+
+[node name="sign188" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2757, 2905)
+type = 701
+
+[node name="sign189" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2788, 2905)
+type = 701
+
+[node name="sign190" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2821, 2905)
+type = 701
+
+[node name="sign191" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2854, 2905)
+type = 701
+
+[node name="sign192" parent="." instance=ExtResource("3_sign")]
+position = Vector2(2886, 2905)
+type = 701
+
+[node name="sign193" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1505, 1428)
+type = 700
+
+[node name="sign194" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1764, 1426)
+type = 700
+
+[node name="sign195" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1503, 1683)
+type = 700
+
+[node name="sign196" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1760, 1683)
+type = 700

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://chj3ogfpmj4mk"]
+
+[ext_resource type="Script" path="res://script/level/wall_shape.gd" id="1_ws"]
+
+[node name="wallShape" type="StaticBody2D"]
+script = ExtResource("1_ws")
+collision_layer = 8
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="shape" type="CollisionShape2D" parent="."]

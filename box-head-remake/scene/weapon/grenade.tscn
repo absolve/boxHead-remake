@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dcg0c8y4o6riv"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon/weapon.tscn" id="1_n8g3t"]
+[ext_resource type="Script" uid="uid://cgrcxw0e6ouve" path="res://script/weapon/grenade.gd" id="2_gt16k"]
+
+[node name="grenade" unique_id=1100697544 instance=ExtResource("1_n8g3t")]
+script = ExtResource("2_gt16k")
+type = 9
+damage = 150
+delay = 0.48
+ammoNum = 20
+maxAmmoNum = 20
+automatic = false
+
+[node name="Timer" parent="." index="1" unique_id=983957772]
+wait_time = 0.1

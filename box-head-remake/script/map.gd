@@ -10,7 +10,8 @@ extends Node2D
 
 
 ## 房间节点
-@onready var room = $room001
+## 当前房间（运行时由 swapRoom 按 selectedMapId 创建）
+var room: Node2D = null
 ## 分数显示节点
 @onready var scoreNode = $ui/score
 ## 连杀数显示节点
@@ -33,28 +34,32 @@ extends Node2D
 @export var isDebug = true
 
 ## 僵尸场景预加载
-var zombie = preload("res://scene/zombie.tscn")
+var zombie = preload("res://scene/character/zombie.tscn")
 ## 箱子场景预加载
-var box = preload("res://scene/box.tscn")
+var box = preload("res://scene/item/box.tscn")
 ## 玩家场景预加载
-var player = preload("res://scene/player.tscn")
+var player = preload("res://scene/character/player.tscn")
 ## 字体资源
 var font: FontFile
 ## 当前波次序号
 var currWave = 0
-## 当前波次僵尸数量（每波+2）
+## 当前波次僵尸总数
+# 原版曲线：第 L 关 = 5L + 5，即 10 / 15 / 20 / 25 / 30 …（见 applyWaveQuota）
 var zombieCount = 10
-## 当前波次恶魔数量（每波+2）
-var devilCount = 2
+## 当前波次恶魔总数
+# 原版曲线：第 1 关 0 只，之后约 floor(0.25L + 0.5)，即 0 / 1 / 1 / 1 / 1 / 2 …
+var devilCount = 0
 ## 所有出生点及其分配的敌人数量
 var allSpawnPoint = []
 ## 流场更新延迟（帧数）
 var updateFlowFieldDelay = 60
 ## 流场更新计时器
 var updateTimer = 0
-## 最大僵尸数量限制（基于地图大小计算）
-var maxZombieCount = 0
-## 最大恶魔数量限制（基于地图大小计算）
+## 同屏僵尸上限
+# 原版 Zombie_Count：min(5L + 5, 60)，即前 11 关逐关放开、之后恒定 60
+var maxZombieCount = 10
+## 同屏恶魔上限
+# 原版 Devil_Count：每 4 关 +1，第 16 关封顶 5
 var maxDevilCount = 0
 ## 补给刷新时间（秒）
 var pickupRefreshTime = 20
@@ -63,11 +68,15 @@ var itemSpawnPoint = []
 ## 玩家出生点列表
 var playerSpawnPoint = []
 var zombieSound = [] # 僵尸声音列表
+var zombieAmbience: Array[AudioStream] = [] # 僵尸低吼候选（4 个）
 var isGameOver = false # 游戏结束
 var awaitingResurrectionPlayer = [] # 等待复活的玩家列表
 
 ## 初始化
 func _ready() -> void:
+	# 按 selectedMapId 创建房间（必须在用到 room 之前）
+	swapRoom()
+
 	RenderingServer.set_default_clear_color(Color("#EDE2CF"))
 	# 设置地图大小
 	MapData.mapSize = room.mapSize
@@ -81,9 +90,8 @@ func _ready() -> void:
 	Game.notice.connect(notice)
 	Game.playerDead.connect(playerDead)
 	
-	# 计算最大敌人数量
-	maxZombieCount = int(MapData.mapSize.x * MapData.mapSize.y / MapData.cellSize)
-	maxDevilCount = int(maxZombieCount / 5.0)
+	# 按原版曲线给第 1 关定配额
+	applyWaveQuota()
 	
 	# 设置补给刷新点和计时器
 	itemSpawnPoint = room.itemSpawnPoint
@@ -94,8 +102,8 @@ func _ready() -> void:
 	playerSpawnPoint = room.playerSpawnPoint
 	for i in range(MapData.playerCount):
 		var p = player.instantiate()
-		p.global_position = playerSpawnPoint[i].global_position
-		get_tree().current_scene.call_deferred("add_child", p)
+		p.global_position = findFreeSpawn(playerSpawnPoint[i].global_position)
+		add_child.call_deferred(p)
 	
 	# 延迟3秒后开始第一波
 	var tween = create_tween()
@@ -106,7 +114,43 @@ func _ready() -> void:
 	zombieSound.append($zombieSound)
 	zombieSound.append($zombieSound2)
 
+	# 僵尸低吼候选池（原版 Creature.Zombie.Ambience.1-4，每次随机播一个）
+	for i in range(1, 5):
+		zombieAmbience.append(load("res://sound/%d_%d Creature.Zombie.Ambience.%d.mp3"
+				% [541 + i, 541 + i, i]))
+	# one_shot 定时器必须手动开第一次，否则永远不会触发
+	soundTimer.start(randi() % 7 + 7)
+
 	
+## 按原版曲线算出第 wave 关（从 1 开始）的刷怪配额
+#
+# 数值来源：原版 Boxhead: 2Play Rooms 的 CUpgrades.InitLists()（见 doc/04-enemy-stats.md §7）
+#   僵尸总数   = 5L + 5                     → 10 / 15 / 20 / 25 / 30 …
+#   僵尸同屏   = min(5L + 5, 60)            → 前 11 关逐关放开，之后恒 60
+#   恶魔总数   = L == 1 ? 0 : floor(0.25L + 0.5)      → 0 / 1 / 1 / 1 / 1 / 2 / 2 / 2 / 2 / 3 …
+#   恶魔同屏   = L == 1 ? 0 : min(floor(1 + 0.3(L-2)), 5) → 0 / 1 / 1 / 1 / 1 / 2 … 第 16 关封顶 5
+func waveQuota(wave: int) -> Dictionary:
+	var l: int = maxi(wave, 1)
+	# 恶魔：第 1 关没有，之后总数每 4 关 +1；同屏上限涨得稍快，第 16 关封顶 5
+	var devilTotal: int = 0 if l <= 1 else floori(0.25 * l + 0.5)
+	var devilAlive: int = 0 if l <= 1 else mini(floori(1.0 + 0.3 * (l - 2)), 5)
+	return {
+		'zombie': 5 * l + 5,
+		'zombieAlive': mini(5 * l + 5, 60),
+		'devil': devilTotal,
+		'devilAlive': mini(devilAlive, devilTotal),
+	}
+
+
+## 把当前波次的配额写进 zombieCount / devilCount / maxZombieCount / maxDevilCount
+func applyWaveQuota() -> void:
+	var q := waveQuota(currWave + 1)
+	zombieCount = q.zombie
+	maxZombieCount = q.zombieAlive
+	devilCount = q.devil
+	maxDevilCount = q.devilAlive
+
+
 ## 开始下一波敌人刷新
 # 分配出生点和敌人数量，启动生成计时器
 func startNextWave():
@@ -115,7 +159,12 @@ func startNextWave():
 	# 获取所有敌人出生点，平均分配敌人数量
 	allSpawnPoint = []
 	var sp = room.zombieSpawnPoint
-	var num = zombieCount / sp.size()
+	if sp.size() <= 0:
+		# 房间没摆僵尸出生点：跳过本波，避免除零
+		push_warning("startNextWave: room.zombieSpawnPoint 为空，跳过第 %d 波" % (currWave + 1))
+		nextWaveTimer.start()
+		return
+	var num: int = zombieCount / sp.size()
 	for i in sp:
 		allSpawnPoint.append({'obj': i, 'num': num})
 	
@@ -223,11 +272,11 @@ func playerDead():
 			num += 1
 	if num == MapData.playerCount:
 		isGameOver = true
-		print("游戏结束")
+		print(tr("Game Over"))
 		var tween = create_tween()
 		tween.tween_interval(5.0)
 		tween.tween_callback(func():
-			get_tree().change_scene_to_file("res://scene/gameover.tscn")
+			SceneTransition.changeScene("res://scene/ui/gameover.tscn")
 		)
 		tween.play()
 	else:
@@ -239,7 +288,14 @@ func _physics_process(_delta: float) -> void:
 	if isDebug:
 		queue_redraw()
 	
-	# 更新流场计时器
+	# 障碍有增删（玩家放了油桶/喷了墙、或它们被打碎）→ 立刻重算，不等轮询
+	if MapData.flowDirty:
+		MapData.flowDirty = false
+		updateTimer = 0
+		updateFlowField()
+		return
+	
+	# 玩家一直在动，仍按固定间隔刷新（流场源点是玩家所在格）
 	updateTimer += 1
 	if updateTimer > updateFlowFieldDelay:
 		updateTimer = 0
@@ -269,14 +325,14 @@ func _draw() -> void:
 			draw_rect(Rect2(ox * MapData.cellSize, oy * MapData.cellSize, MapData.cellSize, MapData.cellSize),
 			 Color(1, 0, 0, 0.5), true)
 
-		# 绘制流场箭头（每个玩家一个颜色）
+		# 绘制流场箭头（黑色）
 		for id in MapData.flowFieldDict.keys():
 			var field = MapData.flowFieldDict[id]
 			if typeof(field) != TYPE_DICTIONARY:
 				continue
-			var color = Color(0, 1, 0, 0.8)
+			var color = Color(0, 0, 0, 0.85)
 			if id != 1:
-				color = Color(1, 0.7, 0, 0.8)
+				color = Color(0, 0, 0, 0.45)
 			
 			for x in range(width):
 				for y in range(height):
@@ -324,9 +380,17 @@ func _on_count_ani_animation_finished() -> void:
 
 ## 生成计时器超时回调
 # 检查每个出生点，如果没有被阻挡且还有剩余敌人，生成一个敌人
+# 同屏数量达到本波上限（maxZombieCount）时先不刷，等场上有空位再继续
 func _on_spawn_timer_timeout() -> void:
+	# 同屏上限：原版 Zombie_Count，避免一次性把整波都倒进场上
+	if get_tree().get_nodes_in_group("enemy").size() >= maxZombieCount:
+		spawnTimer.start()
+		return
+
 	for i in allSpawnPoint:
 		if !i.obj.hasBlock() && i.num > 0:
+			if get_tree().get_nodes_in_group("enemy").size() >= maxZombieCount:
+				break
 			addEnemy(i.obj)
 			i.num -= 1
 			await get_tree().create_timer(1).timeout
@@ -352,12 +416,9 @@ func _on_next_wave_timer_timeout() -> void:
 		# 还有敌人存活，继续等待
 		nextWaveTimer.start()
 	else:
-		# 所有敌人已消灭，进入下一波
+		# 所有敌人已消灭，进入下一波（数量按原版曲线重算）
 		currWave += 1
-		zombieCount += 2
-		zombieCount = min(zombieCount, maxZombieCount)
-		devilCount += 2
-		devilCount = min(devilCount, maxDevilCount)
+		applyWaveQuota()
 		startNextWave()
 
 
@@ -379,9 +440,20 @@ func _on_refresh_timer_timeout() -> void:
 
 
 func _on_sound_timer_timeout():
+	# 续上下一次（7~13 秒）
 	soundTimer.start(randi() % 7 + 7)
-	if get_tree().get_nodes_in_group("enemy").size() > 0:
-		zombieSound[randi()%zombieSound.size()].play()
+
+	var enemies := get_tree().get_nodes_in_group("enemy")
+	if enemies.is_empty() or zombieAmbience.is_empty():
+		return
+
+	# 每次随机挑一个不同的低吼
+	var p = $zombieSound
+	p.stream = zombieAmbience[randi() % zombieAmbience.size()]
+	# 2D 音效：放到某个随机僵尸身上，有方位感
+	if p is Node2D:
+		p.global_position = enemies[randi() % enemies.size()].global_position
+	p.play()
 
 
 func _on_resurrection_timer_timeout():
@@ -428,6 +500,59 @@ func _on_resurrection_timer_timeout():
 			
 			i.global_position = spawn_pos
 		else:
-			i.global_position = playerSpawnPoint[i.playerId].global_position
+			i.global_position = findFreeSpawn(playerSpawnPoint[i.playerId].global_position)
 	
 	awaitingResurrectionPlayer.clear()
+
+
+## 把地图 id 解析成房间场景路径
+## id 0 = 默认 room_001；id>=2 = room_00NN（四位补零）
+func resolveRoomPath(id: int) -> String:
+	if id <= 0:
+		return "res://scene/level/room_001.tscn"
+	var path := "res://scene/level/room_%04d.tscn" % id
+	return path if ResourceLoader.exists(path) else "res://scene/level/room_001.tscn"
+
+
+## 按 MapData.selectedMapId 创建（或替换）房间
+func swapRoom() -> void:
+	var want := resolveRoomPath(MapData.selectedMapId)
+	if room != null and is_instance_valid(room) and room.scene_file_path == want:
+		return
+
+	var old = room
+	if old != null and is_instance_valid(old):
+		remove_child(old)
+		old.queue_free()
+
+	var packed = load(want)
+	if packed == null:
+		push_warning("地图加载失败: %s" % want)
+		return
+	room = packed.instantiate()
+	room.name = "room001"
+	add_child(room)
+	print("[map] 加载地图 %s" % want)
+
+## 找一个没被障碍占住的出生位置
+## 生成的房间里有出生点会压在墙块上，直接按原坐标生成会让玩家/敌人卡在墙里
+func findFreeSpawn(pos: Vector2) -> Vector2:
+	var cell: Vector2i = MapData.worldToCell(pos)
+	if not MapData.isObstacle(cell):
+		return pos
+
+	var cs: int = int(MapData.cellSize)
+	var grid := Vector2i(int(MapData.mapSize.x / cs), int(MapData.mapSize.y / cs))
+
+	# 由内向外一圈圈找最近的空格
+	for r in range(1, 10):
+		for dx in range(-r, r + 1):
+			for dy in range(-r, r + 1):
+				if absi(dx) != r and absi(dy) != r:
+					continue
+				var c: Vector2i = cell + Vector2i(dx, dy)
+				if c.x < 0 or c.y < 0 or c.x >= grid.x or c.y >= grid.y:
+					continue
+				if not MapData.isObstacle(c):
+					return MapData.cellCenter(c)
+	return pos

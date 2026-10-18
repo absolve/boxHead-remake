@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://script/ui/instructions.gd" id="1_ins"]
+[ext_resource type="Theme" path="res://theme/new_theme.tres" id="2_theme"]
+
+[node name="instructions" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_ins")
+
+[node name="bg" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.929412, 0.886275, 0.811765, 1)
+
+[node name="panel" type="Panel" parent="."]
+offset_left = 60.0
+offset_top = 40.0
+offset_right = 580.0
+offset_bottom = 440.0
+
+[node name="title" type="Label" parent="panel"]
+offset_left = 30.0
+offset_top = 20.0
+offset_right = 490.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 30
+text = "Instructions"
+horizontal_alignment = 1
+
+[node name="body" type="RichTextLabel" parent="panel"]
+offset_left = 40.0
+offset_top = 80.0
+offset_right = 480.0
+offset_bottom = 350.0
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "_instructions_body"
+
+[node name="btnBack" type="Button" parent="panel"]
+offset_left = 190.0
+offset_top = 360.0
+offset_right = 330.0
+offset_bottom = 400.0
+text = "Back to menu"

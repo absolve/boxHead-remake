@@ -5,7 +5,7 @@ extends Node
 
 
 ## SFX场景资源预加载
-var sfx = preload("res://scene/sfx.tscn")
+var sfx = preload("res://scene/fx/sfx.tscn")
 
 ## 爆炸音效资源预加载
 var ex = preload("res://sound/548_548 Effect.Explosion.mp3")

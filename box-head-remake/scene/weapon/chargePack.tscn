@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dloo61ps2erhw"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon/weapon.tscn" id="1_ikbhm"]
+[ext_resource type="Script" uid="uid://dvdswgvimve1m" path="res://script/weapon/chargePack.gd" id="2_rlayc"]
+[ext_resource type="AudioStream" path="res://sound/557_557 Weapon.Mine.Place.mp3" id="3_kvf0u"]
+
+[node name="chargePack" unique_id=1837110374 instance=ExtResource("1_ikbhm")]
+script = ExtResource("2_rlayc")
+type = 6
+damage = 150
+ammoNum = 10
+maxAmmoNum = 10
+
+[node name="sound" parent="." index="0" unique_id=1897930747]
+stream = ExtResource("3_kvf0u")

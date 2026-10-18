@@ -15,3 +15,11 @@ export_credentials.cfg
 data_*/
 mono_crash.*.json
 *.import
+
+# Generated SWF decompilation output (ffdec / ffdecmcp), not source
+oldGame/_decompiled/
+
+# Scratch space used while reverse-engineering
+doc/_scratch/
+__pycache__/
+/box-head-remake/tools

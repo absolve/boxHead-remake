@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/ui/upgrade_list.gd" id="1_list"]
+
+[node name="upgradeList" type="CanvasLayer"]
+script = ExtResource("1_list")
+layer = 90
+
+[node name="panel" type="Panel" parent="."]
+offset_left = 60.0
+offset_top = 40.0
+offset_right = 580.0
+offset_bottom = 440.0
+
+[node name="body" type="RichTextLabel" parent="panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -10.0
+bbcode_enabled = true
+scroll_active = true

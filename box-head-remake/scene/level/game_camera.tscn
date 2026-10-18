@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/level/game_camera.gd" id="1_cam"]
+
+[node name="gameCamera" type="Camera2D"]
+anchor_mode = 0
+script = ExtResource("1_cam")
+
+[node name="audioListener" type="AudioListener2D" parent="."]
+

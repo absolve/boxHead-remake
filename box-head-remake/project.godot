@@ -20,6 +20,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
+SceneTransition="*res://scene/ui/scene_transition.tscn"
 
 Game="*res://autoload/game.gd"
 MapData="*res://autoload/mapData.gd"

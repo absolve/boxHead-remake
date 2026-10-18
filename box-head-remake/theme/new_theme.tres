@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://bw4m4oh65t5aw"]
 
-[ext_resource type="FontFile" uid="uid://cbi601wrre7po" path="res://font/AlibabaPuHuiTi-3-85-Bold.ttf" id="1_f7io8"]
+[ext_resource type="FontFile" uid="uid://bygsg1agimqho" path="res://font/AlibabaPuHuiTi-3-85-Bold.ttf" id="1_f7io8"]
 [ext_resource type="Texture2D" uid="uid://5vg46vjtjaui" path="res://sprite/ui/1.png" id="1_l8uce"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wqca"]

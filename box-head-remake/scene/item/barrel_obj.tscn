@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://ch17ixjn5io1a"]
+
+[ext_resource type="PackedScene" uid="uid://dln4odbrw3wgo" path="res://scene/item/item.tscn" id="1_226e6"]
+[ext_resource type="Script" uid="uid://dcb61sk60lst1" path="res://script/item/barrel_obj.gd" id="2_j1kyk"]
+[ext_resource type="Texture2D" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j1kyk"]
+size = Vector2(25, 25)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hwscq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_j1kyk")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="barrelObj" unique_id=693086546 instance=ExtResource("1_226e6")]
+collision_layer = 4
+script = ExtResource("2_j1kyk")
+damage = 4
+wRange = 0
+type = 103
+
+[node name="shape" parent="." index="0"]
+shape = SubResource("RectangleShape2D_j1kyk")
+
+[node name="ani" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_hwscq")
+offset = Vector2(-3, -5)

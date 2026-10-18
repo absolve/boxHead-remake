@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://db5n8cpesp7k0"]
+
+[ext_resource type="PackedScene" uid="uid://b5s0s0mkdalrc" path="res://scene/weapon/weapon.tscn" id="1_2srn4"]
+[ext_resource type="Script" uid="uid://c6ns3qfquh5mq" path="res://script/weapon/mine.gd" id="2_ylm4n"]
+[ext_resource type="AudioStream" path="res://sound/557_557 Weapon.Mine.Place.mp3" id="3_ndueo"]
+
+[node name="mine" unique_id=1653654233 instance=ExtResource("1_2srn4")]
+script = ExtResource("2_ylm4n")
+type = 5
+damage = 100
+ammoNum = 10
+maxAmmoNum = 10
+
+[node name="sound" parent="." index="0" unique_id=1897930747]
+stream = ExtResource("3_ndueo")

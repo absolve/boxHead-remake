@@ -1,0 +1,207 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
+[ext_resource type="PackedScene" path="res://scene/level/wall_shape_004.tscn" id="2_block"]
+[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="3_sign"]
+[ext_resource type="Texture2D" path="res://sprite/shape/1.png" id="4_bg"]
+
+[node name="room0013" type="Node2D"]
+script = ExtResource("1_room")
+mapSize = Vector2(1632, 1312)
+
+[node name="bg" type="Sprite2D" parent="."]
+texture = ExtResource("4_bg")
+position = Vector2(816, 656)
+scale = Vector2(2.7200, 2.1867)
+
+[node name="block0" parent="." instance=ExtResource("2_block")]
+position = Vector2(296, 149)
+hitLift = 40.0
+
+[node name="block1" parent="." instance=ExtResource("2_block")]
+position = Vector2(744, 153)
+hitLift = 40.0
+
+[node name="block2" parent="." instance=ExtResource("2_block")]
+position = Vector2(1256, 153)
+hitLift = 40.0
+
+[node name="block3" parent="." instance=ExtResource("2_block")]
+position = Vector2(232, 270)
+hitLift = 40.0
+
+[node name="block4" parent="." instance=ExtResource("2_block")]
+position = Vector2(424, 322)
+hitLift = 40.0
+
+[node name="block5" parent="." instance=ExtResource("2_block")]
+position = Vector2(760, 741)
+hitLift = 40.0
+
+[node name="block6" parent="." instance=ExtResource("2_block")]
+position = Vector2(1128, 270)
+hitLift = 40.0
+
+[node name="block7" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 270)
+hitLift = 40.0
+
+[node name="block8" parent="." instance=ExtResource("2_block")]
+position = Vector2(232, 367)
+hitLift = 40.0
+
+[node name="block9" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 367)
+hitLift = 40.0
+
+[node name="block10" parent="." instance=ExtResource("2_block")]
+position = Vector2(232, 463)
+hitLift = 40.0
+
+[node name="block11" parent="." instance=ExtResource("2_block")]
+position = Vector2(360, 451)
+hitLift = 40.0
+
+[node name="block12" parent="." instance=ExtResource("2_block")]
+position = Vector2(488, 463)
+hitLift = 40.0
+
+[node name="block13" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 463)
+hitLift = 40.0
+
+[node name="block14" parent="." instance=ExtResource("2_block")]
+position = Vector2(296, 608)
+hitLift = 40.0
+
+[node name="block15" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 560)
+hitLift = 40.0
+
+[node name="block16" parent="." instance=ExtResource("2_block")]
+position = Vector2(1256, 657)
+hitLift = 40.0
+
+[node name="block17" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 657)
+hitLift = 40.0
+
+[node name="block18" parent="." instance=ExtResource("2_block")]
+position = Vector2(872, 753)
+hitLift = 40.0
+
+[node name="block19" parent="." instance=ExtResource("2_block")]
+position = Vector2(1128, 753)
+hitLift = 40.0
+
+[node name="block20" parent="." instance=ExtResource("2_block")]
+position = Vector2(1272, 753)
+hitLift = 40.0
+
+[node name="block21" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 753)
+hitLift = 40.0
+
+[node name="block22" parent="." instance=ExtResource("2_block")]
+position = Vector2(1000, 850)
+hitLift = 40.0
+
+[node name="block23" parent="." instance=ExtResource("2_block")]
+position = Vector2(1128, 850)
+hitLift = 40.0
+
+[node name="block24" parent="." instance=ExtResource("2_block")]
+position = Vector2(1256, 850)
+hitLift = 40.0
+
+[node name="block25" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 850)
+hitLift = 40.0
+
+[node name="block26" parent="." instance=ExtResource("2_block")]
+position = Vector2(232, 946)
+hitLift = 40.0
+
+[node name="block27" parent="." instance=ExtResource("2_block")]
+position = Vector2(1000, 946)
+hitLift = 40.0
+
+[node name="block28" parent="." instance=ExtResource("2_block")]
+position = Vector2(1208, 995)
+hitLift = 40.0
+
+[node name="block29" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 946)
+hitLift = 40.0
+
+[node name="block30" parent="." instance=ExtResource("2_block")]
+position = Vector2(424, 1128)
+hitLift = 40.0
+
+[node name="block31" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 1043)
+hitLift = 40.0
+
+[node name="block32" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 1140)
+hitLift = 40.0
+
+[node name="block33" parent="." instance=ExtResource("2_block")]
+position = Vector2(1384, 1224)
+hitLift = 40.0
+
+[node name="sign34" parent="." instance=ExtResource("3_sign")]
+position = Vector2(410, 147)
+type = 701
+
+[node name="sign35" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1046, 150)
+type = 701
+
+[node name="sign36" parent="." instance=ExtResource("3_sign")]
+position = Vector2(665, 1237)
+type = 701
+
+[node name="sign37" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1302, 1239)
+type = 701
+
+[node name="sign38" parent="." instance=ExtResource("3_sign")]
+position = Vector2(442, 147)
+type = 702
+
+[node name="sign39" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1079, 150)
+type = 702
+
+[node name="sign40" parent="." instance=ExtResource("3_sign")]
+position = Vector2(697, 1237)
+type = 702
+
+[node name="sign41" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1333, 1239)
+type = 702
+
+[node name="sign42" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1272, 240)
+type = 700
+
+[node name="sign43" parent="." instance=ExtResource("3_sign")]
+position = Vector2(728, 626)
+type = 700
+
+[node name="sign44" parent="." instance=ExtResource("3_sign")]
+position = Vector2(377, 724)
+type = 700
+
+[node name="sign45" parent="." instance=ExtResource("3_sign")]
+position = Vector2(727, 756)
+type = 700
+
+[node name="sign46" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1063, 968)
+type = 700
+
+[node name="sign47" parent="." instance=ExtResource("3_sign")]
+position = Vector2(414, 989)
+type = 700

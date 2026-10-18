@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/ui/about_panel.gd" id="1_abp"]
+
+[node name="aboutPanel" type="PopupPanel"]
+size = Vector2i(560, 430)
+script = ExtResource("1_abp")
+
+[node name="margin" type="MarginContainer" parent="."]
+offset_right = 560.0
+offset_bottom = 430.0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="content" type="VBoxContainer" parent="margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="title" type="Label" parent="margin/content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "About"
+horizontal_alignment = 1
+
+[node name="body" type="RichTextLabel" parent="margin/content"]
+custom_minimum_size = Vector2(0, 290)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "_about_body"
+
+[node name="btnBack" type="Button" parent="margin/content"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back to menu"

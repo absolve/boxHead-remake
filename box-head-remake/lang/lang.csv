@@ -1,4 +1,144 @@
 keys,en,zh
-_start_game,start game,开始游戏
-_instructions,instructions,介绍
-_setting,setting,设置
+Difficulty:,Difficulty:,难度：
+BEGINNER,BEGINNER,新手
+INTERMEDIATE,INTERMEDIATE,中级
+EXPERT,EXPERT,专家
+NIGHTMARE,NIGHTMARE,噩梦
+Sets the difficulty of the level: escalates the level and the upgrades accordingly,Sets the difficulty of the level: escalates the level and the upgrades accordingly,设置关卡难度：同时影响关卡推进与升级发放
+Object collision,Object collision,物体碰撞
+OFF,OFF,关
+ON,ON,开
+"Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore","Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore",开关与僵尸、假墙、油桶的碰撞。关闭后不计入高分
+Devils,Devils,恶魔
+"Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!","Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!",开关恶魔。关闭后恶魔不再刷新。不计入高分！
+Friendly Fire,Friendly Fire,友军伤害
+"Turns the Friendly damage on/off, however damage from barrels is still applicable. Forfeits hiscore!","Turns the Friendly damage on/off, however damage from barrels is still applicable. Forfeits hiscore!",开关友军伤害。油桶造成的伤害仍然生效。不计入高分！
+Language,Language,语言
+中文,中文,中文
+English,English,English
+Switch the display language,Switch the display language,切换界面显示语言
+RESET ,RESET,重置
+CLOSE,CLOSE,关闭
+select new Level,select new Level,选择新关卡
+retry,retry,重试
+back to menu,back to menu,返回主菜单
+OBJECTIVE KILL ZOMBIES,OBJECTIVE KILL ZOMBIES,目标：消灭僵尸
+REWARDS: Earn upto 10 new weapons and 90+ upgrades via multiple Zombies kills!,REWARDS: Earn upto 10 new weapons and 90+ upgrades via multiple Zombies kills!,奖励：通过连续击杀僵尸，最多可获得 10 种新武器与 90+ 项升级
+OPTIONS,OPTIONS,选项
+CONTROLS,CONTROLS,操作说明
+Back to menu,Back to menu,返回主菜单
+CLICK TO PLAY LEVEL,CLICK TO PLAY LEVEL,点击开始关卡
+_start_game,Start Game,开始游戏
+_instructions,Instructions,操作说明
+start game,Start Game,开始游戏
+Pistol+: Fast Fire,Pistol+: Fast Fire,手枪+：快速射击
+New Weapon: UZI,New Weapon: UZI,新武器：UZI
+Pistol+: Double Damage,Pistol+: Double Damage,手枪+：双倍伤害
+New Weapon: Shotgun,New Weapon: Shotgun,新武器：霰弹枪
+UZI+: Rapid Fire,UZI+: Rapid Fire,UZI+：极速连射
+New Weapon: Barrel,New Weapon: Barrel,新武器：油桶
+UZI+: Double Ammo,UZI+: Double Ammo,UZI+：双倍弹药
+Shotgun+: Fast Fire,Shotgun+: Fast Fire,霰弹枪+：快速射击
+New Weapon: Grenade,New Weapon: Grenade,新武器：手榴弹
+Shotgun+: Double Ammo,Shotgun+: Double Ammo,霰弹枪+：双倍弹药
+UZI+: Long Shot,UZI+: Long Shot,UZI+：射程提升
+Barrel+: Double Ammo,Barrel+: Double Ammo,油桶+：双倍弹药
+New Weapon: Fake walls,New Weapon: Fake walls,新武器：Fake walls
+Shotgun+: Wide Shot,Shotgun+: Wide Shot,霰弹枪+：散射扩大
+Barrel+: Big Bang,Barrel+: Big Bang,油桶+：大爆炸
+Grenade+: Cluster Explode,Grenade+: Cluster Explode,手榴弹+：分裂爆炸
+Shotgun+: Long Shot,Shotgun+: Long Shot,霰弹枪+：射程提升
+Barrel+: Quad Ammo,Barrel+: Quad Ammo,油桶+：四倍弹药
+Fake Wall+: Double Ammo,Fake Wall+: Double Ammo,假墙+：双倍弹药
+UZI+: Quad Ammo,UZI+: Quad Ammo,UZI+：四倍弹药
+New Weapon: Claymore,New Weapon: Claymore,新武器：地雷
+Shotgun+: Quad Ammo,Shotgun+: Quad Ammo,霰弹枪+：四倍弹药
+Grenade+: Double Ammo,Grenade+: Double Ammo,手榴弹+：双倍弹药
+Shotgun+: Rapid Fire,Shotgun+: Rapid Fire,霰弹枪+：极速连射
+Barrel+: Bigger Bang,Barrel+: Bigger Bang,油桶+：超大爆炸
+Grenade+: Big Bang,Grenade+: Big Bang,手榴弹+：大爆炸
+Claymore+: Cluster Explode,Claymore+: Cluster Explode,地雷+：分裂爆炸
+UZI+: Double Damage,UZI+: Double Damage,UZI+：双倍伤害
+New Weapon: Rocket,New Weapon: Rocket,新武器：火箭
+Shotgun+: Wider Shot,Shotgun+: Wider Shot,霰弹枪+：散射更广
+Grenade+: Quad Ammo,Grenade+: Quad Ammo,手榴弹+：四倍弹药
+Fake Wall+: Quad Ammo,Fake Wall+: Quad Ammo,假墙+：四倍弹药
+Claymore+: Double Ammo,Claymore+: Double Ammo,地雷+：双倍弹药
+New Weapon: Chargepack,New Weapon: Chargepack,新武器：Chargepack
+Shotgun+: Double Damage,Shotgun+: Double Damage,霰弹枪+：双倍伤害
+Grenade+: Bigger Bang,Grenade+: Bigger Bang,手榴弹+：超大爆炸
+Claymore+: Big Bang,Claymore+: Big Bang,地雷+：大爆炸
+Rocket+: Fast Fire,Rocket+: Fast Fire,火箭+：快速射击
+UZI+: Infinate Range,UZI+: Infinate Range,UZI+：无限射程
+Claymore+: Bigger Bang,Claymore+: Bigger Bang,地雷+：超大爆炸
+Charge Pack+: Cluster Explode,Charge Pack+: Cluster Explode,充电包+：分裂爆炸
+Claymore+: Quad Ammo,Claymore+: Quad Ammo,地雷+：四倍弹药
+Rocket+: Double Ammo,Rocket+: Double Ammo,火箭+：双倍弹药
+Charge Pack+: Double Ammo,Charge Pack+: Double Ammo,充电包+：双倍弹药
+New Weapon: Railgun,New Weapon: Railgun,新武器：电磁炮
+Rocket+: Big Bang,Rocket+: Big Bang,火箭+：大爆炸
+Charge Pack+: Big Bang,Charge Pack+: Big Bang,充电包+：大爆炸
+Charge Pack+: Quad Ammo,Charge Pack+: Quad Ammo,充电包+：四倍弹药
+Railgun+: Fast Fire,Railgun+: Fast Fire,电磁炮+：快速射击
+Railgun+: Double Ammo,Railgun+: Double Ammo,电磁炮+：双倍弹药
+Rocket+: Quad Ammo,Rocket+: Quad Ammo,火箭+：四倍弹药
+UZI+: Quad Damage,UZI+: Quad Damage,UZI+：四倍伤害
+Charge Pack+: Bigger Bang,Charge Pack+: Bigger Bang,充电包+：超大爆炸
+Railgun+: Rapid Fire,Railgun+: Rapid Fire,电磁炮+：极速连射
+Rocket+: Bigger Bang,Rocket+: Bigger Bang,火箭+：超大爆炸
+Railgun+: Quad Ammo,Railgun+: Quad Ammo,电磁炮+：四倍弹药
+Rocket+: Rapid Fire,Rocket+: Rapid Fire,火箭+：极速连射
+Railgun+: Long Shot,Railgun+: Long Shot,电磁炮+：射程提升
+Upgrades,Upgrades,升级一览
+TAB to close,TAB to close,按 TAB 关闭
+Game Over,Game Over,游戏结束
+Pickup,Pickup,拾取
+Switch,Switch,切换
+_about,About,关于
+_about_body,"Original Game
+Boxhead: 2Play Rooms  (Flash, 2007)
+
+Created by  Sean Cooper  /  CrazyMonkeyGames
+The Boxhead series is his original work. All credit for the design,
+art and sound belongs to him.
+
+This Project
+A from-scratch Godot 4 remake, reverse engineered from the original SWF.
+Classic values reconstructed from the game data: weapon stats, enemy
+curves, upgrade table.
+New: 18 procedural maps, 4-player local co-op, i18n.
+
+Not affiliated with the original author.
+Educational / non-commercial fan project.","原版游戏
+Boxhead: 2Play Rooms（Flash，2007）
+
+原作者  Sean Cooper / CrazyMonkeyGames
+Boxhead 系列是他的原创作品，设计、美术、音效的功劳都属于他。
+
+本项目
+从原版 SWF 逆向重制的 Godot 4 项目。
+数值全部从游戏数据还原：武器属性、敌人曲线、升级表。
+新增：18 张程序化地图、4 人本地合作、多语言。
+
+与原版作者无关。
+学习 / 非商业性质的同人项目。"
+_instructions_body,"[b]Move[/b]        W A S D
+[b]Aim[/b]         Mouse
+[b]Shoot[/b]       Left Mouse Button
+[b]Next weapon[/b] Mouse Wheel Down
+[b]Prev weapon[/b] Mouse Wheel Up
+[b]Upgrades[/b]    TAB
+
+[b]Goal[/b]
+Kill every zombie in the room. Boxes give new weapons and upgrades.
+Chain kills to unlock them faster. Barrels, fake walls and claymores
+can be placed and detonated with the same button.","[b]移动[/b]      W A S D
+[b]瞄准[/b]      鼠标
+[b]射击[/b]      鼠标左键
+[b]下一个武器[/b] 滚轮向下
+[b]上一个武器[/b] 滚轮向上
+[b]升级列表[/b]  TAB
+
+[b]目标[/b]
+消灭房间里的所有僵尸。开箱可获得新武器和升级，
+连续击杀解锁得更快。油桶、假墙、阔剑可以放置并按同键引爆。"
