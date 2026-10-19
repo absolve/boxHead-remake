@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://clotqhi0x4sm8"]
+[ext_resource type="PackedScene" path="res://scene/ui/instructions_panel.tscn" id="970_instr"]
 
 [ext_resource type="Script" uid="uid://ee7h4fwpyng3" path="res://script/ui/map_select.gd" id="1_wdws0"]
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_4kp6q"]
-[ext_resource type="PackedScene" uid="uid://bo4bw166k8ygy" path="res://scene/ui/game_setting.tscn" id="2_wbm38"]
+[ext_resource type="PackedScene" path="res://scene/ui/game_setting_panel.tscn" id="2_wbm38"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="3_81sah"]
 [ext_resource type="Texture2D" uid="uid://dof3s3g5tsf5u" path="res://sprite/ui/44.png" id="4_4mpcx"]
 [ext_resource type="Texture2D" uid="uid://b74f3kywxt0ly" path="res://sprite/ui/419.png" id="4_p7kmg"]
@@ -195,6 +196,9 @@ ids = 4
 [node name="gameSetting" parent="." unique_id=1401346272 instance=ExtResource("2_wbm38")]
 visible = false
 
+
+[node name="instructionsPanel" parent="." instance=ExtResource("970_instr")]
+[connection signal="pressed" from="Control/btnControl" to="." method="_on_btn_control_pressed"]
 [connection signal="pressed" from="Control/btnOption" to="." method="_on_btn_option_pressed"]
 [connection signal="pressed" from="Control/btnBack" to="." method="_on_btn_back_pressed"]
 [connection signal="pressed" from="Control/btnPrev" to="." method="_on_btn_prev_pressed"]

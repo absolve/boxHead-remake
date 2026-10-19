@@ -11,8 +11,17 @@ extends Node2D
 ## 操作说明按钮节点
 @onready var btn_instructions = $Control/vbox/btn_instructions
 
+## 关于按钮节点
+@onready var btn_about = $Control/vbox/btn_about
+
+## 按键设置按钮节点
+@onready var btn_keybind = $Control/vbox/btn_keybind
+
 ## 关于弹窗（场景里的子节点）
 @onready var aboutPanel: PopupPanel = $aboutPanel
+
+## 操作说明弹窗（场景里的子节点）
+@onready var instructionsPanel: PopupPanel = $instructionsPanel
 
 ## 动画补间节点
 var tween: Tween
@@ -93,13 +102,55 @@ func _on_btn_start_pressed():
 	SceneTransition.changeScene("res://scene/ui/map_select.tscn")
 
 
-## 操作说明按钮点击回调：切到说明界面
+## 操作说明按钮点击回调：弹出说明弹窗
 func _on_btn_instructions_pressed() -> void:
 	SoundUtil.playClick()
-	SceneTransition.changeScene("res://scene/ui/instructions.tscn")
+	instructionsPanel.popup_centered()
 
 
 ## 关于按钮点击回调：弹出关于弹窗
 func _on_btn_about_pressed() -> void:
 	SoundUtil.playClick()
 	aboutPanel.popup_centered()
+
+
+## 关于按钮鼠标进入：启动抖动
+func _on_btn_about_mouse_entered() -> void:
+	if tween != null:
+		tween.stop()
+	originalPos = btn_about.position
+	currBtn = btn_about
+	tween.bind_node(btn_about)
+	tween.play()
+
+
+## 关于按钮鼠标离开：停止抖动并复位
+func _on_btn_about_mouse_exited() -> void:
+	if tween != null:
+		tween.stop()
+	btn_about.position = originalPos
+
+
+## 按键设置按钮：弹出改键面板
+func _on_btn_keybind_pressed() -> void:
+	SoundUtil.playClick()
+	var panel = get_node_or_null("keyBindPanel")
+	if panel != null:
+		panel.popup_centered()
+
+
+## 按键设置按钮鼠标进入：启动抖动
+func _on_btn_keybind_mouse_entered() -> void:
+	if tween != null:
+		tween.stop()
+	originalPos = btn_keybind.position
+	currBtn = btn_keybind
+	tween.bind_node(btn_keybind)
+	tween.play()
+
+
+## 按键设置按钮鼠标离开：停止抖动并复位
+func _on_btn_keybind_mouse_exited() -> void:
+	if tween != null:
+		tween.stop()
+	btn_keybind.position = originalPos

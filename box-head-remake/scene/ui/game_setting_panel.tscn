@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/ui/game_setting_panel.gd" id="1_gsp"]
+
+[node name="gameSettingPanel" type="PopupPanel"]
+size = Vector2i(600, 470)
+script = ExtResource("1_gsp")
+
+[node name="margin" type="MarginContainer" parent="."]
+offset_right = 600.0
+offset_bottom = 470.0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="content" type="VBoxContainer" parent="margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="title" type="Label" parent="margin/content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="scroll" type="ScrollContainer" parent="margin/content"]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="list" type="VBoxContainer" parent="margin/content/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="btnRow" type="HBoxContainer" parent="margin/content"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="btnReset" type="Button" parent="margin/content/btnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "Reset"
+
+[node name="btnClose" type="Button" parent="margin/content/btnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "CLOSE"

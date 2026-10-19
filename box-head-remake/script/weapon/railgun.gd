@@ -68,17 +68,18 @@ func fire(_v):
 		canShoot = false
 		timer.start(delay)
 		
-		var offset = offsetDir[wrapi(int(vector.angle() / (PI / 4)), 0, 8)]
-		ani.position = offset
+		# 武器贴图摆位仍用 offsetDir
+		ani.position = offsetDir[wrapi(int(vector.angle() / (PI / 4)), 0, 8)]
 		ani.rotation = vector.angle()
 		player.play("fire")
 		sound.play()
-		
-		# 设置射线角度和位置
+
+		# 检测起点和其它射线武器一致：抬到躯干高度 + 沿射击方向前移
+		var muzzle: Vector2 = Vector2(0, AIM_HEIGHT) + vector.normalized() * MUZZLE_LENGTH
 		ray.rotation = vector.angle()
-		ray.position = offset
-		
-		targetPos = global_position + vector * wRange + offset
+		ray.position = muzzle
+
+		targetPos = global_position + muzzle + vector * wRange
 		excludeObj.clear()
 
 
@@ -86,5 +87,6 @@ func fire(_v):
 # 绘制射击射线（调试用）
 func _draw() -> void:
 	if detecframes > 0:
-		var offset = offsetDir[wrapi(int(vector.angle() / (PI / 4)), 0, 8)]
+		# 绘制起点必须和检测起点一致，否则线和实际命中不是同一条
+		var offset: Vector2 = Vector2(0, AIM_HEIGHT) + vector.normalized() * MUZZLE_LENGTH
 		draw_line(offset, targetPos - global_position, Color.BLUE_VIOLET, 3)

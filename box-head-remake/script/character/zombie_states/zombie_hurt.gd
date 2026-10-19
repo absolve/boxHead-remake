@@ -18,10 +18,16 @@ func enter(_msg: Dictionary = {}) -> void:
 
 
 func physicsUpdate(delta: float) -> void:
-	# 击退惯性指数衰减，避免受击后一直滑
-	z.velocity = z.velocity.lerp(Vector2.ZERO, minf(8.0 * delta, 1.0))
-	if z.velocity.length() > 1.0:
+	# 击退：速度按 0.65/逻辑帧 衰减（原版 mDelta *= 0.65）
+	if z.knockbackTime > 0.0 and z.velocity.length() > 8.0:
+		z.knockbackTime -= delta
+		# 60fps 下每物理帧相当于 1/2.4 个逻辑帧，所以要开方
+		var decay: float = pow(z.KNOCKBACK_DECAY, delta * MapData.TICKS_PER_SEC)
+		z.velocity *= decay
 		z.move_and_collide(z.velocity * delta)
+	else:
+		z.velocity = Vector2.ZERO
+		z.knockbackTime = 0.0
 
-	if stateTime >= z.hurtDelay:
+	if stateTime >= z.hurtDelay and z.knockbackTime <= 0.0:
 		stateMachine.transitionTo(&"Chase")

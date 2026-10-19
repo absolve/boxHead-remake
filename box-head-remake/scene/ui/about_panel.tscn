@@ -35,4 +35,4 @@ text = "_about_body"
 [node name="btnBack" type="Button" parent="margin/content"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Back to menu"
+text = "CLOSE"

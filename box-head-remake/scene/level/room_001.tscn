@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b01bq1bbbw1hm" path="res://scene/level/level.tscn" id="1_kwe3j"]
 [ext_resource type="Texture2D" uid="uid://dyngry0tm5ya4" path="res://sprite/shape/1.png" id="2_1p7uw"]
 [ext_resource type="PackedScene" uid="uid://enp6h28qyi1b" path="res://scene/level/wall_shape_001.tscn" id="2_dxvdj"]
-[ext_resource type="Script" path="res://script/level/room_generic.gd" id="2_xslsq"]
+[ext_resource type="Script" uid="uid://ck7mpcduqksur" path="res://script/level/room_generic.gd" id="2_xslsq"]
 [ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/level/wall_shape_003.tscn" id="3_1p7uw"]
 [ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/level/map_sign.tscn" id="6_fbdb3"]
 [ext_resource type="PackedScene" uid="uid://ch17ixjn5io1a" path="res://scene/item/barrel_obj.tscn" id="7_viuee"]
@@ -11,7 +11,6 @@
 
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
-debug = true
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=409961369]
@@ -144,6 +143,7 @@ debug = true
 
 [node name="box" parent="." index="32" unique_id=847192445 instance=ExtResource("8_qucu1")]
 position = Vector2(304, 40)
+healThreshold = 0.5
 
 [node name="mapSign8" parent="." index="33" unique_id=1640443326 instance=ExtResource("6_fbdb3")]
 position = Vector2(338, 440)
@@ -152,6 +152,7 @@ dir = 2
 
 [node name="box2" parent="." index="34" unique_id=2000918025 instance=ExtResource("8_qucu1")]
 position = Vector2(338, 440)
+healThreshold = 0.5
 
 [node name="mapSign9" parent="." index="35" unique_id=1862779200 instance=ExtResource("6_fbdb3")]
 position = Vector2(300, 240)

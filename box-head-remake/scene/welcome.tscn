@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://cxo0o0agfxvku" path="res://sprite/247.png" id="7_vn0ct"]
 
 [ext_resource type="PackedScene" path="res://scene/ui/about_panel.tscn" id="950_about"]
+[ext_resource type="PackedScene" path="res://scene/ui/instructions_panel.tscn" id="960_instr"]
+[ext_resource type="PackedScene" path="res://scene/ui/key_bind_panel.tscn" id="980_keybind"]
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hys0r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0h2lm"]
@@ -70,9 +72,9 @@ theme = ExtResource("4_1kia2")
 [node name="vbox" type="VBoxContainer" parent="Control" unique_id=1165069564]
 layout_mode = 0
 offset_left = 200.0
-offset_top = 196.0
+offset_top = 170.0
 offset_right = 448.0
-offset_bottom = 376.0
+offset_bottom = 390.0
 alignment = 1
 metadata/_edit_group_ = true
 
@@ -110,11 +112,32 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_n2ceq")
 text = "_about"
 
 
+[node name="btn_keybind" type="Button" parent="Control/vbox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
+theme_override_colors/font_pressed_color = Color(0.5411765, 0.53333336, 0.53333336, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hys0r")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vn0ct")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0h2lm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_n2ceq")
+text = "_key_bindings"
+
 [node name="aboutPanel" parent="." instance=ExtResource("950_about")]
+
+[node name="instructionsPanel" parent="." instance=ExtResource("960_instr")]
+
+[node name="keyBindPanel" parent="." instance=ExtResource("980_keybind")]
+[connection signal="mouse_entered" from="Control/vbox/btn_keybind" to="." method="_on_btn_keybind_mouse_entered"]
+[connection signal="mouse_exited" from="Control/vbox/btn_keybind" to="." method="_on_btn_keybind_mouse_exited"]
+[connection signal="pressed" from="Control/vbox/btn_instructions" to="." method="_on_btn_instructions_pressed"]
+[connection signal="pressed" from="Control/vbox/btn_keybind" to="." method="_on_btn_keybind_pressed"]
+[connection signal="mouse_entered" from="Control/vbox/btn_about" to="." method="_on_btn_about_mouse_entered"]
+[connection signal="mouse_exited" from="Control/vbox/btn_about" to="." method="_on_btn_about_mouse_exited"]
 [connection signal="pressed" from="Control/vbox/btn_about" to="." method="_on_btn_about_pressed"]
 [connection signal="mouse_entered" from="Control/vbox/btn_start" to="." method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/vbox/btn_start" to="." method="_on_button_mouse_exited"]
 [connection signal="pressed" from="Control/vbox/btn_start" to="." method="_on_btn_start_pressed"]
-[connection signal="pressed" from="Control/vbox/btn_instructions" to="." method="_on_btn_instructions_pressed"]
+
 [connection signal="mouse_entered" from="Control/vbox/btn_instructions" to="." method="_on_btn_instructions_mouse_entered"]
 [connection signal="mouse_exited" from="Control/vbox/btn_instructions" to="." method="_on_btn_instructions_mouse_exited"]

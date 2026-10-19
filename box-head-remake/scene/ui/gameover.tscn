@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dhrxpo5ksgimn"]
 
 [ext_resource type="Script" uid="uid://i3diquaj6t0d" path="res://script/ui/gameover.gd" id="1_roxl8"]
-[ext_resource type="Texture2D" path="res://sprite/shape/DefineSprite_198/1.png" id="2_73nri"]
-[ext_resource type="AudioStream" path="res://sound/563_563 World.End.mp3" id="2_igyxd"]
+[ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_73nri"]
+[ext_resource type="AudioStream" uid="uid://tyu4gia5qxar" path="res://sound/563_563 World.End.mp3" id="2_igyxd"]
 [ext_resource type="Texture2D" uid="uid://b14bsre7btxpb" path="res://sprite/ui/44444.png" id="3_0yr2k"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="4_prwty"]
 [ext_resource type="PackedScene" uid="uid://cw2kaq6myj37i" path="res://scene/ui/ui_label.tscn" id="5_88lim"]
@@ -21,11 +21,6 @@ texture = ExtResource("3_0yr2k")
 centered = false
 
 [node name="Control" type="Control" parent="." unique_id=660871813]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -39,9 +34,9 @@ offset_bottom = 23.0
 
 [node name="score" type="Label" parent="Control" unique_id=862642233]
 layout_mode = 0
-offset_left = 195.0
+offset_left = 131.0
 offset_top = 121.0
-offset_right = 459.0
+offset_right = 542.0
 offset_bottom = 191.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 50
@@ -51,30 +46,30 @@ vertical_alignment = 1
 
 [node name="UILabel" parent="Control" unique_id=1516334346 instance=ExtResource("5_88lim")]
 layout_mode = 0
-offset_left = 200
-offset_top = 225
-offset_right = 440
-offset_bottom = 268
+offset_left = 200.0
+offset_top = 225.0
+offset_right = 440.0
+offset_bottom = 268.0
 theme_override_font_sizes/font_size = 30
 text = "select new Level"
 horizontal_alignment = 1
 
 [node name="UILabel2" parent="Control" unique_id=1643537606 instance=ExtResource("5_88lim")]
 layout_mode = 0
-offset_left = 200
-offset_top = 275
-offset_right = 440
-offset_bottom = 318
+offset_left = 200.0
+offset_top = 275.0
+offset_right = 440.0
+offset_bottom = 318.0
 theme_override_font_sizes/font_size = 30
 text = "retry"
 horizontal_alignment = 1
 
 [node name="UILabel3" parent="Control" unique_id=1648868306 instance=ExtResource("5_88lim")]
 layout_mode = 0
-offset_left = 200
-offset_top = 325
-offset_right = 440
-offset_bottom = 368
+offset_left = 200.0
+offset_top = 325.0
+offset_right = 440.0
+offset_bottom = 368.0
 theme_override_font_sizes/font_size = 30
 text = "back to menu"
 horizontal_alignment = 1

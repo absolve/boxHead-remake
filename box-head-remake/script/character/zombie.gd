@@ -59,6 +59,18 @@ var oldAngle: int = 0
 var hitFromFront: bool = false
 ## 出生点（Spawn 状态要走到这里）
 var initPos: Vector2 = Vector2.ZERO
+## 击退衰减系数：每逻辑帧速度乘以它（原版 mDelta *= 0.65）
+const KNOCKBACK_DECAY: float = 0.65
+
+## 击退状态的最长时间（秒），防止低伤害时拖太久
+const KNOCKBACK_MAX_TIME: float = 0.6
+
+## 质量：影响被击退的距离（原版僵尸 mMass = 1）
+@export var mass: float = 1.0
+
+## 击退剩余时间（秒）；Hurt 状态在这段时间内持续后退
+var knockbackTime: float = 0.0
+
 ## 目标刷新计时
 var targetTimer: float = 0.0
 ## 当前承诺的移动方向（ZERO = 没有承诺）
@@ -185,9 +197,13 @@ func isFacingTarget() -> bool:
 func canStep(dir: Vector2) -> bool:
 	if dir == Vector2.ZERO:
 		return false
-	shapeCast.target_position = probeSize / 2.0 * dir
-	shapeCast.force_shapecast_update()
-	return not shapeCast.is_colliding()
+	var step := Vector2i(roundi(dir.normalized().x), roundi(dir.normalized().y))
+	if step == Vector2i.ZERO:
+		return false
+	# 用格子障碍判定，和流场用同一套数据。
+	# 不能用 ShapeCast2D：油桶/假墙是 Area2D，不挡物理却会被它命中，
+	# 会让僵尸以为四周都走不通而原地卡死。
+	return not MapData.isObstacle(gridPosition() + step)
 
 
 ## 按方向移动
@@ -223,6 +239,30 @@ func freeDirectionTowardsTarget() -> Vector2:
 	var bestDot := -INF
 	for d in DIRS:
 		if not canStep(d):
+			continue
+		var dot := d.normalized().dot(want)
+		if dot > bestDot:
+			bestDot = dot
+			best = d
+
+	# 八个方向都被判定为障碍 → 说明自己正卡在障碍格/墙角里，强行找个空格走出去
+	if best == Vector2.ZERO:
+		best = escapeDirection()
+	return best
+
+
+## 卡在障碍里时的脱困方向：取最近的可行空格
+func escapeDirection() -> Vector2:
+	var cell := gridPosition()
+	var want := Vector2.ZERO
+	if hasTarget():
+		want = (target.global_position - global_position).normalized()
+
+	var best := Vector2.ZERO
+	var bestDot := -INF
+	for d in DIRS:
+		var c := cell + Vector2i(roundi(d.normalized().x), roundi(d.normalized().y))
+		if MapData.isObstacle(c):
 			continue
 		var dot := d.normalized().dot(want)
 		if dot > bestDot:
@@ -316,8 +356,10 @@ func hit(_damage: int, _attackPos: Vector2, recoil: float = 0) -> void:
 	# Chase.exit() 里有 velocity = Vector2.ZERO，先设速度会被它清掉。
 	fsm.transitionTo(&"Hurt")
 
-	# 击退：顺着远离攻击者的方向推一下（由 Hurt 状态消费掉）
-	velocity = (global_position - _attackPos).normalized() * recoil
+	# 击退：按原版公式算初速，之后由 Hurt 状态按 0.65/帧 衰减
+	var speed := knockbackSpeed(_damage, recoil <= 0 and _damage >= 100)
+	knockbackTime = KNOCKBACK_MAX_TIME
+	velocity = (global_position - _attackPos).normalized() * speed
 
 
 ## 死亡：切到 Dead 状态并发出击杀信号
@@ -348,11 +390,25 @@ func _physics_process(_delta: float) -> void:
 
 ## 是否需要重新决策移动方向
 # 三种情况需要：还没承诺过 / 已经走够 minMoveGrid 格 / 承诺的方向已经走不通
-func needNewDir() -> bool:
+## 承诺方向的最长保持时间（秒）
+##
+## 被其他僵尸挤住时，格子判定仍然说「能走」，但物理上一步也挪不动，
+## 于是永远走不满 minMoveGrid 格、永远不重新决策 → 一群僵尸卡在同一朝向。
+## 超时后强制重算，至少能重新选方向/侧移。
+const COMMIT_TIMEOUT: float = 0.5
+
+## 当前承诺已经保持了多久（秒）
+var commitTimer: float = 0.0
+
+
+func needNewDir(delta: float = 0.0) -> bool:
+	commitTimer += delta
 	if committedDir == Vector2.ZERO:
 		return true
 	var d := gridPosition() - commitGrid
 	if maxi(absi(d.x), absi(d.y)) >= minMoveGrid:
+		return true
+	if commitTimer >= COMMIT_TIMEOUT:
 		return true
 	return not canStep(committedDir)
 
@@ -361,8 +417,25 @@ func needNewDir() -> bool:
 func commitDir(dir: Vector2) -> void:
 	committedDir = dir
 	commitGrid = gridPosition()
+	commitTimer = 0.0
 
 
 ## 取消承诺（进攻击/受击后要重新决策）
 func clearCommit() -> void:
 	committedDir = Vector2.ZERO
+
+
+## 击退速度（px/s）—— 原版公式
+##
+## 子弹：max(damage/5*2 / cellSize, 0.3) / mass
+## 爆炸：min(damage/5*2 / cellSize / mass, 0.3)
+func knockbackSpeed(damage: int, fromExplosion := false) -> float:
+	var raw: float = float(damage) * 2.0 / 5.0 / MapData.cellSize
+	var cells: float
+	if fromExplosion:
+		cells = minf(raw / mass, 0.3)
+	else:
+		cells = maxf(raw, 0.3) / mass
+
+	# 格/帧 -> px/s（速度不上限，保证高伤害武器依然「砰」得有力）
+	return cells * MapData.cellSize * MapData.TICKS_PER_SEC

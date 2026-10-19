@@ -10,8 +10,8 @@ extends PopupPanel
 
 func _ready() -> void:
 	btnBack.pressed.connect(onBackPressed)
-
-
+	$margin/content/title.text = tr("About")
+	btnBack.text = tr("CLOSE")
 ## 关闭弹窗
 func onBackPressed() -> void:
 	SoundUtil.playClick()

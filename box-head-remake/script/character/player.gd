@@ -120,6 +120,10 @@ func _ready():
 
 	# 出生无敌 8 秒
 	setInvincible(SPAWN_INVINCIBLE)
+
+	# 开局就把血条上限和当前血量同步好（否则会停在默认的 10）
+	lifeBar.maxHp = maxHp
+	lifeBar.hp = hp
 	
 	# 连接武器升级信号
 	Game.weaponUpgrade.connect(weaponUpgrade)

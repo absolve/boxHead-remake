@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/ui/key_bind_panel.gd" id="1_kb"]
+
+[node name="keyBindPanel" type="PopupPanel"]
+size = Vector2i(560, 470)
+script = ExtResource("1_kb")
+
+[node name="margin" type="MarginContainer" parent="."]
+offset_right = 560.0
+offset_bottom = 470.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="content" type="VBoxContainer" parent="margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="title" type="Label" parent="margin/content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KEY BINDINGS"
+horizontal_alignment = 1
+
+[node name="scroll" type="ScrollContainer" parent="margin/content"]
+custom_minimum_size = Vector2(0, 330)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="list" type="VBoxContainer" parent="margin/content/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="hint" type="Label" parent="margin/content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="btnRow" type="HBoxContainer" parent="margin/content"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="btnDefaultAll" type="Button" parent="margin/content/btnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 34)
+text = "ALL DEFAULTS"
+
+[node name="btnClose" type="Button" parent="margin/content/btnRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(130, 34)
+text = "CLOSE"

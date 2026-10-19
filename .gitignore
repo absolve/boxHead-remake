@@ -23,3 +23,6 @@ oldGame/_decompiled/
 doc/_scratch/
 __pycache__/
 /box-head-remake/tools
+/box-head-remake/build
+/.vscode
+/box-head-remake/export_presets.cfg

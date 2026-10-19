@@ -1,67 +1,88 @@
 extends Control
 
-## 血条UI脚本
-# 实现角色血条的显示和动画效果
-# 血量变化时显示，一段时间后自动隐藏
-
+## 角色生命条
+##
+## 两种显示模式：
+##   alwaysShows = true  → 始终可见（默认）
+##   alwaysShows = false → 只在血量变化时显示，一段时间后淡出
 
 ## 纹理进度条节点
-@onready var bar = $TextureProgressBar
+@onready var bar: TextureProgressBar = $TextureProgressBar
 
-## 计时器节点（用于控制血条显示时长）
-@onready var timer = $Timer
+## 隐藏计时器
+@onready var timer: Timer = $Timer
 
-## 动画补间节点
+## 淡出补间
 var tween: Tween = null
 
 ## 是否始终显示血条
-var alwaysShows = false
+@export var alwaysShows: bool = true
+
+## 血量染色的着色器（越低越红）
+const TINT_SHADER: Shader = preload("res://shader/life_bar_tint.gdshader")
+
+## 运行时挂到进度条上的染色材质
+var tint: ShaderMaterial = null
 
 
-## 当前血量
-# 设置时自动更新进度条并显示血条
-@export var hp = 10:
+## 当前血量：设置时自动更新进度条
+@export var hp: int = 10:
 	set(val):
 		hp = val
 		bar.value = val
+		updateTint()
 		if hp > 0:
 			showLifeBar()
 
 
-## 最大血量
-# 设置时自动更新进度条最大值
-@export var maxHp = 10:
+## 最大血量：设置时自动更新进度条上限
+@export var maxHp: int = 10:
 	set(val):
 		maxHp = val
 		bar.max_value = val
+		updateTint()
 
 
-## 初始化
 func _ready() -> void:
-	# 设置进度条初始值
+	# 染色材质在代码里建（shader 是资源，不是节点）
+	tint = ShaderMaterial.new()
+	tint.shader = TINT_SHADER
+	bar.material = tint
+
 	bar.max_value = hp
 	bar.value = hp
-	
-	# 初始化血条显示状态
+	updateTint()
 	showLifeBar()
 
 
-## 显示血条
-# 重置显示状态并启动计时器
-func showLifeBar():
-	# 如果已有补间动画，停止它
-	if tween != null && tween.is_valid():
+## 显示血条：重置透明度，按模式决定是否启动隐藏计时
+func showLifeBar() -> void:
+	if tween != null and tween.is_valid():
 		tween.kill()
-	
-	# 设置血条为完全不透明
-	bar.modulate.a = 1
-	
-	# 启动计时器
+
+	bar.modulate.a = 1.0
+
+	# 始终显示模式下不启动计时器，血条保持不透明
+	if alwaysShows:
+		timer.stop()
+		return
+
 	timer.start()
 
 
-## 计时器超时回调
-# 创建淡出动画，血条逐渐消失
+## 计时结束：淡出
 func _on_timer_timeout() -> void:
+	if alwaysShows:
+		return
 	tween = create_tween()
-	tween.tween_property(bar, "modulate:a", 0, 0.5)
+	tween.tween_property(bar, "modulate:a", 0.0, 0.5)
+
+
+## 按当前血量比例更新染色
+func updateTint() -> void:
+	if tint == null:
+		return
+	var ratio: float = 1.0
+	if maxHp > 0:
+		ratio = clampf(float(hp) / float(maxHp), 0.0, 1.0)
+	tint.set_shader_parameter("hp_ratio", ratio)

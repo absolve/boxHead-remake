@@ -142,3 +142,25 @@ can be placed and detonated with the same button.","[b]移动[/b]      W A S D
 [b]目标[/b]
 消灭房间里的所有僵尸。开箱可获得新武器和升级，
 连续击杀解锁得更快。油桶、假墙、阔剑可以放置并按同键引爆。"
+_key_bindings,Key Bindings,按键设置
+Player,Player,玩家
+Move Up,Move Up,上
+Move Down,Move Down,下
+Move Left,Move Left,左
+Move Right,Move Right,右
+Next Weapon,Next Weapon,下一个武器
+Prev Weapon,Prev Weapon,上一个武器
+Not set,Not set,未设置
+Shoot,Shoot,射击
+Goal,Goal,目标
+Kill every zombie in the room. Boxes give new weapons and upgrades.,Kill every zombie in the room. Boxes give new weapons and upgrades.,消灭房间里的所有僵尸。开箱可获得新武器和升级。
+Chain kills to unlock them faster.,Chain kills to unlock them faster.,连续击杀解锁得更快。
+Instructions,Instructions,操作说明
+About,About,关于
+KEY BINDINGS,KEY BINDINGS,按键设置
+Reset,Reset,重置
+Default,Default,默认
+ALL DEFAULTS,ALL DEFAULTS,全部默认
+Clear,Clear,清空
+restored to default,restored to default,已恢复默认
+all restored to default,all restored to default,已全部恢复默认

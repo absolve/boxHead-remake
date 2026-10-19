@@ -104,3 +104,11 @@ func startGame() -> void:
 	MapData.selectedMapId = int(img[index].id)
 	SoundUtil.playChange()
 	SceneTransition.changeScene("res://scene/map.tscn")
+
+
+## 操作说明按钮：弹出说明弹窗
+func _on_btn_control_pressed() -> void:
+	SoundUtil.playClick()
+	var panel = get_node_or_null("instructionsPanel")
+	if panel != null:
+		panel.popup_centered()

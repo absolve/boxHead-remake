@@ -17,11 +17,12 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="boxHead remake"
 run/main_scene="uid://crxtvopj6f4ty"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [autoload]
-SceneTransition="*res://scene/ui/scene_transition.tscn"
 
+SceneTransition="*res://scene/ui/scene_transition.tscn"
+Settings="*res://autoload/settings.gd"
 Game="*res://autoload/game.gd"
 MapData="*res://autoload/mapData.gd"
 SfxManage="*res://autoload/sfxManage.gd"

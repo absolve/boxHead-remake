@@ -1062,7 +1062,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_keefw"]
-size = Vector2(15, 20)
+size = Vector2(18, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jegkb"]
 
@@ -1091,8 +1091,10 @@ shape = SubResource("RectangleShape2D_wmsqm")
 [node name="ani" parent="." index="1"]
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_tet0w")
-animation = &"walk_3"
-offset = Vector2(-20, -30)
+animation = &"fallDown_3"
+frame = 4
+frame_progress = 1.0
+offset = Vector2(-15, -35)
 
 [node name="body" type="Area2D" parent="." index="2" unique_id=911581929]
 collision_layer = 32
