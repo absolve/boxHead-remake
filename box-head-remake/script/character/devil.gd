@@ -3,9 +3,9 @@ extends "res://script/character/character.gd"
 
 ## 恶魔敌人脚本（宿主）
 ##
-## 只保留"宿主能力"：数值、取目标、流场取方向、转向、动画、火球、受伤与死亡。
-## 具体行为已拆到 StateMachine 下的 4 个状态节点：
-## [code]Chase / Attack / Hurt / Dead[/code]，见 [code]script/character/devil_states/[/code]。
+## 只保留"宿主能力"：数值、取目标、流场取方向、动画、火球、受伤与死亡。
+## 具体行为已拆到 StateMachine 下的 5 个状态节点：
+## [code]Chase / Turn / Attack / Hurt / Dead[/code]，见 [code]script/character/devil_states/[/code]。
 ##
 ## 数值全部来自原版 `CThing_Creature_Devil.as`（doc/04 §3.1）：
 ##   mMaxLife 1000 / mSpeed 0.04 格/tick（= 32 px/s）/ mAttackRange 5 格（= 160 px）
@@ -30,15 +30,11 @@ const FIREBALL := preload("res://scene/projectile/fireball.tscn")
 @export var firstAttackDelay: float = 0.2
 ## 受击硬直（秒）
 @export var hurtDelay: float = 0.4
-## 转向动画速度（帧/秒）
-@export var turnFrameSpeed: float = 40.0
 ## 重新取目标的间隔（秒）
 @export var targetRefreshInterval: float = 0.5
 
 ## 当前目标
 var target = null
-## 上一次稳定朝向（转向动画起点）
-var oldAngle: int = 0
 ## 是否正面受击
 var hitFromFront: bool = true
 ## 目标刷新计时
@@ -46,8 +42,6 @@ var targetTimer: float = 0.0
 
 ## 状态机（devil.tscn 里的 StateMachine 子节点）
 @onready var fsm: StateMachine = $StateMachine
-## 动画节点
-@onready var ani: AnimatedSprite2D = $ani
 ## 身体受击区域
 @onready var body: Area2D = $body
 ## 身体受击形状
@@ -149,28 +143,6 @@ func moveInDirection(dir: Vector2, delta: float) -> void:
 		return
 	velocity = dir.normalized() * speed
 	move_and_collide(velocity * delta)
-
-
-## 原地转向：有 rotate 动画就播，没有就瞬间对齐
-func turnTo(want: int, delta: float) -> void:
-	velocity = Vector2.ZERO
-	if ani != null and ani.sprite_frames != null and ani.sprite_frames.has_animation("rotate"):
-		var total := ani.sprite_frames.get_frame_count("rotate")
-		var perDir := maxi(int(total / 8.0), 1)
-		var targetFrame := (want * perDir) % total
-		if ani.animation != &"rotate":
-			ani.animation = &"rotate"
-			ani.frame = (oldAngle * perDir) % total
-		var stepDir := 1 if ((targetFrame - ani.frame + total) % total) <= total * 0.5 else -1
-		var step: int = int(maxf(turnFrameSpeed, 1.0) * delta)
-		ani.frame = wrapi(ani.frame + stepDir * maxi(step, 1), 0, total)
-		if ani.frame == targetFrame:
-			oldAngle = want
-			angle = want
-		return
-
-	oldAngle = want
-	angle = want
 
 
 # ---------------------------------------------------------------- 动画

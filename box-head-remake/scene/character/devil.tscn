@@ -189,6 +189,7 @@
 
 [ext_resource type="Script" path="res://script/fsm/state_machine.gd" id="10_fsm"]
 [ext_resource type="Script" path="res://script/character/devil_states/devil_chase.gd" id="11_chase"]
+[ext_resource type="Script" path="res://script/character/devil_states/devil_turn.gd" id="15_turn"]
 [ext_resource type="Script" path="res://script/character/devil_states/devil_attack.gd" id="12_attack"]
 [ext_resource type="Script" path="res://script/character/devil_states/devil_hurt.gd" id="13_hurt"]
 [ext_resource type="Script" path="res://script/character/devil_states/devil_dead.gd" id="14_dead"]
@@ -1019,6 +1020,9 @@ initialState = &"Chase"
 
 [node name="Chase" type="Node" parent="StateMachine"]
 script = ExtResource("11_chase")
+
+[node name="Turn" type="Node" parent="StateMachine"]
+script = ExtResource("15_turn")
 
 [node name="Attack" type="Node" parent="StateMachine"]
 script = ExtResource("12_attack")

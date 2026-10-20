@@ -14,7 +14,8 @@ extends State
 var z: Zombie:
 	get:
 		return actor as Zombie
-
+		
+var dir: Vector2
 
 func enter(_msg: Dictionary = {}) -> void:
 	pass
@@ -46,7 +47,7 @@ func physicsUpdate(delta: float) -> void:
 	# ---- 2) 取一个可走的方向
 	# 有"承诺"时先沿承诺方向走（原版 minMoveGrid 滞回），
 	# 只有走够格数、或承诺方向被挡住时，才重新看流场。
-	var dir: Vector2
+	
 	if z.needNewDir(delta):
 		dir = z.flowDirection()
 		if dir == Vector2.ZERO or not z.canStep(dir):

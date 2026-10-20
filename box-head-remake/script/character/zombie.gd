@@ -34,8 +34,6 @@ const DIRS: Array[Vector2] = [
 ## 两次挥击之间的间隔（秒）
 # 原版没有独立冷却：攻击动画播到命中帧 + State_Sleep 的 10 tick(0.4s)
 @export var attackDelay: float = 0.4
-## 转向时动画播放速度（帧/秒；rotate 共 32 帧，4 帧 = 45°）
-@export var turnFrameSpeed: float = 40.0
 ## 重新搜索目标的间隔（秒）
 @export var targetRefreshInterval: float = 0.5
 ## 受击后减速恢复时间（秒）
@@ -53,8 +51,6 @@ const DIRS: Array[Vector2] = [
 
 ## 当前追踪目标（玩家；保持无类型以便动态调用 hit()）
 var target = null
-## 上一帧已经稳定下来的朝向（转向动画的起点；angle 继承自 character.gd）
-var oldAngle: int = 0
 ## 上一次受击是否来自正面（决定播 hitFront 还是 hitRear）
 var hitFromFront: bool = false
 ## 出生点（Spawn 状态要走到这里）
@@ -80,8 +76,6 @@ var commitGrid: Vector2i = Vector2i.ZERO
 
 ## 状态机（zombie.tscn 里的 StateMachine 子节点）
 @onready var fsm: StateMachine = $StateMachine
-## 动画节点
-@onready var ani: AnimatedSprite2D = $ani
 ## 身体受击区域
 @onready var body: Area2D = $body
 ## 身体受击形状

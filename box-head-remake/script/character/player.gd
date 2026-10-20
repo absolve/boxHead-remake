@@ -7,8 +7,6 @@ extends "res://script/character/character.gd"
 # - 受伤和死亡处理
 # - 碰撞检测
 
-## 动画节点
-@onready var ani = $ani
 ## 武器背包节点（存放所有武器）
 @onready var weaponBackpack = $weaponBackpack
 ## 武器名称显示节点
@@ -57,6 +55,10 @@ var hurtTimer = 0
 ## 受伤持续时间（秒）
 var hurtDelay = 0.5
 
+## 每个玩家一套颜色（绿 / 红 / 蓝 / 黄）
+## 原版 Boxhead 多人就是「同一套精灵 + 染色」，所以用色相旋转而不是独立素材。
+## 玩家默认绿色 = 0x00FF00（doc/04 §2.1）；色相旋转量按绿→红/蓝/黄换算。
+const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 
 ## 初始化
 func _ready():
@@ -544,10 +546,6 @@ func resolve_area_blockers(displacement: Vector2) -> Vector2:
 
 	return adjusted_position - global_position
 
-## 每个玩家一套颜色（绿 / 红 / 蓝 / 黄）
-## 原版 Boxhead 多人就是「同一套精灵 + 染色」，所以用色相旋转而不是独立素材。
-## 玩家默认绿色 = 0x00FF00（doc/04 §2.1）；色相旋转量按绿→红/蓝/黄换算。
-const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 
 
 ## 给身体精灵套一个换色材质（每人一份独立实例）

@@ -22,7 +22,7 @@ func physicsUpdate(delta: float) -> void:
 		if d.isFacingTarget():
 			stateMachine.transitionTo(&"Attack")
 		else:
-			d.turnTo(d.dirToTarget(), delta)
+			stateMachine.transitionTo(&"Turn", {"to": d.dirToTarget(), "next": "Attack"})
 		return
 
 	var dir: Vector2 = d.flowDirection()
@@ -33,7 +33,7 @@ func physicsUpdate(delta: float) -> void:
 
 	var want := Zombie.angleFromVector(dir)
 	if want != d.angle:
-		d.turnTo(want, delta)
+		stateMachine.transitionTo(&"Turn", {"to": want, "next": "Chase"})
 	else:
 		d.moveInDirection(dir, delta)
 		d.playAnim("walk")
