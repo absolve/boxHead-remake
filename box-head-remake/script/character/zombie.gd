@@ -49,6 +49,43 @@ const DIRS: Array[Vector2] = [
 ## 每帧都会判成"朝向不对"→ 转身 → 再判 → 又转身，表现就是原地摇摆。
 @export var minMoveGrid: int = 2
 
+## 被挡住时先原地等待多久再换方向（秒）
+##
+## 对应原版 `State_Wait`：Nav_Direction() 返回 -1（完全无路）时
+## `mStateCount = CMain.mFPS` = 25 帧 = **1 秒**，动画 stand，结束后回 GotoPlayer。
+## 原版另有一个 1/3 秒的防抖停留（`State_Sleep`），用于"刚转完向又不对"。
+const BLOCKED_WAIT: float = 1.0
+
+## 前方被同伴挡住后，等多久才侧移绕行（秒）
+##
+## 同伴每帧都在动，"前方有人"会逐帧翻转；立刻反应就会来回摇摆。
+const SIDESTEP_WAIT: float = 0.2
+
+## 刚转完身、方向又不对时的防抖停留（秒）—— 原版 `CMain.mFPS / 3`
+const TURN_RETRY_WAIT: float = 1.0 / 3.0
+
+## 是否刚转完身（供 Chase 判断要不要防抖）
+var justTurned: bool = false
+
+## 防抖停留的剩余时间
+var turnRetryTimer: float = 0.0
+
+## 被挡住已经等了多久
+var blockedTimer: float = 0.0
+
+## 和别的僵尸挤在一起时的分离速度（px/s）
+const SEPARATE_SPEED: float = 120.0
+
+## 判定「还没贴上」的距离（px）：比这更近就允许挤过去，靠分离推力散开
+const MIN_APPROACH_DISTANCE: float = 14.0
+
+## 超过这个距离就不再主动分离（px）
+const SEPARATE_DISTANCE: float = 16.0
+
+## 自己当前登记的占用格（哨兵值表示还没登记）
+var occCell: Vector2i = Vector2i(-9999, -9999)
+
+
 ## 当前追踪目标（玩家；保持无类型以便动态调用 hit()）
 var target = null
 ## 上一次受击是否来自正面（决定播 hitFront 还是 hitRear）
@@ -187,17 +224,121 @@ func isFacingTarget() -> bool:
 
 # ---------------------------------------------------------------- 移动 / 探测
 
-## 下一步能否通过（用 ShapeCast 探测）
+## 下一步能否通过 —— 纯格子判定
+##
+## 全部依赖 MapData 的格子数据，不看物理（油桶/假墙是 Area2D，
+## 不挡物理却会被 ShapeCast 命中，用物理判定会让僵尸贴桶卡死）。
 func canStep(dir: Vector2) -> bool:
 	if dir == Vector2.ZERO:
 		return false
 	var step := Vector2i(roundi(dir.normalized().x), roundi(dir.normalized().y))
 	if step == Vector2i.ZERO:
 		return false
-	# 用格子障碍判定，和流场用同一套数据。
-	# 不能用 ShapeCast2D：油桶/假墙是 Area2D，不挡物理却会被它命中，
-	# 会让僵尸以为四周都走不通而原地卡死。
-	return not MapData.isObstacle(gridPosition() + step)
+
+	var cell := gridPosition()
+	var next := cell + step
+	if not isCellFree(next):
+		return false
+
+	# 斜走：两个正方向格也必须可走，否则会从墙角"切"过去
+	if step.x != 0 and step.y != 0:
+		if not isCellFree(cell + Vector2i(step.x, 0)):
+			return false
+		if not isCellFree(cell + Vector2i(0, step.y)):
+			return false
+
+	return true
+
+
+## 前方被同伴挡住时找一个"能绕过它"的方向
+##
+## 和 sidestepDirection 的区别：这里同时避开僵尸占用格。
+## 寻路本身不看同伴，但真的被挡住时要能绕过去，否则一群僵尸会排着队干等。
+func sidestepAroundZombies(desired: Vector2) -> Vector2:
+	if desired == Vector2.ZERO:
+		return freeDirectionTowardsTarget()
+
+	var cell := gridPosition()
+	var best := Vector2.ZERO
+	var bestDot := -INF
+	for step in range(1, 5):
+		for side in [1, -1]:
+			var d: Vector2 = desired.rotated(side * step * PI / 4.0)
+			var s := Vector2i(roundi(d.normalized().x), roundi(d.normalized().y))
+			if s == Vector2i.ZERO:
+				continue
+			if not isCellFree(cell + s):
+				continue
+			var occ: Node = MapData.getZombieAt(cell + s)
+			if occ != null and occ != self:
+				continue
+			var dot := d.normalized().dot(desired.normalized())
+			if dot > bestDot:
+				bestDot = dot
+				best = d
+		if best != Vector2.ZERO:
+			break
+	return best
+
+
+## 当前格选定的移动方向 / 它是给哪一格算的
+##
+## 原版 `State_CellToCell` 走满一格才回 `GotoPlayer` 重算方向，
+## 所以方向在「一格之内」保持不变——这正是它不会来回摇摆的原因。
+var cellDir: Vector2 = Vector2.ZERO
+var cellDirGrid: Vector2i = Vector2i(-9999, -9999)
+
+
+## 取当前格该走的方向；同一格内只算一次
+func dirForCurrentCell() -> Vector2:
+	var cell := gridPosition()
+	if cell == cellDirGrid and cellDir != Vector2.ZERO:
+		return cellDir
+
+	cellDirGrid = cell
+	cellDir = chooseDirTowardsTarget()
+	return cellDir
+
+
+## 重算方向：流场优先，被挡就 ±45°..±180° 找一条能走的
+func chooseDirTowardsTarget() -> Vector2:
+	var want := flowDirection()
+	if want != Vector2.ZERO and canStep(want):
+		return want
+	var fallback: Vector2 = want if want != Vector2.ZERO else vectorFromAngle(angle)
+	return sidestepDirection(fallback)
+
+
+## 作废当前格的方向缓存（等待超时 / 清承诺时用）
+func invalidateCellDir() -> void:
+	cellDir = Vector2.ZERO
+	cellDirGrid = Vector2i(-9999, -9999)
+
+
+## 前方格子里有没有别的僵尸挡着（用于移动闸门，不影响寻路）
+##
+## 对应原版 `State_WaitToMove`：前方格被生物占住就停下等，
+## 等它走开或超过 1 秒再继续。这样僵尸会排队而不是互相硬推。
+func isBlockedByZombie(dir: Vector2) -> bool:
+	if dir == Vector2.ZERO:
+		return false
+	var step := Vector2i(roundi(dir.normalized().x), roundi(dir.normalized().y))
+	if step == Vector2i.ZERO:
+		return false
+	var occupant: Node = MapData.getZombieAt(gridPosition() + step)
+	return occupant != null and occupant != self
+
+
+## 某个格子是否可走
+##
+## 原版 Nav_Direction 用的掩码 `mCollide_NonMovable` = 227
+## = StaticImpassable | Creature | Object | Player，
+## 也就是**既避地形也避同伴**（doc/02-pathfinding.md:314）。
+func isCellFree(cell: Vector2i) -> bool:
+	if MapData.isObstacle(cell):
+		return false
+	var occupant: Node = MapData.getZombieAt(cell)
+	return occupant == null or occupant == self
 
 
 ## 按方向移动
@@ -205,7 +346,8 @@ func moveInDirection(dir: Vector2, delta: float) -> void:
 	if dir == Vector2.ZERO:
 		return
 	velocity = dir.normalized() * speed
-	move_and_collide(velocity * delta)
+	var col := move_and_collide(velocity * delta)
+	separateFrom(col, delta)
 
 
 ## 流场给的方向；若当前位置在障碍格内或流场没数据，则退化为"朝目标的自由方向"
@@ -255,6 +397,7 @@ func escapeDirection() -> Vector2:
 	var best := Vector2.ZERO
 	var bestDot := -INF
 	for d in DIRS:
+		# 脱困时只看真实障碍，不管别的僵尸，否则可能找不到方向
 		var c := cell + Vector2i(roundi(d.normalized().x), roundi(d.normalized().y))
 		if MapData.isObstacle(c):
 			continue
@@ -351,9 +494,9 @@ func hit(_damage: int, _attackPos: Vector2, recoil: float = 0) -> void:
 	fsm.transitionTo(&"Hurt")
 
 	# 击退：按原版公式算初速，之后由 Hurt 状态按 0.65/帧 衰减
-	var speed := knockbackSpeed(_damage, recoil <= 0 and _damage >= 100)
+	var s := knockbackSpeed(_damage, recoil <= 0 and _damage >= 100)
 	knockbackTime = KNOCKBACK_MAX_TIME
-	velocity = (global_position - _attackPos).normalized() * speed
+	velocity = (global_position - _attackPos).normalized() * s
 
 
 ## 死亡：切到 Dead 状态并发出击杀信号
@@ -381,6 +524,11 @@ func _physics_process(_delta: float) -> void:
 		position.y = clampf(position.y, bodySize.y / 2.0, MapData.mapSize.y - bodySize.y / 2.0)
 	z_index = roundi(global_position.y / MapData.cellSize) + 1
 
+	# 登记自己占用的格子，供别的僵尸避让
+	if not isDead:
+		updateOccupancy()
+		resolveOverlap(_delta)
+
 
 ## 是否需要重新决策移动方向
 # 三种情况需要：还没承诺过 / 已经走够 minMoveGrid 格 / 承诺的方向已经走不通
@@ -394,6 +542,9 @@ const COMMIT_TIMEOUT: float = 0.5
 ## 当前承诺已经保持了多久（秒）
 var commitTimer: float = 0.0
 
+## 做出承诺时所处的位置（用于判断是否真的卡住没动）
+var commitPos: Vector2 = Vector2.ZERO
+
 
 func needNewDir(delta: float = 0.0) -> bool:
 	commitTimer += delta
@@ -402,29 +553,63 @@ func needNewDir(delta: float = 0.0) -> bool:
 	var d := gridPosition() - commitGrid
 	if maxi(absi(d.x), absi(d.y)) >= minMoveGrid:
 		return true
+
+	# 超时只在"格子里也没挪动"时才算数。
+	# 分离推力会让像素位置一直抖动，用像素位移判断会误判成卡住 → 不停重算方向。
 	if commitTimer >= COMMIT_TIMEOUT:
-		return true
+		if gridPosition() == commitGrid:
+			return true
+
 	return not canStep(committedDir)
 
 
-## 承诺一个移动方向，并记下当前的格子作为起点
+## 承诺一个移动方向，并记下当前的格子和位置作为起点
 func commitDir(dir: Vector2) -> void:
 	committedDir = dir
 	commitGrid = gridPosition()
+	commitPos = global_position
 	commitTimer = 0.0
+
+
+## 每帧把自己从挤在一起的同伴身上推开
+##
+## move_and_collide 只能挡住新的穿透，解不开已经重叠的身体，
+## 所以出生点一挤就会永远贴着。这里用自身 Area2D 找附近同伴，
+## 每帧朝远离方向挪一点。
+func resolveOverlap(delta: float) -> void:
+	# body 默认 mask=0（只用来被子弹打中），这里让它也探测生物所在层
+	if body.collision_mask != MapData.LAYER_ENEMY:
+		body.collision_mask = MapData.LAYER_ENEMY
+
+	var pushed := Vector2.ZERO
+	for other in body.get_overlapping_bodies():
+		if other == self or not (other is CharacterBody2D):
+			continue
+		var away: Vector2 = global_position - (other as Node2D).global_position
+		var dist := away.length()
+		if dist > SEPARATE_DISTANCE or dist < 0.01:
+			continue
+		pushed += away / dist
+
+	if pushed == Vector2.ZERO:
+		return
+	move_and_collide(pushed.normalized() * SEPARATE_SPEED * delta)
 
 
 ## 取消承诺（进攻击/受击后要重新决策）
 func clearCommit() -> void:
 	committedDir = Vector2.ZERO
+	justTurned = false
+	turnRetryTimer = 0.0
+	invalidateCellDir()
 
 
 ## 击退速度（px/s）—— 原版公式
 ##
 ## 子弹：max(damage/5*2 / cellSize, 0.3) / mass
 ## 爆炸：min(damage/5*2 / cellSize / mass, 0.3)
-func knockbackSpeed(damage: int, fromExplosion := false) -> float:
-	var raw: float = float(damage) * 2.0 / 5.0 / MapData.cellSize
+func knockbackSpeed(_damage: int, fromExplosion := false) -> float:
+	var raw: float = float(_damage) * 2.0 / 5.0 / MapData.cellSize
 	var cells: float
 	if fromExplosion:
 		cells = minf(raw / mass, 0.3)
@@ -433,3 +618,37 @@ func knockbackSpeed(damage: int, fromExplosion := false) -> float:
 
 	# 格/帧 -> px/s（速度不上限，保证高伤害武器依然「砰」得有力）
 	return cells * MapData.cellSize * MapData.TICKS_PER_SEC
+
+
+## 撞到别的僵尸时互相轻推，把已经重叠的分开
+##
+## move_and_collide 只能阻止新的穿透，不能把已经叠在一起的分开，
+## 所以出生点一挤就会永远贴着。这里每帧给一点分离速度。
+func separateFrom(col: KinematicCollision2D, delta: float) -> void:
+	if col == null:
+		return
+	var other := col.get_collider()
+	if not (other is Node2D):
+		return
+	var away: Vector2 = global_position - (other as Node2D).global_position
+	if away.length() < 0.01:
+		away = Vector2.RIGHT.rotated(randf() * TAU)
+	# 挤得越近推得越狠
+	move_and_collide(away.normalized() * SEPARATE_SPEED * delta)
+
+
+## 维护自己占用的格子（供别的僵尸避让）
+func updateOccupancy() -> void:
+	var cell := gridPosition()
+	if cell == occCell:
+		return
+	if occCell != Vector2i(-9999, -9999):
+		MapData.clearZombieCell(occCell, self)
+	occCell = cell
+	MapData.setZombieCell(cell, self)
+
+
+## 离开场景时注销占用，避免留下幽灵占位
+func _exit_tree() -> void:
+	if occCell != Vector2i(-9999, -9999):
+		MapData.clearZombieCell(occCell, self)

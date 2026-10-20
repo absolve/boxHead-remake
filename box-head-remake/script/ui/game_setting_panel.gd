@@ -1,8 +1,9 @@
 extends PopupPanel
 
-## 设置面板（样式与操作说明一致）
+## 选项面板（布局对齐原版 Boxhead 的设置窗口）
 ##
-## 行在运行时生成，因为开关组数量固定但按钮状态要跟 mapConfig 同步。
+## 每行 = 标题 + 选项按钮 + 下方一行灰色说明。
+## 行在运行时生成：开关组的状态要跟 mapConfig 同步，说明文字要走 i18n。
 
 ## 行容器
 @onready var list: VBoxContainer = $margin/content/scroll/list
@@ -16,17 +17,56 @@ extends PopupPanel
 ## 关闭按钮
 @onready var btnClose: Button = $margin/content/btnRow/btnClose
 
-## 难度名
+## 难度名（原版用词）
 const DIFFICULTY_NAMES := ["BEGINNER", "INTERMEDIATE", "EXPERT", "NIGHTMARE"]
+
+## 选中态背景色（取自原版选项按钮的浅蓝 #BCD7FE）
+var selectedColor := Color(0.737, 0.843, 0.996)
+
+## 选中态的文字颜色（浅蓝底上要用深色才看得清）
+var selectedTextColor := Color(0.102, 0.102, 0.102)
+
+
+## 每一行的配置：key / 标题 / 说明 / 选项文字
+## 说明文字直接作为 i18n 的 key（英文原文），中文在 lang.csv 里
+const ROWS := [
+	{
+		"key": "difficulty",
+		"label": "Difficulty:",
+		"tip": "Sets the difficulty of the level: escalates the level and the upgrades accordingly",
+		"options": ["BEGINNER", "INTERMEDIATE", "EXPERT", "NIGHTMARE"],
+	},
+	{
+		"key": "collision",
+		"label": "Object collision:",
+		"tip": "Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!",
+		"options": ["OFF", "ON"],
+	},
+	{
+		"key": "Devils",
+		"label": "Devils:",
+		"tip": "Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!",
+		"options": ["OFF", "ON"],
+	},
+	{
+		"key": "friendlyFire",
+		"label": "Friendly Fire:",
+		"tip": "Turns the Friendly damage on/off, however damage from barrels is still applicable. Forfeits hiscore!",
+		"options": ["OFF", "ON"],
+	},
+	{
+		"key": "language",
+		"label": "Language:",
+		"tip": "Switch the display language",
+		"options": ["中文", "English"],
+	},
+]
 
 ## 各行按钮引用：key -> Array[Button]
 var buttonGroups: Dictionary = {}
 
 
 func _ready() -> void:
-	titleLabel.text = tr("OPTIONS")
-	btnReset.text = tr("Reset")
-	btnClose.text = tr("CLOSE")
 	btnReset.pressed.connect(onReset)
 	btnClose.pressed.connect(onClose)
 	visibility_changed.connect(onVisibilityChanged)
@@ -39,66 +79,79 @@ func buildRows() -> void:
 		c.queue_free()
 	buttonGroups.clear()
 
-	# 难度
-	buttonGroups["difficulty"] = addRow(tr("Difficulty:"), DIFFICULTY_NAMES.size())
-	# 三个开关
-	buttonGroups["collision"] = addRow(tr("Object collision"), 2)
-	buttonGroups["Devils"] = addRow(tr("Devils"), 2)
-	buttonGroups["friendlyFire"] = addRow(tr("Friendly Fire"), 2)
-	# 语言
-	buttonGroups["language"] = addRow(tr("Language"), 2)
+	titleLabel.text = tr("OPTIONS")
+	btnReset.text = tr("Reset")
+	btnClose.text = tr("CLOSE")
 
-	# 语言行的两个按钮是「中文 / English」，单独设文字
-	var langBtns: Array = buttonGroups["language"]
-	(langBtns[0] as Button).text = "中文"
-	(langBtns[1] as Button).text = "English"
-	(langBtns[0] as Button).pressed.connect(func() -> void: setLocale("zh"))
-	(langBtns[1] as Button).pressed.connect(func() -> void: setLocale("en"))
+	for row in ROWS:
+		var group: Array[Button] = addRow(row)
+		buttonGroups[row["key"]] = group
+		# 语言行的两个按钮要切换语言
+		if row["key"] == "language":
+			group[0].pressed.connect(func() -> void: setLocale("zh"))
+			group[1].pressed.connect(func() -> void: setLocale("en"))
 
 	syncUI()
 
 
-## 造一行：左边标题，右边一组切换按钮
-func addRow(labelText: String, count: int) -> Array:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 12)
+## 造一行：标题 / 按钮（自动换行） / 说明
+func addRow(row: Dictionary) -> Array[Button]:
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 4)
 
+	# 标题
 	var nameLabel := Label.new()
-	nameLabel.text = labelText
-	nameLabel.custom_minimum_size = Vector2(190, 0)
-	row.add_child(nameLabel)
+	nameLabel.text = tr(row["label"])
+	box.add_child(nameLabel)
 
-	var box := HBoxContainer.new()
-	box.add_theme_constant_override("separation", 6)
-	row.add_child(box)
+	# 按钮：HFlowContainer 放不下会自动换到下一行
+	var flow := HFlowContainer.new()
+	flow.add_theme_constant_override("h_separation", 6)
+	flow.add_theme_constant_override("v_separation", 4)
+	box.add_child(flow)
 
 	var group: Array[Button] = []
-	for i in range(count):
+	var options: Array = row["options"]
+	for i in range(options.size()):
 		var b := Button.new()
+		b.text = tr(options[i])
 		b.toggle_mode = true
-		b.custom_minimum_size = Vector2(96, 34)
-		b.text = DIFFICULTY_NAMES[i] if count == DIFFICULTY_NAMES.size() else (tr("ON") if i == 0 else tr("OFF"))
-		b.pressed.connect(func() -> void: onOptionPressed(count, i, group))
-		box.add_child(b)
+		b.custom_minimum_size = Vector2(104, 30)
+		applySelectedStyle(b)
+		flow.add_child(b)
 		group.append(b)
+		b.pressed.connect(func() -> void: onOptionPressed(row["key"], i, group))
 
-	list.add_child(row)
+	# 说明：调亮一点，自动折行
+	var tip := Label.new()
+	tip.text = tr(row["tip"])
+	tip.add_theme_font_size_override("font_size", 13)
+	tip.add_theme_color_override("font_color", Color(0.86, 0.86, 0.86, 1.0))
+	tip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tip.custom_minimum_size = Vector2(520, 0)
+	box.add_child(tip)
+
+	list.add_child(box)
 	return group
 
 
-## 点击某一行的按钮
-func onOptionPressed(_count: int, index: int, group: Array) -> void:
+## 点击某个选项
+func onOptionPressed(key: String, index: int, group: Array) -> void:
 	for i in range(group.size()):
 		(group[i] as Button).button_pressed = (i == index)
-	# 只有非语言行写回 mapConfig
-	if group == buttonGroups.get("difficulty", []):
-		MapData.mapConfig.difficulty = index + 1
-	elif group == buttonGroups.get("collision", []):
-		MapData.mapConfig.collision = (index == 0)
-	elif group == buttonGroups.get("Devils", []):
-		MapData.mapConfig.Devils = (index == 0)
-	elif group == buttonGroups.get("friendlyFire", []):
-		MapData.mapConfig.friendlyFire = (index == 0)
+
+	match key:
+		"difficulty":
+			MapData.mapConfig.difficulty = index + 1
+		"collision":
+			MapData.mapConfig.collision = (index == 1)
+		"Devils":
+			MapData.mapConfig.Devils = (index == 1)
+		"friendlyFire":
+			MapData.mapConfig.friendlyFire = (index == 1)
+		_:
+			pass
+	Settings.saveAll()
 
 
 ## 面板显示/隐藏
@@ -113,9 +166,9 @@ func onVisibilityChanged() -> void:
 func syncUI() -> void:
 	var cfg: Dictionary = MapData.mapConfig
 	markSelected("difficulty", int(cfg.get("difficulty", 1)) - 1)
-	markSelected("collision", 0 if bool(cfg.get("collision", true)) else 1)
-	markSelected("Devils", 0 if bool(cfg.get("Devils", true)) else 1)
-	markSelected("friendlyFire", 0 if bool(cfg.get("friendlyFire", false)) else 1)
+	markSelected("collision", 1 if bool(cfg.get("collision", true)) else 0)
+	markSelected("Devils", 1 if bool(cfg.get("Devils", true)) else 0)
+	markSelected("friendlyFire", 1 if bool(cfg.get("friendlyFire", false)) else 0)
 	markSelected("language", 0 if TranslationServer.get_locale().begins_with("zh") else 1)
 
 
@@ -128,13 +181,11 @@ func markSelected(key: String, index: int) -> void:
 		(group[i] as Button).button_pressed = (i == index)
 
 
-## 切换语言
+## 切换语言：改 locale 后整表重建，行标题和说明才会跟着变
 func setLocale(code: String) -> void:
 	TranslationServer.set_locale(code)
 	Settings.saveAll()
-	titleLabel.text = tr("OPTIONS")
-	btnReset.text = tr("Reset")
-	btnClose.text = tr("CLOSE")
+	buildRows()
 
 
 ## 恢复默认设置
@@ -152,3 +203,18 @@ func onClose() -> void:
 	SoundUtil.playClick()
 	Settings.saveAll()
 	hide()
+
+
+## 给按钮套上「选中 = 浅蓝底深色字」的样式
+func applySelectedStyle(b: Button) -> void:
+	var pressedStyle := StyleBoxFlat.new()
+	pressedStyle.bg_color = selectedColor
+	pressedStyle.set_corner_radius_all(6)
+
+	var hoverPressed := pressedStyle.duplicate() as StyleBoxFlat
+	hoverPressed.bg_color = selectedColor.lightened(0.08)
+
+	b.add_theme_stylebox_override("pressed", pressedStyle)
+	b.add_theme_stylebox_override("hover_pressed", hoverPressed)
+	b.add_theme_color_override("font_pressed_color", selectedTextColor)
+	b.add_theme_color_override("font_hover_pressed_color", selectedTextColor)

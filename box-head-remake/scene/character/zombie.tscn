@@ -212,6 +212,7 @@
 [ext_resource type="Script" uid="uid://djn6obe40b7j8" path="res://script/character/zombie_states/zombie_dead.gd" id="206_dead"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmsqm"]
+size = Vector2(25, 25)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tet0w"]
 animations = [{
@@ -1074,12 +1075,12 @@ damage = 50
 attackRange = 35.0
 attackHitFrame = 2
 attackDelay = 0.4
-turnFrameSpeed = 40.0
 targetRefreshInterval = 0.5
 hurtDelay = 0.5
 probeSize = Vector2(32, 32)
 turnCooldown = 0.08
 minMoveGrid = 2
+mass = 1.0
 hp = 100
 speed = 16
 type = 401

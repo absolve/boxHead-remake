@@ -150,6 +150,36 @@ func cellCenter(cell: Vector2i) -> Vector2:
 
 
 ## 该格是否是障碍
+## 物理层位掩码（对应 project.godot 的 2d_physics/layer_*）
+const LAYER_PLAYER := 1
+const LAYER_ENEMY := 2
+const LAYER_ITEM := 4
+const LAYER_WALL := 8
+
+## 僵尸占用的格子：cellKey -> Zombie
+##
+## 用来避免多只僵尸挤在同一格：canStep 会避开这些格，
+## 让它们排队/绕行，而不是一路硬推到重叠。
+var zombieCells: Dictionary = {}
+
+
+## 登记某个格子被哪只僵尸占用
+func setZombieCell(cell: Vector2i, z: Node) -> void:
+	zombieCells[cellKey(cell)] = z
+
+
+## 注销占用（只有当占用者确实是它时才删）
+func clearZombieCell(cell: Vector2i, z: Node) -> void:
+	var k := cellKey(cell)
+	if zombieCells.get(k) == z:
+		zombieCells.erase(k)
+
+
+## 取某格上的僵尸（没有则 null）
+func getZombieAt(cell: Vector2i) -> Node:
+	return zombieCells.get(cellKey(cell))
+
+
 func isObstacle(cell: Vector2i) -> bool:
 	return obstacle.has(cellKey(cell))
 

@@ -164,3 +164,8 @@ ALL DEFAULTS,ALL DEFAULTS,全部默认
 Clear,Clear,清空
 restored to default,restored to default,已恢复默认
 all restored to default,all restored to default,已全部恢复默认
+"Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!","Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!",开关与僵尸、假墙、油桶的碰撞。关闭后不计入高分！
+Object collision:,Object collision:,物体碰撞：
+Devils:,Devils:,恶魔：
+Friendly Fire:,Friendly Fire:,友军伤害：
+Language:,Language:,语言：

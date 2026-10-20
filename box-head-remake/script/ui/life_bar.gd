@@ -16,7 +16,15 @@ extends Control
 ## 当前血量：设置时自动更新进度条
 @export var hp: int = 10:
 	set(val):
+		# 值没变就不要重启计时器：
+		# 自动回血期间每帧都会赋值，若无条件 showLifeBar() 会不断重置 2 秒计时，
+		# 导致定时器永远不触发、淡出永远不发生。
+		if val == hp:
+			return
 		hp = val
+		# 节点还没进树时 bar 还是 null（@onready 未执行），直接跳过
+		if bar == null:
+			return
 		bar.value = val
 		updateTint()
 		if hp > 0:
@@ -26,6 +34,8 @@ extends Control
 @export var maxHp: int = 10:
 	set(val):
 		maxHp = val
+		if bar == null:
+			return
 		bar.max_value = val
 		updateTint()
 
