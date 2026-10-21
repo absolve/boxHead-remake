@@ -13,6 +13,12 @@
 | [03-weapons.md](03-weapons.md) | 武器系统与全部武器数值 |
 | [04-enemy-stats.md](04-enemy-stats.md) | 敌人数值、玩家数值、关卡与难度曲线 |
 
+## 其他
+
+| 文件 | 内容 |
+|---|---|
+| [future-improvements.md](future-improvements.md) | 后续功能改进：大图流场局部刷新（数组化、增量 BFS、分层窗口）与多玩家流场组织（多源叠加场 vs 每玩家一场） |
+
 ## 如何验证
 
 结论不是"看着像"，三条检查都能自己跑：

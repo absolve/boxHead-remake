@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bi1gn3fq6lbe1"]
+
+[ext_resource type="Script" uid="uid://d0uka6n0f6cmb" path="res://script/test/test_flow_field.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scene/level/game_camera.tscn" id="2_cam"]
+
+[node name="testFlowField" type="Node2D" unique_id=1219091267]
+script = ExtResource("1_test")
+
+[node name="camera" parent="." unique_id=1777569877 instance=ExtResource("2_cam")]
