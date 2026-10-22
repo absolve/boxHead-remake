@@ -29,19 +29,43 @@ var spawnTimer: Timer
 
 
 func _ready() -> void:
-	MapData.selectedMapId = 0
+	# 和 map 一致：背景色 + 按 selectedMapId 加载房间（没有就回退 room_001）
+	RenderingServer.set_default_clear_color(Color("#EDE2CF"))
 	MapData.playerCount = 1
 
-	room = load("res://scene/level/room_001.tscn").instantiate()
+	var path := "res://scene/level/room_001.tscn"
+	if MapData.selectedMapId > 0:
+		var alt := "res://scene/level/room_%04d.tscn" % MapData.selectedMapId
+		if ResourceLoader.exists(alt):
+			path = alt
+
+	room = load(path).instantiate()
 	add_child(room)
 	MapData.mapSize = room.mapSize
 	updateFlowField()
 	font = ThemeDB.fallback_font
 
+	# 房间外圈补一层地面色，避免视口边缘露黑（map 里由房间贴图铺满，测试场景没有 UI 遮罩）
+	var ground := ColorRect.new()
+	ground.color = Color("#EDE2CF")
+	ground.z_index = -100
+	ground.position = Vector2.ZERO
+	ground.size = MapData.mapSize
+	add_child(ground)
+
 	# 一个玩家当追击目标（必须在僵尸之前生成，僵尸 _ready 里要找目标）
 	var p: Node2D = player.instantiate()
+	p.playerId = 1
 	p.global_position = findFreeSpawn(room.playerSpawnPoint[0].global_position)
 	add_child(p)
+
+	# 测试场景给玩家开无敌：否则几十只僵尸几秒就把他打死，
+	# 之后全是"无目标"状态，测不到寻路行为。
+	# （player.gd 里 invincible 是 bool，invincibleTime 是倒计时，两个都要设）
+	p.invincible = true
+	p.invincibleTime = 0.0
+	p.ani.modulate.a = 1.0
+	print("[test_flow_field] 玩家已设为无敌，用于持续观察寻路")
 
 	# 定时逐个刷僵尸（照 map 的 spawnTimer 思路）
 	spawnTimer = Timer.new()
@@ -49,6 +73,12 @@ func _ready() -> void:
 	spawnTimer.timeout.connect(spawnOneZombie)
 	add_child(spawnTimer)
 	spawnTimer.start()
+
+
+## 离开测试场景时把全局状态还原，避免影响后续进 map
+func _exit_tree() -> void:
+	MapData.playerCount = 4
+	MapData.zombieCells.clear()
 
 
 ## 生成一只僵尸：只在没被占住的出生点刷（照 map 的 hasBlock 判定，

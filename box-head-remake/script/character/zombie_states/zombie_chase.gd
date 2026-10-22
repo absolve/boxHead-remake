@@ -1,197 +1,159 @@
 extends State
 
-## Chase 状态 —— 流场寻路追击玩家
+## Chase —— 按原版 Boxhead 还原（2P/CThing_Creature.as:159-181 + CMap_Cell.as:280-335）
 ##
-## 骨架与阻挡判定均对齐 godot4flow-field demo 的 enemy.gd（selectFlowField + findDir）：
-##   ffp：    每帧只对**当前方向**做一次整格 ShapeCast；被挡才做旋转扫描
-##            （7 次、每次 45°，半格探测），选"与原方向点积最大"的可走方向，
-##            切 findDir 承诺方向绕行；
-##   findDir：沿承诺方向一直走（同样只探当前方向，再被挡再旋转换向），
-##            离开起点满 minMoveGrid 格且流场方向恢复可走后切回 ffp。
-## 阻挡必须用 ShapeCast 而不是纯格子判定：格子判定看不到墙的物理边缘，
-## 身体被挤到格子边缘时会顶着墙一直往前蹭。
-## 朝向 angle 每帧直接取移动方向（流场方向本身就是 8 向值），追击途中不再用 Turn。
+## 原版核心：
+##   · 一次只走**一格**，耗时 1/mSpeed 帧（正交 50 帧=2s，对角 71 帧≈2.84s）
+##   · 走的全过程中方向固定，**绝不中途改向**
+##   · 到达后吸附格心，再重新决策
+## 决策：① 目标方向更近且可走 → 用它
+##       ② 当前方向可走 → 保持（不抖动的关键）
+##       ③ 按距离升序全扫描，取第一个可走方向
+##       ④ 都不行 → 站 1 秒（State_Wait）
 
-## 宿主
 var z: Zombie:
 	get:
 		return actor as Zombie
 
-## 追击子状态：Game.enemyState.ffp（沿流场）/ Game.enemyState.findDir（绕行）
-var moveState: int = Game.enemyState.ffp
-## 当前承诺的移动方向（findDir 模式下保持，直到被挡或切回流场）
-var currDir: Vector2 = Vector2.ZERO
-## 进入绕行时所在的格子
-var lastGrid: Vector2i = Vector2i.ZERO
+## 是否正在走一格
+var moving: bool = false
+var moveTimer: float = 0.0
+var moveDuration: float = 1.0
+var moveFrom: Vector2 = Vector2.ZERO
+var moveTo: Vector2 = Vector2.ZERO
+## 无路时的等待计时
+var waitTimer: float = 0.0
 
 
 func enter(_msg: Dictionary = {}) -> void:
-	moveState = Game.enemyState.ffp
-	currDir = Vector2.ZERO
+	waitTimer = 0.0
 
 
 func exit() -> void:
 	z.velocity = Vector2.ZERO
+	cancelMove()
 
 
 func physicsUpdate(delta: float) -> void:
 	if z.isDead:
 		return
 
-	# 目标丢失（玩家死亡/被回收）→ 站桩等刷新
+	# 目标丢失 → 乱走（原版无此分支，这里避免玩家死后全体站桩）
 	if not z.refreshTarget(delta):
-		z.velocity = Vector2.ZERO
-		z.playAnim("stand")
+		_wanderFallback(delta)
 		return
 
-	# ---- 进入攻击距离：朝向对就直接打，不对就转身再打
+	# 攻击距离内且朝向对 → 打
 	if z.targetInAttackRange():
-		z.velocity = Vector2.ZERO
+		cancelMove()
 		if z.isFacingTarget():
 			stateMachine.transitionTo(&"Attack")
 		else:
 			stateMachine.transitionTo(&"Turn", {"to": z.dirToTarget(), "next": "Attack"})
 		return
 
-	# ---- 沿流场走；被挡就 ShapeCast 旋转找最接近的可走方向
-	var dir: Vector2
-	if moveState == Game.enemyState.ffp:
-		dir = selectFlowField()
-	else:
-		dir = findDir()
+	# ---- 正在走一格：期间不改方向
+	if moving:
+		moveTimer += delta
+		var t: float = clampf(moveTimer / moveDuration, 0.0, 1.0)
+		z.global_position = moveFrom.lerp(moveTo, t)
+		z.playAnim("walk")
+		if t >= 1.0:
+			_finishMove()
+		return
 
+	# ---- 到达格心，重新决策
+	var cell: Vector2i = z.gridPosition()
+	var cDir: int = z.angle
+	var tDir: int = Zombie.angleFromVector(z.target.global_position - z.global_position)
+
+	var d: int = z.navDirection(cDir, tDir)
+
+	if d == -1:
+		# 出生点在墙里时八个方向全堵：先朝最近的空格走出去（escapeDirection）
+		var esc: Vector2 = z.escapeDirection()
+		if esc != Vector2.ZERO and esc.length() > 0.01:
+			var escCell: Vector2i = z.gridPosition() + Vector2i(roundi(esc.x), roundi(esc.y))
+			if not MapData.isObstacle(escCell):
+				# 直接朝空格中心挪（不做回合判定，先脱困）
+				z.global_position = z.global_position.move_toward(
+						MapData.cellCenter(escCell), z.speed * delta)
+				z.playAnim("walk")
+				waitTimer = 0.0
+				return
+		# 真的无路：站 1 秒后重试（原版 State_Wait）
+		waitTimer += delta
+		z.velocity = Vector2.ZERO
+		z.playAnim("stand")
+		if waitTimer >= 1.0:
+			waitTimer = 0.0
+		return
+	waitTimer = 0.0
+
+	# 朝向不对 → 先转身（Turn 结束后 next=Chase，会重新进来）
+	# 原版 SetState_WithDirection_Wait：刚转完身又不对 → 先 Sleep，避免反复转
+	if d != cDir:
+		if z.justTurned:
+			z.justTurned = false
+			stateMachine.transitionTo(&"Sleep", {"next": "Chase", "time": Zombie.TURN_RETRY_WAIT})
+			return
+		stateMachine.transitionTo(&"Turn", {"to": d, "next": "Chase"})
+		return
+
+	# 走起来了 → 说明「刚转完身」这段已经过去，清掉防抖标记
+	# （原版用 mReturnStateID == State_Turn 判断，只在转完的下一帧生效）
+	z.justTurned = false
+	_startMove(cell, d)
+
+
+## 开始走一格：预留目标格并按时长插值
+func _startMove(cell: Vector2i, d: int) -> void:
+	var step: Vector2i = Zombie.dirStep(d)
+	var nextCell: Vector2i = cell + step
+
+	# 原版 State_CellToCell_Init：立刻把目标格标成"有生物"
+	MapData.reserveCell(nextCell, z)
+	z.reservedCell = nextCell
+
+	moveFrom = z.global_position
+	moveTo = MapData.cellCenter(nextCell)
+	moveDuration = z.cellTravelTime(d)
+	moveTimer = 0.0
+	moving = true
+	# 同步 velocity：受击方向、音效等外部逻辑依赖它（位置本身是插值移动的）
+	z.velocity = (moveTo - moveFrom).normalized() * z.speed
+	z.playAnim("walk")
+
+
+## 到达：吸附格心、释放预留
+func _finishMove() -> void:
+	z.global_position = moveTo
+	z.velocity = Vector2.ZERO
+	z.knockbackDelta = Vector2.ZERO
+	moving = false
+	moveTimer = 0.0
+	if z.reservedCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(z.reservedCell, z)
+		z.reservedCell = Vector2i(-9999, -9999)
+
+
+## 中断移动（进攻击 / 退出状态时）
+func cancelMove() -> void:
+	if not moving:
+		return
+	moving = false
+	moveTimer = 0.0
+	if z.reservedCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(z.reservedCell, z)
+		z.reservedCell = Vector2i(-9999, -9999)
+
+
+## 没有目标时的兜底：随便找个能走的方向挪
+func _wanderFallback(delta: float) -> void:
+	var dir: Vector2 = z.wanderDir()
 	if dir == Vector2.ZERO:
 		z.velocity = Vector2.ZERO
 		z.playAnim("stand")
 		return
-
-	z.angle = Zombie.angleFromVector(dir)
-	z.oldAngle = z.angle
 	z.moveInDirection(dir, delta)
 	z.playAnim("walk")
-
-
-# ---------------------------------------------------------------- 流场模式（demo selectFlowField）
-
-## 取流场方向；整格探测被挡就旋转找"与原方向最接近"的可走方向，切 findDir
-func selectFlowField() -> Vector2:
-	var dir: Vector2 = MapData.getFlowDir(z.global_position, z.targetId())
-	if dir == Vector2.ZERO:
-		# 流场无方向（站在障碍格/不可达区，比如出生点压墙、被挤进墙里）→ 先脱困
-		return escapeDir()
-
-	z.shapeCast.target_position = MapData.cellSize * dir
-	z.shapeCast.force_shapecast_update()
-
-	if not z.shapeCast.is_colliding():
-		return dir.normalized()
-
-	# 流场方向被挡：旋转 7 次（45° 一步）收集可走候选
-	var newDir := dir
-	var cell := z.gridPosition()
-	var canMoveDir: Array = []
-	for i in range(7):
-		newDir = newDir.rotated(PI / 4)
-		if isOutsideMap(cell + Vector2i(roundi(newDir.x), roundi(newDir.y))):
-			continue
-		z.shapeCast.target_position = MapData.cellSize / 2 * newDir
-		z.shapeCast.force_shapecast_update()
-		if not z.shapeCast.is_colliding():
-			canMoveDir.append(newDir)
-
-	if canMoveDir.is_empty():
-		# 真无路可走 → 站一帧，下帧重试（同伴挪动后即可恢复）
-		return Vector2.ZERO
-
-	# 按与原方向的点积排序，选最接近流场方向的可走方向
-	canMoveDir.sort_custom(func(a, b): return a.dot(dir) >= b.dot(dir))
-	currDir = canMoveDir[0]
-	moveState = Game.enemyState.findDir
-	lastGrid = cell
-	return currDir.normalized()
-
-
-# ---------------------------------------------------------------- 绕行模式（demo findDir）
-
-## 沿 currDir 前进；被挡就地旋转换向；走满 minMoveGrid 格后探测流场是否恢复可走
-func findDir() -> Vector2:
-	var cell := z.gridPosition()
-
-	if currDir != Vector2.ZERO:
-		z.shapeCast.target_position = MapData.cellSize * currDir
-		z.shapeCast.force_shapecast_update()
-
-		if z.shapeCast.is_colliding():
-			# 当前方向被挡：旋转找可走方向
-			var newDir := currDir
-			var canMoveDir: Array = []
-			for i in range(7):
-				newDir = newDir.rotated(PI / 4)
-				if isOutsideMap(cell + Vector2i(roundi(newDir.x), roundi(newDir.y))):
-					continue
-				z.shapeCast.target_position = MapData.cellSize / 2 * newDir
-				z.shapeCast.force_shapecast_update()
-				if not z.shapeCast.is_colliding():
-					canMoveDir.append(newDir)
-
-			if canMoveDir.is_empty():
-				currDir = Vector2.ZERO
-			else:
-				canMoveDir.sort_custom(func(a, b): return a.dot(currDir) >= b.dot(currDir))
-				currDir = canMoveDir[0]
-			lastGrid = cell
-	else:
-		moveState = Game.enemyState.ffp
-
-	# 走够 minMoveGrid 格 → 回头探测流场方向是否恢复可走
-	if currDir != Vector2.ZERO \
-			and lastGrid.distance_squared_to(cell) > z.minMoveGrid * z.minMoveGrid:
-		var dir: Vector2 = MapData.getFlowDir(z.global_position, z.targetId())
-		if dir != Vector2.ZERO:
-			z.shapeCast.target_position = MapData.cellSize / 2 * dir
-			z.shapeCast.force_shapecast_update()
-			if not z.shapeCast.is_colliding():
-				moveState = Game.enemyState.ffp
-				return dir.normalized()
-
-	return currDir.normalized() if currDir != Vector2.ZERO else Vector2.ZERO
-
-
-## 目标格是否超出地图（demo 的边界检查；旋转候选会指到图外）
-func isOutsideMap(cell: Vector2i) -> bool:
-	var grid := Vector2i(int(MapData.mapSize.x / MapData.cellSize),
-			int(MapData.mapSize.y / MapData.cellSize))
-	return cell.x < 0 or cell.y < 0 or cell.x >= grid.x or cell.y >= grid.y
-
-
-## 脱困：站在障碍格里时，8 个方向做整格探测取最接近目标方向的出路
-##
-## 必须用整格探测：半格探测从墙格中心够不到墙外，8 个方向全会判成被挡。
-## 也不能用纯格子判定：人已经在障碍格里，格子数据帮不上忙。
-func escapeDir() -> Vector2:
-	var base: Vector2 = z.vectorFromAngle(z.dirToTarget())
-	var cell := z.gridPosition()
-	var best := Vector2.ZERO
-	var bestDot := -INF
-	var newDir := base
-	for i in range(8):
-		if i > 0:
-			newDir = newDir.rotated(PI / 4)
-		if isOutsideMap(cell + Vector2i(roundi(newDir.x), roundi(newDir.y))):
-			continue
-		z.shapeCast.target_position = MapData.cellSize * newDir
-		z.shapeCast.force_shapecast_update()
-		if z.shapeCast.is_colliding():
-			continue
-		var dot := newDir.dot(base)
-		if dot > bestDot:
-			bestDot = dot
-			best = newDir
-
-	if best == Vector2.ZERO:
-		return Vector2.ZERO
-
-	currDir = best
-	moveState = Game.enemyState.findDir
-	lastGrid = cell
-	return best.normalized()

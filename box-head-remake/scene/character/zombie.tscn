@@ -210,9 +210,13 @@
 [ext_resource type="Script" uid="uid://bxcplo2fkqad3" path="res://script/character/zombie_states/zombie_attack.gd" id="204_attack"]
 [ext_resource type="Script" uid="uid://711t1lvk6nbp" path="res://script/character/zombie_states/zombie_hurt.gd" id="205_hurt"]
 [ext_resource type="Script" uid="uid://djn6obe40b7j8" path="res://script/character/zombie_states/zombie_dead.gd" id="206_dead"]
+[ext_resource type="Script" path="res://script/character/zombie_states/zombie_sleep.gd" id="207_sleep"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wmsqm"]
-size = Vector2(25, 25)
+[sub_resource type="CircleShape2D" id="CircleShape2D_detect"]
+radius = 32.0
+
+[sub_resource type="CircleShape2D" id="RectangleShape2D_wmsqm"]
+radius = 14.4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tet0w"]
 animations = [{
@@ -1062,10 +1066,11 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_keefw"]
-size = Vector2(18, 25)
+[sub_resource type="CircleShape2D" id="RectangleShape2D_keefw"]
+radius = 14.4
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jegkb"]
+size = Vector2(16, 16)
 
 [node name="zombie" unique_id=1183646961 groups=["enemy"] instance=ExtResource("1_jeayq")]
 collision_layer = 2
@@ -1110,7 +1115,7 @@ debug_color = Color(0.37285107, 0.48749793, 0.97211987, 0.41960785)
 visible = false
 shape = SubResource("RectangleShape2D_jegkb")
 max_results = 8
-collision_mask = 14
+collision_mask = 15
 collide_with_areas = true
 
 [node name="attackSound" type="AudioStreamPlayer2D" parent="." index="4" unique_id=1081087736]
@@ -1138,3 +1143,14 @@ script = ExtResource("205_hurt")
 
 [node name="Dead" type="Node" parent="StateMachine" index="5" unique_id=463805397]
 script = ExtResource("206_dead")
+
+[node name="Sleep" type="Node" parent="StateMachine" index="6"]
+script = ExtResource("207_sleep")
+
+[node name="detect" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 14
+monitorable = false
+
+[node name="detectShape" type="CollisionShape2D" parent="detect"]
+shape = SubResource("CircleShape2D_detect")

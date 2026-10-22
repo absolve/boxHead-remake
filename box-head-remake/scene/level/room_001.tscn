@@ -11,9 +11,12 @@
 
 [node name="room001" unique_id=124433037 instance=ExtResource("1_kwe3j")]
 script = ExtResource("2_xslsq")
+boxScene = ExtResource("8_qucu1")
+mapSize = Vector2(704, 544)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=409961369]
+visible = false
 position = Vector2(300, 240)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_1p7uw")
@@ -65,20 +68,22 @@ z_index = 20
 position = Vector2(639, 480)
 
 [node name="mapSign" parent="." index="13" unique_id=1830752461 instance=ExtResource("6_fbdb3")]
-position = Vector2(304, 10)
+dir = 3
+position = Vector2(304, 16)
 debug = true
 
 [node name="mapSign2" parent="." index="14" unique_id=433052721 instance=ExtResource("6_fbdb3")]
-position = Vector2(338, 10)
+dir = 3
+position = Vector2(338, 16)
 debug = true
 
 [node name="mapSign3" parent="." index="15" unique_id=1840325871 instance=ExtResource("6_fbdb3")]
-position = Vector2(304, 465)
+position = Vector2(304, 528)
 dir = 2
 debug = true
 
 [node name="mapSign4" parent="." index="16" unique_id=210654166 instance=ExtResource("6_fbdb3")]
-position = Vector2(338, 465)
+position = Vector2(338, 528)
 dir = 2
 debug = true
 
@@ -137,39 +142,31 @@ z_index = 4
 position = Vector2(368, 432)
 
 [node name="mapSign7" parent="." index="31" unique_id=306067898 instance=ExtResource("6_fbdb3")]
-position = Vector2(304, 39)
+position = Vector2(304, 48)
 type = 703
 debug = true
 
-[node name="box" parent="." index="32" unique_id=847192445 instance=ExtResource("8_qucu1")]
-position = Vector2(304, 40)
-healThreshold = 0.5
-
-[node name="mapSign8" parent="." index="33" unique_id=1640443326 instance=ExtResource("6_fbdb3")]
-position = Vector2(338, 440)
+[node name="mapSign8" parent="." index="32" unique_id=1640443326 instance=ExtResource("6_fbdb3")]
+position = Vector2(338, 480)
 type = 703
 dir = 2
 
-[node name="box2" parent="." index="34" unique_id=2000918025 instance=ExtResource("8_qucu1")]
-position = Vector2(338, 440)
-healThreshold = 0.5
-
-[node name="mapSign9" parent="." index="35" unique_id=1862779200 instance=ExtResource("6_fbdb3")]
+[node name="mapSign9" parent="." index="33" unique_id=1862779200 instance=ExtResource("6_fbdb3")]
 position = Vector2(300, 240)
 type = 700
 dir = 1
 
-[node name="mapSign10" parent="." index="36" unique_id=304784552 instance=ExtResource("6_fbdb3")]
+[node name="mapSign10" parent="." index="34" unique_id=304784552 instance=ExtResource("6_fbdb3")]
 position = Vector2(300, 280)
 type = 700
 dir = 1
 
-[node name="mapSign11" parent="." index="37" unique_id=2070025851 instance=ExtResource("6_fbdb3")]
+[node name="mapSign11" parent="." index="35" unique_id=2070025851 instance=ExtResource("6_fbdb3")]
 position = Vector2(340, 240)
 type = 700
 dir = 0
 
-[node name="mapSign12" parent="." index="38" unique_id=859361351 instance=ExtResource("6_fbdb3")]
+[node name="mapSign12" parent="." index="36" unique_id=859361351 instance=ExtResource("6_fbdb3")]
 position = Vector2(340, 280)
 type = 700
 dir = 0

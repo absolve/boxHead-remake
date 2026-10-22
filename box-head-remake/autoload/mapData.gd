@@ -156,6 +156,38 @@ const LAYER_ENEMY := 2
 const LAYER_ITEM := 4
 const LAYER_WALL := 8
 
+## 房间真实世界边界（相机夹取用；原点不一定是 0,0）
+var mapRect: Rect2 = Rect2(0, 0, 0, 0)
+
+## 导航距离场：cellKey -> 到玩家的曼哈顿距离（原版 CMap_Cell.nDist）
+var navDist: Dictionary = {}
+
+## 生物占位：cellKey -> Node（原版 mCollide_Creature，僵尸移动期间锁定目标格）
+var reservedCells: Dictionary = {}
+
+## 预留一格给某只僵尸（它要走过去）
+func reserveCell(cell: Vector2i, who: Node) -> void:
+	reservedCells[cellKey(cell)] = who
+
+
+## 释放预留
+func releaseCell(cell: Vector2i, who: Node) -> void:
+	var k := cellKey(cell)
+	if reservedCells.get(k) == who:
+		reservedCells.erase(k)
+
+
+## 该格是否被别的僵尸预留
+func isReservedByOther(cell: Vector2i, who: Node) -> bool:
+	var r: Node = reservedCells.get(cellKey(cell))
+	return r != null and r != who
+
+
+## 某格到（最近计算的）玩家的距离；未知返回 -1
+func navDistAt(cell: Vector2i) -> int:
+	return int(navDist.get(cellKey(cell), -1))
+
+
 ## 僵尸占用的格子：cellKey -> Zombie
 ##
 ## 用来避免多只僵尸挤在同一格：canStep 会避开这些格，
@@ -181,6 +213,13 @@ func getZombieAt(cell: Vector2i) -> Node:
 
 
 func isObstacle(cell: Vector2i) -> bool:
+	# 地图外一律当障碍，否则僵尸会走出边界一直移动
+	if cell.x < 0 or cell.y < 0:
+		return true
+	var w: int = int(mapSize.x / cellSize)
+	var h: int = int(mapSize.y / cellSize)
+	if cell.x >= w or cell.y >= h:
+		return true
 	return obstacle.has(cellKey(cell))
 
 
@@ -278,6 +317,9 @@ func computeFields(id, target: Vector2 = Vector2.INF) -> void:
 			dist[cellKey(n)] = d + 1
 			queue.append(n)
 
+	# ---- 存档 BFS 距离场（原版 CMap_Cell.nDist，供 Nav_Direction 比较远近）
+	navDist = dist
+
 	# ---- 方向场：每格指向距离最小的邻居
 	var field := {}
 	for x in range(cellX):
@@ -319,6 +361,7 @@ func computeFields(id, target: Vector2 = Vector2.INF) -> void:
 # @param pos 当前世界坐标位置（Vector2）
 # @param id 玩家ID（int）
 # @return 流场方向向量（Vector2），无数据时返回ZERO
+
 func getFlowDir(pos: Vector2, id) -> Vector2:
 	var key := cellKey(worldToCell(pos))
 	if flowFieldDict.has(id):

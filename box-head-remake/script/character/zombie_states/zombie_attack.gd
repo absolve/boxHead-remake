@@ -51,6 +51,8 @@ func physicsUpdate(delta: float) -> void:
 		if not hasHit and z.ani.frame >= z.attackHitFrame:
 			hasHit = true
 			z.dealDamage()
+			# 原版：命中后进 State_Sleep 停 10 帧（0.4 秒）再回追击
+			stateMachine.transitionTo(&"Sleep", {"next": "Chase", "time": 0.4})
 		return
 
 	# 挥击结束：等冷却

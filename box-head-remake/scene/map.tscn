@@ -422,7 +422,6 @@ animations = [{
 
 [node name="map" type="Node2D" unique_id=821564601]
 script = ExtResource("1_rgtto")
-isDebug = false
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 

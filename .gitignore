@@ -26,3 +26,6 @@ __pycache__/
 /box-head-remake/build
 /.vscode
 /box-head-remake/export_presets.cfg
+/box-head-remake/sprite/map
+
+/doc/tools

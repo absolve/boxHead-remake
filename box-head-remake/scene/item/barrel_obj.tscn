@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://dcb61sk60lst1" path="res://script/item/barrel_obj.gd" id="2_j1kyk"]
 [ext_resource type="Texture2D" path="res://sprite/shape/DefineSprite_2265_Object.Barrel/1.png" id="3_j1kyk"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j1kyk"]
-size = Vector2(25, 25)
+[sub_resource type="CircleShape2D" id="RectangleShape2D_j1kyk"]
+radius = 13.4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hwscq"]
 animations = [{

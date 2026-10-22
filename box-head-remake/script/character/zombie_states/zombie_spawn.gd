@@ -39,10 +39,8 @@ func physicsUpdate(delta: float) -> void:
 		z.angle = want
 		z.oldAngle = want
 
-	# 前方被挡（例如正好卡在墙口）就停下来等，不硬挤
-	if z.canStep(Zombie.vectorFromAngle(z.angle)):
-		z.moveInDirection(to, delta)
-		z.playAnim("walk")
-	else:
-		z.velocity = Vector2.ZERO
-		z.playAnim("stand")
+	# 直接朝出生点走，**不做 canStep 判定**：
+	# canStep 走 ShapeCast，会命中同出生点的其他僵尸，
+	# 导致一出生就互相判挡、站着不动直到 4 秒超时。
+	z.moveInDirection(to, delta)
+	z.playAnim("walk")

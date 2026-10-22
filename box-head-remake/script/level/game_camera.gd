@@ -9,6 +9,9 @@ extends Camera2D
 ## 跟随平滑速度（越大越跟手）
 @export var smoothSpeed: float = 8.0
 
+## 相机四周至少离地图边缘多远（像素）：原版相机不会贴到地图边界
+@export var edgeMargin: float = 32.0
+
 ## 当前跟随目标
 var target: Node2D = null
 
@@ -37,14 +40,26 @@ func _physics_process(delta: float) -> void:
 		if target == null:
 			return
 
-	var ms: Vector2 = MapData.mapSize
 	var vp: Vector2 = get_viewport_rect().size
 	var goal: Vector2 = target.global_position
 
-	# 先按视口中心算出镜头应该停在哪
-	# 地图比视口小就居中，否则夹在边界内
-	var cx: float = ms.x * 0.5 if ms.x <= vp.x else clampf(goal.x, vp.x * 0.5, ms.x - vp.x * 0.5)
-	var cy: float = ms.y * 0.5 if ms.y <= vp.y else clampf(goal.y, vp.y * 0.5, ms.y - vp.y * 0.5)
+	# 地图边界用「格子网格」= (0,0)..mapSize，而不是房间内容的实际包围盒。
+	# 用 mapRect 会让相机跟着墙体包围盒偏移（room_001 里整体下移 25px），
+	# 而设计上红框 = mapSize，内缩 edgeMargin 正好是相机视口。
+	var bounds := Rect2(Vector2.ZERO, MapData.mapSize)
+	if bounds.size.x <= 0.0 or bounds.size.y <= 0.0:
+		bounds = MapData.mapRect
+
+	# 相机四周至少留 edgeMargin（默认 32px = 一格），不能贴到地图边缘
+	bounds = bounds.grow(-edgeMargin)
+
+	# 视口中心的允许范围：保证视口完整落在 bounds 内
+	var minC: Vector2 = bounds.position + vp * 0.5
+	var maxC: Vector2 = bounds.end - vp * 0.5
+
+	# 地图（内缩后）比视口还小 → 居中；否则夹取
+	var cx: float = (bounds.position.x + bounds.size.x * 0.5) if minC.x > maxC.x else clampf(goal.x, minC.x, maxC.x)
+	var cy: float = (bounds.position.y + bounds.size.y * 0.5) if minC.y > maxC.y else clampf(goal.y, minC.y, maxC.y)
 	var goalCenter := Vector2(cx, cy)
 
 	# Camera2D 的 anchor_mode 决定了 position 指的是哪一点：

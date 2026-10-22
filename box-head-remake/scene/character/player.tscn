@@ -430,7 +430,8 @@
 [ext_resource type="AudioStream" path="res://sound/540_540 Creature.Player.Scream.1.mp3" id="428_vluh7"]
 [ext_resource type="AudioStream" path="res://sound/551_551 Object.Pickup.mp3" id="429_m6mmm"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pv5j"]
+[sub_resource type="CircleShape2D" id="RectangleShape2D_8pv5j"]
+radius = 14.4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4miyu"]
 animations = [{
@@ -2499,8 +2500,8 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_206a0"]
-size = Vector2(15, 20)
+[sub_resource type="CircleShape2D" id="RectangleShape2D_206a0"]
+radius = 14.4
 
 [sub_resource type="Animation" id="Animation_m6mmm"]
 length = 0.001

@@ -1,9 +1,11 @@
 extends State
 
-## Hurt 状态 —— 受击硬直
+## Hurt 状态 —— 受击硬直 + 击退
 ##
-## 对应原版僵尸的受击动画：正面中弹播 hitFront_N，背面中弹播 hitRear_N，
-## 期间带一点击退惯性，hurtDelay 秒后回到 Chase。
+## 对应原版 `State_BulletHit`（CThing_Creature.as:271-320）：
+##   进入：由击退速度算出衰减帧数（每帧 ×0.65，直到 <0.01）；清掉自己的格子占用
+##   每帧：位置先经 `CreatureCollide()` 做圆形修正（先生物后墙，迭代 2 次），
+##         再 Move；位移每帧 ×0.65
 ## 是否"正面"由 zombie.hit() 根据攻击来向与当前朝向的夹角算出。
 
 ## 宿主
@@ -14,20 +16,28 @@ var z: Zombie:
 
 func enter(_msg: Dictionary = {}) -> void:
 	z.clearCommit()
+	# 原版 ClearCollideCell：受击时释放格子占用
+	z.clearReservation()
 	z.playAnim("hitFront" if z.hitFromFront else "hitRear", true)
 
 
 func physicsUpdate(delta: float) -> void:
-	# 击退：速度按 0.65/逻辑帧 衰减（原版 mDelta *= 0.65）
-	if z.knockbackTime > 0.0 and z.velocity.length() > 8.0:
-		z.knockbackTime -= delta
-		# 60fps 下每物理帧相当于 1/2.4 个逻辑帧，所以要开方
-		var decay: float = pow(z.KNOCKBACK_DECAY, delta * MapData.TICKS_PER_SEC)
-		z.velocity *= decay
-		z.move_and_collide(z.velocity * delta)
-	else:
-		z.velocity = Vector2.ZERO
-		z.knockbackTime = 0.0
+	# 60fps 下每物理帧 ≈ 1/2.4 个逻辑帧，位移按逻辑帧衰减
+	if z.knockbackFrames > 0 and z.knockbackDelta.length() > 0.5:
+		z.knockbackFrames -= 1
 
-	if stateTime >= z.hurtDelay and z.knockbackTime <= 0.0:
+		# ① 先算出本帧要走到的位置
+		var next: Vector2 = z.global_position + z.knockbackDelta * MapData.cellSize
+
+		# ② 圆形位置修正（生物 → 墙，迭代 2 次）
+		var corrected: Vector2 = z.creatureCollide(next)
+
+		# ③ 应用并衰减
+		z.global_position = corrected
+		z.knockbackDelta *= 0.65
+	else:
+		z.knockbackDelta = Vector2.ZERO
+		z.knockbackFrames = 0
+
+	if stateTime >= z.hurtDelay and z.knockbackFrames <= 0:
 		stateMachine.transitionTo(&"Chase")
