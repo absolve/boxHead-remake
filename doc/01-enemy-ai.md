@@ -4,6 +4,10 @@
 > 版本串：`Boxhead: 2Play Rooms: Final.1.00110 (16/05/2007 22:37)`，© Sean Cooper 2007
 > 旁证：`oldGame/boxheadmorerooms.swf`（同引擎 scidd 的另一版）
 > 本文所有 `路径:行号` 均相对 `oldGame/_decompiled/Boxhead_2Play/linearized/`（旁证相对 `oldGame/_decompiled/MoreRooms/linearized/`）。
+>
+> **2026-10-22 复核**：已取得全量明文源码 `F:\scripts`（每类一个 `.as`，零加密、无文件名错位）。
+> 本文核心结论（状态机 / 感知 / 目标选择 / 攻击 / 击退 / 导航）已逐条对照该源码验证无误；
+> 正文中标 `F:\scripts` 的引用即来自它，行号为该提取中的行号。
 
 ---
 
@@ -157,8 +161,10 @@ CWorld.Process():
 4. `CMap_Cell.Nav_Restart()`（`:159`）。
 5. 收集所有玩家的格子，`CMap_Cell.Nav_Update(玩家格列表)`（`:160`–`:168`）。
 
-> 顺序要点：**导航距离场在敌人 Process 之后、基于玩家「本帧移动前」的格子重算**，
-> 因此敌人用的是上一帧的玩家位置（【推断】）。
+> 顺序要点（已对照 `F:\scripts` 明文源码确证，`__Packages/Thing/CThing_Collection.as:152-165`）：
+> 种子格取自**玩家本帧移动之后**的 `mPosition`（所有 Thing 先跑完，玩家在自身 Process 里已位移）；
+> 但铺场本身发生在所有 Thing 处理完之后，所以**敌人本帧读到的仍是上一帧铺好的距离场**。
+> 即「场不中断、种子是新的」（原写「本帧移动前」不准，已修正）。
 
 ---
 
@@ -248,9 +254,16 @@ if (_loc3_.mThing._CLASSID_ != this.mTarget_Player._CLASSID_) return false;
   玩家的 `mAffectFlags` 里含 `mAffect_PlayerLineOfSight`
   （`__Packages/Thing/Creature/CThing_Creature_Player.as:153`），所以对玩家生效。
 
-**没读到的东西（【未恢复】）**：`Collide_Line` 本身在 `__Packages/World/Map/CMap_Collide.as`
-（该文件 89 处加密记号，池未配上），因此射线是「格步进」还是「连续检测」无法从代码确认；
-只知道它按 `mCollideRadius` 膨胀、返回 `{mThing, mPOI, mCollideType}`（由调用方用法反推，【推断】）。
+**`Collide_Line` 内部实现（原【未恢复】，2026-10-22 已由 `F:\scripts` 明文源码确证，
+`F:\scripts\__Packages\World\Map\CMap_Collide.as:242-317`）**：
+
+* **步进采样**：`_StepSize = 1`（格单位），步数 = 线长 / 1；每步把一个 `radius` 正方形查询区沿视线推进，
+  逐步调 `_Collide_Line_Area`，终点再补测一次（`:258-278`）。
+* **墙只有 `mCollide_Solid`（1）挡线**：`LineIntersection_Map` 判 `mCollide & mCollide_Solid == mCollide_Solid`
+  （`:291`）——`mCollide_Ledge` **不挡视线**；对墙做的是解析的「线段×格边」求交，给出精确交点。
+* **生物命中** = 点到线距离² `< mRadius²`，且该实体 `mAffectFlags & cAffectFlags`（`LineIntersection`，`:249-257`）。
+* 同一步内多个命中取**离起点最近**者（`_Collide_Line_Area`，`:296-317`）。
+* 返回 `{mCollideType: "wall"|"thing", mThing, mPOI}`；命中生物时 `mPOI` 沿射线**回退其 `mRadius`**（`:283-293`）。
 
 ---
 
@@ -284,6 +297,9 @@ GetClosestPlayer(p) {
   `this.mTarget_Player = this.mThing_Collection.GetClosestPlayer(this.mPosition);`
   恶魔 `__Packages/Thing/Creature/CThing_Creature_Devil.as:86`（同样传 `mPosition`）。
 * 两者都是**每帧重新选**，所以玩家在两人之间跑动时目标会即时切换。
+* ⚠️ 快速路径**不查死亡**（`F:\scripts\__Packages\Thing\CThing_Collection.as:95-102`）：
+  场上只剩 1 个玩家时直接返回它，哪怕 `mFlag_DEAD` 已置；只有多人分支才跳过死亡玩家。
+  单人模式下玩家死亡瞬间目标仍指向尸体——实际难以观察到（`PlayerDead` 会立即结束游戏）。
 * 边界情况：僵尸/恶魔的 `Brain()` 里写着 `this.mTarget_Position = this.mTarget_Player.mPosition;` 之后才
   `if (this.mTarget_Player == undefined) {}`（僵尸 `:74`–`:77`，恶魔 `:87`–`:90`）——
   **判空写在取值之后，是原版的一个空 if（无效判空）**；若玩家全灭会先抛异常（【推断】，
@@ -331,7 +347,7 @@ SetState(nState) {
 | `State_EnterMap` | `:127`–`:146`：`SetCollideDirection(pos, mCollide_Creature)`；清 `mFlag_Collidable`；`mBaseStateID = mStateID`；`mCurrentCell = mNewCell`；扫描 8 个邻格（步长 2，只看正方向）找第一个不含 `mCollide_StaticImpassable` 的格，把朝向设过去 | `:147`–`:158` | 若 `mDirectionCell.mCollide & mCollide_Creature` → `State_Wait`（入口被占）<br>否则 `Affect_Setup(Bullet\|Explosion\|FireBall)`、置 `mFlag_Collidable`、`mBaseStateID = State_GotoPlayer`，再转 `State_RemoveObject`（若存在）否则 `State_CellToCell`（`:157`） |
 | `State_GotoPlayer` | `:79`–`:83`：`mBaseStateID = mStateID`；动画 `walk` | `:84`–`:104`：`Brain()` 选目标 → 算 `mTarget_Direction` → 查 `NavReal_<dir> & mCollide_Player` | ① 邻格有玩家 → `SetState_WithDirection(State_Attack, 当前方向, 目标方向)`（`:94`）<br>② `Nav_Direction(...)` 返回 −1（无路）→ `State_Wait`（`:99`）<br>③ 否则 `SetState_WithDirection_Wait(State_CellToCell, 当前方向, 目标方向)`（`:102`） |
 | `State_Attack` | `:105`：动画 `attack` | `:109`–`:122`：`Animate(min(0.3*(mSpeed*25*1.5),1))`；动画播完（返回 true）时对 `mAdjacentCells[mAngle.mDirection]` 施加 `CThing_Affect_ZombieAttack(this, mDamage)` | 施加伤害后 → `State_Sleep`，`mStateCount = 10`，`mReturnStateID` 还原为进入攻击前的状态（`:117`–`:120`） |
-| `State_CellToCell` | `:159`–`:167`：算 `mDelta`、`mStateCount = 1/mSpeed`（直）/`1.4142/mSpeed`（斜） | `:168`–`:181`：每帧扣 `mStateCount` 并推进 `mPosition`；`QAnimate(mAnimSpeed)` | 计数 ≤0 → 吸附到 `CellCentre()`、`MoveThing`、`SetState(mBaseStateID)`（回到 `State_GotoPlayer`） |
+| `State_CellToCell` | `:159`–`:167`：**起步就 `SetCollideDirection(本格+mDelta, mCollide_Creature)` 预订目标格**（`F:\scripts CThing_Creature.as:190`；防止两只生物同帧挤进同一格）；再算每帧步长 `mDelta` 与 `mStateCount = 1/mSpeed`（直）/`1.4142/mSpeed`（斜） | `:168`–`:181`：每帧扣 `mStateCount` 并推进 `mPosition`；`QAnimate(mAnimSpeed)` | 计数 ≤0 → 吸附到 `CellCentre()`、`MoveThing`、`SetState(mBaseStateID)`（回到 `State_GotoPlayer`） |
 | `State_Turn` | `:182`–`:187`：`mAngleDelta = mSpeed*10*TurnAngle(mTarget_Angle)`；`mStateCount = \|AngleDifference\| / mAngleDelta`；动画 `stand` | `:188`–`:197`：`mAngle.Add(mAngleDelta)` | 计数 ≤0 → 角度对齐 → `SetState(mBaseStateID)` |
 | `State_Wait` | `:228`–`:232`：`mStateCount = CMain.mFPS`（**1 秒**）；动画 `stand` | `:233`–`:239` | 计数 ≤0 → `SetState(mBaseStateID)` |
 | `State_Sleep` | `:217`–`:220`：动画 `stand` | `:221`–`:227` | 计数 ≤0 → `SetState(mReturnStateID)` |
@@ -345,6 +361,9 @@ SetState(nState) {
 僵尸在同一基类上还「继承」了 `State_GotoPosition`、`State_Wander`（`:97` `:112`），
 但僵尸的初始化直接 `SetState(State_EnterMap)`（`__Packages/Thing/Creature/CThing_Creature_Zombie.as:57`）
 且 `mBaseStateID` 被设为 `State_GotoPlayer`，因此**这两个漫游状态在僵尸身上不会被用到**（【推断】）。
+
+另：`mBrain_Count = mUniqueID % 3`（`__Packages/Thing/Creature/CThing_Creature_Zombie.as:69`）在全工程
+只有这一处赋值、没有任何读取点（2026-10-22 对 `F:\scripts` 全树 grep 确认）——**死代码**，重制时无需实现。
 
 `SetState_WithDirection` / `SetState_WithDirection_Wait`（`:58` `:69`）：
 
@@ -386,7 +405,7 @@ SetState_WithDirection_Wait(nState, cDirection, tDirection):
 | 状态 | 行为 | 行号 |
 | --- | --- | --- |
 | `State_EnterMap` | 继承基类；`Affect_Setup` 被重写为「基类掩码 \| `mAffect_PlayerLineOfSight`」 | `:56`–`:59`（重写）+ `CThing_Creature.as:127` |
-| `State_GotoPlayer` | 先 `if (this.Brain()) return;`；然后与僵尸同构地算 `mTarget_Direction`；**但检测的是 `mCollide_Object`（128）而不是 `mCollide_Player`** → 前方有可破坏物时改成「拆墙」攻击 | `:106`–`:135`（`:120`） |
+| `State_GotoPlayer` | 先 `if (this.Brain()) return;`；然后与僵尸同构地算 `mTarget_Direction`；**但检测的是 `mCollide_Object`（128）而不是 `mCollide_Player`** → 前方有可破坏物时改成「拆墙」攻击。原版此处还有一个**被掏空的近战分支** `if(!(_loc3_ & mCollide_Player)){}`（`F:\scripts` Devil`:138-140`，空 if）——「邻格是玩家就咬」的逻辑被禁用，恶魔只远程开火 | `:106`–`:135`（`:120`） |
 | `State_Attack` | 播 `attack` 动画，在 `mFrameIndex == 3` 那一帧发射火球 | `:166`–`:195` |
 | `State_TrackTarget` | 只把动画设为 `stand`，函数体空 | `:196`–`:202` |
 | `State_RemoveObject` | 若 `mAdjacentCells[mAngle.mDirection].mCollide & mCollide_Object` → 对该格施加 `CThing_Affect_DevilAttack(this, this, 100000, this.mAngle)`；否则回 `State_GotoPlayer` | `:203`–`:218` |
@@ -1078,10 +1097,12 @@ SetDifficulty(tDifficulty) {
    否则「刷怪点被占满时敌人会晚出来」的手感会丢。
 6. **可调参数集中在两张表**：等级表（§7.6 的闭式）与难度表（§8.1 的 4 行）。
    原版把这两张表写死在 `InitLists` 与 `SetDifficulty` 里，重制时建议做成 `Resource`。
-7. **注意原版的三个「怪但要去抄」的点**：
+7. **注意原版的四个「怪但要去抄」的点**：
    * 恶魔 `mAttackSpeed` 未初始化 → 火球速度取默认 0.15 格/tick。
    * 恶魔 `mFireRate = 0` → 攻击间隔只由动画时长决定。
    * `Brain()` 里 `mTarget_Position = mTarget_Player.mPosition` 写在判空之前（无效判空）。
+   * `State_CellToCell_Init` 起步就 `SetCollideDirection` **预订目标格**（`F:\scripts CThing_Creature.as:190`）
+     —— 两只生物不能同帧挤进同一格，这是原版的防堆叠手段；重制里等价的「格子占用登记」要保留这一时机语义。
 
 ---
 
@@ -1094,7 +1115,7 @@ SetDifficulty(tDifficulty) {
 | `__Packages/Thing/Math/CThing_Navigation.as` | **部分** | 文件头 4–8 行（`§§constant(49/57/52/53/9/58)`）属于**另一个脚本的残片**（线性化器把它们排到了前面），不是本类代码；正文（`:19`–`:64`）已恢复正常，`MoveInDirection2 / CollideFlagsInDirection / ValidMoveDirection` 三个方法可见。本文未依赖它（寻路实际走 `CMap_Cell.Nav_*`）。 |
 | MoreRooms `[MoreRooms] __Packages/Thing/Creature/CThing_Creature_Zombie.as`（1315 行） | **不能当旁证用** | 该文件本身被加密（535 处记号），且默认不拆嵌套状态机（残留 4 个 `while(true)` 骨架与大量 `set("\x01",...)`）。这**不是**线性化失败：`as2_delinearize.py` 对它成功且 token 校验通过，只是默认保守地保留嵌套机器的完整外形。**结论：不作为旁证。** |
 | MoreRooms `[MoreRooms] __Packages/Thing/Creature/CThing_Creature.as` | 部分可用 | 上界 183、池长 184、clean 0.989，可读但线性化同样有残留（`loop1/loop2`），本文仅在 §7.7 用其 `CWorld.as` 做刷怪旁证，未用它的 Creature。 |
-| `CMap_Collide.Collide_Line` 的具体实现 | **【未恢复】** | `__Packages/World/Map/CMap_Collide.as` 89 处加密记号且未配上池。只能从调用方推断它返回 `{mThing, mPOI, mCollideType}`、按 `mCollideRadius` 膨胀、返回射线上第一个「接受该 affect 类型」的实体。恶魔视线的**逐格/连续**语义因此无法确认。 |
+| `CMap_Collide.Collide_Line` 的具体实现 | **已确证（2026-10-22）** | 原【未恢复】，现由 `F:\scripts` 明文源码读出（`__Packages/World/Map/CMap_Collide.as:242-317`）：步进采样（`_StepSize=1` 格单位、终点补测）；墙只判 `mCollide_Solid`（Ledge 不挡视线）；生物命中 = 点线距离² < `mRadius²` 且 `mAffectFlags` 匹配；多命中取离起点最近；`mPOI` 沿射线回退命中物半径。详见 §2.4。 |
 | 僵尸攻击动画的实际帧数与时长 | **【未恢复】** | XSI 动画数据在二进制里（`CDrawPrimitive_XSI_DI`），需要单独逆向资源才可能确知。因此「僵尸两次攻击的精确间隔」只能写成「攻击动画时长 + 10 tick」。 |
-| `mHitAngle` 的下游用途 | **【未恢复】** | `ProcessAffects` 会写 `mHitAngle`（`CThing_Creature.as:437` `:449` `:460`），但 2Play 里未见读取点（被加密的 `CThing_Creature_Player.as` 里可能有受击方向判定，未能确认）。 |
+| `mHitAngle` 的下游用途 | **【未恢复】→ 已确证为死代码（2026-10-22）** | `ProcessAffects` 会写 `mHitAngle`（`CThing_Creature.as:437` `:449` `:460`）。对 `F:\scripts` 全树 grep：除声明（`CThing_Creature.as:19`）与三处写入（明文版 `:474/:483/:492`）外**全工程无读取点**，受击方向判定并不存在。 |
 | `__Packages/World/CUpgrades.as` 的 `AddUpgrade` 对数值型升级也调用 `player.NewWeapon(tValue)` | 存疑 | `:121`–`:140`：`if (tValue != true) { for (玩家) player.NewWeapon(tValue); }`。对 `SpeedUp`/`Zombie_SpawnRate` 这类数值型升级看起来是原版的粗糙写法（【推断】），未影响刷怪数值。 |

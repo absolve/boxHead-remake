@@ -8,6 +8,8 @@
 > - 不带前缀的路径 = 相对 `oldGame/_decompiled/Boxhead_2Play/linearized/`
 > - 带 `[MoreRooms]` 前缀的路径 = 相对 `oldGame/_decompiled/MoreRooms/linearized/`
 > - 行号均为该文件（linearized 产物）中的行号。
+> - **2026-10-22 起有全量明文源码 `F:\scripts`**（每类一个 `.as`，零加密、无文件名错位）；
+>   本文所有结论已对照它复核，正文中标 `F:\scripts` 的引用即来自该提取（行号为明文文件中的行号）。
 >
 > **读法约定**
 > - 【事实】= 直接在反编译产物中读到的语句 / 数值。
@@ -421,10 +423,16 @@ CollideFlagsInDirection(d):
   （`[MoreRooms] __Packages/World/Map/CMap_Collide.as:126-153`）
 - 【事实】**反弹**：`d' = d - 2(d·n)n`
   （`[MoreRooms] __Packages/World/Map/CMap_Collide.as:110-113`）
-- 【事实】玩家移动迭代 3 次，生物 1 次，生物用 `mRadius * 0.85` 再收一次
-  （`[MoreRooms] __Packages/World/Map/CMap_Collide.as:54-68`、`:78-92`）
+- 【事实·2026-10-22 修正】玩家移动迭代 **3** 次，生物 **1** 次；对墙检测是**玩家**用 `mRadius * 0.85` 收缩、
+  **生物用完整 `mRadius`**（原文写反了，已对照 `F:\scripts\__Packages\World\Map\CMap_Collide.as` 确证：
+  `PlayerCollide :58` 用 `mRadius*0.85` 且循环 3 次；`CreatureCollide :82` 用完整半径且循环 1 次）。
+  另：玩家的圆-圆分离（`Collide_Mapwho`）步骤受设置项 `CMain.mSaveData.mCollisionsActive` 开关控制
+  （`:52-57`），生物无条件分离。
 - 【事实】射线/线段碰撞是**步进采样**：`_StepSize = 1`（`[MoreRooms] __Packages/World/Map/CMap_Collide.as:310`），
-  步数 `= |p2-p1| / 1`，每步做 `LineIntersection`（`:231-255`、`:282-303`）
+  步数 `= |p2-p1| / 1`，每步做 `LineIntersection`（`:231-255`、`:282-303`）。
+  细节已由 `F:\scripts` 同文件 `:242-317` 确证：墙只判 `mCollide_Solid`（**Ledge 不挡视线**）；
+  生物命中 = 点线距离² `< mRadius²` 且 `mAffectFlags` 与查询掩码匹配；多命中取离起点最近；
+  返回的 `mPOI` 沿射线回退命中物的 `mRadius`。
 
 ---
 
@@ -651,6 +659,8 @@ Nav_Direction(cDir, tDir, mask, forceIt) {
 - 【事实】`nFullScanCount`（原 `[95]`）是“本轮全局放弃计数”，每轮播种时清零（`:592`），超 5 次后 `Nav_Direction` 开始返回 -1。
 - 【事实】局部试探分支 `:336-386`（`NavReal_Dir`）：先试目标方向，再试当前方向；都堵则按
   `d2 + n*sign & 7` 与 `d2 - n*sign & 7` 对称扩展（正向步长 2、对角步长 1，最多 ±3），全堵返回 -1。
+  旋转侧 `sign` 在 `d1 != d2` 时按两方向间的劣弧侧选择；**`d1 == d2` 时随机**取侧
+  （`random(2)*2-1`，`F:\scripts CMap_Cell.as:419`）。
 - ✅ 【已确证·常量池恢复】那 **16 个零参方向解析方法**（`__Packages/World/Map/CMap_Cell.as:443-506`）
   的真名是 **`NavDir_CW_0/2/4/6/1/3/5/7`（`:443-474`）与 `NavDir_CCW_0/2/4/6/1/3/5/7`（`:475-506`）**：
   前者"顺时针"偏好，后者"逆时针"偏好；每个方法形如
