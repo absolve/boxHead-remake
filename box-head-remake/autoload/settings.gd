@@ -8,11 +8,8 @@ extends Node
 ##
 ## 保存内容：按键映射 + 难度 + 各项开关 + 语言
 
-
 const FILE_NAME: String = "settings.cfg"
-
 const SECTION_INPUT: String = "input"
-
 const SECTION_GAME: String = "game"
 
 
