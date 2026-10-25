@@ -19,7 +19,7 @@ func _ready() -> void:
 		scale = Vector2(0.2, 0.2)
 		position.y -= 10
 		play("1")
-	
+
 	# 动画播放完毕后销毁
 	await animation_finished
 	queue_free()

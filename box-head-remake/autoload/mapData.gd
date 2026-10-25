@@ -13,9 +13,61 @@ extends Node
 # 流场和地图网格的基本单位（像素）
 const cellSize: float = 32
 
-## 当前玩家人数
-var playerCount = 1
+## 一个逻辑 tick 的秒数
+# 原版 CMain.mFPS = 25（doc/04 §1.1），射速/计时都按这个换算
+const TICKS_PER_SEC: float = 25.0
 
+## 升级标识（对应原版 CUpgrades.ApplyUpgrade_Weapon 的分支）
+const UP_FAST_FIRE: StringName = &"FastFire"
+
+const UP_RAPID_FIRE: StringName = &"RapidFire"
+
+const UP_DOUBLE_DAMAGE: StringName = &"DoubleDamage"
+
+const UP_QUAD_DAMAGE: StringName = &"QuadDamage"
+
+const UP_DOUBLE_AMMO: StringName = &"DoubleAmmo"
+
+const UP_QUAD_AMMO: StringName = &"QuadAmmo"
+
+const UP_INFINATE_AMMO: StringName = &"InfinateAmmo"
+
+const UP_LONG_SHOT: StringName = &"LongShot"
+
+const UP_INFINATE_RANGE: StringName = &"InfinateRange"
+
+const UP_WIDE_SHOT: StringName = &"WideShot"
+
+const UP_WIDER_SHOT: StringName = &"WiderShot"
+
+const UP_BIG_BANG: StringName = &"BigBang"
+
+const UP_BIGGER_BANG: StringName = &"BiggerBang"
+
+const UP_CLUSTER_EXPLODE: StringName = &"ClusterExplode"
+
+## 8 邻域（含对角），顺序无关紧要
+const NEIGHBOR_DIRS: Array[Vector2i] = [
+	Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1),
+	Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1),
+]
+
+## 该格是否是障碍
+## 物理层位掩码（对应 project.godot 的 2d_physics/layer_*）
+const LAYER_PLAYER: int = 1
+
+const LAYER_ENEMY: int = 2
+
+const LAYER_ITEM: int = 4
+
+const LAYER_WALL: int = 8
+
+## 相机四周边距（与 game_camera.edgeMargin 保持一致）
+const CAMERA_MARGIN: float = 32.0
+
+
+## 当前玩家人数
+var playerCount: int = 1
 
 ## 武器基本参数信息
 # 键：武器类型（Game.weaponType）
@@ -27,47 +79,49 @@ var playerCount = 1
 #   automatic:    是否自动连射
 #   splitAngle:   霰弹枪散射角度（仅Shotgun）
 #   splitExplosion: 分裂爆炸数量（仅Mine/Barrel/Grenade/ChargePack）
-var allWeaponData = {
-	Game.weaponType.Pistol: {'damage': 1, 'wRange': 300, 'delay': 0.6, 'maxAmmoNum': 0, 'automatic': false},
-	Game.weaponType.UZI: {'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 100, 'automatic': true},
-	Game.weaponType.Shotgun: {'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 20, 'splitAngle': 30, 'automatic': false},
-	Game.weaponType.Mine: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
+var allWeaponData: Dictionary = {
+	Game.weaponType.Pistol: {
+		'damage': 1, 'wRange': 300, 'delay': 0.6, 'maxAmmoNum': 0, 'automatic': false,
+	},
+	Game.weaponType.UZI: {
+		'damage': 1, 'wRange': 400, 'delay': 0.1, 'maxAmmoNum': 100, 'automatic': true,
+	},
+	Game.weaponType.Shotgun: {
+		'damage': 2, 'wRange': 300, 'delay': 0.1, 'maxAmmoNum': 20, 'splitAngle': 30,
+		'automatic': false,
+	},
+	Game.weaponType.Mine: {
+		'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0,
+		'automatic': false,
+	},
 	Game.weaponType.Wall: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 5, 'automatic': false},
-	Game.weaponType.Barrel: {'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0, 'automatic': false},
-	Game.weaponType.Grenade: {'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 20, 'splitExplosion': 0, 'automatic': false},
-	Game.weaponType.Rocket: {'damage': 5, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 20, 'automatic': false},
-	Game.weaponType.Railgun: {'damage': 4, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 15, 'automatic': false},
-	Game.weaponType.ChargePack: {'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false}
+	Game.weaponType.Barrel: {
+		'damage': 4, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'splitExplosion': 0,
+		'automatic': false,
+	},
+	Game.weaponType.Grenade: {
+		'damage': 4, 'wRange': 0, 'delay': 1, 'maxAmmoNum': 20, 'splitExplosion': 0,
+		'automatic': false,
+	},
+	Game.weaponType.Rocket: {
+		'damage': 5, 'wRange': 0, 'delay': 1.2, 'maxAmmoNum': 20, 'automatic': false,
+	},
+	Game.weaponType.Railgun: {
+		'damage': 4, 'wRange': 300, 'delay': 0.5, 'maxAmmoNum': 15, 'automatic': false,
+	},
+	Game.weaponType.ChargePack: {
+		'damage': 0, 'wRange': 0, 'delay': 0, 'maxAmmoNum': 10, 'automatic': false,
+	}
 }
 
 ## 敌人基本参数信息
 # 键：敌人类型（Game.roleType）
 # 值：包含敌人属性的字典
 #   speed: 移动速度
-var enemyData = {
+var enemyData: Dictionary = {
 	Game.roleType.Zombie: {'speed': 16},
 	Game.roleType.Devil: {'speed': 32}
 }
-
-## 一个逻辑 tick 的秒数
-# 原版 CMain.mFPS = 25（doc/04 §1.1），射速/计时都按这个换算
-const TICKS_PER_SEC: float = 25.0
-
-## 升级标识（对应原版 CUpgrades.ApplyUpgrade_Weapon 的分支）
-const UP_FAST_FIRE := &"FastFire"
-const UP_RAPID_FIRE := &"RapidFire"
-const UP_DOUBLE_DAMAGE := &"DoubleDamage"
-const UP_QUAD_DAMAGE := &"QuadDamage"
-const UP_DOUBLE_AMMO := &"DoubleAmmo"
-const UP_QUAD_AMMO := &"QuadAmmo"
-const UP_INFINATE_AMMO := &"InfinateAmmo"
-const UP_LONG_SHOT := &"LongShot"
-const UP_INFINATE_RANGE := &"InfinateRange"
-const UP_WIDE_SHOT := &"WideShot"
-const UP_WIDER_SHOT := &"WiderShot"
-const UP_BIG_BANG := &"BigBang"
-const UP_BIGGER_BANG := &"BiggerBang"
-const UP_CLUSTER_EXPLODE := &"ClusterExplode"
 
 ## 地图配置
 # 存储游戏难度和规则设置
@@ -76,53 +130,78 @@ const UP_CLUSTER_EXPLODE := &"ClusterExplode"
 #   Devils:         是否生成恶魔敌人
 #   friendlyFire:   是否启用友军伤害
 #   Game speed:     游戏速度倍率
-var mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFire': true,
-				'gameSpeed': 1}
+var mapConfig: Dictionary = {
+	'difficulty': 1, 'collision': true, 'Devils': true,
+	'friendlyFire': true, 'gameSpeed': 1,
+}
 
 ## 当前连杀数（显示用）
-var currKillStreak = 0
+var currKillStreak: int = 0
+
 ## 累计连杀数（记录最高值）
-var killStreak = 0
+var killStreak: int = 0
+
 ## 当前分数
-var score = 0
+var score: int = 0
+
 ## 已解锁武器列表
-var weaponUnlock = []
+var weaponUnlock: Array = []
 
 ## 武器原始数值快照（原版绝对值）
 # 升级永远从这里重算，不做增量叠加 —— 对应原版 mOriginalStats（doc/03 §7.1）
-var weaponBaseStats = {}
+var weaponBaseStats: Dictionary = {}
+
 ## 每把武器已获得的升级：{weaponType: {升级标识: true}}
-var weaponUpgrades = {}
+var weaponUpgrades: Dictionary = {}
+
 ## 倍率 -> 升级项列表（doc/03 §8.1）
-var upgradeTable = {}
+var upgradeTable: Dictionary = {}
+
 ## 当前地图大小
 var mapSize: Vector2
+
 ## 已选地图 id（对应 Game.mapId[].id；0 = 默认 room_001）
 var selectedMapId: int = 0
+
 ## 地图格子占用记录
 # 键："x-y"格式的格子坐标字符串
 # 值：占用该格子的物体实例ID
-var mapTile = {}
+var mapTile: Dictionary = {}
+
 ## 障碍物集合
 # 键："x-y"格式的格子坐标字符串
 # 值：障碍物位置（Vector2）
 var obstacle: Dictionary = {}
+
 ## 流场字典（多玩家支持）
 # 键：玩家ID（int）
 # 值：流场方向字典，键为"x-y"格式的格子坐标，值为方向向量（Vector2）
-var flowFieldDict = {}
+var flowFieldDict: Dictionary = {}
+
 ## 流场是否需要立刻重算
 # 增删障碍时置位；map.gd 每物理帧检查，置位就重算并清零
 var flowDirty: bool = true
+
 ## 障碍版本号（每次增删 +1，便于调试/断言）
 var obstacleVersion: int = 0
-var killRewardBox=30 #击杀数是当前数的倍数就有补给箱
 
-## 8 邻域（含对角），顺序无关紧要
-const NEIGHBOR_DIRS: Array[Vector2i] = [
-	Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1),
-	Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1),
-]
+var killRewardBox: int = 30 #击杀数是当前数的倍数就有补给箱
+
+## 房间真实世界边界（相机夹取用；原点不一定是 0,0）
+var mapRect: Rect2 = Rect2(0, 0, 0, 0)
+
+## 导航距离场：cellKey -> 到玩家的曼哈顿距离（原版 CMap_Cell.nDist）
+var navDist: Dictionary = {}
+
+## 生物占位：cellKey -> Node（原版 mCollide_Creature，僵尸移动期间锁定目标格）
+var reservedCells: Dictionary = {}
+
+## 僵尸占用的格子：cellKey -> Zombie
+##
+## 用来避免多只僵尸挤在同一格：canStep 会避开这些格，
+## 让它们排队/绕行，而不是一路硬推到重叠。
+var zombieCells: Dictionary = {}
+
 
 ## 初始化
 func _ready() -> void:
@@ -133,6 +212,7 @@ func _ready() -> void:
 
 
 # ---------------------------------------------------------------- 格子与障碍
+
 
 ## 格子坐标 → 字典键
 func cellKey(cell: Vector2i) -> String:
@@ -149,22 +229,6 @@ func cellCenter(cell: Vector2i) -> Vector2:
 	return Vector2(cell.x * cellSize + cellSize * 0.5, cell.y * cellSize + cellSize * 0.5)
 
 
-## 该格是否是障碍
-## 物理层位掩码（对应 project.godot 的 2d_physics/layer_*）
-const LAYER_PLAYER := 1
-const LAYER_ENEMY := 2
-const LAYER_ITEM := 4
-const LAYER_WALL := 8
-
-## 房间真实世界边界（相机夹取用；原点不一定是 0,0）
-var mapRect: Rect2 = Rect2(0, 0, 0, 0)
-
-## 导航距离场：cellKey -> 到玩家的曼哈顿距离（原版 CMap_Cell.nDist）
-var navDist: Dictionary = {}
-
-## 生物占位：cellKey -> Node（原版 mCollide_Creature，僵尸移动期间锁定目标格）
-var reservedCells: Dictionary = {}
-
 ## 预留一格给某只僵尸（它要走过去）
 func reserveCell(cell: Vector2i, who: Node) -> void:
 	reservedCells[cellKey(cell)] = who
@@ -173,26 +237,30 @@ func reserveCell(cell: Vector2i, who: Node) -> void:
 ## 释放预留
 func releaseCell(cell: Vector2i, who: Node) -> void:
 	var k := cellKey(cell)
-	if reservedCells.get(k) == who:
+	var r = reservedCells.get(k)
+	if r == null:
+		return
+	if not is_instance_valid(r) or r == who:
 		reservedCells.erase(k)
 
 
 ## 该格是否被别的僵尸预留
 func isReservedByOther(cell: Vector2i, who: Node) -> bool:
-	var r: Node = reservedCells.get(cellKey(cell))
-	return r != null and r != who
+	var k := cellKey(cell)
+	var r = reservedCells.get(k)
+	if r == null:
+		return false
+	# 僵尸死亡/释放后引用会失效，这里顺手清掉脏数据，
+	# 否则比较 r != who 会报 "invalid previously freed instance"
+	if not is_instance_valid(r):
+		reservedCells.erase(k)
+		return false
+	return r != who
 
 
 ## 某格到（最近计算的）玩家的距离；未知返回 -1
 func navDistAt(cell: Vector2i) -> int:
 	return int(navDist.get(cellKey(cell), -1))
-
-
-## 僵尸占用的格子：cellKey -> Zombie
-##
-## 用来避免多只僵尸挤在同一格：canStep 会避开这些格，
-## 让它们排队/绕行，而不是一路硬推到重叠。
-var zombieCells: Dictionary = {}
 
 
 ## 登记某个格子被哪只僵尸占用
@@ -256,18 +324,19 @@ func removeObstacle(pos: Vector2) -> void:
 
 
 ## 清空所有障碍物
-func clearObstacle():
+func clearObstacle() -> void:
 	obstacle.clear()
 	obstacleVersion += 1
 	flowDirty = true
 
 
 ## 清空地图格子占用记录
-func clearMapTile():
+func clearMapTile() -> void:
 	pass
 
 
 # ---------------------------------------------------------------- 流场
+
 
 ## 计算流场
 # 以 target 格为源做 BFS 得到距离场，再为每格选"指向距离最小邻居"的方向。
@@ -277,7 +346,7 @@ func clearMapTile():
 #   3) flowFieldDict[id] 只在新键时创建，导致第一个格子的方向丢失；
 #   4) 重算时不清旧键，障碍消失后旧方向会残留。
 # 另外新增"斜向不允许穿墙角"。
-func computeFields(id, target: Vector2 = Vector2.INF) -> void:
+func computeFields(id: Variant, target: Vector2 = Vector2.INF) -> void:
 	var cellX := int(mapSize.x / cellSize)
 	var cellY := int(mapSize.y / cellSize)
 	if cellX <= 0 or cellY <= 0:
@@ -314,7 +383,10 @@ func computeFields(id, target: Vector2 = Vector2.INF) -> void:
 					continue
 			if dist.has(cellKey(n)):
 				continue
-			dist[cellKey(n)] = d + 1
+			# 斜向按 1.414 计权（千分整数），正交 1.0 —— 近似欧氏距离，
+			# 避免 8 邻域里斜走"一步抵一步"导致僵尸死命斜切
+			var stepCost: int = 1414 if (i.x != 0 and i.y != 0) else 1000
+			dist[cellKey(n)] = d + stepCost
 			queue.append(n)
 
 	# ---- 存档 BFS 距离场（原版 CMap_Cell.nDist，供 Nav_Direction 比较远近）
@@ -362,7 +434,8 @@ func computeFields(id, target: Vector2 = Vector2.INF) -> void:
 # @param id 玩家ID（int）
 # @return 流场方向向量（Vector2），无数据时返回ZERO
 
-func getFlowDir(pos: Vector2, id) -> Vector2:
+
+func getFlowDir(pos: Vector2, id: Variant) -> Vector2:
 	var key := cellKey(worldToCell(pos))
 	if flowFieldDict.has(id):
 		var field = flowFieldDict[id]
@@ -374,7 +447,7 @@ func getFlowDir(pos: Vector2, id) -> Vector2:
 ## 检查指定位置是否有地图物品
 # @param pos 世界坐标位置（Vector2）
 # @return 是否有物品占用该格子（bool）
-func checkHasMapItem(pos: Vector2):
+func checkHasMapItem(pos: Vector2) -> bool:
 	var x = floori(pos.x / cellSize)
 	var y = floori(pos.y / cellSize)
 	var flag = false
@@ -388,7 +461,7 @@ func checkHasMapItem(pos: Vector2):
 ## 添加地图物品占用记录
 # @param pos 世界坐标位置（Vector2）
 # @param id 物品实例ID（int）
-func addMapItem(pos: Vector2, id: int):
+func addMapItem(pos: Vector2, id: int) -> void:
 	var x = floori(pos.x / cellSize)
 	var y = floori(pos.y / cellSize)
 	mapTile["%s-%s" % [x, y]] = id
@@ -396,7 +469,7 @@ func addMapItem(pos: Vector2, id: int):
 
 ## 添加连杀数
 # @param val 增加的连杀数（int）
-func addKillStreak(val):
+func addKillStreak(val: int) -> void:
 	currKillStreak += val
 	if currKillStreak > killStreak:
 		killStreak = currKillStreak
@@ -406,7 +479,7 @@ func addKillStreak(val):
 ## 计算连杀奖励
 # 倍率逐 1 递增，只在"恰好等于某一档"时发放，且每项只发一次
 # 出处：__Packages/World/CUpgrades.as:403-460（doc/03 §8.1）
-func countKillStreak():
+func countKillStreak() -> void:
 	for item in upgradeTable.get(killStreak, []):
 		if item.has('unlock'):
 			unlockWeapon(item.unlock, item.text)
@@ -415,34 +488,34 @@ func countKillStreak():
 
 
 ## 解锁一把新武器
-func unlockWeapon(type, text: String) -> void:
-	if not weaponUnlock.has(type):
-		weaponUnlock.append(type)
-	Game.notice.emit(tr(text))
+func unlockWeapon(weaponType: int, noticeText: String) -> void:
+	if not weaponUnlock.has(weaponType):
+		weaponUnlock.append(weaponType)
+	Game.notice.emit(tr(noticeText))
 
 
 ## 发放一次升级（每项只发一次，之后从原始值重算）
-# @param type    目标武器（Game.weaponType）
+# @param weaponType    目标武器（Game.weaponType）
 # @param upgrade 升级标识（见 UP_* 常量）
-# @param text    HUD 提示文本
-func applyUpgrade(type, upgrade, text: String) -> void:
-	if not weaponBaseStats.has(type):
+# @param noticeText    HUD 提示文本
+func applyUpgrade(weaponType: int, upgrade: String, noticeText: String) -> void:
+	if not weaponBaseStats.has(weaponType):
 		return
-	if weaponUpgrades[type].has(upgrade):
+	if weaponUpgrades[weaponType].has(upgrade):
 		return
-	weaponUpgrades[type][upgrade] = true
-	recomputeWeapon(type)
-	Game.weaponUpgrade.emit(type)
-	Game.notice.emit(tr(text))
+	weaponUpgrades[weaponType][upgrade] = true
+	recomputeWeapon(weaponType)
+	Game.weaponUpgrade.emit(weaponType)
+	Game.notice.emit(tr(noticeText))
 
 
 ## 从原始值重算某把武器的当前数值（幂等，可反复调用）
-func recomputeWeapon(type) -> void:
-	if not weaponBaseStats.has(type):
+func recomputeWeapon(weaponType: int) -> void:
+	if not weaponBaseStats.has(weaponType):
 		return
 
-	var base: Dictionary = weaponBaseStats[type]
-	var up: Dictionary = weaponUpgrades[type]
+	var base: Dictionary = weaponBaseStats[weaponType]
+	var up: Dictionary = weaponUpgrades[weaponType]
 	var s: Dictionary = base.duplicate(true)
 
 	# --- 伤害：Double ×2 / Quad ×4（原版还有 Fatal ×10，解锁表里没有）
@@ -496,7 +569,7 @@ func recomputeWeapon(type) -> void:
 	if base.has('clusterExplode'):
 		s.clusterExplode = 1 if up.has(UP_CLUSTER_EXPLODE) else 0
 
-	allWeaponData[type] = s
+	allWeaponData[weaponType] = s
 
 
 ## 重算全部武器（初始化用）
@@ -510,7 +583,7 @@ func recomputeAllWeapons() -> void:
 #   射速 mFireRate(帧) -> delay(秒) = 帧 / 25
 #   射程 mRange(格)   -> wRange(像素) = 格 * 32
 #   弹药 mTotalAmmo   -> maxAmmoNum（Pistol 的 999999 无限用 0 表示）
-func resetAllWeaponData():
+func resetAllWeaponData() -> void:
 	var W := Game.weaponType
 	weaponBaseStats = {
 		# 手枪：8 帧 / 26 伤害 / 8 格 / 无限弹药
@@ -636,6 +709,94 @@ func buildUpgradeTable() -> void:
 
 
 ## 重置地图配置到初始状态
-func resetMapConfig():
+func resetMapConfig() -> void:
 	mapConfig = {'difficulty': 1, 'collision': true, 'Devils': true, 'friendlyFire': true,
 				'gameSpeed': 1}
+
+# ---------------------------------------------------------------- 玩家活动范围
+
+
+## 玩家可活动区域：整张地图内缩 CAMERA_MARGIN
+##
+## 玩家按 mapSize 钳取的话，会走进相机看不到的边缘（相机被夹在
+## [32, mapSize-32] 内），所以这里要单独给一个更小的矩形。
+func getPlayRect() -> Rect2:
+	return Rect2(Vector2.ZERO, mapSize).grow(-CAMERA_MARGIN)
+
+
+# ---------------------------------------------------------------- 多源流场（方案 A）
+
+
+## 多源 BFS：以所有存活玩家为源，生成"指向最近玩家"的单张流场
+##
+## 对应 doc/future-improvements.md「方案 A」。成本与玩家数无关；
+## 玩家死亡/复活只需增删源点，不必维护多张场。
+func computeFieldMulti(seeds: Array) -> void:
+	var cellX := int(mapSize.x / cellSize)
+	var cellY := int(mapSize.y / cellSize)
+	if cellX <= 0 or cellY <= 0:
+		return
+
+	var dist: Dictionary = {}
+	var queue: Array[Vector2i] = []
+	for s in seeds:
+		var c: Vector2i = Vector2i(clampi(int(s.x), 0, cellX - 1), clampi(int(s.y), 0, cellY - 1))
+		if dist.has(cellKey(c)):
+			continue
+		dist[cellKey(c)] = 0
+		queue.append(c)
+
+	if queue.is_empty():
+		flowFieldDict["multi"] = {}
+		navDist = {}
+		return
+
+	var head := 0
+	while head < queue.size():
+		var p: Vector2i = queue[head]
+		head += 1
+		var d: int = dist[cellKey(p)]
+		for i in NEIGHBOR_DIRS:
+			var n: Vector2i = p + i
+			if n.x < 0 or n.y < 0 or n.x >= cellX or n.y >= cellY:
+				continue
+			if obstacle.has(cellKey(n)):
+				continue
+			if i.x != 0 and i.y != 0:
+				# 斜向不允许从两个障碍的夹角穿过去
+				if obstacle.has(cellKey(Vector2i(p.x + i.x, p.y))) \
+						or obstacle.has(cellKey(Vector2i(p.x, p.y + i.y))):
+					continue
+			if dist.has(cellKey(n)):
+				continue
+			var stepCost: int = 1414 if (i.x != 0 and i.y != 0) else 1000
+			dist[cellKey(n)] = d + stepCost
+			queue.append(n)
+
+	navDist = dist
+
+	# 方向场：每格指向距离最小的邻居
+	var field := {}
+	for x in range(cellX):
+		for y in range(cellY):
+			var pos := Vector2i(x, y)
+			var key := cellKey(pos)
+			if dist.has(key) and int(dist[key]) == 0:
+				field[key] = Vector2.ZERO
+				continue
+			if obstacle.has(key) or not dist.has(key):
+				field[key] = Vector2.ZERO
+				continue
+			var best := Vector2.ZERO
+			var bestCost := INF
+			for i in NEIGHBOR_DIRS:
+				var n: Vector2i = pos + i
+				if not dist.has(cellKey(n)):
+					continue
+				var c: float = float(dist[cellKey(n)])
+				if c < bestCost:
+					bestCost = c
+					best = Vector2(i)
+			field[key] = best.normalized() if best != Vector2.ZERO else Vector2.ZERO
+
+	flowFieldDict["multi"] = field

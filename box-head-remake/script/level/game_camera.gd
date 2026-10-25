@@ -6,14 +6,17 @@ extends Camera2D
 ## （项目里装了 phantom_camera 插件，但它的 API 需要额外验证，
 ##   这里是 40 行的等价实现，行为可预测。）
 
+
 ## 跟随平滑速度（越大越跟手）
 @export var smoothSpeed: float = 8.0
 
 ## 相机四周至少离地图边缘多远（像素）：原版相机不会贴到地图边界
 @export var edgeMargin: float = 32.0
 
+
 ## 当前跟随目标
 var target: Node2D = null
+
 
 ## 2D 音频监听器：场景里的子节点，作为位置音效的听点
 @onready var listener: AudioListener2D = $audioListener
@@ -58,8 +61,12 @@ func _physics_process(delta: float) -> void:
 	var maxC: Vector2 = bounds.end - vp * 0.5
 
 	# 地图（内缩后）比视口还小 → 居中；否则夹取
-	var cx: float = (bounds.position.x + bounds.size.x * 0.5) if minC.x > maxC.x else clampf(goal.x, minC.x, maxC.x)
-	var cy: float = (bounds.position.y + bounds.size.y * 0.5) if minC.y > maxC.y else clampf(goal.y, minC.y, maxC.y)
+	var cx: float = (
+			(bounds.position.x + bounds.size.x * 0.5)
+			if minC.x > maxC.x else clampf(goal.x, minC.x, maxC.x))
+	var cy: float = (
+			(bounds.position.y + bounds.size.y * 0.5)
+			if minC.y > maxC.y else clampf(goal.y, minC.y, maxC.y))
 	var goalCenter := Vector2(cx, cy)
 
 	# Camera2D 的 anchor_mode 决定了 position 指的是哪一点：

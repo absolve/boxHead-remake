@@ -5,24 +5,33 @@ extends "res://script/item/item.gd"
 # 放置后可以手动引爆，或延迟后自动爆炸，支持分裂成多个小爆炸
 
 
-## 音效节点
-@onready var sound = $sound
 ## 伤害值
-@export var damage = 0
+@export var damage: int = 0
+
+@export var wRange: int = 0
+
 
 ## 爆炸延迟时间（秒）
-var delay = 1
+var delay: float = 1
+
 ## 动画补间节点
 var tween: Tween = null
+
 ## 分裂爆炸数量
-var splitExplosion = 0
+var splitExplosion: int = 0
+
 ## 分裂半径
-var splitRadius = 30
+var splitRadius: int = 30
+
 ## 爆炸效果场景预加载
-var explosion = preload("res://scene/fx/explosion.tscn")
+var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
+
 ## 手榴弹物体场景预加载（用于分裂爆炸）
-var grenadeObj = preload("res://scene/projectile/grenade_obj.tscn")
-@export var wRange = 0
+var grenadeObj: PackedScene = preload("res://scene/projectile/grenade_obj.tscn")
+
+
+## 音效节点
+@onready var sound: AudioStreamPlayer2D = $sound
 
 
 ## 初始化
@@ -33,9 +42,9 @@ func _ready() -> void:
 
 ## 武器升级处理
 # 根据武器类型更新充电包属性
-# @param _type 武器类型（Game.weaponType枚举值）
-func weaponUpgrade(_type):
-	if _type == Game.weaponType.ChargePack:
+# @param weaponType 武器类型（Game.weaponType枚举值）
+func weaponUpgrade(weaponType: int) -> void:
+	if weaponType == Game.weaponType.ChargePack:
 		var d: Dictionary = MapData.allWeaponData[Game.weaponType.ChargePack]
 		damage = d['damage']
 		splitExplosion = d.get('splitExplosion', 0)
@@ -45,7 +54,7 @@ func weaponUpgrade(_type):
 
 ## 添加爆炸效果
 # 创建爆炸并处理分裂效果，然后销毁自身
-func addExplosion():
+func addExplosion() -> void:
 	# 创建主爆炸
 	var temp = explosion.instantiate()
 	temp.global_position = global_position
@@ -53,7 +62,7 @@ func addExplosion():
 	temp.biggerBang = biggerBang
 	temp.clusterExplode = clusterExplode
 	get_tree().current_scene.add_child(temp)
-	
+
 	# 如果配置了分裂爆炸，创建多个手榴弹向四周飞散
 	if splitExplosion > 0:
 		for i in range(splitExplosion):
@@ -66,6 +75,6 @@ func addExplosion():
 			t.vector = angle.normalized()
 			t.speed = 50
 			get_tree().current_scene.add_child(t)
-	
+
 	# 销毁充电包
 	queue_free()

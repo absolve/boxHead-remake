@@ -221,6 +221,52 @@ if (hasTarget()):
 > 注意 `character.gd` 里的 `var angle` 是**安全**的（`Node2D` 只有 `rotation`，没有 `angle` 属性），
 > 但 `var size`、`var scale`、`var position` 会被遮蔽，必须换名。
 
+### 2.3 函数参数不得与成员变量同名（强制）
+
+参数名与成员变量同名会产生**遮蔽**：函数体内引用的是参数，而不是你以为的成员。
+
+```gdscript
+# ❌ 错：参数 speed 遮蔽了 Zombie.speed 成员
+func beginKnockback(dir: Vector2, speed: float) -> void:
+	knockbackDelta = dir * speed          # 用的是参数，不是僵尸移动速度
+
+# ✅ 对：换个参数名，语义也更清楚
+func beginKnockback(dir: Vector2, knockSpeed: float) -> void:
+	knockbackDelta = dir * knockSpeed
+```
+
+| 场景 | 做法 |
+|---|---|
+| 参数与成员同名 | 给参数换个更具体的名字（`speed` → `knockSpeed`、`damage` → `dmg`） |
+| 参数确实用不到 | 加下划线前缀（`_delta`、`_fromExplosion`） |
+| 布尔参数 | 用 `is` / `has` / `can` / `from` 开头（`isDead`、`fromExplosion`） |
+
+### 2.4 可受击对象的 `hit()` 签名必须统一（强制）
+
+所有“能被伤害”的对象（角色、油桶、假墙、箱子……）必须使用**同一套参数**，
+否则调用方（武器、爆炸、恶魔拆障碍）会因参数个数不匹配在运行时报
+`Invalid call to function 'hit' ... Expected N argument(s)`。
+
+```gdscript
+## 统一签名
+func hit(damage: int, attackPos: Vector2 = Vector2.ZERO,
+		recoil: float = 0, fromExplosion: bool = false) -> void:
+```
+
+- 后三个参数**必须有默认值**，这样 `obj.hit(100000)` 这类简化调用也能用。
+- 用不到的参数加下划线前缀（`_recoil`、`_fromExplosion`），避免未使用警告。
+- 新增可受击对象时，直接复制这个签名，不要自创。
+
+当前实现（保持一致）：
+
+| 文件 | 说明 |
+|---|---|
+| `script/character/zombie.gd` | 僵尸（含击退） |
+| `script/character/devil.gd` | 恶魔 |
+| `script/character/player.gd` | 玩家 |
+| `script/item/barrel_obj.gd` | 油桶（忽略后 3 个参数） |
+| `script/item/wall_obj.gd` | 假墙（忽略后 3 个参数） |
+
 ---
 
 ## 3. 类型与静态类型

@@ -5,25 +5,25 @@ extends Node2D
 
 
 ## 点击音效节点
-@onready var click = $click
+@onready var click: AudioStreamPlayer2D = $click
 
 ## 切换音效节点
-@onready var change = $change
+@onready var change: AudioStreamPlayer2D = $change
 
 ## 开始关卡音效节点
-@onready var startLevel = $startLevel
+@onready var startLevel: AudioStreamPlayer2D = $startLevel
 
 
 ## 播放点击音效
-func playClick():
+func playClick() -> void:
 	click.play()
 
 
 ## 播放切换音效
-func playChange():
+func playChange() -> void:
 	change.play()
 
 
 ## 播放开始关卡音效
-func playStartLevel():
+func playStartLevel() -> void:
 	startLevel.play()

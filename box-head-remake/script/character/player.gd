@@ -7,82 +7,108 @@ extends "res://script/character/character.gd"
 # - 受伤和死亡处理
 # - 碰撞检测
 
-## 武器背包节点（存放所有武器）
-@onready var weaponBackpack = $weaponBackpack
-## 武器名称显示节点
-@onready var txt = $txt
-## 身体碰撞体节点
-@onready var body = $body
-## 身体碰撞形状节点
-@onready var bodyShape = $body/bodyShape
-## 血条节点
-@onready var lifeBar = $lifeBar
-
-## 自动回血的亚血量累加器（hp 是整数，不回血小数会被截断）
-var regenAcc: float = 0.0
-## 无敌剩余时间（秒）；>0 时免疫伤害并闪烁
-var invincibleTime: float = 0.0
 
 ## 出生无敌时长（秒）：原版 mInvincible = 200 tick（doc/04 §2.3）
-const SPAWN_INVINCIBLE := 3.0
-## 复活后无敌时长（秒）：原版 125 tick = 5 秒
-const RESPAWN_INVINCIBLE := 5.0
-## 死亡音效节点
-@onready var deadSound = $dead
-## 拾取音效节点
-@onready var pickupSound = $pickup
-## 玩家精灵节点
-@onready var player = $player
-## 玩家ID（用于多人游戏区分）
-@export var playerId = 1
+const SPAWN_INVINCIBLE: float = 3.0
 
-## 按键映射（根据玩家ID分配不同按键）
-var keyMap = {'left': '', 'right': '', 'up': '', 'down': '', 'fire': '', 'nextWeapon': '', 'prevWeapon': ''}
-## 当前使用的武器
-var currWeapon = null
-## 武器列表（玩家拥有的所有武器）
-var weaponList = []
-## 当前武器索引
-var currWeaponIndex = 0
-## 当前朝向向量
-var vector = Vector2.RIGHT
-## 不需要显示武器的动画例外列表
-var aniException = ['Mine', 'ChargePack', 'Wall', 'Barrel', 'Grenade']
-## 形状查询参数（用于碰撞检测）
-var shapeQuery = PhysicsShapeQueryParameters2D.new()
-## 受伤计时器
-var hurtTimer = 0
-## 受伤持续时间（秒）
-var hurtDelay = 0.5
+## 复活后无敌时长（秒）：原版 125 tick = 5 秒
+const RESPAWN_INVINCIBLE: float = 5.0
 
 ## 每个玩家一套颜色（绿 / 红 / 蓝 / 黄）
 ## 原版 Boxhead 多人就是「同一套精灵 + 染色」，所以用色相旋转而不是独立素材。
 ## 玩家默认绿色 = 0x00FF00（doc/04 §2.1）；色相旋转量按绿→红/蓝/黄换算。
 const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 
+
+## 玩家ID（用于多人游戏区分）
+@export var playerId: int = 1
+
+
+## 自动回血的亚血量累加器（hp 是整数，不回血小数会被截断）
+var regenAcc: float = 0.0
+
+## 无敌剩余时间（秒）；>0 时免疫伤害并闪烁
+var invincibleTime: float = 0.0
+
+## 按键映射（根据玩家ID分配不同按键）
+var keyMap: Dictionary = {
+	'left': '', 'right': '', 'up': '', 'down': '',
+	'fire': '', 'nextWeapon': '', 'prevWeapon': '',
+}
+
+## 当前使用的武器
+var currWeapon: Node2D = null
+
+## 武器列表（玩家拥有的所有武器）
+var weaponList: Array = []
+
+## 当前武器索引
+var currWeaponIndex: int = 0
+
+## 当前朝向向量
+var vector: Vector2 = Vector2.RIGHT
+
+## 不需要显示武器的动画例外列表
+var aniException: Array = ['Mine', 'ChargePack', 'Wall', 'Barrel', 'Grenade']
+
+## 形状查询参数（用于碰撞检测）
+var shapeQuery: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
+
+## 受伤计时器
+var hurtTimer: float = 0
+
+## 受伤持续时间（秒）
+var hurtDelay: float = 0.5
+
+
+## 武器背包节点（存放所有武器）
+@onready var weaponBackpack: Node2D = $weaponBackpack
+
+## 武器名称显示节点
+@onready var txt: Label = $txt
+
+## 身体碰撞体节点
+@onready var body: Area2D = $body
+
+## 身体碰撞形状节点
+@onready var bodyShape: CollisionShape2D = $body/bodyShape
+
+## 血条节点
+@onready var lifeBar: Control = $lifeBar
+
+## 死亡音效节点
+@onready var deadSound: AudioStreamPlayer2D = $dead
+
+## 拾取音效节点
+@onready var pickupSound: AudioStreamPlayer2D = $pickup
+
+## 玩家精灵节点
+@onready var player: AnimationPlayer = $player
+
+
 ## 初始化
-func _ready():
+func _ready() -> void:
 	# 设置初始状态
 	state = Game.playerState.Idle
-	
+
 	# 配置形状查询参数
 	shapeQuery.collide_with_areas = true
 	shapeQuery.collision_mask = 1 + 2 + 4
 	shapeQuery.exclude = [get_rid(), body.get_rid()]
 	shapeQuery.shape = shape.shape
-	
+
 	# 初始化武器列表（默认装备手枪）
 	# var temp = load("res://scene/weapon/pistol.tscn")
 	# var gun = temp.instantiate()
 	# gun.ownerId = body.get_rid()
 	# weaponList.push_back(gun)
 	# weaponBackpack.add_child(gun)
-	
+
 	# currWeapon = gun
-	
+
 	initWeapon()
 
-	
+
 	# 根据玩家ID配置按键映射
 	if playerId == 1:
 		keyMap.left = "p1_left"
@@ -126,10 +152,10 @@ func _ready():
 	# 开局就把血条上限和当前血量同步好（否则会停在默认的 10）
 	lifeBar.maxHp = maxHp
 	lifeBar.hp = hp
-	
+
 	# 连接武器升级信号
 	Game.weaponUpgrade.connect(weaponUpgrade)
-	
+
 	# 播放出生闪烁动画
 	player.play("flash")
 	var tween = create_tween()
@@ -137,8 +163,9 @@ func _ready():
 	tween.tween_callback(func(): player.play("RESET"))
 	tween.play()
 
-#初始化武器
-func initWeapon():
+
+# 初始化武器
+func initWeapon() -> void:
 	weaponList.clear()
 	for i in weaponBackpack.get_children():
 		weaponBackpack.remove_child(i)
@@ -153,12 +180,13 @@ func initWeapon():
 	gun.delay = MapData.allWeaponData[Game.weaponType.Pistol]['delay']
 	weaponList.push_back(gun)
 	weaponBackpack.add_child(gun)
-	
+
 	currWeapon = gun
 	# 设置武器名称显示
 	txt.text = Game.weaponName[currWeapon.type]
 
-func resurrection():
+
+func resurrection() -> void:
 	initWeapon()
 	# 播放出生闪烁动画
 	player.play("flash")
@@ -169,18 +197,20 @@ func resurrection():
 	isDead = false
 	state = Game.playerState.Idle
 	hp = maxHp
+	# 复活后位置变了，立刻重算流场，让僵尸改追这个玩家
+	MapData.flowDirty = true
 	lifeBar.maxHp = maxHp
 	lifeBar.hp = hp
 
-	
+
 ## 武器升级处理
 # 根据武器类型更新武器属性
-# @param _type 武器类型（Game.weaponType枚举值）
-func weaponUpgrade(_type):
+# @param weaponType 武器类型（Game.weaponType枚举值）
+func weaponUpgrade(weaponType: int) -> void:
 	for i in weaponList:
-		if i.type != _type:
+		if i.type != weaponType:
 			continue
-		var d: Dictionary = MapData.allWeaponData[_type]
+		var d: Dictionary = MapData.allWeaponData[weaponType]
 		i.damage = d['damage']
 		i.wRange = d['wRange']
 		i.delay = d['delay']
@@ -200,7 +230,7 @@ func weaponUpgrade(_type):
 ## 切换武器
 # 在武器列表中循环切换当前武器
 # @param next 是否切换到下一把武器（true=下一把，false=上一把）
-func switchWeapon(next: bool = true):
+func switchWeapon(next: bool = true) -> void:
 	if weaponList.size() > 1:
 		if next:
 			currWeaponIndex += 1
@@ -213,26 +243,27 @@ func switchWeapon(next: bool = true):
 
 ## 拾取物品
 # 根据物品类型添加武器或恢复生命
-# @param _type 物品类型（Game.boxContent枚举值）
-func pickItem(_type):
-	if _type in [Game.boxContent.Railgun, Game.boxContent.Rocket,
-	 Game.boxContent.Shotgun, Game.boxContent.UZI,
-	 Game.boxContent.Mine, Game.boxContent.ChargePack,
-	 Game.boxContent.Wall, Game.boxContent.Barrel, Game.boxContent.Grenade]:
-		var w = getWeapon(Game.getBoxContentWeaponType(_type))
+# @param contentType 物品类型（Game.boxContent枚举值）
+func pickItem(contentType: int) -> void:
+	if contentType in [Game.boxContent.Railgun, Game.boxContent.Rocket,
+		Game.boxContent.Shotgun, Game.boxContent.UZI,
+		Game.boxContent.Mine, Game.boxContent.ChargePack,
+		Game.boxContent.Wall, Game.boxContent.Barrel, Game.boxContent.Grenade]:
+		var w = getWeapon(Game.getBoxContentWeaponType(contentType))
 		if w != null:
 			# 已有该武器，补充弹药
-			# 注意：_type 是 boxContent，allWeaponData 的键是 weaponType，必须先转换；
+			# 注意：contentType 是 boxContent，allWeaponData 的键是 weaponType，必须先转换；
 			# 而且表里只有 maxAmmoNum，没有 ammoNum
-			var wt = Game.getBoxContentWeaponType(_type)
+			var wt = Game.getBoxContentWeaponType(contentType)
 			if wt != null and MapData.allWeaponData.has(wt):
 				w.ammoNum = MapData.allWeaponData[wt]['maxAmmoNum']
 		else:
 			# 没有该武器，创建新武器实例
-			if _type == Game.boxContent.Railgun:
+			if contentType == Game.boxContent.Railgun:
 				var temp = load("res://scene/weapon/railgun.tscn")
 				var railgun = temp.instantiate()
 				railgun.ownerId = get_rid()
+				railgun.ownerNode = self
 				railgun.damage = MapData.allWeaponData.get(Game.weaponType.Railgun)['damage']
 				railgun.ammoNum = MapData.allWeaponData.get(Game.weaponType.Railgun)['maxAmmoNum']
 				railgun.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Railgun)['maxAmmoNum']
@@ -241,10 +272,11 @@ func pickItem(_type):
 				railgun.delay = MapData.allWeaponData.get(Game.weaponType.Railgun)['delay']
 				weaponList.push_back(railgun)
 				weaponBackpack.add_child(railgun)
-			elif _type == Game.boxContent.Rocket:
+			elif contentType == Game.boxContent.Rocket:
 				var temp = load("res://scene/weapon/rocket.tscn")
 				var rocket = temp.instantiate()
 				rocket.ownerId = body.get_rid()
+				rocket.ownerNode = self
 				rocket.damage = MapData.allWeaponData.get(Game.weaponType.Rocket)['damage']
 				rocket.ammoNum = MapData.allWeaponData.get(Game.weaponType.Rocket)['maxAmmoNum']
 				rocket.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Rocket)['maxAmmoNum']
@@ -252,10 +284,11 @@ func pickItem(_type):
 				rocket.delay = MapData.allWeaponData.get(Game.weaponType.Rocket)['delay']
 				weaponList.push_back(rocket)
 				weaponBackpack.add_child(rocket)
-			elif _type == Game.boxContent.Shotgun:
+			elif contentType == Game.boxContent.Shotgun:
 				var temp = load("res://scene/weapon/shotgun.tscn")
 				var shotgun = temp.instantiate()
 				shotgun.ownerId = body.get_rid()
+				shotgun.ownerNode = self
 				shotgun.damage = MapData.allWeaponData.get(Game.weaponType.Shotgun)['damage']
 				shotgun.ammoNum = MapData.allWeaponData.get(Game.weaponType.Shotgun)['maxAmmoNum']
 				shotgun.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Shotgun)['maxAmmoNum']
@@ -265,10 +298,11 @@ func pickItem(_type):
 				shotgun.splitAngle = MapData.allWeaponData.get(Game.weaponType.Shotgun)['splitAngle']
 				weaponList.push_back(shotgun)
 				weaponBackpack.add_child(shotgun)
-			elif _type == Game.boxContent.UZI:
+			elif contentType == Game.boxContent.UZI:
 				var temp = load("res://scene/weapon/uzi.tscn")
 				var uzi = temp.instantiate()
 				uzi.ownerId = body.get_rid()
+				uzi.ownerNode = self
 				uzi.damage = MapData.allWeaponData.get(Game.weaponType.UZI)['damage']
 				uzi.ammoNum = MapData.allWeaponData.get(Game.weaponType.UZI)['maxAmmoNum']
 				uzi.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.UZI)['maxAmmoNum']
@@ -277,70 +311,85 @@ func pickItem(_type):
 				uzi.wRange = MapData.allWeaponData.get(Game.weaponType.UZI)['wRange']
 				weaponList.push_back(uzi)
 				weaponBackpack.add_child(uzi)
-			elif _type == Game.boxContent.Mine:
+			elif contentType == Game.boxContent.Mine:
 				var temp = load("res://scene/weapon/mine.tscn")
 				var mine = temp.instantiate()
 				mine.ownerId = body.get_rid()
+				mine.ownerNode = self
 				mine.damage = MapData.allWeaponData.get(Game.weaponType.Mine)['damage']
 				mine.ammoNum = MapData.allWeaponData.get(Game.weaponType.Mine)['maxAmmoNum']
 				mine.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Mine)['maxAmmoNum']
-				mine.splitExplosion = MapData.allWeaponData.get(Game.weaponType.Mine)['splitExplosion']
+				# splitExplosion 在部分武器脚本里没有声明，存在才赋值，避免运行时报错
+				if "splitExplosion" in mine:
+					mine.splitExplosion = MapData.allWeaponData.get(Game.weaponType.Mine)['splitExplosion']
 				weaponList.push_back(mine)
 				weaponBackpack.add_child(mine)
-			elif _type == Game.boxContent.ChargePack:
+			elif contentType == Game.boxContent.ChargePack:
 				var temp = load("res://scene/weapon/chargePack.tscn")
 				var chargePack = temp.instantiate()
 				chargePack.ownerId = get_rid()
+				chargePack.ownerNode = self
 				chargePack.damage = MapData.allWeaponData.get(Game.weaponType.ChargePack)['damage']
 				chargePack.ammoNum = MapData.allWeaponData.get(Game.weaponType.ChargePack)['maxAmmoNum']
 				chargePack.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.ChargePack)['maxAmmoNum']
-				chargePack.splitExplosion = MapData.allWeaponData.get(Game.weaponType.ChargePack)['splitExplosion']
+				# splitExplosion 在部分武器脚本里没有声明，存在才赋值，避免运行时报错
+				if "splitExplosion" in chargePack:
+					var packStats: Dictionary = MapData.allWeaponData.get(Game.weaponType.ChargePack)
+					chargePack.splitExplosion = packStats['splitExplosion']
 				weaponList.push_back(chargePack)
 				weaponBackpack.add_child(chargePack)
-			elif _type == Game.boxContent.Wall:
+			elif contentType == Game.boxContent.Wall:
 				var temp = load("res://scene/weapon/wall.tscn")
 				var wall = temp.instantiate()
 				wall.ownerId = body.get_rid()
+				wall.ownerNode = self
 				wall.ammoNum = MapData.allWeaponData.get(Game.weaponType.Wall)['maxAmmoNum']
 				wall.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Wall)['maxAmmoNum']
 				weaponList.push_back(wall)
 				weaponBackpack.add_child(wall)
-			elif _type == Game.boxContent.Barrel:
+			elif contentType == Game.boxContent.Barrel:
 				var temp = load("res://scene/weapon/barrel.tscn")
 				var barrel = temp.instantiate()
 				barrel.ownerId = body.get_rid()
+				barrel.ownerNode = self
 				barrel.damage = MapData.allWeaponData.get(Game.weaponType.Barrel)['damage']
 				barrel.ammoNum = MapData.allWeaponData.get(Game.weaponType.Barrel)['maxAmmoNum']
 				barrel.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Barrel)['maxAmmoNum']
-				barrel.splitExplosion = MapData.allWeaponData.get(Game.weaponType.Barrel)['splitExplosion']
+				# splitExplosion 在部分武器脚本里没有声明，存在才赋值，避免运行时报错
+				if "splitExplosion" in barrel:
+					barrel.splitExplosion = MapData.allWeaponData.get(Game.weaponType.Barrel)['splitExplosion']
 				weaponList.push_back(barrel)
 				weaponBackpack.add_child(barrel)
-			elif _type == Game.boxContent.Grenade:
+			elif contentType == Game.boxContent.Grenade:
 				var temp = load("res://scene/weapon/grenade.tscn")
 				var grenade = temp.instantiate()
 				grenade.ownerId = body.get_rid()
+				#grenade.excludeList = [body.get_rid()]
+				grenade.ownerNode = self
 				grenade.damage = MapData.allWeaponData.get(Game.weaponType.Grenade)['damage']
 				grenade.ammoNum = MapData.allWeaponData.get(Game.weaponType.Grenade)['maxAmmoNum']
 				grenade.maxAmmoNum = MapData.allWeaponData.get(Game.weaponType.Grenade)['maxAmmoNum']
-				grenade.splitExplosion = MapData.allWeaponData.get(Game.weaponType.Grenade)['splitExplosion']
+				# splitExplosion 在部分武器脚本里没有声明，存在才赋值，避免运行时报错
+				if "splitExplosion" in grenade:
+					grenade.splitExplosion = MapData.allWeaponData.get(Game.weaponType.Grenade)['splitExplosion']
 				weaponList.push_back(grenade)
 				weaponBackpack.add_child(grenade)
 
-	elif _type == Game.boxContent.Life:
+	elif contentType == Game.boxContent.Life:
 		# 恢复生命
 		hp = maxHp
-	
+
 	# 播放拾取音效
 	pickupSound.play()
 
 
 ## 获取指定类型的武器
 # 在武器列表中查找指定类型的武器
-# @param _type 武器类型（Game.weaponType枚举值）
+# @param weaponType 武器类型（Game.weaponType枚举值）
 # @return 找到的武器实例，未找到返回null
-func getWeapon(_type):
+func getWeapon(weaponType: int) -> Node:
 	for i in weaponList:
-		if i.type == _type:
+		if i.type == weaponType:
 			return i
 	return null
 
@@ -350,7 +399,8 @@ func getWeapon(_type):
 # @param damage 伤害值（int）
 # @param attackPos 攻击来源位置（Vector2）
 # @param recoil 击退力度（float，默认0）
-func hit(damage: int, attackPos: Vector2, recoil: float = 0):
+func hit(damage: int, attackPos: Vector2 = Vector2.ZERO,
+		recoil: float = 0, _fromExplosion: bool = false) -> void:
 	# 死亡 或 无敌期间免疫伤害
 	if isDead or invincible:
 		return
@@ -358,7 +408,7 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 	hp -= damage
 	lifeBar.maxHp = maxHp
 	lifeBar.hp = hp
-	
+
 	if hp <= 0:
 		# 死亡处理
 		state = Game.playerState.dead
@@ -366,32 +416,154 @@ func hit(damage: int, attackPos: Vector2, recoil: float = 0):
 		ani.play("fallDown_%s" % [roundi(angle / 2.0)])
 		shape.disabled = true
 		bodyShape.disabled = true
-		isDead=true
+		isDead = true
 		Game.playerDead.emit()
 	else:
 		# 受伤处理
 		state = Game.playerState.hurt
 		hurtTimer = 0
-		
+
 		# 计算击退方向
 		var attacker = ((global_position + bodyShape.position) - attackPos).normalized()
 		var dot = velocity.normalized().dot(attacker)
-		
+
 		# 根据击中方向播放不同受伤动画
 		if dot >= 0:
 			ani.play("hitFront_%s" % [angle])
 		else:
 			ani.play("hitRear_%s" % [angle])
-		
+
 		# 应用击退
 		velocity = attacker * recoil
 
 
+## 玩家自身碰撞体的半宽高（矩形取 size/2，圆形按内接正方形近似）
+func shapeExtents() -> Vector2:
+	var s = shape.shape
+	if s is CircleShape2D:
+		return Vector2.ONE * (s as CircleShape2D).radius * 0.8
+	if s is RectangleShape2D:
+		return (s as RectangleShape2D).size * 0.5
+	return Vector2(12, 12)
+
+
+## 目标位置是否踩进了障碍格（原版油桶/墙把整格标成 mCollide_Object）
+##
+## 原版墙和油桶不是“圆形碰撞”，而是把所在格子标记为不可通行，
+## 所以两个相邻的油桶中间不会留下缝隙。
+func blockedByCell(pos: Vector2) -> bool:
+	var r: float = playerRadius()
+	for dx in [-r, 0.0, r]:
+		for dy in [-r, 0.0, r]:
+			if MapData.isObstacle(MapData.worldToCell(pos + Vector2(dx, dy))):
+				return true
+	return false
+
+
+## 玩家碰撞半径（圆形取 radius，矩形取宽高的一半里较小的）
+func playerRadius() -> float:
+	var s = shape.shape
+	if s is CircleShape2D:
+		return (s as CircleShape2D).radius
+	if s is RectangleShape2D:
+		var sz: Vector2 = (s as RectangleShape2D).size * 0.5
+		return minf(sz.x, sz.y)
+	return 12.0
+
+
+## 计算圆形（玩家）与某个障碍物之间的最小推出向量
+##
+## 返回 Vector2.ZERO 表示没有重叠；否则把这个向量加到玩家位置上就能分开。
+## 同时支持圆形障碍（油桶/墙）和矩形障碍（墙体碰撞盒）。
+func penetration(center: Vector2, radius: float, collider: Node2D) -> Vector2:
+	var sh = collider.get_node_or_null("shape")
+	if sh == null or sh.shape == null:
+		return Vector2.ZERO
+	var s = sh.shape
+	var origin: Vector2 = (sh as Node2D).global_position
+
+	if s is CircleShape2D:
+		var otherR: float = (s as CircleShape2D).radius
+		var d: Vector2 = center - origin
+		var dist: float = d.length()
+		var minDist: float = radius + otherR
+		if dist >= minDist:
+			return Vector2.ZERO
+		if dist < 0.001:
+			return Vector2.RIGHT * minDist
+		return d.normalized() * (minDist - dist)
+
+	if s is RectangleShape2D:
+		var half: Vector2 = (s as RectangleShape2D).size * 0.5
+		var rel: Vector2 = center - origin
+		var nearest: Vector2 = Vector2(
+			clampf(rel.x, -half.x, half.x),
+			clampf(rel.y, -half.y, half.y))
+		var diff: Vector2 = rel - nearest
+		var dist2: float = diff.length()
+		if dist2 >= radius:
+			return Vector2.ZERO
+		if dist2 < 0.001:
+			return Vector2.RIGHT * radius
+		return diff.normalized() * (radius - dist2)
+
+	return Vector2.ZERO
+
+
+## 区域障碍物碰撞处理
+# 把玩家（圆）从障碍物里推出来，返回实际允许的位移
+# @param displacement 期望的位移向量（Vector2）
+func resolveAreaBlockers(displacement: Vector2) -> Vector2:
+	var center: Vector2 = body.global_position
+	var radius: float = playerRadius()
+
+	# 起始位置已经在障碍里：允许离开，避免卡死
+	shapeQuery.transform = Transform2D(0.0, center)
+	for h in get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8):
+		if penetration(center, radius, h.collider) != Vector2.ZERO:
+			return displacement
+
+	# 目标位置：最多迭代 3 次把重叠推开
+	var target: Vector2 = center + displacement
+	for i in range(3):
+		var moved := false
+		shapeQuery.transform = Transform2D(0.0, target)
+		for h in get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8):
+			var pen: Vector2 = penetration(target, radius, h.collider)
+			if pen != Vector2.ZERO:
+				target += pen
+				moved = true
+		if not moved:
+			break
+
+	return target - center
+
+
+## 给身体精灵套一个换色材质（每人一份独立实例）
+func applyPlayerColor() -> void:
+	var shader = load("res://shader/player_tint.gdshader")
+	if shader == null or ani == null:
+		return
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	var hueIndex: int = absi(playerId - 1) % PLAYER_HUE_SHIFT.size()
+	mat.set_shader_parameter("hue_shift", PLAYER_HUE_SHIFT[hueIndex])
+	ani.material = mat
+
+
+## 设置无敌（秒）：>0 时免疫伤害并闪烁
+func setInvincible(seconds: float) -> void:
+	invincibleTime = maxf(seconds, 0.0)
+	invincible = invincibleTime > 0.0
+	if not invincible and ani != null:
+		ani.modulate.a = 1.0
+
+
 ## 物理帧更新
-func _physics_process(_delta):
+func _physics_process(delta: float) -> void:
 	# 无敌计时 + 闪烁
 	if invincibleTime > 0.0:
-		invincibleTime -= _delta
+		invincibleTime -= delta
 		if ani != null:
 			ani.modulate.a = 0.35 if int(invincibleTime * 10.0) % 2 == 0 else 1.0
 		if invincibleTime <= 0.0:
@@ -403,7 +575,7 @@ func _physics_process(_delta):
 	# 原版玩家常驻自动回血：每 tick 回 maxHp/(25*30)，即 30 秒回满（doc/04 §2.2）
 	# 没有脱战延迟，只要 0 < hp < maxHp 就持续生效
 	if hp > 0 and hp < maxHp:
-		regenAcc += maxHp / 30.0 * _delta
+		regenAcc += maxHp / 30.0 * delta
 		if regenAcc >= 1.0:
 			var heal := int(regenAcc)
 			regenAcc -= heal
@@ -413,20 +585,20 @@ func _physics_process(_delta):
 	if state == Game.playerState.Idle:
 		# 空闲状态：处理移动和攻击
 		currAni = "stand"
-		
+
 		# 获取输入方向
-		var input_dir = Input.get_vector(keyMap.left, keyMap.right, keyMap.up, keyMap.down)
-		if input_dir.length() != 0:
-			vector = input_dir
-			angle = round(input_dir.angle() / (PI / 4))
+		var inputDir = Input.get_vector(keyMap.left, keyMap.right, keyMap.up, keyMap.down)
+		if inputDir.length() != 0:
+			vector = inputDir
+			angle = round(inputDir.angle() / (PI / 4))
 			angle = wrapi(int(angle), 0, 8)
 			currAni = "walk"
-		
+
 		# 对角线移动时归一化速度
-		if !input_dir.is_normalized():
-			input_dir = input_dir.normalized()
-		velocity = input_dir * speed
-		
+		if not inputDir.is_normalized():
+			inputDir = inputDir.normalized()
+		velocity = inputDir * speed
+
 		# 根据武器类型播放对应动画
 		if aniException.has(Game.weaponName[currWeapon.type]):
 			ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % 'other')
@@ -444,25 +616,26 @@ func _physics_process(_delta):
 			if currWeapon.ammoNum <= 0:
 				txt.modulate = Color.RED
 			else:
-				txt.modulate = Color.WHITE
+				# 暖白偏黄，配黑描边在浅色地面/深色地面都看得清
+				txt.modulate = Color(1.0, 0.95, 0.75)
 		else:
-			txt.modulate = Color.WHITE
-		
+			txt.modulate = Color(1.0, 0.95, 0.75)
+
 		# 处理射击输入
 		if Input.is_action_pressed(keyMap.fire):
 			if currWeapon.type == Game.weaponType.Grenade:
-				currWeapon.increase()
+				currWeapon.increase(get_physics_process_delta_time())
 			else:
 				if currWeapon.automatic:
 					currWeapon.fire(vector)
 				elif Input.is_action_just_pressed(keyMap.fire):
 					currWeapon.fire(vector)
-		
+
 		# 手榴弹释放时扔出
 		if Input.is_action_just_released(keyMap.fire):
 			if currWeapon.type == Game.weaponType.Grenade:
 				currWeapon.fire(vector)
-		
+
 		# 处理武器切换输入
 		if Input.is_action_just_pressed(keyMap.nextWeapon):
 			switchWeapon()
@@ -470,98 +643,41 @@ func _physics_process(_delta):
 			switchWeapon(false)
 
 		# 移动并处理碰撞
-		var displacement = velocity * _delta
+		var displacement = velocity * delta
 		if displacement != Vector2.ZERO:
-			displacement = resolve_area_blockers(displacement)
+			# 格子级阻挡：整体走不通就分轴尝试（原版 Collide_Map 的滑行语义）
+			# 注意：如果自己脚下已经是障碍格（比如刚在脚下放了油桶），
+			# 就允许自由离开，否则会被自己放的物体卡死。
+			var center: Vector2 = body.global_position
+			if not blockedByCell(center) and blockedByCell(center + displacement):
+				if not blockedByCell(center + Vector2(displacement.x, 0)):
+					displacement.y = 0
+				elif not blockedByCell(center + Vector2(0, displacement.y)):
+					displacement.x = 0
+				else:
+					displacement = Vector2.ZERO
+			displacement = resolveAreaBlockers(displacement)
 		move_and_collide(displacement)
-	
+
 	elif state == Game.playerState.hurt:
 		# 受伤状态：减速恢复
-		hurtTimer += _delta
+		hurtTimer += delta
 		if hurtTimer > hurtDelay:
 			hurtTimer = 0
 			state = Game.playerState.Idle
 		velocity = velocity.lerp(Vector2.ZERO, hurtTimer)
-		move_and_collide(velocity * _delta)
-	
+		move_and_collide(velocity * delta)
+
 	elif state == Game.playerState.dead:
 		# 死亡状态：无操作
 		pass
-	
+
 	# 限制玩家在地图边界内
-	position.x = clamp(position.x, bodySize.x / 2, MapData.mapSize.x - bodySize.x / 2)
-	position.y = clamp(position.y, bodySize.y / 2, MapData.mapSize.y - bodySize.y / 2)
-	
+	# 按「相机可视范围」钳取，而不是整张地图：
+	# 地图比相机大时，相机被夹在边缘 32px 内，玩家走到更外面就会出画。
+	var play: Rect2 = MapData.getPlayRect()
+	position.x = clampf(position.x, play.position.x + bodySize.x / 2, play.end.x - bodySize.x / 2)
+	position.y = clampf(position.y, play.position.y + bodySize.y / 2, play.end.y - bodySize.y / 2)
+
 	# 根据Y坐标设置Z轴顺序（实现2.5D视觉效果）
 	z_index = floori(global_position.y / MapData.cellSize) + 1
-
-
-## 区域障碍物碰撞处理
-# 检测并解决玩家与障碍物的重叠问题
-# @param displacement 期望的位移向量（Vector2）
-# @return 调整后的位移向量（Vector2）
-func resolve_area_blockers(displacement: Vector2) -> Vector2:
-	# 起始位置检查：如果已经在障碍物内部，允许离开
-	shapeQuery.transform = Transform2D(global_rotation, global_position)
-	var start_results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
-	for sr in start_results:
-		var area_shape = null
-		if sr.collider.has_node("shape"):
-			area_shape = sr.collider.get_node("shape").shape
-		if area_shape is RectangleShape2D:
-			var area_extents = area_shape.size * 0.5
-			var self_extents = shape.shape.size * 0.5
-			var delta = global_position - sr.collider.global_position
-			var overlap_x = (area_extents.x + self_extents.x) - abs(delta.x)
-			var overlap_y = (area_extents.y + self_extents.y) - abs(delta.y)
-			if overlap_x > 0 and overlap_y > 0:
-				return displacement
-
-	# 目标位置纠正：最多迭代3次以收敛
-	var adjusted_position = global_position + displacement
-	for i in range(3):
-		var made_adjustment = false
-		shapeQuery.transform = Transform2D(global_rotation, adjusted_position)
-		var results = get_world_2d().direct_space_state.intersect_shape(shapeQuery, 8)
-		for r in results:
-			var area_shape = null
-			if r.collider.has_node("shape"):
-				area_shape = r.collider.get_node("shape").shape
-			if area_shape is RectangleShape2D:
-				var area_extents = area_shape.size * 0.5
-				var self_extents = shape.shape.size * 0.5
-				var delta = adjusted_position - r.collider.global_position
-				var overlap_x = (area_extents.x + self_extents.x) - abs(delta.x)
-				var overlap_y = (area_extents.y + self_extents.y) - abs(delta.y)
-				if overlap_x > 0 and overlap_y > 0:
-					var move_x = sign(delta.x) if delta.x != 0 else sign(displacement.x) if displacement.x != 0 else 1
-					var move_y = sign(delta.y) if delta.y != 0 else sign(displacement.y) if displacement.y != 0 else 1
-					if overlap_x < overlap_y:
-						adjusted_position.x += move_x * overlap_x
-					else:
-						adjusted_position.y += move_y * overlap_y
-					made_adjustment = true
-		if not made_adjustment:
-			break
-
-	return adjusted_position - global_position
-
-
-
-## 给身体精灵套一个换色材质（每人一份独立实例）
-func applyPlayerColor() -> void:
-	var shader = load("res://shader/player_tint.gdshader")
-	if shader == null or ani == null:
-		return
-	var mat := ShaderMaterial.new()
-	mat.shader = shader
-	mat.set_shader_parameter("hue_shift", PLAYER_HUE_SHIFT[absi(playerId - 1) % PLAYER_HUE_SHIFT.size()])
-	ani.material = mat
-
-
-## 设置无敌（秒）：>0 时免疫伤害并闪烁
-func setInvincible(seconds: float) -> void:
-	invincibleTime = maxf(seconds, 0.0)
-	invincible = invincibleTime > 0.0
-	if not invincible and ani != null:
-		ani.modulate.a = 1.0

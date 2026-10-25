@@ -10,6 +10,7 @@ extends State
 ##   next = 结束后进入的状态（默认 Chase）
 ##   time = 停顿秒数（默认 0.4，即攻击后的 10 帧）
 
+
 ## 宿主
 var z: Zombie:
 	get:

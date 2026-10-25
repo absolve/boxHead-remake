@@ -5,6 +5,14 @@ extends PopupPanel
 ## 列表在运行时按 InputMap 里的动作生成（数量不固定，没法在场景里预设），
 ## 点某一行的按键按钮后进入「等待输入」状态，下一个键盘/鼠标按键即完成绑定。
 
+
+## 等待输入的动作名；空 = 不在等待
+var waitingAction: String = ""
+
+## 当前等待中的那行按钮
+var waitingButton: Button = null
+
+
 ## 行容器
 @onready var list: VBoxContainer = $margin/content/scroll/list
 
@@ -17,11 +25,6 @@ extends PopupPanel
 ## 全部恢复默认按钮
 @onready var btnDefaultAll: Button = $margin/content/btnRow/btnDefaultAll
 
-## 等待输入的动作名；空 = 不在等待
-var waitingAction: String = ""
-## 当前等待中的那行按钮
-var waitingButton: Button = null
-
 
 func _ready() -> void:
 	Settings.captureDefaults()
@@ -32,6 +35,8 @@ func _ready() -> void:
 	buildList()
 	$margin/content/title.text = tr("KEY BINDINGS")
 	btnClose.text = tr("CLOSE")
+
+
 ## 生成动作列表（按玩家分组）
 func buildList() -> void:
 	for c in list.get_children():
@@ -112,6 +117,38 @@ func stopListening() -> void:
 	hint.text = ""
 
 
+## 恢复某个动作为项目默认按键
+func onRestoreDefault(action: String, btn: Button) -> void:
+	Settings.resetAction(action)
+	Settings.saveAll()
+	btn.text = formatAction(action)
+	hint.text = "%s %s" % [action, tr("restored to default")]
+
+
+## 重置某个动作：清空绑定，显示「未设置」
+func onReset(action: String, btn: Button) -> void:
+	InputMap.action_erase_events(action)
+	Settings.saveAll()
+	btn.text = formatAction(action)
+	hint.text = "%s 已清空" % action
+
+
+## 关闭面板
+func onClose() -> void:
+	stopListening()
+	Settings.saveAll()
+	hide()
+
+
+## 全部恢复默认按键
+func onRestoreAllDefaults() -> void:
+	for action in Settings.defaultInput.keys():
+		Settings.resetAction(action)
+	Settings.saveAll()
+	buildList()
+	hint.text = tr("all restored to default")
+
+
 ## 捕获输入并绑定
 func _input(event: InputEvent) -> void:
 	if waitingAction == "":
@@ -143,35 +180,3 @@ func _input(event: InputEvent) -> void:
 	waitingAction = ""
 	waitingButton = null
 	get_viewport().set_input_as_handled()
-
-
-## 恢复某个动作为项目默认按键
-func onRestoreDefault(action: String, btn: Button) -> void:
-	Settings.resetAction(action)
-	Settings.saveAll()
-	btn.text = formatAction(action)
-	hint.text = "%s %s" % [action, tr("restored to default")]
-
-
-## 重置某个动作：清空绑定，显示「未设置」
-func onReset(action: String, btn: Button) -> void:
-	InputMap.action_erase_events(action)
-	Settings.saveAll()
-	btn.text = formatAction(action)
-	hint.text = "%s 已清空" % action
-
-
-## 关闭面板
-func onClose() -> void:
-	stopListening()
-	Settings.saveAll()
-	hide()
-
-
-## 全部恢复默认按键
-func onRestoreAllDefaults() -> void:
-	for action in Settings.defaultInput.keys():
-		Settings.resetAction(action)
-	Settings.saveAll()
-	buildList()
-	hint.text = tr("all restored to default")

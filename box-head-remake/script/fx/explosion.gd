@@ -13,25 +13,35 @@ extends "res://script/item/item.gd"
 ##
 ## 注意：子爆炸会把自己的 biggerBang / clusterExplode 清零，避免无限递归。
 
+
 ## 子爆炸延迟范围（秒）——原版是 2..5 帧，按 25fps 换算
-const SUB_DELAY_MIN := 2.0 / 25.0
-const SUB_DELAY_MAX := 5.0 / 25.0
+const SUB_DELAY_MIN: float = 2.0 / 25.0
+
+const SUB_DELAY_MAX: float = 5.0 / 25.0
+
 
 ## 伤害值
 @export var damage: int = 0
-## 爆炸类型
-var explosionType = Game.explosionType.normal
+
 ## 爆炸半径覆盖（像素）；为 0 时按 damage 推导
 @export var wRange: float = 0.0
 
+
+## 爆炸类型
+var explosionType: int = Game.explosionType.normal
+
 ## 已处理碰撞的对象列表（避免同一目标被多次结算）
-var excludeObj = []
+var excludeObj: Array = []
+
 ## 本次爆炸的实际半径（像素）
 var radius: float = 64.0
+
 ## 额外延迟（秒）——子爆炸用，原版是 mDelay
 var mDelay: float = 0.0
+
 ## 是否已经爆开（子爆炸延迟期间不结算伤害）
-var detonated := false
+var detonated: bool = false
+
 
 ## 碰撞形状节点
 @onready var shapeNode: CollisionShape2D = $shape
@@ -68,47 +78,11 @@ func _ready() -> void:
 	queue_free()
 
 
-## 物理帧更新：对范围内目标按距离衰减结算伤害
-func _physics_process(_delta: float) -> void:
-	if not detonated:
-		return
-
-	for area in get_overlapping_areas():
-		if area == null or not is_instance_valid(area):
-			continue
-
-		var rid = area.get_rid()
-		if excludeObj.has(rid):
-			continue
-
-		var target = resolveTarget(area)
-		if target == null:
-			continue
-
-		var ratio: float = global_position.distance_to(area.global_position) / radius if radius > 0.0 else 0.0
-		if ratio > 1.0:
-			continue
-
-		# 原版三段衰减：≤0.5 全伤，≤0.75 七五折，≤1.0 半伤
-		var mul := 1.0
-		if ratio > 0.75:
-			mul = 0.5
-		elif ratio > 0.5:
-			mul = 0.75
-
-		var dmg := int(round(damage * mul))
-		if dmg <= 0:
-			continue
-
-		excludeObj.append(rid)
-		applyDamage(target, dmg)
-
-
 ## 从重叠的 Area2D 反查"能挨打的节点"
 # 角色：Area2D 的 owner（玩家/僵尸/恶魔本体）
 # 物品：Area2D 自己（油桶/墙/地雷/充电包/手雷）
 # 返回 null 表示这个 Area2D 不吃爆炸伤害
-func resolveTarget(area: Area2D):
+func resolveTarget(area: Area2D) -> Node2D:
 	var t = area.get("type")
 	if t != null and t is int:
 		# 物品：排除爆炸自身，避免连锁递归
@@ -125,12 +99,12 @@ func resolveTarget(area: Area2D):
 
 
 ## 结算伤害（角色是 3 参 hit，物品是 1 参 hit）
-func applyDamage(target, dmg: int) -> void:
+func applyDamage(target: Node2D, dmg: int) -> void:
 	if target.has_method("hit"):
 		if target is Area2D:
-			target.hit(dmg)
+			target.hit(dmg, Vector2.ZERO, 0, true)
 		else:
-			target.hit(dmg, global_position, 0)
+			target.hit(dmg, global_position, 0, true)
 
 
 ## ClusterExplode：4 枚分裂爆（原版是 4 枚 CThing_Shot_ClusterShell 弹丸，
@@ -177,3 +151,41 @@ func spawnSub(offset: Vector2, delay: float) -> void:
 	t.clusterExplode = 0
 	t.mDelay = delay
 	get_tree().current_scene.add_child(t)
+
+
+## 物理帧更新：对范围内目标按距离衰减结算伤害
+func _physics_process(_delta: float) -> void:
+	if not detonated:
+		return
+
+	for area in get_overlapping_areas():
+		if area == null or not is_instance_valid(area):
+			continue
+
+		var rid = area.get_rid()
+		if excludeObj.has(rid):
+			continue
+
+		var target = resolveTarget(area)
+		if target == null:
+			continue
+
+		var ratio: float = (
+				global_position.distance_to(area.global_position) / radius
+				if radius > 0.0 else 0.0)
+		if ratio > 1.0:
+			continue
+
+		# 原版三段衰减：≤0.5 全伤，≤0.75 七五折，≤1.0 半伤
+		var mul := 1.0
+		if ratio > 0.75:
+			mul = 0.5
+		elif ratio > 0.5:
+			mul = 0.75
+
+		var dmg := int(round(damage * mul))
+		if dmg <= 0:
+			continue
+
+		excludeObj.append(rid)
+		applyDamage(target, dmg)

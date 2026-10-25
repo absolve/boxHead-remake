@@ -1,215 +1,120 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
-[ext_resource type="PackedScene" path="res://scene/level/wall_shape_004.tscn" id="2_block"]
-[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="3_sign"]
-[ext_resource type="Texture2D" path="res://sprite/shape/1.png" id="4_bg"]
+[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="2_sign"]
+[ext_resource type="PackedScene" path="res://scene/item/wall_obj.tscn" id="5_wobj"]
 
-[node name="room0009" type="Node2D"]
+[node name="room_0009" type="Node2D"]
 script = ExtResource("1_room")
-mapSize = Vector2(1632, 1312)
+mapSize = Vector2(1312, 1056)
+barrelPoint = [Vector2i(14, 7), Vector2i(18, 7), Vector2i(22, 7), Vector2i(26, 7), Vector2i(14, 11), Vector2i(18, 11), Vector2i(22, 11), Vector2i(26, 11), Vector2i(14, 15), Vector2i(18, 15), Vector2i(22, 15), Vector2i(26, 15), Vector2i(14, 19), Vector2i(18, 19), Vector2i(22, 19), Vector2i(26, 19), Vector2i(14, 23), Vector2i(18, 23), Vector2i(22, 23), Vector2i(26, 23), Vector2i(14, 27), Vector2i(18, 27), Vector2i(22, 27), Vector2i(26, 27)]
+wallObstacles = Array[Vector2i]([Vector2i(0,1), Vector2i(1,1), Vector2i(2,1), Vector2i(3,1), Vector2i(4,1), Vector2i(5,1), Vector2i(6,1), Vector2i(7,1), Vector2i(8,1), Vector2i(9,1), Vector2i(10,1), Vector2i(11,1), Vector2i(12,1), Vector2i(13,1), Vector2i(14,1), Vector2i(15,1), Vector2i(16,1), Vector2i(17,1), Vector2i(0,2), Vector2i(1,2), Vector2i(2,2), Vector2i(3,2), Vector2i(4,2), Vector2i(5,2), Vector2i(6,2), Vector2i(7,2), Vector2i(8,2), Vector2i(9,2), Vector2i(10,2), Vector2i(11,2), Vector2i(12,2), Vector2i(13,2), Vector2i(14,2), Vector2i(15,2), Vector2i(16,2), Vector2i(17,2), Vector2i(23,1), Vector2i(24,1), Vector2i(25,1), Vector2i(26,1), Vector2i(27,1), Vector2i(28,1), Vector2i(29,1), Vector2i(30,1), Vector2i(31,1), Vector2i(32,1), Vector2i(33,1), Vector2i(34,1), Vector2i(35,1), Vector2i(36,1), Vector2i(37,1), Vector2i(38,1), Vector2i(39,1), Vector2i(40,1), Vector2i(23,2), Vector2i(24,2), Vector2i(25,2), Vector2i(26,2), Vector2i(27,2), Vector2i(28,2), Vector2i(29,2), Vector2i(30,2), Vector2i(31,2), Vector2i(32,2), Vector2i(33,2), Vector2i(34,2), Vector2i(35,2), Vector2i(36,2), Vector2i(37,2), Vector2i(38,2), Vector2i(39,2), Vector2i(40,2), Vector2i(0,32), Vector2i(1,32), Vector2i(2,32), Vector2i(3,32), Vector2i(4,32), Vector2i(5,32), Vector2i(6,32), Vector2i(7,32), Vector2i(8,32), Vector2i(9,32), Vector2i(10,32), Vector2i(11,32), Vector2i(12,32), Vector2i(13,32), Vector2i(14,32), Vector2i(15,32), Vector2i(16,32), Vector2i(17,32), Vector2i(23,32), Vector2i(24,32), Vector2i(25,32), Vector2i(26,32), Vector2i(27,32), Vector2i(28,32), Vector2i(29,32), Vector2i(30,32), Vector2i(31,32), Vector2i(32,32), Vector2i(33,32), Vector2i(34,32), Vector2i(35,32), Vector2i(36,32), Vector2i(37,32), Vector2i(38,32), Vector2i(39,32), Vector2i(40,32)])
 
-[node name="bg" type="Sprite2D" parent="."]
-texture = ExtResource("4_bg")
-position = Vector2(816, 656)
-scale = Vector2(2.7200, 2.1867)
-
-[node name="block0" parent="." instance=ExtResource("2_block")]
-position = Vector2(488, 169)
-hitLift = 40.0
-
-[node name="block1" parent="." instance=ExtResource("2_block")]
-position = Vector2(1224, 169)
-hitLift = 40.0
-
-[node name="block2" parent="." instance=ExtResource("2_block")]
-position = Vector2(488, 1168)
-hitLift = 40.0
-
-[node name="block3" parent="." instance=ExtResource("2_block")]
-position = Vector2(1224, 1168)
-hitLift = 40.0
-
-[node name="sign4" parent="." instance=ExtResource("3_sign")]
-position = Vector2(792, 149)
+[node name="zombie0" parent="." instance=ExtResource("2_sign")]
+position = Vector2(592, 16)
 type = 701
 
-[node name="sign5" parent="." instance=ExtResource("3_sign")]
-position = Vector2(856, 149)
+[node name="zombie1" parent="." instance=ExtResource("2_sign")]
+position = Vector2(656, 16)
 type = 701
 
-[node name="sign6" parent="." instance=ExtResource("3_sign")]
-position = Vector2(920, 149)
+[node name="zombie2" parent="." instance=ExtResource("2_sign")]
+position = Vector2(720, 16)
 type = 701
 
-[node name="sign7" parent="." instance=ExtResource("3_sign")]
-position = Vector2(791, 1178)
+[node name="zombie3" parent="." instance=ExtResource("2_sign")]
+position = Vector2(592, 1040)
 type = 701
 
-[node name="sign8" parent="." instance=ExtResource("3_sign")]
-position = Vector2(855, 1178)
+[node name="zombie4" parent="." instance=ExtResource("2_sign")]
+position = Vector2(656, 1040)
 type = 701
 
-[node name="sign9" parent="." instance=ExtResource("3_sign")]
-position = Vector2(919, 1178)
-type = 701
-
-[node name="sign10" parent="." instance=ExtResource("3_sign")]
-position = Vector2(824, 148)
+[node name="devil0" parent="." instance=ExtResource("2_sign")]
+position = Vector2(624, 16)
 type = 702
 
-[node name="sign11" parent="." instance=ExtResource("3_sign")]
-position = Vector2(888, 148)
+[node name="devil1" parent="." instance=ExtResource("2_sign")]
+position = Vector2(688, 16)
 type = 702
 
-[node name="sign12" parent="." instance=ExtResource("3_sign")]
-position = Vector2(824, 1178)
+[node name="devil2" parent="." instance=ExtResource("2_sign")]
+position = Vector2(16, 528)
 type = 702
 
-[node name="sign13" parent="." instance=ExtResource("3_sign")]
-position = Vector2(888, 1178)
+[node name="devil3" parent="." instance=ExtResource("2_sign")]
+position = Vector2(1296, 528)
 type = 702
 
-[node name="sign14" parent="." instance=ExtResource("3_sign")]
-position = Vector2(663, 372)
+[node name="devil4" parent="." instance=ExtResource("2_sign")]
+position = Vector2(624, 1040)
+type = 702
+
+[node name="devil5" parent="." instance=ExtResource("2_sign")]
+position = Vector2(688, 1040)
+type = 702
+
+[node name="box0" parent="." instance=ExtResource("2_sign")]
+position = Vector2(528, 240)
 type = 703
 
-[node name="sign15" parent="." instance=ExtResource("3_sign")]
-position = Vector2(791, 372)
+[node name="box1" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 240)
 type = 703
 
-[node name="sign16" parent="." instance=ExtResource("3_sign")]
-position = Vector2(919, 372)
+[node name="box2" parent="." instance=ExtResource("2_sign")]
+position = Vector2(528, 368)
 type = 703
 
-[node name="sign17" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1047, 372)
+[node name="box3" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 368)
 type = 703
 
-[node name="sign18" parent="." instance=ExtResource("3_sign")]
-position = Vector2(664, 501)
+[node name="box4" parent="." instance=ExtResource("2_sign")]
+position = Vector2(528, 496)
 type = 703
 
-[node name="sign19" parent="." instance=ExtResource("3_sign")]
-position = Vector2(791, 501)
+[node name="box5" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 496)
 type = 703
 
-[node name="sign20" parent="." instance=ExtResource("3_sign")]
-position = Vector2(919, 501)
+[node name="box6" parent="." instance=ExtResource("2_sign")]
+position = Vector2(528, 624)
 type = 703
 
-[node name="sign21" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1047, 501)
+[node name="box7" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 624)
 type = 703
 
-[node name="sign22" parent="." instance=ExtResource("3_sign")]
-position = Vector2(666, 629)
+[node name="box8" parent="." instance=ExtResource("2_sign")]
+position = Vector2(528, 752)
 type = 703
 
-[node name="sign23" parent="." instance=ExtResource("3_sign")]
-position = Vector2(794, 629)
+[node name="box9" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 752)
 type = 703
 
-[node name="sign24" parent="." instance=ExtResource("3_sign")]
-position = Vector2(922, 629)
+[node name="box10" parent="." instance=ExtResource("2_sign")]
+position = Vector2(528, 880)
 type = 703
 
-[node name="sign25" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1050, 629)
+[node name="box11" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 880)
 type = 703
 
-[node name="sign26" parent="." instance=ExtResource("3_sign")]
-position = Vector2(666, 758)
-type = 703
-
-[node name="sign27" parent="." instance=ExtResource("3_sign")]
-position = Vector2(794, 758)
-type = 703
-
-[node name="sign28" parent="." instance=ExtResource("3_sign")]
-position = Vector2(922, 758)
-type = 703
-
-[node name="sign29" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1050, 758)
-type = 703
-
-[node name="sign30" parent="." instance=ExtResource("3_sign")]
-position = Vector2(666, 887)
-type = 703
-
-[node name="sign31" parent="." instance=ExtResource("3_sign")]
-position = Vector2(794, 887)
-type = 703
-
-[node name="sign32" parent="." instance=ExtResource("3_sign")]
-position = Vector2(922, 887)
-type = 703
-
-[node name="sign33" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1050, 887)
-type = 703
-
-[node name="sign34" parent="." instance=ExtResource("3_sign")]
-position = Vector2(666, 1016)
-type = 703
-
-[node name="sign35" parent="." instance=ExtResource("3_sign")]
-position = Vector2(794, 1016)
-type = 703
-
-[node name="sign36" parent="." instance=ExtResource("3_sign")]
-position = Vector2(922, 1016)
-type = 703
-
-[node name="sign37" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1050, 1016)
-type = 703
-
-[node name="sign38" parent="." instance=ExtResource("3_sign")]
-position = Vector2(729, 368)
+[node name="player0" parent="." instance=ExtResource("2_sign")]
+position = Vector2(640, 512)
 type = 700
 
-[node name="sign39" parent="." instance=ExtResource("3_sign")]
-position = Vector2(987, 372)
+[node name="player1" parent="." instance=ExtResource("2_sign")]
+position = Vector2(672, 512)
 type = 700
 
-[node name="sign40" parent="." instance=ExtResource("3_sign")]
-position = Vector2(729, 497)
+[node name="player2" parent="." instance=ExtResource("2_sign")]
+position = Vector2(640, 544)
 type = 700
 
-[node name="sign41" parent="." instance=ExtResource("3_sign")]
-position = Vector2(987, 501)
+[node name="player3" parent="." instance=ExtResource("2_sign")]
+position = Vector2(672, 544)
 type = 700
 
-[node name="sign42" parent="." instance=ExtResource("3_sign")]
-position = Vector2(727, 627)
-type = 700
-
-[node name="sign43" parent="." instance=ExtResource("3_sign")]
-position = Vector2(985, 633)
-type = 700
-
-[node name="sign44" parent="." instance=ExtResource("3_sign")]
-position = Vector2(727, 756)
-type = 700
-
-[node name="sign45" parent="." instance=ExtResource("3_sign")]
-position = Vector2(985, 762)
-type = 700
-
-[node name="sign46" parent="." instance=ExtResource("3_sign")]
-position = Vector2(727, 880)
-type = 700
-
-[node name="sign47" parent="." instance=ExtResource("3_sign")]
-position = Vector2(986, 884)
-type = 700
-
-[node name="sign48" parent="." instance=ExtResource("3_sign")]
-position = Vector2(727, 1009)
-type = 700
-
-[node name="sign49" parent="." instance=ExtResource("3_sign")]
-position = Vector2(986, 1013)
-type = 700

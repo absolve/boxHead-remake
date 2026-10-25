@@ -1,0 +1,245 @@
+[gd_scene format=3 uid="uid://cxjtfle2inwbm"]
+
+[ext_resource type="Script" uid="uid://ddavungv0hfk8" path="res://script/test/test_weapons.gd" id="1_tw"]
+[ext_resource type="PackedScene" path="res://scene/level/game_camera.tscn" id="2_cam"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnNormal"]
+bg_color = Color(0.08, 0.08, 0.1, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.3, 0.36, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnPressed"]
+bg_color = Color(0.24, 0.24, 0.3, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.55, 0.65, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnHover"]
+bg_color = Color(0.16, 0.16, 0.2, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.45, 0.55, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="TestWeapons" type="Node2D" unique_id=1066418131]
+script = ExtResource("1_tw")
+
+[node name="camera" parent="." unique_id=187608814 instance=ExtResource("2_cam")]
+
+[node name="ui" type="CanvasLayer" parent="." unique_id=425551821]
+layer = 10
+
+[node name="label" type="Label" parent="ui" unique_id=972812782]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 620.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 12
+text = "武器测试"
+
+[node name="panel" type="VBoxContainer" parent="ui" unique_id=731226295]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_top = 32.0
+offset_right = -6.0
+offset_bottom = 470.0
+theme_override_constants/separation = 2
+
+[node name="btnAddZombie" type="Button" parent="ui/panel" unique_id=832770497]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "+ 僵尸"
+
+[node name="btnRemoveZombie" type="Button" parent="ui/panel" unique_id=1216711949]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "- 僵尸"
+
+[node name="btnAddDevil" type="Button" parent="ui/panel" unique_id=1695130056]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "+ 恶魔"
+
+[node name="btnRemoveDevil" type="Button" parent="ui/panel" unique_id=495173153]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "- 恶魔"
+
+[node name="btnClear" type="Button" parent="ui/panel" unique_id=1514039739]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "清空"
+
+[node name="btnReset" type="Button" parent="ui/panel" unique_id=361198317]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "重置靶子"
+
+[node name="btnInvincible" type="Button" parent="ui/panel" unique_id=1971814494]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "无敌 开/关"
+
+[node name="sep" type="HSeparator" parent="ui/panel" unique_id=540931549]
+layout_mode = 2
+
+[node name="btnRailgun" type="Button" parent="ui/panel" unique_id=1042533103]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 轨道炮"
+
+[node name="btnRocket" type="Button" parent="ui/panel" unique_id=295238702]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 火箭"
+
+[node name="btnShotgun" type="Button" parent="ui/panel" unique_id=610043708]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 霰弹枪"
+
+[node name="btnUZI" type="Button" parent="ui/panel" unique_id=175917997]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 UZI"
+
+[node name="btnMine" type="Button" parent="ui/panel" unique_id=1817706230]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 地雷"
+
+[node name="btnChargePack" type="Button" parent="ui/panel" unique_id=461839106]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 充电包"
+
+[node name="btnWall" type="Button" parent="ui/panel" unique_id=1889241292]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 墙"
+
+[node name="btnBarrel" type="Button" parent="ui/panel" unique_id=1781215620]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 油桶"
+
+[node name="btnGrenade" type="Button" parent="ui/panel" unique_id=682861410]
+custom_minimum_size = Vector2(112, 22)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_btnNormal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btnPressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btnHover")
+text = "解锁 手榴弹"

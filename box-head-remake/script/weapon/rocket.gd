@@ -6,11 +6,11 @@ extends "res://script/weapon/weapon.gd"
 
 
 ## 火箭弹场景预加载
-var bullet = preload("res://scene/projectile/rocket_bullet.tscn")
+var bullet: PackedScene = preload("res://scene/projectile/rocket_bullet.tscn")
 
 
 ## 初始化
-func _ready():
+func _ready() -> void:
 	# 设置8个方向的武器偏移量
 	offsetDir[0] = Vector2(45, -15)
 	offsetDir[1] = Vector2(20, 0)
@@ -25,7 +25,7 @@ func _ready():
 ## 射击
 # 发射火箭弹实体
 # @param v 发射方向（Vector2）
-func fire(v):
+func fire(v: Vector2) -> void:
 	if ammoNum <= 0:
 		return
 	if canShoot:
@@ -34,16 +34,16 @@ func fire(v):
 		timer.start(delay)
 		sound.play()
 		vector = v
-		
+
 		# 创建火箭弹实例
 		var temp = bullet.instantiate()
 		temp.vector = vector
-		
+
 		# 根据方向计算发射位置偏移
 		var offset = offsetDir[wrapi(int(vector.angle() / (PI / 4)), 0, 8)]
 		temp.global_position = global_position + offset
 		temp.damage = damage
 		temp.biggerBang = biggerBang
 		temp.clusterExplode = clusterExplode
-		
+
 		get_tree().current_scene.add_child(temp)

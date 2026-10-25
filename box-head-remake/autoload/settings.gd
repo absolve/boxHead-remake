@@ -8,18 +8,16 @@ extends Node
 ##
 ## 保存内容：按键映射 + 难度 + 各项开关 + 语言
 
-const FILE_NAME := "settings.cfg"
-const SECTION_INPUT := "input"
-const SECTION_GAME := "game"
+
+const FILE_NAME: String = "settings.cfg"
+
+const SECTION_INPUT: String = "input"
+
+const SECTION_GAME: String = "game"
 
 
-## 存档的绝对路径
-##
-## 导出后放在 exe 旁边，方便用户直接备份/改；编辑器里用 user:// 不污染项目。
-func getConfigPath() -> String:
-	if OS.has_feature("editor"):
-		return "user://" + FILE_NAME
-	return OS.get_executable_path().get_base_dir().path_join(FILE_NAME)
+## 恢复某一个动作的默认按键（需要把默认值记下来）
+var defaultInput: Dictionary = {}
 
 
 ## 载入并应用全部设置（在 _ready 里调用）
@@ -29,6 +27,15 @@ func getConfigPath() -> String:
 func _ready() -> void:
 	captureDefaults()
 	loadAll()
+
+
+## 存档的绝对路径
+##
+## 导出后放在 exe 旁边，方便用户直接备份/改；编辑器里用 user:// 不污染项目。
+func getConfigPath() -> String:
+	if OS.has_feature("editor"):
+		return "user://" + FILE_NAME
+	return OS.get_executable_path().get_base_dir().path_join(FILE_NAME)
 
 
 ## 载入设置
@@ -70,10 +77,6 @@ func saveInput(cfg: ConfigFile) -> void:
 		if events.is_empty():
 			continue
 		cfg.set_value(SECTION_INPUT, action, eventToDict(events[0]))
-
-
-## 恢复某一个动作的默认按键（需要把默认值记下来）
-var defaultInput := {}
 
 
 ## 记录当前的（默认）按键，供「重置」用

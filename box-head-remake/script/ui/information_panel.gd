@@ -6,4 +6,4 @@ extends Node2D
 
 
 ## 信息列表（预留）
-var msgList = []
+var msgList: Array = []

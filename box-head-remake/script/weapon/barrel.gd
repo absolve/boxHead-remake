@@ -10,15 +10,15 @@ extends "res://script/weapon/weapon.gd"
 
 
 ## 油桶物体场景预加载
-var barrelObj = preload("res://scene/item/barrel_obj.tscn")
+var barrelObj: PackedScene = preload("res://scene/item/barrel_obj.tscn")
 
 ## 分裂爆炸数量
-var splitExplosion = 0
+var splitExplosion: int = 0
 
 
 ## 放置油桶
 # @param _v 放置方向（Vector2，未使用）
-func fire(_v):
+func fire(_v: Vector2) -> void:
 	if ammoNum <= 0:
 		return
 

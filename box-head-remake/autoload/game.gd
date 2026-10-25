@@ -5,6 +5,31 @@ extends Node
 # 作为自动加载节点，可在任何脚本中通过 Game.xxx 访问
 
 
+# 武器升级信号
+# 当玩家连杀达到一定数量触发武器升级时发出
+@warning_ignore("unused_signal")
+signal weaponUpgrade
+
+# 拾取物品信号
+# 当玩家拾取物品时发出
+@warning_ignore("unused_signal")
+signal pickItem
+
+# 敌人被击杀信号
+# 参数：被击杀敌人的位置（Vector2）
+@warning_ignore("unused_signal")
+signal enemyKilled(pos: Vector2, baseScore: int)
+
+# 消息通知信号
+# 参数：通知文本（String），通知颜色（Color，可选）
+@warning_ignore("unused_signal")
+signal notice
+
+# 玩家死亡
+@warning_ignore("unused_signal")
+signal playerDead
+
+
 ## 武器类型枚举
 # 定义游戏中所有可用武器的类型标识
 enum weaponType {
@@ -54,21 +79,6 @@ enum roleType {
 	Player = 400,       # 玩家
 	Zombie,             # 僵尸敌人
 	Devil               # 恶魔敌人
-}
-
-## 武器名称映射
-# 将武器类型枚举转换为可读的英文名称
-const weaponName = {
-	weaponType.Pistol: 'Pistol',
-	weaponType.Railgun: 'Railgun',
-	weaponType.Rocket: 'Rocket',
-	weaponType.Shotgun: 'Shotgun',
-	weaponType.UZI: 'UZI',
-	weaponType.Mine: 'Mine',
-	weaponType.ChargePack: 'ChargePack',
-	weaponType.Wall: 'Wall',
-	weaponType.Barrel: 'Barrel',
-	weaponType.Grenade: 'Grenade',
 }
 
 ## 烟雾类型枚举
@@ -133,32 +143,49 @@ enum mapSignDir {
 	Down                # 向下
 }
 
+
+## 武器名称映射
+# 将武器类型枚举转换为可读的英文名称
+const weaponName: Dictionary = {
+	weaponType.Pistol: 'Pistol',
+	weaponType.Railgun: 'Railgun',
+	weaponType.Rocket: 'Rocket',
+	weaponType.Shotgun: 'Shotgun',
+	weaponType.UZI: 'UZI',
+	weaponType.Mine: 'Mine',
+	weaponType.ChargePack: 'ChargePack',
+	weaponType.Wall: 'Wall',
+	weaponType.Barrel: 'Barrel',
+	weaponType.Grenade: 'Grenade',
+}
+
+
 ## 地图列表配置
 # 存储所有可用地图的信息（名称、ID、预览图）
-var mapId = [ 
-	{'name': 'Boxy', 'id': 0, 'img': "res://sprite/409.jpg"}, 
+var mapId: Array = [
+	{'name': 'Boxy', 'id': 0, 'img': "res://sprite/409.jpg"},
 	{'name': 'Buttons', 'id': 2, 'img': "res://sprite/427.png"},
-	{'name': 'Mazey', 'id': 3, 'img': "res://sprite/431.png"}, 
+	{'name': 'Mazey', 'id': 3, 'img': "res://sprite/431.png"},
 	{'name': 'Gladiator', 'id': 4, 'img': "res://sprite/435.jpg"},
-	{'name': 'Strip', 'id': 5, 'img': "res://sprite/439.png"}, 
+	{'name': 'Strip', 'id': 5, 'img': "res://sprite/439.png"},
 	{'name': 'Tight', 'id': 6, 'img': "res://sprite/443.png"},
-	{'name': 'Columns', 'id': 7, 'img': "res://sprite/447.jpg"}, 
+	{'name': 'Columns', 'id': 7, 'img': "res://sprite/447.jpg"},
 	{'name': 'Castle', 'id': 8, 'img': "res://sprite/451.jpg"},
-	{'name': 'Big Boxy', 'id': 9, 'img': "res://sprite/455.jpg"}, 
+	{'name': 'Big Boxy', 'id': 9, 'img': "res://sprite/455.jpg"},
 	{'name': 'Recty', 'id': 10, 'img': "res://sprite/460.png"},
-	{'name': 'Patchy', 'id': 11, 'img': "res://sprite/464.jpg"}, 
+	{'name': 'Patchy', 'id': 11, 'img': "res://sprite/464.jpg"},
 	{'name': 'Forrest box', 'id': 12, 'img': "res://sprite/468.jpg"},
-	{'name': 'Tight 2', 'id': 13, 'img': "res://sprite/472.png"}, 
+	{'name': 'Tight 2', 'id': 13, 'img': "res://sprite/472.png"},
 	{'name': 'Massive', 'id': 14, 'img': "res://sprite/476.png"},
-	{'name': 'Thin line', 'id': 15, 'img': "res://sprite/480.png"}, 
+	{'name': 'Thin line', 'id': 15, 'img': "res://sprite/480.png"},
 	{'name': '4 Castles', 'id': 16, 'img': "res://sprite/484.png"},
-	{'name': 'The strips', 'id': 17, 'img': "res://sprite/488.png"}, 
+	{'name': 'The strips', 'id': 17, 'img': "res://sprite/488.png"},
 	{'name': 'Big one', 'id': 18, 'img': "res://sprite/492.jpg"}
 ]
 
 ## 玩家角色列表配置
 # 存储所有可用玩家角色的信息（名称、ID、头像）
-var playerName = [ 
+var playerName: Array = [
 	{'name': 'bambo', 'id': 1, 'img': "res://sprite/ui/12.png"},
 	{'name': 'bon', 'id': 2, 'img': "res://sprite/ui/2.png"},
 	{'name': 'bind', 'id': 3, 'img': "res://sprite/ui/3.png"},
@@ -167,97 +194,79 @@ var playerName = [
 
 ## 全局信号定义
 
-# 武器升级信号
-# 当玩家连杀达到一定数量触发武器升级时发出
-@warning_ignore("unused_signal")
-signal weaponUpgrade
-
-# 拾取物品信号
-# 当玩家拾取物品时发出
-@warning_ignore("unused_signal")
-signal pickItem
-
-# 敌人被击杀信号
-# 参数：被击杀敌人的位置（Vector2）
-@warning_ignore("unused_signal")
-signal enemyKilled
-
-# 消息通知信号
-# 参数：通知文本（String），通知颜色（Color，可选）
-@warning_ignore("unused_signal")
-signal notice
-
-#玩家死亡
-@warning_ignore("unused_signal")
-signal playerDead
 
 ## 将箱子内容类型转换为名称
-# @param type 箱子内容类型（boxContent枚举值）
+# @param contentType 箱子内容类型（boxContent枚举值）
 # @return 对应的英文名称（String）
-func getBoxContentName(type):
-	if type == boxContent.Railgun:
+func getBoxContentName(contentType: int) -> Variant:
+	if contentType == boxContent.Railgun:
 		return 'Railgun'
-	elif type == boxContent.Rocket:
+	elif contentType == boxContent.Rocket:
 		return 'Rocket'
-	elif type == boxContent.Shotgun:
+	elif contentType == boxContent.Shotgun:
 		return 'Shotgun'
-	elif type == boxContent.UZI:
+	elif contentType == boxContent.UZI:
 		return 'UZI'
-	elif type == boxContent.Mine:
+	elif contentType == boxContent.Mine:
 		return 'Mine'
-	elif type == boxContent.ChargePack:
+	elif contentType == boxContent.ChargePack:
 		return 'ChargePack'
-	elif type == boxContent.Wall:
+	elif contentType == boxContent.Wall:
 		return 'Wall'
-	elif type == boxContent.Barrel:
+	elif contentType == boxContent.Barrel:
 		return 'Barrel'
-	elif type == boxContent.Grenade:
+	elif contentType == boxContent.Grenade:
 		return 'Grenade'
-	elif type == boxContent.Life:
+	elif contentType == boxContent.Life:
 		return 'Life'
+	return null
+
 
 ## 将箱子内容类型转换为武器类型
-# @param type 箱子内容类型（boxContent枚举值）
+# @param contentType 箱子内容类型（boxContent枚举值）
 # @return 对应的武器类型（weaponType枚举值），无对应时返回null
-func getBoxContentWeaponType(type):
-	if type == boxContent.Railgun:
+func getBoxContentWeaponType(contentType: int) -> Variant:
+	if contentType == boxContent.Railgun:
 		return weaponType.Railgun
-	elif type == boxContent.Rocket:
+	elif contentType == boxContent.Rocket:
 		return weaponType.Rocket
-	elif type == boxContent.Shotgun:
+	elif contentType == boxContent.Shotgun:
 		return weaponType.Shotgun
-	elif type == boxContent.UZI:
+	elif contentType == boxContent.UZI:
 		return weaponType.UZI
-	elif type == boxContent.Mine:
+	elif contentType == boxContent.Mine:
 		return weaponType.Mine
-	elif type == boxContent.ChargePack:
+	elif contentType == boxContent.ChargePack:
 		return weaponType.ChargePack
-	elif type == boxContent.Wall:
+	elif contentType == boxContent.Wall:
 		return weaponType.Wall
-	elif type == boxContent.Barrel:
+	elif contentType == boxContent.Barrel:
 		return weaponType.Barrel
-	elif type == boxContent.Grenade:
+	elif contentType == boxContent.Grenade:
 		return weaponType.Grenade
+	return null
+
 
 ## 将武器类型转换为箱子内容类型
-# @param type 武器类型（weaponType枚举值）
+# @param contentType 武器类型（weaponType枚举值）
 # @return 对应的箱子内容类型（boxContent枚举值），无对应时返回null
-func WeaponType2BoxContent(type):
-	if type == weaponType.Railgun:
+func WeaponType2BoxContent(contentType: int) -> Variant:
+	if contentType == weaponType.Railgun:
 		return boxContent.Railgun
-	elif type == weaponType.Rocket:
+	elif contentType == weaponType.Rocket:
 		return boxContent.Rocket
-	elif type == weaponType.Shotgun:
+	elif contentType == weaponType.Shotgun:
 		return boxContent.Shotgun
-	elif type == weaponType.UZI:
+	elif contentType == weaponType.UZI:
 		return boxContent.UZI
-	elif type == weaponType.Mine:
+	elif contentType == weaponType.Mine:
 		return boxContent.Mine
-	elif type == weaponType.ChargePack:
+	elif contentType == weaponType.ChargePack:
 		return boxContent.ChargePack
-	elif type == weaponType.Wall:
+	elif contentType == weaponType.Wall:
 		return boxContent.Wall
-	elif type == weaponType.Barrel:
+	elif contentType == weaponType.Barrel:
 		return boxContent.Barrel
-	elif type == weaponType.Grenade:
+	elif contentType == weaponType.Grenade:
 		return boxContent.Grenade
+	return null

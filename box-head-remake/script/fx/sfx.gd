@@ -9,7 +9,7 @@ extends AudioStreamPlayer2D
 func _ready() -> void:
 	# 开始播放音效
 	play()
-	
+
 	# 等待播放完毕后销毁
 	await finished
 	queue_free()

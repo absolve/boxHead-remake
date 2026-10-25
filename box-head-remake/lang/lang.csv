@@ -8,7 +8,7 @@ Sets the difficulty of the level: escalates the level and the upgrades according
 Object collision,Object collision,物体碰撞
 OFF,OFF,关
 ON,ON,开
-"Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore","Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore",开关与僵尸、假墙、油桶的碰撞。关闭后不计入高分
+"Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore","Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore",开关与僵尸、墙、油桶的碰撞。关闭后不计入高分
 Devils,Devils,恶魔
 "Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!","Turns the Devils on/off, when off the Devils do not spawn. Forfeits hiscore!",开关恶魔。关闭后恶魔不再刷新。不计入高分！
 Friendly Fire,Friendly Fire,友军伤害
@@ -43,13 +43,13 @@ New Weapon: Grenade,New Weapon: Grenade,新武器：手榴弹
 Shotgun+: Double Ammo,Shotgun+: Double Ammo,霰弹枪+：双倍弹药
 UZI+: Long Shot,UZI+: Long Shot,UZI+：射程提升
 Barrel+: Double Ammo,Barrel+: Double Ammo,油桶+：双倍弹药
-New Weapon: Fake walls,New Weapon: Fake walls,新武器：Fake walls
+New Weapon: Fake walls,New Weapon: Fake walls,新武器：墙
 Shotgun+: Wide Shot,Shotgun+: Wide Shot,霰弹枪+：散射扩大
 Barrel+: Big Bang,Barrel+: Big Bang,油桶+：大爆炸
 Grenade+: Cluster Explode,Grenade+: Cluster Explode,手榴弹+：分裂爆炸
 Shotgun+: Long Shot,Shotgun+: Long Shot,霰弹枪+：射程提升
 Barrel+: Quad Ammo,Barrel+: Quad Ammo,油桶+：四倍弹药
-Fake Wall+: Double Ammo,Fake Wall+: Double Ammo,假墙+：双倍弹药
+Fake Wall+: Double Ammo,Fake Wall+: Double Ammo,墙+：双倍弹药
 UZI+: Quad Ammo,UZI+: Quad Ammo,UZI+：四倍弹药
 New Weapon: Claymore,New Weapon: Claymore,新武器：地雷
 Shotgun+: Quad Ammo,Shotgun+: Quad Ammo,霰弹枪+：四倍弹药
@@ -62,7 +62,7 @@ UZI+: Double Damage,UZI+: Double Damage,UZI+：双倍伤害
 New Weapon: Rocket,New Weapon: Rocket,新武器：火箭
 Shotgun+: Wider Shot,Shotgun+: Wider Shot,霰弹枪+：散射更广
 Grenade+: Quad Ammo,Grenade+: Quad Ammo,手榴弹+：四倍弹药
-Fake Wall+: Quad Ammo,Fake Wall+: Quad Ammo,假墙+：四倍弹药
+Fake Wall+: Quad Ammo,Fake Wall+: Quad Ammo,墙+：四倍弹药
 Claymore+: Double Ammo,Claymore+: Double Ammo,地雷+：双倍弹药
 New Weapon: Chargepack,New Weapon: Chargepack,新武器：Chargepack
 Shotgun+: Double Damage,Shotgun+: Double Damage,霰弹枪+：双倍伤害
@@ -141,7 +141,7 @@ can be placed and detonated with the same button.","[b]移动[/b]      W A S D
 
 [b]目标[/b]
 消灭房间里的所有僵尸。开箱可获得新武器和升级，
-连续击杀解锁得更快。油桶、假墙、阔剑可以放置并按同键引爆。"
+连续击杀解锁得更快。油桶、墙、阔剑可以放置并按同键引爆。"
 _key_bindings,Key Bindings,按键设置
 Player,Player,玩家
 Move Up,Move Up,上
@@ -164,7 +164,7 @@ ALL DEFAULTS,ALL DEFAULTS,全部默认
 Clear,Clear,清空
 restored to default,restored to default,已恢复默认
 all restored to default,all restored to default,已全部恢复默认
-"Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!","Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!",开关与僵尸、假墙、油桶的碰撞。关闭后不计入高分！
+"Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!","Turns the Collisions with Zombies, Fake walls & barrels on/off. Forfeits hiscore!",开关与僵尸、墙、油桶的碰撞。关闭后不计入高分！
 Object collision:,Object collision:,物体碰撞：
 Devils:,Devils:,恶魔：
 Friendly Fire:,Friendly Fire:,友军伤害：

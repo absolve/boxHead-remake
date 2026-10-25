@@ -5,16 +5,11 @@ extends PopupPanel
 ## 正文在运行时按 InputMap 生成，这样改键后说明里的按键会跟着变，
 ## 没绑定的动作显示「未设置」。
 
-## 返回按钮
-@onready var btnBack: Button = $margin/content/btnBack
-
-## 正文
-@onready var body: RichTextLabel = $margin/content/body
 
 ## 每种动作的显示名（动作名去掉 p1_ 前缀后的部分）
 ## 顺序与 project.godot 里动作的定义顺序一致：
 ## left / right / up / down / fire / nextWeapon / prevWeapon
-const ACTION_LABELS := {
+const ACTION_LABELS: Dictionary = {
 	"left": "Move Left",
 	"right": "Move Right",
 	"up": "Move Up",
@@ -25,7 +20,14 @@ const ACTION_LABELS := {
 }
 
 ## 玩家数
-const PLAYER_COUNT := 4
+const PLAYER_COUNT: int = 4
+
+
+## 返回按钮
+@onready var btnBack: Button = $margin/content/btnBack
+
+## 正文
+@onready var body: RichTextLabel = $margin/content/body
 
 
 func _ready() -> void:
@@ -34,10 +36,6 @@ func _ready() -> void:
 	# 标题和按钮用显式 tr()，不依赖节点自动翻译
 	$margin/content/title.text = tr("Instructions")
 	btnBack.text = tr("CLOSE")
-## 每次显示时重建正文（保证按键是最新的）
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
-		buildBody()
 
 
 ## 生成按键说明
@@ -72,3 +70,9 @@ func describeAction(action: String) -> String:
 func onBackPressed() -> void:
 	SoundUtil.playClick()
 	hide()
+
+
+## 每次显示时重建正文（保证按键是最新的）
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
+		buildBody()

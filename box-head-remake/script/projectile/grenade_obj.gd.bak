@@ -1,0 +1,177 @@
+extends "res://script/item/item.gd"
+
+## 手榴弹物体脚本
+# 继承自item.gd，实现手榴弹的物理行为和爆炸逻辑
+# 手榴弹会在空中飞行、落地后弹跳，最终停止并爆炸
+
+## 爆炸效果场景预加载
+var explosion = preload("res://scene/fx/explosion.tscn")
+
+## 音效节点
+@onready var sound = $sound
+## 碰撞形状节点
+@onready var shape = $shape
+## 伤害值
+@export var damage = 0
+
+## 飞行方向向量
+var vector = Vector2.ZERO
+## 初始高度
+var height = 0
+## 飞行速度
+var speed = 50
+## 动画补间节点（用于延迟爆炸）
+var tween = null
+## 落地位置
+var floorPos = Vector2.ZERO
+## 是否已落地
+var isOnFloor = false
+## 飞行角度
+var angle = 0
+## 竖直速度（px/s，正 = 向上）；原版 mDelta.mZ = 0.5 格/帧
+var vz: float = 200.0
+## 物理形状查询参数
+var params = PhysicsShapeQueryParameters2D.new()
+@export var wRange = 0
+
+## 上一帧碰到的碰撞体 RID（exclude 是 Array[RID]，只能放 RID）
+var lastHitRid: RID = RID()
+
+## 落地竖直弹跳：撞击速度低于这个值就不再弹（原版 mDelta.mZ <= 0.06 则归零）
+var verticalBounceMin: float = 160.0
+## 每次弹跳保留的竖直速度比例
+var verticalBounceFactor: float = 0.5
+var excludeList=[]
+
+## 初始化
+func _ready() -> void:
+	# 设置重力加速度
+	gravity = 800
+	
+	# 计算飞行角度和速度
+	angle = vector.angle()
+	vector *= speed
+
+	# 出生高度：原版落地前的高度从 0 开始算，这里给一点点避免第一帧就判定落地
+	if height <= 0.0:
+		height = 0.0
+	
+	# 配置物理查询参数
+	# 没传 excludeList 就不排除任何东西
+	params.exclude = [] as Array[RID]
+	
+	for e in excludeList:
+		if e is CollisionObject2D:
+			params.exclude.append((e as CollisionObject2D).get_rid())
+		elif e is RID:
+			params.exclude.append(e)
+	params.shape = shape.shape
+	params.transform = Transform2D(global_rotation, global_position)
+	params.collision_mask = collision_mask
+	params.collide_with_areas = true
+
+
+## 物理帧更新
+func _physics_process(delta: float) -> void:
+	# 形状查询必须跟着手雷移动：params.transform 在 _ready 里只设过一次，
+	# 不更新的话永远在出生点做检测，手雷飞出去就撞不到墙了。
+	params.transform.origin = global_position
+
+	# ---- 竖直方向（原版 mDelta.mZ）：只影响“看起来多高”，不影响地面位移
+	if !isOnFloor:
+		vz -= gravity * delta
+		height += vz * delta
+		if height <= 0.0:
+			height = 0.0
+			# 落地：水平速度 ×0.5
+			vector *= 0.5
+			if -vz > verticalBounceMin:
+				# 还有速度 → 再弹一次
+				vz = -vz * verticalBounceFactor
+				sound.play()
+			else:
+				vz = 0.0
+				isOnFloor = true
+	else:
+		# 落地阶段：地面摩擦（按帧率归一，约 1.5 秒滑停）
+		vector = vector.lerp(Vector2.ZERO, clampf(2.0 * delta, 0.0, 0.5))
+
+	# 高度只体现为贴图向上偏移（弧线视觉）
+	if ani != null and ani is Node2D:
+		(ani as Node2D).position.y = -height
+	
+	# 边界反弹检测：用**可活动区域**而不是整张地图，
+	# 否则手雷会跑进墙带里（视觉上就是“卡在墙里”）
+	var pr: Rect2 = MapData.getPlayRect()
+	var rad: float = 12.0
+	if shape.shape is CircleShape2D:
+		rad = (shape.shape as CircleShape2D).radius
+	if global_position.x <= pr.position.x + rad or global_position.x >= pr.end.x - rad:
+		vector.x *= -1
+		sound.play()
+	if global_position.y <= pr.position.y + rad or global_position.y >= pr.end.y - rad:
+		vector.y *= -1
+		sound.play()
+	
+	# 碰撞检测和反弹
+	var space = get_world_2d().direct_space_state
+	# exclude 每帧重建：原来一直 append 会把撞过的墙永久排除，之后就穿墙了
+	# excludeList 里可以放节点（取 RID）或直接放 RID
+	params.exclude = [] as Array[RID]
+	for e in excludeList:
+		if e is CollisionObject2D:
+			params.exclude.append((e as CollisionObject2D).get_rid())
+		elif e is RID:
+			params.exclude.append(e)
+	if lastHitRid.is_valid():
+		params.exclude.append(lastHitRid)
+	var collision = space.get_rest_info(params)
+	if collision:
+		var normal = collision.normal
+		vector = vector.bounce(normal)
+		# 原版 BounceCollide：撞墙后水平速度 ×0.25
+		vector *= 0.25
+		# 关键：把本体从墙里推出来，否则下一帧仍然重叠 → 法线异常 → 卡死在墙上
+		var radius: float = 12.0
+		if shape.shape is CircleShape2D:
+			radius = (shape.shape as CircleShape2D).radius
+		# 法线方向可能反（取决于碰撞深度），先保证它指向手雷这一侧，
+		# 否则“推出”会把手雷推到墙的另一边（表现为穿墙）
+		var push_normal: Vector2 = normal
+		if (global_position - (collision.point as Vector2)).dot(push_normal) < 0.0:
+			push_normal = -push_normal
+		global_position = (collision.point as Vector2) + push_normal * (radius + 1.0)
+		lastHitRid = collision.rid
+	else:
+		lastHitRid = RID()
+	
+	# 限制在地图边界内
+	position.x = clampf(position.x, pr.position.x + rad, pr.end.x - rad)
+	position.y = clampf(position.y, pr.position.y + rad, pr.end.y - rad)
+	
+	# 设置Z轴顺序
+	z_index = floori(global_position.y / MapData.cellSize) + 1
+	
+	# 应用移动
+	position += vector * delta
+	
+	# 速度足够小时触发爆炸
+	if vector.length() <= 0.1 && tween == null:
+		addExplosion()
+
+
+## 添加爆炸效果
+# 延迟0.5秒后创建爆炸
+func addExplosion():
+	tween = create_tween()
+	tween.tween_interval(0.5)
+	tween.tween_callback(func():
+		var temp = explosion.instantiate()
+		temp.global_position = global_position
+		temp.collision_mask = collision_mask
+		temp.damage = damage
+		temp.biggerBang = biggerBang
+		temp.clusterExplode = clusterExplode
+		get_tree().current_scene.add_child(temp)
+		)
+	tween.tween_callback(queue_free)

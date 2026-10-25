@@ -5,25 +5,37 @@ extends Node2D
 ## 在 Inspector 里改 zombieCount），僵尸从生成起就直接进入 Chase 追玩家。
 ## 用来对照 godot4flow-field demo 的群体追击行为 / 性能。
 
+
 ## 一次性生成的僵尸数量
 @export var zombieCount: int = 50
+
 ## 测试用的僵尸移速（原版 16 太慢，看不清寻路效果）
 @export var zombieSpeed: float = 50.0
+
 ## 刷怪间隔（秒），像 map 的 spawnTimer 一样逐个刷，避免一次性叠在出生点互相卡死
-@export var spawnInterval: float = 0.1
+@export var spawnInterval: float = 0.4
+
 ## 是否显示网格 / 障碍 / 流场箭头 / FPS
 @export var isDebug: bool = true
 
-var zombie := preload("res://scene/character/zombie.tscn")
-var player := preload("res://scene/character/player.tscn")
+
+var zombie: PackedScene = preload("res://scene/character/zombie.tscn")
+
+var player: PackedScene = preload("res://scene/character/player.tscn")
+
 ## 房间实例（room_001）
 var room: Node2D = null
+
 var font: FontFile
+
 ## 流场刷新间隔（物理帧）
-var updateFlowFieldDelay := 60
-var updateTimer := 0
+var updateFlowFieldDelay: int = 60
+
+var updateTimer: int = 0
+
 ## 已生成僵尸数
-var spawnedCount := 0
+var spawnedCount: int = 0
+
 ## 刷怪计时器（代码创建，等价于 map 场景里的 spawnTimer）
 var spawnTimer: Timer
 
@@ -75,12 +87,6 @@ func _ready() -> void:
 	spawnTimer.start()
 
 
-## 离开测试场景时把全局状态还原，避免影响后续进 map
-func _exit_tree() -> void:
-	MapData.playerCount = 4
-	MapData.zombieCells.clear()
-
-
 ## 生成一只僵尸：只在没被占住的出生点刷（照 map 的 hasBlock 判定，
 ## 上一只没走出出生点就换下一个点 / 等下一帧再试，避免叠在出生点上）
 func spawnOneZombie() -> void:
@@ -99,6 +105,22 @@ func spawnOneZombie() -> void:
 		var z: Node2D = zombie.instantiate()
 		z.position = sp.global_position
 		z.speed = zombieSpeed
+		# 按出生点的 dir 设置初始朝向（和 map.gd 一致），否则僵尸一律朝右
+		z.state = Game.enemyState.init
+		z.initPos = sp.global_position
+		match int(sp.dir):
+			Game.mapSignDir.Down:
+				z.velocity = Vector2.DOWN
+				z.position -= Vector2(0, 20)
+			Game.mapSignDir.Up:
+				z.velocity = Vector2.UP
+				z.position += Vector2(0, 20)
+			Game.mapSignDir.Left:
+				z.velocity = Vector2.LEFT
+				z.position -= Vector2(20, 0)
+			Game.mapSignDir.Right:
+				z.velocity = Vector2.RIGHT
+				z.position += Vector2(20, 0)
 		add_child(z)
 		spawnedCount += 1
 		return
@@ -106,26 +128,17 @@ func spawnOneZombie() -> void:
 
 ## 按所有玩家位置重算流场（照抄 map.gd 的策略：flowDirty 立即刷 + 固定间隔刷）
 func updateFlowField() -> void:
+	# 多源单场（方案 A）：所有存活玩家一起当 BFS 种子
+	var seeds: Array = []
 	for i in get_tree().get_nodes_in_group("player"):
-		var x := floori(i.global_position.x / MapData.cellSize)
-		var y := floori(i.global_position.y / MapData.cellSize)
-		MapData.computeFields(i.playerId, Vector2(x, y))
-
-
-func _physics_process(_delta: float) -> void:
-	if isDebug:
-		queue_redraw()
-
-	if MapData.flowDirty:
-		MapData.flowDirty = false
-		updateTimer = 0
-		updateFlowField()
-		return
-
-	updateTimer += 1
-	if updateTimer > updateFlowFieldDelay:
-		updateTimer = 0
-		updateFlowField()
+		if i == null or not is_instance_valid(i) or i.isDead or i.hp <= 0:
+			continue
+		seeds.append(MapData.worldToCell(i.global_position))
+	# 旧实现：每玩家一张场（僵尸的 targetId 已改为 "multi"，不再使用）
+	# var x := floori(i.global_position.x / MapData.cellSize)
+	# var y := floori(i.global_position.y / MapData.cellSize)
+	# MapData.computeFields(i.playerId, Vector2(x, y))
+	MapData.computeFieldMulti(seeds)
 
 
 ## 找一个没被障碍占住的出生位置（照抄 map.gd）
@@ -147,6 +160,28 @@ func findFreeSpawn(pos: Vector2) -> Vector2:
 				if not MapData.isObstacle(c):
 					return MapData.cellCenter(c)
 	return pos
+
+
+## 离开测试场景时把全局状态还原，避免影响后续进 map
+func _exit_tree() -> void:
+	MapData.playerCount = 4
+	MapData.zombieCells.clear()
+
+
+func _physics_process(_delta: float) -> void:
+	if isDebug:
+		queue_redraw()
+
+	if MapData.flowDirty:
+		MapData.flowDirty = false
+		updateTimer = 0
+		updateFlowField()
+		return
+
+	updateTimer += 1
+	if updateTimer > updateFlowFieldDelay:
+		updateTimer = 0
+		updateFlowField()
 
 
 func _draw() -> void:

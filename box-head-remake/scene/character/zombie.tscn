@@ -210,10 +210,7 @@
 [ext_resource type="Script" uid="uid://bxcplo2fkqad3" path="res://script/character/zombie_states/zombie_attack.gd" id="204_attack"]
 [ext_resource type="Script" uid="uid://711t1lvk6nbp" path="res://script/character/zombie_states/zombie_hurt.gd" id="205_hurt"]
 [ext_resource type="Script" uid="uid://djn6obe40b7j8" path="res://script/character/zombie_states/zombie_dead.gd" id="206_dead"]
-[ext_resource type="Script" path="res://script/character/zombie_states/zombie_sleep.gd" id="207_sleep"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_detect"]
-radius = 32.0
+[ext_resource type="Script" uid="uid://c0xgfpwps70o4" path="res://script/character/zombie_states/zombie_sleep.gd" id="207_sleep"]
 
 [sub_resource type="CircleShape2D" id="RectangleShape2D_wmsqm"]
 radius = 14.4
@@ -1072,6 +1069,9 @@ radius = 14.4
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jegkb"]
 size = Vector2(16, 16)
 
+[sub_resource type="RectangleShape2D" id="CircleShape2D_detect"]
+size = Vector2(28.8, 28.8)
+
 [node name="zombie" unique_id=1183646961 groups=["enemy"] instance=ExtResource("1_jeayq")]
 collision_layer = 2
 collision_mask = 11
@@ -1087,7 +1087,6 @@ turnCooldown = 0.08
 minMoveGrid = 2
 mass = 1.0
 hp = 100
-speed = 16
 type = 401
 maxHp = 100
 
@@ -1097,9 +1096,7 @@ shape = SubResource("RectangleShape2D_wmsqm")
 [node name="ani" parent="." index="1"]
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_tet0w")
-animation = &"fallDown_3"
-frame = 4
-frame_progress = 1.0
+animation = &"walk_0"
 offset = Vector2(-15, -35)
 
 [node name="body" type="Area2D" parent="." index="2" unique_id=911581929]
@@ -1144,13 +1141,14 @@ script = ExtResource("205_hurt")
 [node name="Dead" type="Node" parent="StateMachine" index="5" unique_id=463805397]
 script = ExtResource("206_dead")
 
-[node name="Sleep" type="Node" parent="StateMachine" index="6"]
+[node name="Sleep" type="Node" parent="StateMachine" index="6" unique_id=1149239364]
 script = ExtResource("207_sleep")
 
-[node name="detect" type="Area2D" parent="."]
+[node name="detect" type="Area2D" parent="." index="6" unique_id=1997949396]
+visible = false
 collision_layer = 0
 collision_mask = 14
 monitorable = false
 
-[node name="detectShape" type="CollisionShape2D" parent="detect"]
+[node name="detectShape" type="CollisionShape2D" parent="detect" index="0" unique_id=1117342587]
 shape = SubResource("CircleShape2D_detect")

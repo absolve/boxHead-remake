@@ -1,9 +1,12 @@
 extends State
 
-## 恶魔 Attack —— 播攻击动画，第 3 帧喷火球（原版就是第 3 帧）
+## 恶魔 Attack —— 播攻击动画，在**动画第 3 帧**发射火球（原版 CThing_Creature_Devil.as:166-195）
 ##
-## 素材缺失时 hasAnim("attack") 为 false，此时退化为"按冷却直接开火"，
+## 原版判定是 `_loc3_.mNewFrame && _loc3_.mFrameIndex == 3`：不是动画结束才开火。
+## 动画播完（mAnimEnd）后回到 mReturnStateID，也就是 State_GotoPlayer。
+## 素材缺失时 hasAnim("attack") 为 false，此时退化为"冷却到了直接开火"，
 ## 否则 isAnimPlaying() 恒为 false，判定帧那段永远走不到。
+
 
 var d: Devil:
 	get:
@@ -11,7 +14,8 @@ var d: Devil:
 
 ## 本次攻击是否已放出火球
 var hasFired: bool = false
-## 攻击冷却计时
+
+## 攻击冷却计时（仅无攻击动画的退化路径使用）
 var cooldown: float = 0.0
 
 
@@ -30,26 +34,18 @@ func physicsUpdate(delta: float) -> void:
 	if not d.hasAnim("attack"):
 		if cooldown < d.attackDelay:
 			return
-		cooldown = 0.0
-		if d.targetInRange() and d.isFacingTarget():
+		if d.canAttack():
+			hasFired = true
 			d.fireFireball()
-		else:
-			stateMachine.transitionTo(&"Chase")
+		stateMachine.transitionTo(&"Chase")
 		return
 
-	# 攻击动画进行中：到判定帧放火球
+	# 攻击动画进行中：到判定帧放火球（>= 防止低帧率跳帧漏掉）
 	if d.isAnimPlaying():
 		if not hasFired and d.ani.frame >= d.attackHitFrame:
 			hasFired = true
 			d.fireFireball()
 		return
 
-	# 动画播完，等冷却
-	if cooldown < d.attackDelay:
-		return
-	if not d.targetInRange() or not d.isFacingTarget():
-		stateMachine.transitionTo(&"Chase")
-	else:
-		hasFired = false
-		cooldown = 0.0
-		d.playAnim("attack", true)
+	# 动画播完 → 回追击状态（原版 mReturnStateID = State_GotoPlayer）
+	stateMachine.transitionTo(&"Chase")

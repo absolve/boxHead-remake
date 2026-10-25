@@ -14,6 +14,7 @@ extends State
 ##   2) 旧版攻击用 attackArea 的区域重叠判定，还要按方向摆位置和额外旋转。
 ##      现在改成 zombie.deal_damage()：范围内 + 朝向一致 即命中。
 
+
 ## 宿主
 var z: Zombie:
 	get:
@@ -21,6 +22,7 @@ var z: Zombie:
 
 ## 本次挥击是否已经结算过伤害
 var hasHit: bool = false
+
 ## 距上次挥击结束的冷却计时
 var cooldown: float = 0.0
 

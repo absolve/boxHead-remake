@@ -9,12 +9,12 @@ extends "res://script/weapon/weapon.gd"
 
 
 ## 墙壁物体场景预加载
-var wallObj = preload("res://scene/item/wall_obj.tscn")
+var wallObj: PackedScene = preload("res://scene/item/wall_obj.tscn")
 
 
 ## 放置墙壁
 # @param _v 放置方向（Vector2，未使用）
-func fire(_v):
+func fire(_v: Vector2) -> void:
 	if ammoNum <= 0:
 		return
 

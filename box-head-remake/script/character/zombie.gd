@@ -12,6 +12,7 @@ extends "res://script/character/character.gd"
 ## [code]angle[/code] 0..7 = 东、东南、南、西南、西、西北、北、东北，
 ## 即 [code]angle = round(向量角度 / 45°)[/code] 再绕回 [0, 8)。
 
+
 ## 8 个方向向量，顺序与 angle 一致：E, SE, S, SW, W, NW, N, NE
 const DIRS: Array[Vector2] = [
 	Vector2(1, 0),
@@ -23,35 +24,6 @@ const DIRS: Array[Vector2] = [
 	Vector2(0, -1),
 	Vector2(1, -1),
 ]
-
-## 攻击伤害（原版 CThing_Creature_Zombie.mDamage = 50）
-@export var damage: int = 50
-## 攻击范围（像素）
-# 原版是"正前方相邻格"直接扣血，1 格 = 32px，这里取略大于 1 格
-@export var attackRange: float = 35.0
-## 攻击判定帧（攻击动画的第几帧结算伤害）
-@export var attackHitFrame: int = 2
-## 两次挥击之间的间隔（秒）
-# 原版没有独立冷却：攻击动画播到命中帧 + State_Sleep 的 10 tick(0.4s)
-@export var attackDelay: float = 0.4
-## 重新搜索目标的间隔（秒）
-@export var targetRefreshInterval: float = 0.5
-## 受击后减速恢复时间（秒）
-@export var hurtDelay: float = 0.5
-## 探测下一步是否可走的距离（像素）
-@export var probeSize: Vector2 = Vector2(32, 32)
-## 转身后至少要走这么久才允许再次转身（秒）
-## 用来消除"站在两格交界、相邻两格方向不同"时原地反复 45° 打转
-## 两次转身之间的最小间隔（秒）
-##
-## 0.08 太小，僵尸会在同一次走近障碍的过程中连转好几次；
-## 0.3 跟原版 State_Turn（转一个 45° 约 0.2 秒）+ 目标保持一致。
-@export var turnCooldown: float = 0.3
-
-## 一个方向最少连续走几格才允许重新取流场方向（原版 minMoveGrid = 2）
-## 没有它的话，站在两格交界处时相邻两格的流场方向不同，
-## 每帧都会判成"朝向不对"→ 转身 → 再判 → 又转身，表现就是原地摇摆。
-@export var minMoveGrid: int = 2
 
 ## 被挡住时先原地等待多久再换方向（秒）
 ##
@@ -68,15 +40,6 @@ const SIDESTEP_WAIT: float = 0.2
 ## 刚转完身、方向又不对时的防抖停留（秒）—— 原版 `CMain.mFPS / 3`
 const TURN_RETRY_WAIT: float = 1.0 / 3.0
 
-## 是否刚转完身（供 Chase 判断要不要防抖）
-var justTurned: bool = false
-
-## 防抖停留的剩余时间
-var turnRetryTimer: float = 0.0
-
-## 被挡住已经等了多久
-var blockedTimer: float = 0.0
-
 ## 和别的僵尸挤在一起时的分离速度（px/s）
 const SEPARATE_SPEED: float = 120.0
 
@@ -88,45 +51,164 @@ const MIN_APPROACH_DISTANCE: float = 14.0
 ## 这个只负责把已经叠在一起的分开
 const SEPARATE_DISTANCE: float = 12.0
 
-## 自己当前登记的占用格（哨兵值表示还没登记）
-var occCell: Vector2i = Vector2i(-9999, -9999)
+## 转身后至少保持这个方向多久（秒）
+##
+## 对应原版：转完身要等 `State_Turn` 播完，方向又不对还会 `State_Sleep` 1/3 秒。
+## 没有这个锁就会每帧按 ShapeCast 结果改方向 → 原地反复转。
+const TURN_WAIT: float = 0.3
+
+## 判定「已经走到格心」的容差（像素）
+##
+## `gridPosition()` 用的是 floori：僵尸一跨过格子边界，就被算成"在下一格"。
+## 若这时立刻按新格子的流场转向，它其实还贴在上一个格子的边上，
+## 一转向就撞墙 → 转不过去 → 反复转。
+## 所以只有真正走到格心附近（±CELL_CENTER_TOL）才允许重算方向。
+const CELL_CENTER_TOL: float = 6.0
+
+## 承诺方向的最长保持时间（秒）
+##
+## 被其他僵尸挤住时，格子判定仍然说「能走」，但物理上一步也挪不动，
+## 于是永远走不满 minMoveGrid 格、永远不重新决策 → 一群僵尸卡在同一朝向。
+## 超时后强制重算，至少能重新选方向/侧移。
+const COMMIT_TIMEOUT: float = 0.5
 
 
-## 当前追踪目标（玩家；保持无类型以便动态调用 hit()）
-var target = null
-## 上一次受击是否来自正面（决定播 hitFront 还是 hitRear）
-var hitFromFront: bool = false
-## 出生点（Spawn 状态要走到这里）
-var initPos: Vector2 = Vector2.ZERO
-## 击退衰减系数：每逻辑帧速度乘以它（原版 mDelta *= 0.65）
-const KNOCKBACK_DECAY: float = 0.65
+## 攻击伤害（原版 CThing_Creature_Zombie.mDamage = 50）
+@export var damage: int = 50
 
-## 击退状态的最长时间（秒），防止低伤害时拖太久
-const KNOCKBACK_MAX_TIME: float = 0.6
+## 攻击范围（像素）
+# 原版是"正前方相邻格"直接扣血，1 格 = 32px，这里取略大于 1 格
+@export var attackRange: float = 35.0
+
+## 攻击判定帧（攻击动画的第几帧结算伤害）
+@export var attackHitFrame: int = 2
+
+## 两次挥击之间的间隔（秒）
+# 原版没有独立冷却：攻击动画播到命中帧 + State_Sleep 的 10 tick(0.4s)
+@export var attackDelay: float = 0.4
+
+## 重新搜索目标的间隔（秒）
+@export var targetRefreshInterval: float = 0.5
+
+## 受击后减速恢复时间（秒）
+@export var hurtDelay: float = 0.5
+
+## 探测下一步是否可走的距离（像素）
+@export var probeSize: Vector2 = Vector2(32, 32)
+
+## 转身后至少要走这么久才允许再次转身（秒）
+## 用来消除"站在两格交界、相邻两格方向不同"时原地反复 45° 打转
+## 两次转身之间的最小间隔（秒）
+##
+## 0.08 太小，僵尸会在同一次走近障碍的过程中连转好几次；
+## 0.3 跟原版 State_Turn（转一个 45° 约 0.2 秒）+ 目标保持一致。
+@export var turnCooldown: float = 0.3
+
+## 一个方向最少连续走几格才允许重新取流场方向（原版 minMoveGrid = 2）
+## 没有它的话，站在两格交界处时相邻两格的流场方向不同，
+## 每帧都会判成"朝向不对"→ 转身 → 再判 → 又转身，表现就是原地摇摆。
+@export var minMoveGrid: int = 2
 
 ## 质量：影响被击退的距离（原版僵尸 mMass = 1）
 @export var mass: float = 1.0
 
 ## 击退剩余时间（秒）；Hurt 状态在这段时间内持续后退
-var knockbackTime: float = 0.0
+
+
+## 是否刚转完身（供 Chase 判断要不要防抖）
+var justTurned: bool = false
+
+## 防抖停留的剩余时间
+var turnRetryTimer: float = 0.0
+
+## 被挡住已经等了多久
+var blockedTimer: float = 0.0
+
+## 自己当前登记的占用格（哨兵值表示还没登记）
+var occCell: Vector2i = Vector2i(-9999, -9999)
+
+## 当前追踪目标（玩家；保持无类型以便动态调用 hit()）
+var target: Node2D = null
+
+## 上一次受击是否来自正面（决定播 hitFront 还是 hitRear）
+var hitFromFront: bool = false
+
+## 出生点（Spawn 状态要走到这里）
+var initPos: Vector2 = Vector2.ZERO
+## 击退衰减系数：每逻辑帧速度乘以它（原版 mDelta *= 0.65）
+
+## 击退状态的最长时间（秒），防止低伤害时拖太久
 
 ## 目标刷新计时
 var targetTimer: float = 0.0
+
 ## 当前承诺的移动方向（ZERO = 没有承诺）
 var committedDir: Vector2 = Vector2.ZERO
+
 ## 做出承诺时所在的格子
 var commitGrid: Vector2i = Vector2i.ZERO
 
+## 当前格选定的移动方向 / 它是给哪一格算的
+##
+## 原版 `State_CellToCell` 走满一格才回 `GotoPlayer` 重算方向，
+## 所以方向在「一格之内」保持不变——这正是它不会来回摇摆的原因。
+var cellDir: Vector2 = Vector2.ZERO
+
+var cellDirGrid: Vector2i = Vector2i(-9999, -9999)
+
+## 当前锁定的移动方向 / 锁剩余时间
+var lockedDir: Vector2 = Vector2.ZERO
+
+var turnLockTimer: float = 0.0
+
+## 卡住计时：连续多少秒几乎没移动
+var stuckTimer: float = 0.0
+
+var lastPhysPos: Vector2 = Vector2.ZERO
+
+## 当前承诺已经保持了多久（秒）
+var commitTimer: float = 0.0
+
+## 做出承诺时所处的位置（用于判断是否真的卡住没动）
+var commitPos: Vector2 = Vector2.ZERO
+
+## 0 = 跟随流场，1 = 被挡后自主找路
+var navState: int = 0
+
+## 当前实际移动方向（持久保存，被挡才会变）
+var currDir: Vector2 = Vector2.ZERO
+
+## 上一次记录的格子（用于判断走了 minMoveGrid 格）
+var lastNavGrid: Vector2i = Vector2i(-9999, -9999)
+
+## 已预留的目标格（原版 SetCollideDirection 的作用点）
+var reservedCell: Vector2i = Vector2i(-9999, -9999)
+
+## 正在走去的目标格（到达后它就是新占据的格子）
+var moveTargetCell: Vector2i = Vector2i(-9999, -9999)
+
+## 击退位移（每帧衰减 0.65，原版 mDelta）
+var knockbackDelta: Vector2 = Vector2.ZERO
+
+## 击退剩余帧数（原版 mStateCount）
+var knockbackFrames: int = 0
+
+
 ## 状态机（zombie.tscn 里的 StateMachine 子节点）
 @onready var fsm: StateMachine = $StateMachine
+
 ## 邻近检测区域（圆形，用于生物/物件的碰撞解算）
 @onready var detect: Area2D = $detect
+
 ## 身体受击区域
 @onready var body: Area2D = $body
+
 ## 身体受击形状
 @onready var bodyShape: CollisionShape2D = $body/bodyShape
+
 ## 前进方向碰撞探测（判断下一步能不能走）
 @onready var shapeCast: ShapeCast2D = $ShapeCast2D
+
 @onready var attackSound: AudioStreamPlayer2D = $attackSound
 
 
@@ -144,6 +226,7 @@ func _ready() -> void:
 
 
 # ---------------------------------------------------------------- 目标 / 坐标
+
 
 ## 找最近的玩家
 func findTarget() -> Node2D:
@@ -182,16 +265,17 @@ func gridPosition() -> Vector2i:
 			floori(global_position.y / MapData.cellSize))
 
 
-## 当前目标对应的流场 id（多玩家时每个玩家一张流场）
-func targetId() -> int:
-	if hasTarget() and target.get("playerId") != null:
-		return int(target.playerId)
-	return 1
+## 当前目标对应的流场 id（多源单场后固定为 "multi"）
+func targetId() -> String:
+	# 方案 A：所有存活玩家共用一张场
+	# 旧实现（每玩家一张场）：
+	# if hasTarget() and target.get("playerId") != null:
+	# 	return str(target.playerId)
+	# return "1"
+	return "multi"
 
 
-# ---------------------------------------------------------------- 方向 / 转向
-
-## 向量 → 朝向索引 0..7
+## 方向向量 → 朝向索引（0..7）
 static func angleFromVector(v: Vector2) -> int:
 	if v == Vector2.ZERO:
 		return 0
@@ -203,7 +287,6 @@ static func vectorFromAngle(a: int) -> Vector2:
 	return DIRS[wrapi(a, 0, 8)].normalized()
 
 
-## 从自己指向目标的朝向索引
 func dirToTarget() -> int:
 	if not hasTarget():
 		return angle
@@ -226,11 +309,14 @@ func targetInAttackRange() -> bool:
 func isFacingTarget() -> bool:
 	if not hasTarget():
 		return false
+	# 原版要求**完全相等**（mTarget_Direction == mAngle.mDirection），
+	# 不允许 ±45° 容差：朝向不对就先进 Turn，转完再打。
 	var diff := wrapi(dirToTarget() - angle, 0, 8)
-	return diff <= 1 or diff >= 7
+	return diff == 0
 
 
 # ---------------------------------------------------------------- 移动 / 探测
+
 
 ## 下一步能否通过 —— 地形用格子判定，实物用 ShapeCast 探测
 ##
@@ -249,6 +335,7 @@ func canStep(dir: Vector2) -> bool:
 	if isDirBlocked(cell, angleFromVector(dir)):
 		return false
 	return true
+
 
 func sidestepAroundZombies(desired: Vector2) -> Vector2:
 	if desired == Vector2.ZERO:
@@ -277,24 +364,6 @@ func sidestepAroundZombies(desired: Vector2) -> Vector2:
 	return best
 
 
-## 当前格选定的移动方向 / 它是给哪一格算的
-##
-## 原版 `State_CellToCell` 走满一格才回 `GotoPlayer` 重算方向，
-## 所以方向在「一格之内」保持不变——这正是它不会来回摇摆的原因。
-var cellDir: Vector2 = Vector2.ZERO
-var cellDirGrid: Vector2i = Vector2i(-9999, -9999)
-
-## 转身后至少保持这个方向多久（秒）
-##
-## 对应原版：转完身要等 `State_Turn` 播完，方向又不对还会 `State_Sleep` 1/3 秒。
-## 没有这个锁就会每帧按 ShapeCast 结果改方向 → 原地反复转。
-const TURN_WAIT: float = 0.3
-
-## 当前锁定的移动方向 / 锁剩余时间
-var lockedDir: Vector2 = Vector2.ZERO
-var turnLockTimer: float = 0.0
-
-
 ## 给方向加转向锁：锁定期内保持旧方向，到期才允许改
 func applyTurnLock(dir: Vector2, delta: float) -> Vector2:
 	if dir == Vector2.ZERO:
@@ -312,20 +381,6 @@ func applyTurnLock(dir: Vector2, delta: float) -> Vector2:
 		lockedDir = dir
 		turnLockTimer = TURN_WAIT
 	return dir
-
-
-## 判定「已经走到格心」的容差（像素）
-##
-## `gridPosition()` 用的是 floori：僵尸一跨过格子边界，就被算成"在下一格"。
-## 若这时立刻按新格子的流场转向，它其实还贴在上一个格子的边上，
-## 一转向就撞墙 → 转不过去 → 反复转。
-## 所以只有真正走到格心附近（±CELL_CENTER_TOL）才允许重算方向。
-const CELL_CENTER_TOL: float = 6.0
-
-
-## 卡住计时：连续多少秒几乎没移动
-var stuckTimer: float = 0.0
-var lastPhysPos: Vector2 = Vector2.ZERO
 
 
 ## 取当前格该走的方向；只有接近格心时才重算
@@ -504,6 +559,7 @@ func sidestepDirection(desired: Vector2) -> Vector2:
 
 # ---------------------------------------------------------------- 动画
 
+
 ## 播放某个动作在当前朝向下的动画
 ## kind: walk / stand / attack / hitFront / hitRear
 ## force = true 时强制从头重播（攻击/受击这种一次性动画要重播）
@@ -530,6 +586,7 @@ func isAnimPlaying() -> bool:
 
 # ---------------------------------------------------------------- 攻击 / 受伤
 
+
 ## 结算一次近战命中：范围内 + 朝向一致 才算命中
 ## 取代旧实现里按方向摆放 attackArea 的做法
 ## @return 是否命中
@@ -546,18 +603,24 @@ func dealDamage() -> bool:
 
 
 ## 受伤入口（子弹/爆炸调用）
-func hit(_damage: int, _attackPos: Vector2, recoil: float = 0) -> void:
+##
+## recoil 语义：
+##   > 0  直接用这个值当击退初速（px/s）
+##   = 0  按原版公式由伤害推导（子弹默认行为）
+##   < 0  完全不击退，只播受伤动画（恶魔火球用这种）
+func hit(dmg: int, attackPos: Vector2 = Vector2.ZERO,
+		recoil: float = 0, fromExplosion: bool = false) -> void:
 	if isDead:
 		return
 
-	hp -= _damage
+	hp -= dmg
 
 	if hp <= 0:
 		die()
 		return
 
 	# 判断是否来自正面：攻击方向与当前朝向同侧
-	var attackerDir := angleFromVector(_attackPos - global_position)
+	var attackerDir := angleFromVector(attackPos - global_position)
 	var diff := wrapi(attackerDir - angle, 0, 8)
 	hitFromFront = diff <= 1 or diff >= 7
 
@@ -565,10 +628,20 @@ func hit(_damage: int, _attackPos: Vector2, recoil: float = 0) -> void:
 	# Chase.exit() 里有 velocity = Vector2.ZERO，先设速度会被它清掉。
 	fsm.transitionTo(&"Hurt")
 
+	# 火球这类 recoil < 0 的攻击只造伤害不推人
+	if recoil < 0.0:
+		return
+
 	# 击退：按原版公式算初速，之后由 Hurt 状态按 0.65/帧 衰减
-	var s := knockbackSpeed(_damage, recoil <= 0 and _damage >= 100)
-	knockbackTime = KNOCKBACK_MAX_TIME
-	velocity = (global_position - _attackPos).normalized() * s
+	# 注意：Hurt 用的是 knockbackDelta / knockbackFrames（原版 mDelta / mStateCount），
+	# 只设 velocity 不会产生任何位移。
+	var s: float = recoil if recoil > 0.0 else knockbackSpeed(dmg, fromExplosion)
+	# 原版击退方向取子弹的 8 方向（CThing_Affect_Bullet 传的是 mAngle），
+	# 不是"命中点 → 僵尸中心"的向量，所以正面命中一定是正后方，不会斜。
+	var knockDir: Vector2 = vectorFromAngle(angleFromVector(global_position - attackPos))
+	if knockDir == Vector2.ZERO:
+		knockDir = Vector2.DOWN
+	beginKnockback(knockDir, s)
 
 
 ## 死亡：切到 Dead 状态并发出击杀信号
@@ -576,10 +649,20 @@ func die() -> void:
 	isDead = true
 	fsm.transitionTo(&"Dead")
 	fsm.enabled = false
-	Game.enemyKilled.emit(global_position)
+	Game.enemyKilled.emit(global_position, 100)
 
 
 ## 供 Dead 状态调用：关闭碰撞与受击
+## 是否可被攻击（原版 EnterMap 阶段会清 mFlag_Collidable）
+##
+## 只切受击盒，不动物理 shape —— 原版的不可碰撞只影响能不能被打，
+## 不影响能不能走进来。
+func setHittable(on: bool) -> void:
+	body.monitorable = on
+	body.monitoring = on
+	bodyShape.disabled = not on
+
+
 func disableHitbox() -> void:
 	body.monitorable = false
 	body.monitoring = false
@@ -589,43 +672,9 @@ func disableHitbox() -> void:
 
 # ---------------------------------------------------------------- Godot 内置
 
-func _physics_process(_delta: float) -> void:
-	# 与状态无关的公共处理：限制在地图内 + 按 Y 排序
-	# 所有状态都要钳取（含 Spawn）：出生点都在地图内，
-	# 不钳的话出生阶段的僵尸会走到地图外沿一直走。
-	position.x = clampf(position.x, bodySize.x / 2.0, MapData.mapSize.x - bodySize.x / 2.0)
-	position.y = clampf(position.y, bodySize.y / 2.0, MapData.mapSize.y - bodySize.y / 2.0)
-	z_index = roundi(global_position.y / MapData.cellSize) + 1
-
-	# 卡住检测：这一帧几乎没挪动就累加，动了就清零
-	if global_position.distance_to(lastPhysPos) < 0.3:
-		stuckTimer += _delta
-	else:
-		stuckTimer = 0.0
-		lastPhysPos = global_position
-
-	# 登记自己占用的格子，供别的僵尸避让
-	if not isDead:
-		updateOccupancy()
-		resolveOverlap(_delta)
-
 
 ## 是否需要重新决策移动方向
 # 三种情况需要：还没承诺过 / 已经走够 minMoveGrid 格 / 承诺的方向已经走不通
-## 承诺方向的最长保持时间（秒）
-##
-## 被其他僵尸挤住时，格子判定仍然说「能走」，但物理上一步也挪不动，
-## 于是永远走不满 minMoveGrid 格、永远不重新决策 → 一群僵尸卡在同一朝向。
-## 超时后强制重算，至少能重新选方向/侧移。
-const COMMIT_TIMEOUT: float = 0.5
-
-## 当前承诺已经保持了多久（秒）
-var commitTimer: float = 0.0
-
-## 做出承诺时所处的位置（用于判断是否真的卡住没动）
-var commitPos: Vector2 = Vector2.ZERO
-
-
 func needNewDir(delta: float = 0.0) -> bool:
 	commitTimer += delta
 	if committedDir == Vector2.ZERO:
@@ -688,8 +737,8 @@ func clearCommit() -> void:
 ##
 ## 子弹：max(damage/5*2 / cellSize, 0.3) / mass
 ## 爆炸：min(damage/5*2 / cellSize / mass, 0.3)
-func knockbackSpeed(_damage: int, fromExplosion := false) -> float:
-	var raw: float = float(_damage) * 2.0 / 5.0 / MapData.cellSize
+func knockbackSpeed(dmg: int, fromExplosion := false) -> float:
+	var raw: float = float(dmg) * 2.0 / 5.0 / MapData.cellSize
 	var cells: float
 	if fromExplosion:
 		cells = minf(raw / mass, 0.3)
@@ -726,24 +775,6 @@ func updateOccupancy() -> void:
 		MapData.clearZombieCell(occCell, self)
 	occCell = cell
 	MapData.setZombieCell(cell, self)
-
-
-## 离开场景时注销占用，避免留下幽灵占位
-func _exit_tree() -> void:
-	if occCell != Vector2i(-9999, -9999):
-		MapData.clearZombieCell(occCell, self)
-
-# ================================================================ 导航（照搬参考项目）
-#
-# 只在「流场方向被挡」时才换向；不按格子/时间重算方向。
-# 这是 godot4flow-field/script/enemy.gd 的做法，不会来回摇摆。
-
-## 0 = 跟随流场，1 = 被挡后自主找路
-var navState: int = 0
-## 当前实际移动方向（持久保存，被挡才会变）
-var currDir: Vector2 = Vector2.ZERO
-## 上一次记录的格子（用于判断走了 minMoveGrid 格）
-var lastNavGrid: Vector2i = Vector2i(-9999, -9999)
 
 
 ## 选方向：返回归一化方向；无路可走返回 ZERO
@@ -784,6 +815,9 @@ static func dirStep(d: int) -> Vector2i:
 ## 某格是否被墙/物件/别的僵尸占着（原版 mCollide_NonMovable = 227）
 func isNavBlocked(cell: Vector2i) -> bool:
 	if MapData.isObstacle(cell):
+		return true
+	# 相机可视范围之外的格子不进：否则僵尸会走到画面外（地图比视口大 32px）
+	if not MapData.getPlayRect().has_point(MapData.cellCenter(cell)):
 		return true
 	return MapData.isReservedByOther(cell, self)
 
@@ -845,14 +879,22 @@ func clearNavCache() -> void:
 # ================================================================ 击退 / 位置修正
 # 依据原版 CMap_Collide.as:69-94 (CreatureCollide) 与 CThing_Creature.as:271-320
 
-## 已预留的目标格（原版 SetCollideDirection 的作用点）
-var reservedCell: Vector2i = Vector2i(-9999, -9999)
 
-## 击退位移（每帧衰减 0.65，原版 mDelta）
-var knockbackDelta: Vector2 = Vector2.ZERO
-
-## 击退剩余帧数（原版 mStateCount）
-var knockbackFrames: int = 0
+## 占住自己当前所在的格子（原版 SetCollideDirection 的"不动时也占着"语义）
+##
+## 停下攻击/等待时也要占着，否则别的僵尸会走进来和它重叠。
+func claimCurrentCell() -> void:
+	var c := gridPosition()
+	if reservedCell == c:
+		MapData.reserveCell(c, self)
+		return
+	if reservedCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(reservedCell, self)
+	if moveTargetCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(moveTargetCell, self)
+		moveTargetCell = Vector2i(-9999, -9999)
+	reservedCell = c
+	MapData.reserveCell(c, self)
 
 
 ## 对应原版 ClearCollideCell：受击时释放自己占的格子
@@ -863,8 +905,9 @@ func clearReservation() -> void:
 
 
 ## 原版 State_BulletHit_Init：由击退初速算出衰减帧数
-func beginKnockback(dir: Vector2, speed: float) -> void:
-	knockbackDelta = dir.normalized() * speed / MapData.TICKS_PER_SEC / MapData.TICKS_PER_SEC
+func beginKnockback(dir: Vector2, knockSpeed: float) -> void:
+	# knockSpeed 是 px/s（不与成员变量 speed 同名）；hurt 里按 delta * cellSize 使用
+	knockbackDelta = dir.normalized() * knockSpeed / MapData.TICKS_PER_SEC / MapData.cellSize
 	knockbackFrames = 0
 	var l: float = knockbackDelta.length()
 	while l >= 0.01:
@@ -881,11 +924,43 @@ func creatureCollide(pos: Vector2) -> Vector2:
 	for i in range(2):
 		var before := pos
 		pos = resolveCreatureOverlap(pos, radius)
-		var col := move_and_collide(pos - before, true)
-		if col == null:
+		# 原版 Collide_Map：按轴分离滑墙（先整体，再只 X，再只 Y，都不行就原地）
+		var moved: Vector2 = collideMap(before, pos - before, radius)
+		if moved.is_equal_approx(before):
 			break
-		pos = before + (pos - before).slide(col.get_normal())
+		pos = moved
 	return pos
+
+
+## 原版 Collide_Map：先整体尝试，撞了再分别只走 X / 只走 Y，实现"贴着墙滑"
+func collideMap(pos: Vector2, delta: Vector2, radius: float) -> Vector2:
+	var t := pos + delta
+	if not rectBlocked(t, radius):
+		return t
+
+	# 只保留 X 位移
+	var onlyX := Vector2(t.x, pos.y)
+	if not rectBlocked(onlyX, radius):
+		return onlyX
+
+	# 只保留 Y 位移
+	var onlyY := Vector2(pos.x, t.y)
+	if not rectBlocked(onlyY, radius):
+		return onlyY
+
+	# 两个方向都堵 → 原地不动
+	return pos
+
+
+## 以 center 为中心、边长 2r 的矩形是否压到障碍格（对应 QCollide_Map）
+func rectBlocked(center: Vector2, radius: float) -> bool:
+	var c0: Vector2i = MapData.worldToCell(center - Vector2(radius, radius))
+	var c1: Vector2i = MapData.worldToCell(center + Vector2(radius, radius))
+	for x in range(c0.x, c1.x + 1):
+		for y in range(c0.y, c1.y + 1):
+			if MapData.isObstacle(Vector2i(x, y)):
+				return true
+	return false
 
 
 ## 两圆相交就沿连线推开（半径相同 → 各推一半）
@@ -898,20 +973,26 @@ func resolveCreatureOverlap(pos: Vector2, radius: float) -> Vector2:
 	else:
 		near = get_tree().get_nodes_in_group("enemy")
 
-	var self_offset: Vector2 = global_position - pos
+	var selfOffset: Vector2 = global_position - pos
+	# 只在"同一个格子"里才互相推（原版 Collide_Mapwho 的查询框只有 r*2 ≈ 0.9 格，
+	# 相邻格贴边并不会触发修正）；否则两只贴身走的僵尸会互相推来推去。
+	var myCell: Vector2i = MapData.worldToCell(pos)
 	for other in near:
 		if other == self or not (other is Character):
 			continue
 		var c := other as Character
 		if c.isDead:
 			continue
-		var other_pos: Vector2 = c.global_position + self_offset
-		var d: Vector2 = pos - other_pos
+		var otherPos: Vector2 = c.global_position + selfOffset
+		var d: Vector2 = pos - otherPos
 		var dist := d.length()
-		var min_dist: float = radius * 2.0
-		if dist < min_dist and dist > 0.01:
+		var minDist: float = radius * 2.0
+		if dist < minDist and dist > 0.01:
+			# 只有同格才调整；跨格重叠交给寻路（目标格占用）解决
+			if (c as Node2D).gridPosition() != myCell:
+				continue
 			# 原版 Collide_Mapwho：把重叠量**完整**推出去
-			pos += d / dist * (min_dist - dist)
+			pos += d / dist * (minDist - dist)
 
 	# ---- 与物件（油桶 / 假墙）的圆形碰撞，对应原版 Collide_Map 里的物件部分
 	# 这些是 Area2D，move_and_collide 碰不到，必须单独解算
@@ -920,18 +1001,65 @@ func resolveCreatureOverlap(pos: Vector2, radius: float) -> Vector2:
 			var sn := area.get_node_or_null("shape") as CollisionShape2D
 			if sn == null or sn.shape == null:
 				continue
-			var ctr: Vector2 = sn.global_position + self_offset
-			var other_r := 0.0
+			var ctr: Vector2 = sn.global_position + selfOffset
+			var otherR := 0.0
 			if sn.shape is CircleShape2D:
-				other_r = (sn.shape as CircleShape2D).radius
+				otherR = (sn.shape as CircleShape2D).radius
 			elif sn.shape is RectangleShape2D:
 				var sz := (sn.shape as RectangleShape2D).size
-				other_r = maxf(sz.x, sz.y) * 0.5
-			if other_r <= 0.0:
+				otherR = maxf(sz.x, sz.y) * 0.5
+			if otherR <= 0.0:
 				continue
 			var d2: Vector2 = pos - ctr
 			var dist2 := d2.length()
-			var min_d2: float = radius + other_r
-			if dist2 < min_d2 and dist2 > 0.01:
-				pos += d2 / dist2 * (min_d2 - dist2)
+			var minD2: float = radius + otherR
+			if dist2 < minD2 and dist2 > 0.01:
+				pos += d2 / dist2 * (minD2 - dist2)
 	return pos
+
+
+func _physics_process(delta: float) -> void:
+	# 与状态无关的公共处理：限制在地图内 + 按 Y 排序
+	# 所有状态都要钳取（含 Spawn）：出生点都在地图内，
+	# 不钳的话出生阶段的僵尸会走到地图外沿一直走。
+	# 和玩家一样，按「相机可视范围」钳取，避免走出画面。
+	# 但 Spawn 阶段不能钳：僵尸要从地图外走进来，一钳就被塞进墙里卡住。
+	if fsm.currentName() != &"Spawn":
+		# 僵尸只钳到**地图边界**（原版 mCollide_EdgeOfMap），
+		# 不钳到相机的可玩矩形：出生点在地图最外圈（y=16），
+		# 用可玩矩形会被直接推到 y=32，看起来就是出生时瞬移 16px。
+		position.x = clampf(position.x, 0.0, MapData.mapSize.x)
+		position.y = clampf(position.y, 0.0, MapData.mapSize.y)
+	z_index = roundi(global_position.y / MapData.cellSize) + 1
+
+	# 卡住检测：这一帧几乎没挪动就累加，动了就清零
+	if global_position.distance_to(lastPhysPos) < 0.3:
+		stuckTimer += delta
+	else:
+		stuckTimer = 0.0
+		lastPhysPos = global_position
+
+	# 登记自己占用的格子，供别的僵尸避让
+	if not isDead:
+		updateOccupancy()
+		# 原版没有"每帧分离推力"：位置修正只在受击（State_BulletHit）里做。
+		# 每帧推一次会让僵尸即使不重叠也一直轻微移动（漂移）。
+		# resolveOverlap(delta)
+
+
+## 离开场景时注销占用，避免留下幽灵占位
+func _exit_tree() -> void:
+	if occCell != Vector2i(-9999, -9999):
+		MapData.clearZombieCell(occCell, self)
+	# 释放格子占位，否则死亡后占位表里会留下失效引用
+	if reservedCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(reservedCell, self)
+		reservedCell = Vector2i(-9999, -9999)
+	if moveTargetCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(moveTargetCell, self)
+		moveTargetCell = Vector2i(-9999, -9999)
+
+# ================================================================ 导航（照搬参考项目）
+#
+# 只在「流场方向被挡」时才换向；不按格子/时间重算方向。
+# 这是 godot4flow-field/script/enemy.gd 的做法，不会来回摇摆。

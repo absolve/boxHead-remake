@@ -14,6 +14,7 @@ extends Node
 ##   - 状态只声明"我想去哪"，真正的切换由 StateMachine 统一执行；
 ##   - 每帧更新由机器转发给当前状态，避免宿主里手写一堆 if/else 分支。
 
+
 ## 状态机（由父级 StateMachine 节点注入）
 var stateMachine: StateMachine = null
 

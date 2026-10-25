@@ -6,10 +6,10 @@ extends Control
 
 
 ## 消息标签列表
-var labelList = []
+var labelList: Array = []
 
 ## 消息标签场景预加载
-var label = preload("res://scene/ui/toast_label.tscn")
+var label: PackedScene = preload("res://scene/ui/toast_label.tscn")
 
 
 ## 初始化
@@ -19,25 +19,25 @@ func _ready() -> void:
 
 ## 显示消息提示
 # 创建一个新的消息提示并添加到显示列表
-# @param _str 消息文本（String）
+# @param message 消息文本（String）
 # @param color 消息颜色（Color，默认白色）
-func display(_str: String, color: Color = Color.WHITE):
+func display(message: String, color: Color = Color.WHITE) -> void:
 	# 创建消息标签实例
 	var temp = label.instantiate()
-	
+
 	# 连接移除信号
 	temp.remove.connect(removeLabel)
-	
+
 	# 设置消息内容和颜色
-	temp.s = _str
+	temp.s = message
 	temp.color = color
-	
+
 	# 添加到场景
 	add_child(temp)
-	
+
 	# 添加到消息列表头部
 	labelList.push_front(temp)
-	
+
 	# 调整所有消息的位置
 	for i in range(labelList.size()):
 		if labelList[i] != null:
@@ -47,7 +47,7 @@ func display(_str: String, color: Color = Color.WHITE):
 ## 移除消息标签
 # 从列表中移除指定的消息标签
 # @param node 要移除的消息标签节点
-func removeLabel(node):
+func removeLabel(node: Node) -> void:
 	for i in labelList:
 		if i == node:
 			labelList.erase(i)

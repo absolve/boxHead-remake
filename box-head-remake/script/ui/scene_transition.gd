@@ -8,20 +8,25 @@ extends Node
 ## 所以入场是把 factor 从 0 补间到 1（遮住屏幕），加载完再补间回 0（露出新场景）。
 ## 擦除方向、颜色、宽度都在场景里的 ShaderMaterial 上调，不用改代码。
 
-## 默认总时长（擦入 + 擦出）
-const DEFAULT_DURATION := 0.6
 
-@onready var overlay: ColorRect = $canvasLayer/overlay
+## 默认总时长（擦入 + 擦出）
+const DEFAULT_DURATION: float = 0.6
+
 
 ## 是否正在切换中（切换期间忽略新的请求）
 var isTransitioning: bool = false
+
 ## 待加载的场景路径
 var pendingScenePath: String = ""
+
 ## 本次切换的时长
 var pendingDuration: float = 0.0
 
 ## 覆盖层的着色器材质
 var overlayMaterial: ShaderMaterial = null
+
+
+@onready var overlay: ColorRect = $canvasLayer/overlay
 
 
 func _ready() -> void:

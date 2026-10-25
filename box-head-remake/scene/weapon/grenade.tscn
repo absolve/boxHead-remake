@@ -10,7 +10,6 @@ damage = 150
 delay = 0.48
 ammoNum = 20
 maxAmmoNum = 20
-automatic = false
 
 [node name="Timer" parent="." index="1" unique_id=983957772]
 wait_time = 0.1

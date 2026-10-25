@@ -1,147 +1,86 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://dkwyfr3sk5pe8"]
 
-[ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
-[ext_resource type="PackedScene" path="res://scene/level/wall_shape_004.tscn" id="2_block"]
-[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="3_sign"]
-[ext_resource type="Texture2D" path="res://sprite/shape/1.png" id="4_bg"]
+[ext_resource type="Script" uid="uid://ck7mpcduqksur" path="res://script/level/room_generic.gd" id="1_room"]
+[ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/level/map_sign.tscn" id="2_sign"]
 
-[node name="room0005" type="Node2D"]
+[node name="room_0005" type="Node2D" unique_id=107308223]
 script = ExtResource("1_room")
-mapSize = Vector2(1984, 672)
+wallObstacles = [Vector2i(15, 1), Vector2i(16, 1), Vector2i(15, 2), Vector2i(16, 2), Vector2i(29, 1), Vector2i(30, 1), Vector2i(29, 2), Vector2i(30, 2), Vector2i(36, 1), Vector2i(37, 1), Vector2i(36, 2), Vector2i(37, 2), Vector2i(36, 3), Vector2i(37, 3), Vector2i(36, 4), Vector2i(37, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(8, 5), Vector2i(9, 5), Vector2i(15, 8), Vector2i(16, 8), Vector2i(15, 9), Vector2i(16, 9), Vector2i(29, 8), Vector2i(30, 8), Vector2i(29, 9), Vector2i(30, 9), Vector2i(36, 8), Vector2i(37, 8), Vector2i(36, 9), Vector2i(37, 9), Vector2i(22, 11), Vector2i(23, 11), Vector2i(22, 12), Vector2i(23, 12), Vector2i(36, 13), Vector2i(37, 13), Vector2i(36, 14), Vector2i(37, 14), Vector2i(36, 15), Vector2i(37, 15), Vector2i(36, 16), Vector2i(37, 16), Vector2i(15, 15), Vector2i(16, 15), Vector2i(15, 16), Vector2i(16, 16), Vector2i(29, 15), Vector2i(30, 15), Vector2i(29, 16), Vector2i(30, 16)]
+mapSize = Vector2(1472, 544)
+barrelPoint = [Vector2i(3, 6), Vector2i(3, 10)]
+wallPoint = [Vector2i(4, 4), Vector2i(4, 5), Vector2i(4, 6), Vector2i(4, 10), Vector2i(4, 11)]
 
-[node name="bg" type="Sprite2D" parent="."]
-texture = ExtResource("4_bg")
-position = Vector2(992, 336)
-scale = Vector2(3.3067, 1.1200)
+[node name="zombie0" parent="." unique_id=714243636 instance=ExtResource("2_sign")]
+position = Vector2(16, 80)
 
-[node name="block0" parent="." instance=ExtResource("2_block")]
-position = Vector2(1388, 142)
-hitLift = 40.0
+[node name="zombie1" parent="." unique_id=309312033 instance=ExtResource("2_sign")]
+position = Vector2(16, 112)
 
-[node name="block1" parent="." instance=ExtResource("2_block")]
-position = Vector2(716, 118)
-hitLift = 40.0
+[node name="zombie2" parent="." unique_id=1877215980 instance=ExtResource("2_sign")]
+position = Vector2(16, 176)
 
-[node name="block2" parent="." instance=ExtResource("2_block")]
-position = Vector2(1164, 118)
-hitLift = 40.0
+[node name="zombie3" parent="." unique_id=445949801 instance=ExtResource("2_sign")]
+position = Vector2(16, 208)
 
-[node name="block3" parent="." instance=ExtResource("2_block")]
-position = Vector2(940, 182)
-hitLift = 40.0
+[node name="zombie4" parent="." unique_id=1061023040 instance=ExtResource("2_sign")]
+position = Vector2(16, 240)
 
-[node name="block4" parent="." instance=ExtResource("2_block")]
-position = Vector2(492, 215)
-hitLift = 40.0
+[node name="zombie5" parent="." unique_id=1305684912 instance=ExtResource("2_sign")]
+position = Vector2(16, 304)
 
-[node name="block5" parent="." instance=ExtResource("2_block")]
-position = Vector2(716, 345)
-hitLift = 40.0
+[node name="zombie6" parent="." unique_id=174400712 instance=ExtResource("2_sign")]
+position = Vector2(16, 336)
 
-[node name="block6" parent="." instance=ExtResource("2_block")]
-position = Vector2(1164, 345)
-hitLift = 40.0
+[node name="zombie7" parent="." unique_id=1068262862 instance=ExtResource("2_sign")]
+position = Vector2(16, 368)
 
-[node name="block7" parent="." instance=ExtResource("2_block")]
-position = Vector2(1388, 345)
-hitLift = 40.0
+[node name="zombie8" parent="." unique_id=1877907238 instance=ExtResource("2_sign")]
+position = Vector2(16, 432)
 
-[node name="block8" parent="." instance=ExtResource("2_block")]
-position = Vector2(492, 409)
-hitLift = 40.0
+[node name="zombie9" parent="." unique_id=1287432213 instance=ExtResource("2_sign")]
+position = Vector2(16, 464)
 
-[node name="block9" parent="." instance=ExtResource("2_block")]
-position = Vector2(940, 442)
-hitLift = 40.0
-
-[node name="block10" parent="." instance=ExtResource("2_block")]
-position = Vector2(1388, 531)
-hitLift = 40.0
-
-[node name="block11" parent="." instance=ExtResource("2_block")]
-position = Vector2(716, 572)
-hitLift = 40.0
-
-[node name="block12" parent="." instance=ExtResource("2_block")]
-position = Vector2(1164, 572)
-hitLift = 40.0
-
-[node name="sign13" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 164)
-type = 701
-
-[node name="sign14" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 249)
-type = 701
-
-[node name="sign15" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 290)
-type = 701
-
-[node name="sign16" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 376)
-type = 701
-
-[node name="sign17" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 412)
-type = 701
-
-[node name="sign18" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 444)
-type = 701
-
-[node name="sign19" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 505)
-type = 701
-
-[node name="sign20" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 541)
-type = 701
-
-[node name="sign21" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1532, 185)
+[node name="devil0" parent="." unique_id=122280443 instance=ExtResource("2_sign")]
+position = Vector2(16, 144)
 type = 702
 
-[node name="sign22" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 218)
+[node name="devil1" parent="." unique_id=808746080 instance=ExtResource("2_sign")]
+position = Vector2(16, 272)
 type = 702
 
-[node name="sign23" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 346)
+[node name="devil2" parent="." unique_id=167812653 instance=ExtResource("2_sign")]
+position = Vector2(16, 400)
 type = 702
 
-[node name="sign24" parent="." instance=ExtResource("3_sign")]
-position = Vector2(315, 442)
-type = 702
-
-[node name="sign25" parent="." instance=ExtResource("3_sign")]
-position = Vector2(219, 475)
-type = 702
-
-[node name="sign26" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1534, 476)
-type = 702
-
-[node name="sign27" parent="." instance=ExtResource("3_sign")]
-position = Vector2(319, 286)
+[node name="box0" parent="." unique_id=685576153 instance=ExtResource("2_sign")]
+position = Vector2(1328, 112)
 type = 703
 
-[node name="sign28" parent="." instance=ExtResource("3_sign")]
-position = Vector2(315, 415)
+[node name="box1" parent="." unique_id=65829164 instance=ExtResource("2_sign")]
+position = Vector2(112, 176)
 type = 703
 
-[node name="sign29" parent="." instance=ExtResource("3_sign")]
-position = Vector2(314, 253)
+[node name="box2" parent="." unique_id=10398710 instance=ExtResource("2_sign")]
+position = Vector2(112, 368)
+type = 703
+
+[node name="box3" parent="." unique_id=2007880898 instance=ExtResource("2_sign")]
+position = Vector2(1328, 400)
+type = 703
+
+[node name="player0" parent="." unique_id=1586688274 instance=ExtResource("2_sign")]
+position = Vector2(720, 256)
 type = 700
 
-[node name="sign30" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1488, 202)
+[node name="player1" parent="." unique_id=1073392646 instance=ExtResource("2_sign")]
+position = Vector2(752, 256)
 type = 700
 
-[node name="sign31" parent="." instance=ExtResource("3_sign")]
-position = Vector2(496, 470)
+[node name="player2" parent="." unique_id=589042894 instance=ExtResource("2_sign")]
+position = Vector2(720, 288)
 type = 700
 
-[node name="sign32" parent="." instance=ExtResource("3_sign")]
-position = Vector2(1488, 470)
+[node name="player3" parent="." unique_id=428997615 instance=ExtResource("2_sign")]
+position = Vector2(752, 288)
 type = 700
+

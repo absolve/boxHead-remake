@@ -24,24 +24,30 @@ extends Node
 ## 子节点的 _ready 早于父节点，若立刻 enter()，状态里访问 actor 的 @onready 变量时
 ## 它们还没赋值（会是 null）。延后一帧后父节点的 _ready 已经跑完，宿主字段可用。
 
-signal stateChanged(from_name: StringName, to_name: StringName)
+
+signal stateChanged(fromName: StringName, toName: StringName)
+
 
 ## 宿主（为空时取父节点）
 @export var actor: Node2D = null
+
 @export var actorPath: NodePath = NodePath("..")
 
 ## 初始状态子节点名（留空 = 自动取第一个 State 子节点）
 @export var initialState: StringName = &""
 
 ## 是否在 _ready 后自动启动（关闭则由宿主自行调用 start()）
-@export var autostart := true
+@export var autostart: bool = true
+
 
 ## 状态名(小写) -> State
 var states: Dictionary = {}
+
 ## 当前状态
 var currentState: State = null
+
 ## 置 false 可整体暂停 AI（死亡/冰冻）
-var enabled := true
+var enabled: bool = true
 
 var lastState: StringName = &""
 

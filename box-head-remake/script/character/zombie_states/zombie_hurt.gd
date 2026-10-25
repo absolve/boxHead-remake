@@ -8,6 +8,7 @@ extends State
 ##         再 Move；位移每帧 ×0.65
 ## 是否"正面"由 zombie.hit() 根据攻击来向与当前朝向的夹角算出。
 
+
 ## 宿主
 var z: Zombie:
 	get:
@@ -21,9 +22,11 @@ func enter(_msg: Dictionary = {}) -> void:
 	z.playAnim("hitFront" if z.hitFromFront else "hitRear", true)
 
 
-func physicsUpdate(delta: float) -> void:
+func physicsUpdate(_delta: float) -> void:
 	# 60fps 下每物理帧 ≈ 1/2.4 个逻辑帧，位移按逻辑帧衰减
-	if z.knockbackFrames > 0 and z.knockbackDelta.length() > 0.5:
+	# knockbackDelta 的单位是"格/帧"（hurt 里再 ×cellSize），
+	# 阈值必须按格算：0.01 格 ≈ 0.32px，用 0.5 会把所有击退都跳过
+	if z.knockbackFrames > 0 and z.knockbackDelta.length() > 0.01:
 		z.knockbackFrames -= 1
 
 		# ① 先算出本帧要走到的位置
@@ -40,4 +43,6 @@ func physicsUpdate(delta: float) -> void:
 		z.knockbackFrames = 0
 
 	if stateTime >= z.hurtDelay and z.knockbackFrames <= 0:
+		# 击退结束时把"落到的新格子"占住（原版下一次 CellToCell_Init 会 SetCollideDirection）
+		z.claimCurrentCell()
 		stateMachine.transitionTo(&"Chase")

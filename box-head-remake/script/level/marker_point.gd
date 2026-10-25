@@ -10,5 +10,5 @@ extends Area2D
 
 
 ## 初始化
-func _ready():
+func _ready() -> void:
 	pass

@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://script/test/test_death.gd" id="1_td"]
+
+[node name="TestDeath" type="Node2D"]
+script = ExtResource("1_td")
+
+[node name="ui" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="label" type="Label" parent="ui"]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 632.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.95, 0.95, 0.98, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 12
+text = "死亡/复活测试"

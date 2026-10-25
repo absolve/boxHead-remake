@@ -2,6 +2,7 @@ extends State
 
 ## 恶魔 Hurt —— 受击硬直 + 击退
 
+
 var d: Devil:
 	get:
 		return actor as Devil
@@ -12,9 +13,15 @@ func enter(_msg: Dictionary = {}) -> void:
 
 
 func physicsUpdate(delta: float) -> void:
-	d.velocity = d.velocity.lerp(Vector2.ZERO, minf(8.0 * delta, 1.0))
-	if d.velocity.length() > 1.0:
-		d.move_and_collide(d.velocity * delta)
+	# 和僵尸一致：按 knockbackDelta 逐帧后退，每帧衰减 0.65
+	if d.knockbackFrames > 0 and d.knockbackDelta.length() > 0.01:
+		d.knockbackFrames -= 1
+		var next: Vector2 = d.global_position + d.knockbackDelta * MapData.cellSize
+		d.move_and_collide(next - d.global_position)
+		d.knockbackDelta *= 0.65
+	else:
+		d.knockbackDelta = Vector2.ZERO
+		d.knockbackFrames = 0
 
-	if stateTime >= d.hurtDelay:
+	if stateTime >= d.hurtDelay and d.knockbackFrames <= 0:
 		stateMachine.transitionTo(&"Chase")

@@ -2,15 +2,29 @@
 
 [ext_resource type="Script" path="res://script/ui/upgrade_list.gd" id="1_list"]
 
+; 深色面板背景，浅色文字才看得清
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.07, 0.07, 0.09, 0.97)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.25, 0.3, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="upgradeList" type="CanvasLayer"]
 script = ExtResource("1_list")
 layer = 90
 
 [node name="panel" type="Panel" parent="."]
-offset_left = 60.0
-offset_top = 40.0
-offset_right = 580.0
-offset_bottom = 440.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 632.0
+offset_bottom = 464.0
 
 [node name="body" type="RichTextLabel" parent="panel"]
 anchors_preset = 15

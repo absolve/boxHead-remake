@@ -11,22 +11,30 @@ extends State
 ##       ③ 按距离升序全扫描，取第一个可走方向
 ##       ④ 都不行 → 站 1 秒（State_Wait）
 
+
 var z: Zombie:
 	get:
 		return actor as Zombie
 
 ## 是否正在走一格
 var moving: bool = false
+
 var moveTimer: float = 0.0
+
 var moveDuration: float = 1.0
+
 var moveFrom: Vector2 = Vector2.ZERO
+
 var moveTo: Vector2 = Vector2.ZERO
+
 ## 无路时的等待计时
 var waitTimer: float = 0.0
 
 
 func enter(_msg: Dictionary = {}) -> void:
 	waitTimer = 0.0
+	# 原版走到 State_GotoPlayer 时设置 mFlag_Collidable：进入可玩区才能被打
+	z.setHittable(true)
 
 
 func exit() -> void:
@@ -40,12 +48,24 @@ func physicsUpdate(delta: float) -> void:
 
 	# 目标丢失 → 乱走（原版无此分支，这里避免玩家死后全体站桩）
 	if not z.refreshTarget(delta):
-		_wanderFallback(delta)
+		wanderFallback(delta)
 		return
+
+	# 卡在障碍格里（被击退推进墙 / 出生点压墙）→ 先直线挪到最近空格再说
+	# 对应原版：Collide_Map 两个轴都堵时原地不动，靠下一次 Nav_Direction 找路脱困
+	# 只有真的卡住（1 秒几乎没动）才脱困；否则被障碍围住时会一直"飘"
+	if MapData.isObstacle(z.gridPosition()) and z.stuckTimer >= 1.0:
+		var esc: Vector2 = z.escapeDirection()
+		if esc != Vector2.ZERO:
+			z.global_position = z.global_position.move_toward(
+					z.global_position + esc * MapData.cellSize, z.speed * delta)
+			z.playAnim("walk")
+			return
 
 	# 攻击距离内且朝向对 → 打
 	if z.targetInAttackRange():
 		cancelMove()
+		z.claimCurrentCell()   # 停下打人了，也要占着脚下这格
 		if z.isFacingTarget():
 			stateMachine.transitionTo(&"Attack")
 		else:
@@ -59,7 +79,7 @@ func physicsUpdate(delta: float) -> void:
 		z.global_position = moveFrom.lerp(moveTo, t)
 		z.playAnim("walk")
 		if t >= 1.0:
-			_finishMove()
+			finishMove()
 		return
 
 	# ---- 到达格心，重新决策
@@ -70,18 +90,8 @@ func physicsUpdate(delta: float) -> void:
 	var d: int = z.navDirection(cDir, tDir)
 
 	if d == -1:
-		# 出生点在墙里时八个方向全堵：先朝最近的空格走出去（escapeDirection）
-		var esc: Vector2 = z.escapeDirection()
-		if esc != Vector2.ZERO and esc.length() > 0.01:
-			var escCell: Vector2i = z.gridPosition() + Vector2i(roundi(esc.x), roundi(esc.y))
-			if not MapData.isObstacle(escCell):
-				# 直接朝空格中心挪（不做回合判定，先脱困）
-				z.global_position = z.global_position.move_toward(
-						MapData.cellCenter(escCell), z.speed * delta)
-				z.playAnim("walk")
-				waitTimer = 0.0
-				return
-		# 真的无路：站 1 秒后重试（原版 State_Wait）
+		# 原版 State_Wait：八个方向都不通就站 1 秒，**不移动**
+		# （旧实现在这里朝最近空格挪，导致被围住时僵尸一直飘走）
 		waitTimer += delta
 		z.velocity = Vector2.ZERO
 		z.playAnim("stand")
@@ -89,7 +99,6 @@ func physicsUpdate(delta: float) -> void:
 			waitTimer = 0.0
 		return
 	waitTimer = 0.0
-
 	# 朝向不对 → 先转身（Turn 结束后 next=Chase，会重新进来）
 	# 原版 SetState_WithDirection_Wait：刚转完身又不对 → 先 Sleep，避免反复转
 	if d != cDir:
@@ -103,17 +112,23 @@ func physicsUpdate(delta: float) -> void:
 	# 走起来了 → 说明「刚转完身」这段已经过去，清掉防抖标记
 	# （原版用 mReturnStateID == State_Turn 判断，只在转完的下一帧生效）
 	z.justTurned = false
-	_startMove(cell, d)
+	startMove(cell, d)
 
 
 ## 开始走一格：预留目标格并按时长插值
-func _startMove(cell: Vector2i, d: int) -> void:
+func startMove(cell: Vector2i, d: int) -> void:
 	var step: Vector2i = Zombie.dirStep(d)
 	var nextCell: Vector2i = cell + step
 
-	# 原版 State_CellToCell_Init：立刻把目标格标成"有生物"
+	# 目标格已被别的僵尸抢先占住 → 这一帧不走（下一帧重新决策）
+	if MapData.isReservedByOther(nextCell, z):
+		return
+	# 原版 SetCollideDirection：**先释放旧格，再占目标格** → 移动期间只占 1 格
+	if z.reservedCell != Vector2i(-9999, -9999) and z.reservedCell != nextCell:
+		MapData.releaseCell(z.reservedCell, z)
 	MapData.reserveCell(nextCell, z)
 	z.reservedCell = nextCell
+	z.moveTargetCell = nextCell
 
 	moveFrom = z.global_position
 	moveTo = MapData.cellCenter(nextCell)
@@ -126,15 +141,23 @@ func _startMove(cell: Vector2i, d: int) -> void:
 
 
 ## 到达：吸附格心、释放预留
-func _finishMove() -> void:
-	z.global_position = moveTo
+func finishMove() -> void:
+	# 不再吸附到格心：lerp 终点本来就是 moveTo，
+	# 若途中被钳取/脱困改过位置，这里再赋值会把差值一次性补上（瞬移）。
 	z.velocity = Vector2.ZERO
 	z.knockbackDelta = Vector2.ZERO
 	moving = false
 	moveTimer = 0.0
-	if z.reservedCell != Vector2i(-9999, -9999):
-		MapData.releaseCell(z.reservedCell, z)
-		z.reservedCell = Vector2i(-9999, -9999)
+
+	# 落格：目标格变成"我占的格"，同时释放原来那一格。
+	# 原版僵尸**始终占着自己所在格**（SetCollideDirection 只在换格时转移），
+	# 所以一个格子永远最多只有一只僵尸。
+	# 起走时已经把占位转移到目标格，落格只需确认一下
+	var landed: Vector2i = z.moveTargetCell
+	if landed != Vector2i(-9999, -9999):
+		z.reservedCell = landed
+		z.moveTargetCell = Vector2i(-9999, -9999)
+		MapData.reserveCell(landed, z)
 
 
 ## 中断移动（进攻击 / 退出状态时）
@@ -143,13 +166,16 @@ func cancelMove() -> void:
 		return
 	moving = false
 	moveTimer = 0.0
-	if z.reservedCell != Vector2i(-9999, -9999):
-		MapData.releaseCell(z.reservedCell, z)
-		z.reservedCell = Vector2i(-9999, -9999)
+	# 释放的是"目标格"；自己站的格必须继续占着，
+	# 否则停下攻击时别人能走进来和它重叠
+	if z.moveTargetCell != Vector2i(-9999, -9999):
+		MapData.releaseCell(z.moveTargetCell, z)
+		z.moveTargetCell = Vector2i(-9999, -9999)
+	z.claimCurrentCell()
 
 
 ## 没有目标时的兜底：随便找个能走的方向挪
-func _wanderFallback(delta: float) -> void:
+func wanderFallback(delta: float) -> void:
 	var dir: Vector2 = z.wanderDir()
 	if dir == Vector2.ZERO:
 		z.velocity = Vector2.ZERO

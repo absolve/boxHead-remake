@@ -108,6 +108,7 @@
 [ext_resource type="AudioStream" uid="uid://cg7bq2b1oljdc" path="res://sound/544_544 Creature.Zombie.Ambience.3.mp3" id="107_5tpms"]
 [ext_resource type="PackedScene" path="res://scene/level/game_camera.tscn" id="900_gamecamera"]
 [ext_resource type="PackedScene" path="res://scene/ui/upgrade_list.tscn" id="901_upgradelist"]
+[ext_resource type="Script" uid="uid://bheq187wb3870" path="res://script/ui/pause_layer.gd" id="902_pause"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6l1jt"]
 animations = [{
@@ -422,6 +423,7 @@ animations = [{
 
 [node name="map" type="Node2D" unique_id=821564601]
 script = ExtResource("1_rgtto")
+isDebug = false
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 
@@ -495,6 +497,9 @@ stream = ExtResource("107_5tpms")
 
 [node name="upgradeList" parent="." unique_id=1634614345 instance=ExtResource("901_upgradelist")]
 visible = false
+
+[node name="pauseLayer" type="CanvasLayer" parent="." unique_id=1288195396]
+script = ExtResource("902_pause")
 
 [connection signal="animation_finished" from="ui/countAni" to="." method="_on_count_ani_animation_finished"]
 [connection signal="pressed" from="ui/Button" to="." method="_on_button_pressed"]

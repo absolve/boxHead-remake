@@ -5,24 +5,6 @@ extends Node2D
 # 支持按钮悬停动画效果
 
 
-## 开始按钮节点
-@onready var btn = $Control/vbox/btn_start
-
-## 操作说明按钮节点
-@onready var btn_instructions = $Control/vbox/btn_instructions
-
-## 关于按钮节点
-@onready var btn_about = $Control/vbox/btn_about
-
-## 按键设置按钮节点
-@onready var btn_keybind = $Control/vbox/btn_keybind
-
-## 关于弹窗（场景里的子节点）
-@onready var aboutPanel: PopupPanel = $aboutPanel
-
-## 操作说明弹窗（场景里的子节点）
-@onready var instructionsPanel: PopupPanel = $instructionsPanel
-
 ## 动画补间节点
 var tween: Tween
 
@@ -30,31 +12,50 @@ var tween: Tween
 var originalPos: Vector2
 
 ## 动画频率（秒）
-var duration = 0.8
+var duration: float = 0.8
 
 ## 位置偏移量（像素）
-var offset = 2
+var offset: int = 2
 
 ## 当前选中的按钮
-var currBtn = null
+var currBtn: Button = null
+
+
+## 开始按钮节点
+@onready var btn: Button = $Control/vbox/btn_start
+
+## 操作说明按钮节点
+@onready var btnInstructions: Button = $Control/vbox/btn_instructions
+
+## 关于按钮节点
+@onready var btnAbout: Button = $Control/vbox/btn_about
+
+## 按键设置按钮节点
+@onready var btnKeybind: Button = $Control/vbox/btn_keybind
+
+## 关于弹窗（场景里的子节点）
+@onready var aboutPanel: PopupPanel = $aboutPanel
+
+## 操作说明弹窗（场景里的子节点）
+@onready var instructionsPanel: PopupPanel = $instructionsPanel
 
 
 ## 初始化
-func _ready():
-	# 创建循环动画补间
+func _ready() -> void:
+	# 创建循环动画补间（from/to 必须是数值，传 null 会让回调收到 Nil）
 	tween = create_tween()
 	tween.set_loops()
-	tween.tween_method(updatePos, null, null, duration)
+	tween.tween_method(updatePos, 0.0, 1.0, duration)
 	tween.stop()
 
 
 ## 更新位置（动画回调）
 # 在按钮悬停时产生微小的随机抖动效果
-# @param progress 动画进度（0-1）
-func updatePos(_progress):
-	var random_x = randf_range(-offset, offset)
-	var random_y = randf_range(-offset, offset)
-	currBtn.position = originalPos + Vector2(random_x, random_y)
+# @param _progress 动画进度（0-1）
+func updatePos(_progress: float) -> void:
+	var randomX = randf_range(-offset, offset)
+	var randomY = randf_range(-offset, offset)
+	currBtn.position = originalPos + Vector2(randomX, randomY)
 
 
 ## 开始按钮鼠标进入回调
@@ -78,26 +79,26 @@ func _on_button_mouse_exited() -> void:
 
 ## 操作说明按钮鼠标进入回调
 # 启动按钮抖动动画
-func _on_btn_instructions_mouse_entered():
+func _on_btn_instructions_mouse_entered() -> void:
 	if tween != null:
 		tween.stop()
-	originalPos = btn_instructions.position
-	currBtn = btn_instructions
-	tween.bind_node(btn_instructions)
+	originalPos = btnInstructions.position
+	currBtn = btnInstructions
+	tween.bind_node(btnInstructions)
 	tween.play()
 
 
 ## 操作说明按钮鼠标离开回调
 # 停止抖动动画并恢复原始位置
-func _on_btn_instructions_mouse_exited():
+func _on_btn_instructions_mouse_exited() -> void:
 	if tween != null:
 		tween.stop()
-	btn_instructions.position = originalPos
+	btnInstructions.position = originalPos
 
 
 ## 开始按钮点击回调
 # 播放音效并切换到地图选择场景
-func _on_btn_start_pressed():
+func _on_btn_start_pressed() -> void:
 	SoundUtil.playChange()
 	SceneTransition.changeScene("res://scene/ui/map_select.tscn")
 
@@ -118,9 +119,9 @@ func _on_btn_about_pressed() -> void:
 func _on_btn_about_mouse_entered() -> void:
 	if tween != null:
 		tween.stop()
-	originalPos = btn_about.position
-	currBtn = btn_about
-	tween.bind_node(btn_about)
+	originalPos = btnAbout.position
+	currBtn = btnAbout
+	tween.bind_node(btnAbout)
 	tween.play()
 
 
@@ -128,7 +129,7 @@ func _on_btn_about_mouse_entered() -> void:
 func _on_btn_about_mouse_exited() -> void:
 	if tween != null:
 		tween.stop()
-	btn_about.position = originalPos
+	btnAbout.position = originalPos
 
 
 ## 按键设置按钮：弹出改键面板
@@ -143,9 +144,9 @@ func _on_btn_keybind_pressed() -> void:
 func _on_btn_keybind_mouse_entered() -> void:
 	if tween != null:
 		tween.stop()
-	originalPos = btn_keybind.position
-	currBtn = btn_keybind
-	tween.bind_node(btn_keybind)
+	originalPos = btnKeybind.position
+	currBtn = btnKeybind
+	tween.bind_node(btnKeybind)
 	tween.play()
 
 
@@ -153,4 +154,4 @@ func _on_btn_keybind_mouse_entered() -> void:
 func _on_btn_keybind_mouse_exited() -> void:
 	if tween != null:
 		tween.stop()
-	btn_keybind.position = originalPos
+	btnKeybind.position = originalPos

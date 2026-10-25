@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://og48cv7bcfvi"]
+
+[ext_resource type="Script" uid="uid://cm6fnwlphei3n" path="res://script/test/test_rooms.gd" id="1_tr"]
+[ext_resource type="PackedScene" path="res://scene/level/game_camera.tscn" id="2_cam"]
+
+[node name="TestRooms" type="Node2D" unique_id=1968342420]
+script = ExtResource("1_tr")
+
+[node name="camera" parent="." unique_id=1850888814 instance=ExtResource("2_cam")]
+anchor_mode = 1
+
+[node name="ui" type="CanvasLayer" parent="." unique_id=1626270996]
+layer = 10
+
+[node name="label" type="Label" parent="ui" unique_id=1633614939]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 632.0
+offset_bottom = 28.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.12, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.85)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "房间浏览"
+
+[node name="hoverLabel" type="Label" parent="ui" unique_id=1783920514]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 156.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.05, 0.05, 0.08, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.95)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 16
+text = "第 0 列  第 0 行"
+
+[node name="toggleObstacles" type="Button" parent="ui" unique_id=1901234012]
+offset_left = 8.0
+offset_top = 62.0
+offset_right = 148.0
+offset_bottom = 88.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "隐藏障碍物"

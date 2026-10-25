@@ -1,5 +1,6 @@
 extends Node2D
 
+
 ## 结算音效
 @onready var sound: AudioStreamPlayer2D = $sound
 
@@ -8,6 +9,7 @@ extends Node2D
 
 ## 菜单项：select new Level / retry / back to menu
 @onready var levelLabel: Control = $Control/UILabel
+
 @onready var retryLabel: Control = $Control/UILabel2
 
 

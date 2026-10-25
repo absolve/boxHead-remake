@@ -1,287 +1,237 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://4piny61hlrxp"]
 
-[ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
-[ext_resource type="PackedScene" path="res://scene/level/wall_shape_004.tscn" id="2_block"]
-[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="3_sign"]
-[ext_resource type="Texture2D" path="res://sprite/shape/1.png" id="4_bg"]
+[ext_resource type="Script" uid="uid://ck7mpcduqksur" path="res://script/level/room_generic.gd" id="1_room"]
+[ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/level/map_sign.tscn" id="2_sign"]
+[ext_resource type="PackedScene" uid="uid://be7b4a8otb4vp" path="res://scene/level/wall_shape_004.tscn" id="3_4req2"]
 
-[node name="room0002" type="Node2D"]
+[node name="room_0002" type="Node2D" unique_id=1861737887]
 script = ExtResource("1_room")
-mapSize = Vector2(832, 736)
+wallObstacles = [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(14, 2), Vector2i(15, 2), Vector2i(16, 2), Vector2i(17, 2), Vector2i(21, 0), Vector2i(22, 0), Vector2i(23, 0), Vector2i(24, 0), Vector2i(21, 1), Vector2i(22, 1), Vector2i(23, 1), Vector2i(24, 1), Vector2i(21, 2), Vector2i(22, 2), Vector2i(23, 2), Vector2i(24, 2), Vector2i(0, 6), Vector2i(1, 6), Vector2i(2, 6), Vector2i(3, 6), Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(0, 8), Vector2i(1, 8), Vector2i(2, 8), Vector2i(3, 8), Vector2i(7, 6), Vector2i(8, 6), Vector2i(9, 6), Vector2i(10, 6), Vector2i(7, 7), Vector2i(8, 7), Vector2i(9, 7), Vector2i(10, 7), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(10, 8), Vector2i(14, 6), Vector2i(15, 6), Vector2i(16, 6), Vector2i(17, 6), Vector2i(14, 7), Vector2i(15, 7), Vector2i(16, 7), Vector2i(17, 7), Vector2i(14, 8), Vector2i(15, 8), Vector2i(16, 8), Vector2i(17, 8), Vector2i(21, 6), Vector2i(22, 6), Vector2i(23, 6), Vector2i(24, 6), Vector2i(21, 7), Vector2i(22, 7), Vector2i(23, 7), Vector2i(24, 7), Vector2i(21, 8), Vector2i(22, 8), Vector2i(23, 8), Vector2i(24, 8), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(0, 13), Vector2i(1, 13), Vector2i(2, 13), Vector2i(3, 13), Vector2i(0, 14), Vector2i(1, 14), Vector2i(2, 14), Vector2i(3, 14), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13), Vector2i(10, 13), Vector2i(7, 14), Vector2i(8, 14), Vector2i(9, 14), Vector2i(10, 14), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(14, 13), Vector2i(15, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(14, 14), Vector2i(15, 14), Vector2i(16, 14), Vector2i(17, 14), Vector2i(21, 12), Vector2i(22, 12), Vector2i(23, 12), Vector2i(24, 12), Vector2i(21, 13), Vector2i(22, 13), Vector2i(23, 13), Vector2i(24, 13), Vector2i(21, 14), Vector2i(22, 14), Vector2i(23, 14), Vector2i(24, 14), Vector2i(0, 18), Vector2i(1, 18), Vector2i(2, 18), Vector2i(3, 18), Vector2i(0, 19), Vector2i(1, 19), Vector2i(2, 19), Vector2i(3, 19), Vector2i(0, 20), Vector2i(1, 20), Vector2i(2, 20), Vector2i(3, 20), Vector2i(7, 18), Vector2i(8, 18), Vector2i(9, 18), Vector2i(10, 18), Vector2i(7, 19), Vector2i(8, 19), Vector2i(9, 19), Vector2i(10, 19), Vector2i(7, 20), Vector2i(8, 20), Vector2i(9, 20), Vector2i(10, 20), Vector2i(14, 18), Vector2i(15, 18), Vector2i(16, 18), Vector2i(17, 18), Vector2i(14, 19), Vector2i(15, 19), Vector2i(16, 19), Vector2i(17, 19), Vector2i(14, 20), Vector2i(15, 20), Vector2i(16, 20), Vector2i(17, 20), Vector2i(21, 18), Vector2i(22, 18), Vector2i(23, 18), Vector2i(24, 18), Vector2i(21, 19), Vector2i(22, 19), Vector2i(23, 19), Vector2i(24, 19), Vector2i(21, 20), Vector2i(22, 20), Vector2i(23, 20), Vector2i(24, 20)]
+barrelPoint = [Vector2i(5, 2), Vector2i(12, 2), Vector2i(19, 2), Vector2i(2, 4), Vector2i(22, 4), Vector2i(2, 10), Vector2i(22, 10), Vector2i(2, 16), Vector2i(22, 16), Vector2i(5, 18), Vector2i(12, 18), Vector2i(19, 18)]
+mapSize = Vector2(800, 672)
+metadata/_edit_lock_ = true
 
-[node name="bg" type="Sprite2D" parent="."]
-texture = ExtResource("4_bg")
-position = Vector2(416, 368)
-scale = Vector2(1.3867, 1.2267)
+[node name="zombie0" parent="." unique_id=2030596135 instance=ExtResource("2_sign")]
+position = Vector2(144, 16)
+metadata/_edit_lock_ = true
 
-[node name="block0" parent="." instance=ExtResource("2_block")]
-position = Vector2(81, 74)
-hitLift = 40.0
+[node name="zombie1" parent="." unique_id=2057615223 instance=ExtResource("2_sign")]
+position = Vector2(176, 16)
+metadata/_edit_lock_ = true
 
-[node name="block1" parent="." instance=ExtResource("2_block")]
-position = Vector2(309, 74)
-hitLift = 40.0
+[node name="zombie2" parent="." unique_id=1081065358 instance=ExtResource("2_sign")]
+position = Vector2(208, 16)
+metadata/_edit_lock_ = true
 
-[node name="block2" parent="." instance=ExtResource("2_block")]
-position = Vector2(536, 74)
-hitLift = 40.0
+[node name="zombie3" parent="." unique_id=1880230213 instance=ExtResource("2_sign")]
+position = Vector2(368, 16)
+metadata/_edit_lock_ = true
 
-[node name="block3" parent="." instance=ExtResource("2_block")]
-position = Vector2(764, 74)
-hitLift = 40.0
+[node name="zombie4" parent="." unique_id=556131822 instance=ExtResource("2_sign")]
+position = Vector2(432, 16)
+metadata/_edit_lock_ = true
 
-[node name="block4" parent="." instance=ExtResource("2_block")]
-position = Vector2(764, 267)
-hitLift = 40.0
+[node name="zombie5" parent="." unique_id=701902777 instance=ExtResource("2_sign")]
+position = Vector2(592, 16)
+metadata/_edit_lock_ = true
 
-[node name="block5" parent="." instance=ExtResource("2_block")]
-position = Vector2(81, 271)
-hitLift = 40.0
+[node name="zombie6" parent="." unique_id=78273711 instance=ExtResource("2_sign")]
+position = Vector2(624, 16)
+metadata/_edit_lock_ = true
 
-[node name="block6" parent="." instance=ExtResource("2_block")]
-position = Vector2(309, 271)
-hitLift = 40.0
+[node name="zombie7" parent="." unique_id=840585522 instance=ExtResource("2_sign")]
+position = Vector2(656, 16)
+metadata/_edit_lock_ = true
 
-[node name="block7" parent="." instance=ExtResource("2_block")]
-position = Vector2(536, 271)
-hitLift = 40.0
+[node name="zombie8" parent="." unique_id=1950336041 instance=ExtResource("2_sign")]
+position = Vector2(16, 112)
 
-[node name="block8" parent="." instance=ExtResource("2_block")]
-position = Vector2(81, 467)
-hitLift = 40.0
+[node name="zombie9" parent="." unique_id=777616424 instance=ExtResource("2_sign")]
+position = Vector2(784, 112)
+metadata/_edit_lock_ = true
 
-[node name="block9" parent="." instance=ExtResource("2_block")]
-position = Vector2(309, 467)
-hitLift = 40.0
+[node name="zombie10" parent="." unique_id=784947286 instance=ExtResource("2_sign")]
+position = Vector2(16, 144)
 
-[node name="block10" parent="." instance=ExtResource("2_block")]
-position = Vector2(536, 467)
-hitLift = 40.0
+[node name="zombie11" parent="." unique_id=1736332004 instance=ExtResource("2_sign")]
+position = Vector2(784, 144)
+metadata/_edit_lock_ = true
 
-[node name="block11" parent="." instance=ExtResource("2_block")]
-position = Vector2(764, 467)
-hitLift = 40.0
+[node name="zombie12" parent="." unique_id=149245797 instance=ExtResource("2_sign")]
+position = Vector2(784, 176)
+metadata/_edit_lock_ = true
 
-[node name="block12" parent="." instance=ExtResource("2_block")]
-position = Vector2(81, 660)
-hitLift = 40.0
+[node name="zombie13" parent="." unique_id=560474947 instance=ExtResource("2_sign")]
+position = Vector2(16, 304)
 
-[node name="block13" parent="." instance=ExtResource("2_block")]
-position = Vector2(764, 660)
-hitLift = 40.0
+[node name="zombie14" parent="." unique_id=1407396010 instance=ExtResource("2_sign")]
+position = Vector2(784, 304)
 
-[node name="block14" parent="." instance=ExtResource("2_block")]
-position = Vector2(309, 664)
-hitLift = 40.0
+[node name="zombie15" parent="." unique_id=770535326 instance=ExtResource("2_sign")]
+position = Vector2(16, 368)
 
-[node name="block15" parent="." instance=ExtResource("2_block")]
-position = Vector2(536, 664)
-hitLift = 40.0
+[node name="zombie16" parent="." unique_id=1766847900 instance=ExtResource("2_sign")]
+position = Vector2(784, 368)
 
-[node name="sign16" parent="." instance=ExtResource("3_sign")]
-position = Vector2(166, 59)
-type = 701
+[node name="zombie17" parent="." unique_id=403328396 instance=ExtResource("2_sign")]
+position = Vector2(16, 496)
 
-[node name="sign17" parent="." instance=ExtResource("3_sign")]
-position = Vector2(201, 59)
-type = 701
+[node name="zombie18" parent="." unique_id=1654066901 instance=ExtResource("2_sign")]
+position = Vector2(784, 496)
 
-[node name="sign18" parent="." instance=ExtResource("3_sign")]
-position = Vector2(229, 59)
-type = 701
+[node name="zombie19" parent="." unique_id=453490021 instance=ExtResource("2_sign")]
+position = Vector2(16, 528)
 
-[node name="sign19" parent="." instance=ExtResource("3_sign")]
-position = Vector2(390, 59)
-type = 701
+[node name="zombie20" parent="." unique_id=609901044 instance=ExtResource("2_sign")]
+position = Vector2(784, 528)
 
-[node name="sign20" parent="." instance=ExtResource("3_sign")]
-position = Vector2(453, 59)
-type = 701
+[node name="zombie21" parent="." unique_id=1245442145 instance=ExtResource("2_sign")]
+position = Vector2(16, 560)
 
-[node name="sign21" parent="." instance=ExtResource("3_sign")]
-position = Vector2(618, 59)
-type = 701
+[node name="zombie22" parent="." unique_id=1423970948 instance=ExtResource("2_sign")]
+position = Vector2(784, 560)
 
-[node name="sign22" parent="." instance=ExtResource("3_sign")]
-position = Vector2(657, 60)
-type = 701
+[node name="zombie23" parent="." unique_id=79025428 instance=ExtResource("2_sign")]
+position = Vector2(144, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign23" parent="." instance=ExtResource("3_sign")]
-position = Vector2(685, 58)
-type = 701
+[node name="zombie24" parent="." unique_id=1476916404 instance=ExtResource("2_sign")]
+position = Vector2(176, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign24" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 157)
-type = 701
+[node name="zombie25" parent="." unique_id=999561866 instance=ExtResource("2_sign")]
+position = Vector2(208, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign25" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 161)
-type = 701
+[node name="zombie26" parent="." unique_id=90778852 instance=ExtResource("2_sign")]
+position = Vector2(368, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign26" parent="." instance=ExtResource("3_sign")]
-position = Vector2(812, 191)
-type = 701
+[node name="zombie27" parent="." unique_id=1518718026 instance=ExtResource("2_sign")]
+position = Vector2(432, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign27" parent="." instance=ExtResource("3_sign")]
-position = Vector2(31, 195)
-type = 701
+[node name="zombie28" parent="." unique_id=1985412701 instance=ExtResource("2_sign")]
+position = Vector2(592, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign28" parent="." instance=ExtResource("3_sign")]
-position = Vector2(812, 223)
-type = 701
+[node name="zombie29" parent="." unique_id=443621980 instance=ExtResource("2_sign")]
+position = Vector2(624, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign29" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 227)
-type = 701
+[node name="zombie30" parent="." unique_id=1249359034 instance=ExtResource("2_sign")]
+position = Vector2(656, 656)
+metadata/_edit_lock_ = true
 
-[node name="sign30" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 351)
-type = 701
+[node name="devil0" parent="." unique_id=936076009 instance=ExtResource("2_sign")]
+position = Vector2(400, 16)
+type = 702
+metadata/_edit_lock_ = true
 
-[node name="sign31" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 356)
-type = 701
-
-[node name="sign32" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 419)
-type = 701
-
-[node name="sign33" parent="." instance=ExtResource("3_sign")]
-position = Vector2(31, 423)
-type = 701
-
-[node name="sign34" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 547)
-type = 701
-
-[node name="sign35" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 551)
-type = 701
-
-[node name="sign36" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 583)
-type = 701
-
-[node name="sign37" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 587)
-type = 701
-
-[node name="sign38" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 615)
-type = 701
-
-[node name="sign39" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 619)
-type = 701
-
-[node name="sign40" parent="." instance=ExtResource("3_sign")]
-position = Vector2(166, 715)
-type = 701
-
-[node name="sign41" parent="." instance=ExtResource("3_sign")]
-position = Vector2(204, 715)
-type = 701
-
-[node name="sign42" parent="." instance=ExtResource("3_sign")]
-position = Vector2(230, 714)
-type = 701
-
-[node name="sign43" parent="." instance=ExtResource("3_sign")]
-position = Vector2(390, 715)
-type = 701
-
-[node name="sign44" parent="." instance=ExtResource("3_sign")]
-position = Vector2(453, 715)
-type = 701
-
-[node name="sign45" parent="." instance=ExtResource("3_sign")]
-position = Vector2(618, 715)
-type = 701
-
-[node name="sign46" parent="." instance=ExtResource("3_sign")]
-position = Vector2(658, 716)
-type = 701
-
-[node name="sign47" parent="." instance=ExtResource("3_sign")]
-position = Vector2(685, 714)
-type = 701
-
-[node name="sign48" parent="." instance=ExtResource("3_sign")]
-position = Vector2(422, 59)
+[node name="devil1" parent="." unique_id=44824106 instance=ExtResource("2_sign")]
+position = Vector2(16, 336)
 type = 702
 
-[node name="sign49" parent="." instance=ExtResource("3_sign")]
-position = Vector2(30, 391)
+[node name="devil2" parent="." unique_id=1020952207 instance=ExtResource("2_sign")]
+position = Vector2(784, 336)
 type = 702
 
-[node name="sign50" parent="." instance=ExtResource("3_sign")]
-position = Vector2(811, 391)
+[node name="devil3" parent="." unique_id=1203890516 instance=ExtResource("2_sign")]
+position = Vector2(400, 656)
 type = 702
+metadata/_edit_lock_ = true
 
-[node name="sign51" parent="." instance=ExtResource("3_sign")]
-position = Vector2(421, 715)
-type = 702
-
-[node name="sign52" parent="." instance=ExtResource("3_sign")]
-position = Vector2(194, 125)
+[node name="box0" parent="." unique_id=1168183146 instance=ExtResource("2_sign")]
+position = Vector2(144, 112)
 type = 703
 
-[node name="sign53" parent="." instance=ExtResource("3_sign")]
-position = Vector2(422, 125)
+[node name="box1" parent="." unique_id=1636540857 instance=ExtResource("2_sign")]
+position = Vector2(656, 112)
 type = 703
+metadata/_edit_lock_ = true
 
-[node name="sign54" parent="." instance=ExtResource("3_sign")]
-position = Vector2(650, 125)
+[node name="box2" parent="." unique_id=81360457 instance=ExtResource("2_sign")]
+position = Vector2(144, 560)
 type = 703
+metadata/_edit_lock_ = true
 
-[node name="sign55" parent="." instance=ExtResource("3_sign")]
-position = Vector2(96, 190)
+[node name="box3" parent="." unique_id=468671481 instance=ExtResource("2_sign")]
+position = Vector2(656, 560)
 type = 703
+metadata/_edit_lock_ = true
 
-[node name="sign56" parent="." instance=ExtResource("3_sign")]
-position = Vector2(748, 190)
-type = 703
-
-[node name="sign57" parent="." instance=ExtResource("3_sign")]
-position = Vector2(96, 387)
-type = 703
-
-[node name="sign58" parent="." instance=ExtResource("3_sign")]
-position = Vector2(748, 387)
-type = 703
-
-[node name="sign59" parent="." instance=ExtResource("3_sign")]
-position = Vector2(96, 584)
-type = 703
-
-[node name="sign60" parent="." instance=ExtResource("3_sign")]
-position = Vector2(749, 584)
-type = 703
-
-[node name="sign61" parent="." instance=ExtResource("3_sign")]
-position = Vector2(193, 647)
-type = 703
-
-[node name="sign62" parent="." instance=ExtResource("3_sign")]
-position = Vector2(422, 647)
-type = 703
-
-[node name="sign63" parent="." instance=ExtResource("3_sign")]
-position = Vector2(649, 649)
-type = 703
-
-[node name="sign64" parent="." instance=ExtResource("3_sign")]
-position = Vector2(161, 157)
+[node name="player0" parent="." unique_id=1065171349 instance=ExtResource("2_sign")]
+position = Vector2(384, 320)
 type = 700
 
-[node name="sign65" parent="." instance=ExtResource("3_sign")]
-position = Vector2(681, 156)
+[node name="player1" parent="." unique_id=613500165 instance=ExtResource("2_sign")]
+position = Vector2(416, 320)
 type = 700
 
-[node name="sign66" parent="." instance=ExtResource("3_sign")]
-position = Vector2(163, 615)
+[node name="player2" parent="." unique_id=132328522 instance=ExtResource("2_sign")]
+position = Vector2(384, 352)
 type = 700
 
-[node name="sign67" parent="." instance=ExtResource("3_sign")]
-position = Vector2(683, 616)
+[node name="player3" parent="." unique_id=1587772825 instance=ExtResource("2_sign")]
+position = Vector2(416, 352)
 type = 700
+
+[node name="wallShape004" parent="." unique_id=1233239188 instance=ExtResource("3_4req2")]
+position = Vector2(58, 29)
+
+[node name="wallShape005" parent="." unique_id=1414516496 instance=ExtResource("3_4req2")]
+position = Vector2(282, 29)
+
+[node name="wallShape006" parent="." unique_id=505573247 instance=ExtResource("3_4req2")]
+position = Vector2(505, 29)
+
+[node name="wallShape007" parent="." unique_id=362716736 instance=ExtResource("3_4req2")]
+position = Vector2(730, 29)
+
+[node name="wallShape008" parent="." unique_id=1214723347 instance=ExtResource("3_4req2")]
+z_index = 18
+position = Vector2(58, 604)
+
+[node name="wallShape009" parent="." unique_id=1838772139 instance=ExtResource("3_4req2")]
+z_index = 18
+position = Vector2(282, 604)
+
+[node name="wallShape010" parent="." unique_id=1281450461 instance=ExtResource("3_4req2")]
+z_index = 18
+position = Vector2(505, 604)
+
+[node name="wallShape011" parent="." unique_id=1836758940 instance=ExtResource("3_4req2")]
+z_index = 18
+position = Vector2(732, 604)
+
+[node name="wallShape012" parent="." unique_id=1186194559 instance=ExtResource("3_4req2")]
+z_index = 13
+position = Vector2(58, 414)
+
+[node name="wallShape013" parent="." unique_id=454098498 instance=ExtResource("3_4req2")]
+z_index = 13
+position = Vector2(282, 414)
+
+[node name="wallShape014" parent="." unique_id=120187669 instance=ExtResource("3_4req2")]
+z_index = 13
+position = Vector2(505, 414)
+
+[node name="wallShape015" parent="." unique_id=1938037374 instance=ExtResource("3_4req2")]
+z_index = 13
+position = Vector2(732, 414)
+
+[node name="wallShape016" parent="." unique_id=1178699851 instance=ExtResource("3_4req2")]
+z_index = 7
+position = Vector2(58, 220)
+
+[node name="wallShape017" parent="." unique_id=1208796325 instance=ExtResource("3_4req2")]
+z_index = 7
+position = Vector2(282, 220)
+
+[node name="wallShape018" parent="." unique_id=1787202429 instance=ExtResource("3_4req2")]
+z_index = 7
+position = Vector2(505, 220)
+
+[node name="wallShape019" parent="." unique_id=170360334 instance=ExtResource("3_4req2")]
+z_index = 7
+position = Vector2(732, 220)

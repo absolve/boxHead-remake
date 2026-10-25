@@ -6,10 +6,11 @@ extends Control
 ##   alwaysShows = true  → 始终可见（默认）
 ##   alwaysShows = false → 只在血量变化时显示，一段时间后淡出
 
-## 纹理进度条节点
-@onready var bar: TextureProgressBar = $TextureProgressBar
-## 隐藏计时器
-@onready var timer: Timer = $Timer
+
+## 血量染色的着色器（越低越红）
+const TINT_SHADER: Shader = preload("res://shader/life_bar_tint.gdshader")
+
+
 ## 是否始终显示血条
 @export var alwaysShows: bool = false
 
@@ -39,12 +40,20 @@ extends Control
 		bar.max_value = val
 		updateTint()
 
+
 ## 淡出补间
 var tween: Tween = null
-## 血量染色的着色器（越低越红）
-const TINT_SHADER: Shader = preload("res://shader/life_bar_tint.gdshader")
+
 ## 运行时挂到进度条上的染色材质
 var tint: ShaderMaterial = null
+
+
+## 纹理进度条节点
+@onready var bar: TextureProgressBar = $TextureProgressBar
+
+## 隐藏计时器
+@onready var timer: Timer = $Timer
+
 
 func _ready() -> void:
 	# 染色材质在代码里建（shader 是资源，不是节点）
