@@ -85,7 +85,6 @@ wRange = 224
 delay = 0.48
 ammoNum = 20
 maxAmmoNum = 20
-hitFeedback = 200
 
 [node name="sound" parent="." index="0" unique_id=1897930747]
 stream = ExtResource("3_yha0r")

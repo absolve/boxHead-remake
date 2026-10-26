@@ -57,11 +57,9 @@ func _physics_process(_delta: float) -> void:
 		detecframes -= 1
 
 		var spaceState = get_world_2d().direct_space_state
-		var idx: int = wrapi(int(vector.angle() / (PI / 4)), 0, 8)
 		# 枪口（局部坐标）→ 射线起点（世界坐标）→ 射线终点：方向严格等于 vector
-		var muzzle: Vector2 = offsetDir[idx]
-		var rayFrom: Vector2 = global_position + muzzle
-		var rayTo: Vector2 = rayFrom + vector * wRange
+		var rayFrom: Vector2 = hitOrigin()
+		var rayTo: Vector2 = hitEnd(vector)
 
 		# 创建射线查询
 		var query = PhysicsRayQueryParameters2D.create(rayFrom, rayTo, collisionMask)
@@ -85,8 +83,11 @@ func _physics_process(_delta: float) -> void:
 			elif result.collider is Area2D:
 				if result.collider.owner.type  and  result.collider.owner.type in [Game.roleType.Player,
 					Game.roleType.Zombie, Game.roleType.Devil]:
-					if not excludeObj.has(result.collider_id):
-						result.collider.owner.hit(damage, result.position, hitFeedback)
+					# friendlyFire 关闭时玩家之间互不伤害
+					var friendly: bool = result.collider.owner.type == Game.roleType.Player \
+							and not MapData.friendlyFireOn()
+					if not friendly and not excludeObj.has(result.collider_id):
+						result.collider.owner.hit(damage, result.position, vector)
 						excludeObj.append(result.collider_id)
 					targetPos += Vector2(0, -resolveHitLift(result.collider))
 					addSmoke(targetPos)
@@ -100,6 +101,5 @@ func _draw() -> void:
 	if detecframes <= 0:
 		return
 	# 起点是枪口（局部坐标），终点是唯一的 targetPos 换算回局部坐标
-	var idx: int = wrapi(int(vector.angle() / (PI / 4)), 0, 8)
-	var muzzle: Vector2 = offsetDir[idx]
-	draw_line(muzzle, targetPos - global_position, Color.WHITE, 1.5)
+	var muzzle: Vector2 = muzzleOffset(vector)
+	draw_line(muzzle, tracerEnd(muzzle, vector, targetPos), Color.WHITE, 1.5)

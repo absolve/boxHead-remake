@@ -9,7 +9,7 @@ extends "res://script/character/character.gd"
 
 
 ## 出生无敌时长（秒）：原版 mInvincible = 200 tick（doc/04 §2.3）
-const SPAWN_INVINCIBLE: float = 3.0
+const SPAWN_INVINCIBLE: float = 8.0
 
 ## 复活后无敌时长（秒）：原版 125 tick = 5 秒
 const RESPAWN_INVINCIBLE: float = 5.0
@@ -57,8 +57,17 @@ var shapeQuery: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.ne
 ## 受伤计时器
 var hurtTimer: float = 0
 
-## 受伤持续时间（秒）
+## 受伤持续时间（秒）；每次受击按击退帧数重算
 var hurtDelay: float = 0.5
+
+## 击退位移（格/帧，25Hz 结算时再 ×cellSize）
+var knockbackDelta: Vector2 = Vector2.ZERO
+
+## 剩余击退帧数
+var knockbackFrames: int = 0
+
+## 25Hz 累积器
+var hurtMoveAcc: float = 0.0
 
 
 ## 武器背包节点（存放所有武器）
@@ -88,6 +97,8 @@ var hurtDelay: float = 0.5
 
 ## 初始化
 func _ready() -> void:
+	# 原版玩家质量 2（CThing_Creature_Player.as:146）
+	mass = 2.0
 	# 设置初始状态
 	state = Game.playerState.Idle
 
@@ -220,7 +231,7 @@ func weaponUpgrade(weaponType: int) -> void:
 		# 原版 DoubleAmmo 同时给 mAmmo 赋值，这里照做
 		i.ammoNum = d.get('ammoNum', i.ammoNum)
 		# 以下字段只有部分武器有，用 set() 避免给不存在的属性赋值
-		for key in ['splitAngle', 'splitExplosion', 'biggerBang', 'clusterExplode']:
+		for key in ['splitAngle', 'wideShot', 'splitExplosion', 'biggerBang', 'clusterExplode']:
 			if d.has(key):
 				i.set(key, d[key])
 		# 弹匣已满，同步 HUD
@@ -295,7 +306,7 @@ func pickItem(contentType: int) -> void:
 				shotgun.automatic = MapData.allWeaponData.get(Game.weaponType.Shotgun)['automatic']
 				shotgun.wRange = MapData.allWeaponData.get(Game.weaponType.Shotgun)['wRange']
 				shotgun.delay = MapData.allWeaponData.get(Game.weaponType.Shotgun)['delay']
-				shotgun.splitAngle = MapData.allWeaponData.get(Game.weaponType.Shotgun)['splitAngle']
+				shotgun.wideShot = int(MapData.allWeaponData.get(Game.weaponType.Shotgun).get('wideShot', 0))
 				weaponList.push_back(shotgun)
 				weaponBackpack.add_child(shotgun)
 			elif contentType == Game.boxContent.UZI:
@@ -399,8 +410,8 @@ func getWeapon(weaponType: int) -> Node:
 # @param damage 伤害值（int）
 # @param attackPos 攻击来源位置（Vector2）
 # @param recoil 击退力度（float，默认0）
-func hit(damage: int, attackPos: Vector2 = Vector2.ZERO,
-		recoil: float = 0, _fromExplosion: bool = false) -> void:
+func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
+		knockDir: Vector2 = Vector2.ZERO, fromExplosion: bool = false) -> void:
 	# 死亡 或 无敌期间免疫伤害
 	if isDead or invincible:
 		return
@@ -423,21 +434,35 @@ func hit(damage: int, attackPos: Vector2 = Vector2.ZERO,
 		state = Game.playerState.hurt
 		hurtTimer = 0
 
-		# 计算击退方向
-		var attacker = ((global_position + bodyShape.position) - attackPos).normalized()
-		var dot = velocity.normalized().dot(attacker)
-
-		# 根据击中方向播放不同受伤动画
-		if dot >= 0:
+		# 原版不区分前后：两种受击动画随机二选一
+		# （Player_HitRear = shothit_1 / Player_HitFront = shothit_2，random(2)+1）
+		if randi() % 2 == 1:
 			ani.play("hitFront_%s" % [angle])
 		else:
 			ani.play("hitRear_%s" % [angle])
 
-		# 应用击退
-		velocity = attacker * recoil
+		# 应用击退：和僵尸/恶魔同一套（25Hz、每帧 ×0.65）
+		if knockDir != Vector2.ZERO:
+			beginKnockback(knockDir, knockbackSpeed(damage, fromExplosion))
+			hurtDelay = hurtTimeFrom(knockbackFrames)
+		else:
+			knockbackDelta = Vector2.ZERO
+			knockbackFrames = 0
+			velocity = Vector2.ZERO
 
 
 ## 玩家自身碰撞体的半宽高（矩形取 size/2，圆形按内接正方形近似）
+## 由击退速度算出每帧位移（格/帧）与持续帧数（每帧 ×0.65）
+func beginKnockback(dir: Vector2, speed: float) -> void:
+	knockbackDelta = dir.normalized() * speed / MapData.TICKS_PER_SEC / MapData.cellSize
+	knockbackFrames = 0
+	hurtMoveAcc = 0.0
+	var l: float = knockbackDelta.length()
+	while l >= 0.01:
+		knockbackFrames += 1
+		l *= 0.65
+
+
 func shapeExtents() -> Vector2:
 	var s = shape.shape
 	if s is CircleShape2D:
@@ -660,13 +685,21 @@ func _physics_process(delta: float) -> void:
 		move_and_collide(displacement)
 
 	elif state == Game.playerState.hurt:
-		# 受伤状态：减速恢复
+		# 受伤状态：按 25Hz 应用击退（原版每 1/25 秒位移一次并 ×0.65）
 		hurtTimer += delta
-		if hurtTimer > hurtDelay:
+		hurtMoveAcc += delta
+		var hudStep: float = 1.0 / MapData.TICKS_PER_SEC
+		while hurtMoveAcc >= hudStep and knockbackFrames > 0 and knockbackDelta.length() > 0.01:
+			hurtMoveAcc -= hudStep
+			knockbackFrames -= 1
+			var step: Vector2 = knockbackDelta * MapData.cellSize
+			if not blockedByCell(body.global_position + step):
+				move_and_collide(step)
+			knockbackDelta *= 0.65
+		if hurtTimer > hurtDelay and knockbackFrames <= 0:
 			hurtTimer = 0
+			knockbackDelta = Vector2.ZERO
 			state = Game.playerState.Idle
-		velocity = velocity.lerp(Vector2.ZERO, hurtTimer)
-		move_and_collide(velocity * delta)
 
 	elif state == Game.playerState.dead:
 		# 死亡状态：无操作

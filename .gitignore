@@ -34,3 +34,6 @@ __pycache__/
 /_doc_backup
 /_backup_rooms
 /_tools_backup
+
+# 本地私用文档（视频企划等，不上传）
+/_local/

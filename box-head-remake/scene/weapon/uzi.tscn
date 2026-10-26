@@ -85,7 +85,6 @@ wRange = 256
 delay = 0.16
 ammoNum = 100
 maxAmmoNum = 100
-hitFeedback = 50
 automatic = true
 
 [node name="sound" parent="." index="0" unique_id=1897930747]

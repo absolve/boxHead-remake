@@ -192,9 +192,3 @@ func _process(_delta: float) -> void:
 	updateLabel()
 	if Input.is_action_just_pressed("ui_accept"):
 		toggleInvincible()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if (event as InputEventKey).physical_keycode == KEY_R:
-			spawnTargets()

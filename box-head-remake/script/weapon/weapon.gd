@@ -11,41 +11,28 @@ const DEFAULT_STATIC_WALL_LIFT: float = 32.0
 
 ## 武器类型（Game.weaponType枚举值）
 @export var type: Game.weaponType
-
 ## 伤害值
 @export var damage: int = 0
-
 ## 射程（像素）
 @export var wRange: int = 0
-
 ## 开火延迟（秒）
 @export var delay: float = 0.0
-
 ## 当前弹药量
 @export var ammoNum: int = 0
-
 ## 最大弹药量（0表示无限弹药）
 @export var maxAmmoNum: int = 0
-
-## 被击中目标的反馈速度（击退效果）
-@export var hitFeedback: int = 0
-
 ## 是否自动连射
 @export var automatic: bool = false
 
 
 ## 是否激活
 var active: bool = false
-
 ## 是否可以射击（受延迟限制）
 var canShoot: bool = true
-
 ## 检测碰撞的帧数（射击后持续检测碰撞的时间）
 var detecframes: int = 0
-
 ## 武器方向（玩家朝向）
 var vector: Vector2 = Vector2.RIGHT
-
 ## 武器偏移方向（8个方向的偏移量）
 #
 # 它同时是"枪口位置"：射线类武器直接用 offsetDir[idx]
@@ -55,35 +42,26 @@ var offsetDir: Dictionary = {
 	3: Vector2.ZERO, 4: Vector2.ZERO, 5: Vector2.ZERO,
 	6: Vector2.ZERO, 7: Vector2.ZERO
 }
-
 ## 武器持有者的RID（用于碰撞检测时排除自身）
 var ownerId: Variant = null
-
 ## 武器持有者节点（用于收集它身上所有碰撞 RID，投射物据此忽略自己）
 var ownerNode: Node = null
-
 ## 投射物要排除的对象列表（节点或 RID），由持有者填
 var excludeList: Array[RID] = []
-
 ## 碰撞检测掩码（默认检测玩家、敌人、物品、墙壁）
 var collisionMask: int = 4 + 8 + 16 + 32
-
 ## 子爆炸档位：0 = 无，1 = BigBang，2 = BiggerBang（仅爆炸类武器）
 var biggerBang: int = 0
-
 ## 分裂爆数量：>0 表示已获得 ClusterExplode（仅爆炸类武器）
 var clusterExplode: int = 0
-
 ## 已处理碰撞的对象列表（避免重复伤害）
 var excludeObj: Array = []
-
 ## 烟雾效果预加载
 var smoke: PackedScene = preload("res://scene/fx/smoke.tscn")
 
 
 ## 音效节点
 @onready var sound: AudioStreamPlayer2D = $sound
-
 ## 冷却计时器节点
 @onready var timer: Timer = $Timer
 
@@ -103,6 +81,43 @@ func fire(_angle: Vector2) -> void:
 
 ## 命中特效要抬高多少像素
 # 碰撞体是"地面脚印"，贴图是竖起来的；不补偿的话烟雾会落在墙角
+## 命中判定射线的高度：角色身体中心
+##
+## 玩家/敌人的原点都在脚底，碰撞体挂在 y = -15，射线必须走这个高度，
+## 否则会从敌人脚下穿过去（表现就是“某些方向打不到”）。
+const HIT_ORIGIN_HEIGHT: float = -15.0
+
+
+## 命中判定的射线起点：身体中心（与美术枪口无关）
+func hitOrigin() -> Vector2:
+	return global_position + Vector2(0, HIT_ORIGIN_HEIGHT)
+
+
+## 命中判定的射线终点
+##
+## 视觉枪口有偏移，判定从身体中心出发，所以把偏移长度补进射程，
+## 保证 8 个方向的有效距离一致。
+func hitEnd(dir: Vector2) -> Vector2:
+	return hitOrigin() + dir * (float(wRange) + muzzleOffset(dir).length())
+
+
+## 曳光终点（局部坐标）
+##
+## 沿瞄准方向 dir 从美术枪口出发，长度取「身体中心 → 命中点」在 dir 上的投影。
+## 这样线始终和瞄准方向平行；直接把枪口连到命中点会看起来是斜的。
+func tracerEnd(muzzle: Vector2, dir: Vector2, hitWorld: Vector2) -> Vector2:
+	var centerLocal := Vector2(0, HIT_ORIGIN_HEIGHT)
+	var toHit: Vector2 = (hitWorld - global_position) - centerLocal
+	return muzzle + dir * maxf(toHit.dot(dir), 0.0)
+
+
+## 当前方向的视觉枪口（局部坐标，只用于摆贴图和画曳光）
+func muzzleOffset(dir: Vector2) -> Vector2:
+	var idx: int = wrapi(int(dir.angle() / (PI / 4)), 0, 8)
+	var v: Variant = offsetDir.get(idx, Vector2.ZERO)
+	return v if v is Vector2 else Vector2.ZERO
+
+
 func resolveHitLift(collider: Node2D) -> float:
 	if collider == null or not is_instance_valid(collider):
 		return 0.0

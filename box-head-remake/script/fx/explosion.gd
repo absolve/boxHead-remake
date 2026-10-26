@@ -100,11 +100,15 @@ func resolveTarget(area: Area2D) -> Node2D:
 
 ## 结算伤害（角色是 3 参 hit，物品是 1 参 hit）
 func applyDamage(target: Node2D, dmg: int) -> void:
+	# friendlyFire 关闭时，爆炸不伤玩家（含自己踩雷/被队友炸）
+	if target.get("type") == Game.roleType.Player and not MapData.friendlyFireOn():
+		return
+
 	if target.has_method("hit"):
 		if target is Area2D:
-			target.hit(dmg, Vector2.ZERO, 0, true)
+			target.hit(dmg, Vector2.ZERO, Vector2.ZERO, true)
 		else:
-			target.hit(dmg, global_position, 0, true)
+			target.hit(dmg, global_position, target.global_position - global_position, true)
 
 
 ## ClusterExplode：4 枚分裂爆（原版是 4 枚 CThing_Shot_ClusterShell 弹丸，

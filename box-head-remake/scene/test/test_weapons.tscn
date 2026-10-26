@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ddavungv0hfk8" path="res://script/test/test_weapons.gd" id="1_tw"]
 [ext_resource type="PackedScene" path="res://scene/level/game_camera.tscn" id="2_cam"]
+[ext_resource type="Script" path="res://script/test/test_weapons_overlay.gd" id="3_overlay"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btnNormal"]
 bg_color = Color(0.08, 0.08, 0.1, 0.92)
@@ -43,6 +44,10 @@ corner_radius_bottom_left = 3
 script = ExtResource("1_tw")
 
 [node name="camera" parent="." unique_id=187608814 instance=ExtResource("2_cam")]
+
+[node name="overlay" type="Node2D" parent="."]
+z_index = 100
+script = ExtResource("3_overlay")
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=425551821]
 layer = 10

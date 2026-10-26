@@ -64,7 +64,7 @@ func rollContent(body: Node2D) -> int:
 
 ## 受击；签名与角色一致（箱子不吃伤害，保留接口给爆炸统一调用）
 func hit(_damage: int, _attackPos: Vector2 = Vector2.ZERO,
-		_recoil: float = 0, _fromExplosion: bool = false) -> void:
+		_knockDir: Vector2 = Vector2.ZERO, _fromExplosion: bool = false) -> void:
 	pass
 
 

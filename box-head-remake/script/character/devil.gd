@@ -37,13 +37,8 @@ const FIREBALL: PackedScene = preload("res://scene/projectile/fireball.tscn")
 @export var hurtDelay: float = 0.4
 ## 重新取目标的间隔（秒）
 @export var targetRefreshInterval: float = 0.5
-## 质量：越重击退越短；和僵尸一致（1.0）才能有相同的击退强度
-@export var mass: float = 1.0
-
 ## 当前目标
 var target: Node2D = null
-## 是否正面受击
-var hitFromFront: bool = true
 ## 目标刷新计时
 var targetTimer: float = 0.0
 ## 出生首发延迟倒计时（原版 mFireRateCount = 5 tick）
@@ -303,38 +298,27 @@ func fireFireball() -> void:
 
 ## 受伤（子弹/爆炸调用）
 ## 受击；签名与 Zombie.hit 保持一致（爆炸会传第 4 个参数）
-func hit(dmg: int, attackPos: Vector2 = Vector2.ZERO,
-		recoil: float = 0, fromExplosion: bool = false) -> void:
-	if isDead:
+func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
+		knockDir: Vector2 = Vector2.ZERO, fromExplosion: bool = false) -> void:
+	if isDead or dying:
 		return
 
 	hp -= dmg
-	if hp <= 0:
-		die()
-		return
 
-	var attackerDir := Zombie.angleFromVector(attackPos - global_position)
-	var diff := wrapi(attackerDir - angle, 0, 8)
-	hitFromFront = diff <= 1 or diff >= 7
+	# 致命伤：先标记 dying 并进入 Hurt（被打飞），Hurt 结束再 die()
+	if hp <= 0:
+		dying = true
+
+	# 原版不区分前后：受击动画随机二选一，不再算夹角
 
 	# 和僵尸同一套击退模型：先切状态，再设置击退增量
 	fsm.transitionTo(&"Hurt")
-	# recoil < 0：只造伤害不推人（恶魔火球打中同类/僵尸时用）
-	if recoil < 0.0:
+	# 击退方向由调用方给；ZERO = 不推
+	if knockDir == Vector2.ZERO:
 		return
-	var s: float = recoil if recoil > 0.0 else knockbackSpeed(dmg, fromExplosion)
-	beginKnockback(global_position - attackPos, s)
-
-
-## 击退初速（px/s）：与僵尸同公式，但除以自身质量
-func knockbackSpeed(dmg: int, fromExplosion := false) -> float:
-	var raw: float = float(dmg) * 2.0 / 5.0 / MapData.cellSize
-	var cells: float
-	if fromExplosion:
-		cells = minf(raw / mass, 0.3)
-	else:
-		cells = maxf(raw, 0.3) / mass
-	return cells * MapData.cellSize * MapData.TICKS_PER_SEC
+	beginKnockback(knockDir, knockbackSpeed(dmg, fromExplosion))
+	# 硬直 = 击退帧数 + 3 tick（和僵尸同一套原版公式）
+	hurtDelay = hurtTimeFrom(knockbackFrames)
 
 
 ## 由击退速度算出每帧位移（格/帧）和持续帧数（每帧衰减 0.65）

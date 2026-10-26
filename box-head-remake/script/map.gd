@@ -523,6 +523,8 @@ func _on_resurrection_timer_timeout() -> void:
 		var pos: Vector2 = pickRespawnPos(i, alivePlayers)
 		i.global_position = pos
 		i.velocity = Vector2.ZERO
+		# 复活无敌：原版合作模式 5 秒（CThing_Creature_Player.as:295）
+		i.setInvincible(i.RESPAWN_INVINCIBLE)
 
 	awaitingResurrectionPlayer.clear()
 

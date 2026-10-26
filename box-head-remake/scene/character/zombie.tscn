@@ -1076,7 +1076,6 @@ size = Vector2(28.8, 28.8)
 collision_layer = 2
 collision_mask = 11
 script = ExtResource("2_tet0w")
-speed = 16.0
 damage = 50
 attackRange = 35.0
 attackHitFrame = 2
@@ -1088,6 +1087,7 @@ turnCooldown = 0.08
 minMoveGrid = 2
 mass = 1.0
 hp = 100
+speed = 16.0
 type = 401
 maxHp = 100
 

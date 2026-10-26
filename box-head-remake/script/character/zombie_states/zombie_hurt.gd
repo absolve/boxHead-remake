@@ -19,30 +19,37 @@ func enter(_msg: Dictionary = {}) -> void:
 	z.clearCommit()
 	# 原版 ClearCollideCell：受击时释放格子占用
 	z.clearReservation()
-	z.playAnim("hitFront" if z.hitFromFront else "hitRear", true)
+	# 原版随机二选一（shothit_1 / shothit_2），不区分前后
+	z.playAnim("hitFront" if randi() % 2 == 1 else "hitRear", true)
 
 
-func physicsUpdate(_delta: float) -> void:
-	# 60fps 下每物理帧 ≈ 1/2.4 个逻辑帧，位移按逻辑帧衰减
-	# knockbackDelta 的单位是"格/帧"（hurt 里再 ×cellSize），
-	# 阈值必须按格算：0.01 格 ≈ 0.32px，用 0.5 会把所有击退都跳过
-	if z.knockbackFrames > 0 and z.knockbackDelta.length() > 0.01:
+## 25Hz 累积器：原版每 1/25 秒位移一次并 ×0.65
+var moveAcc: float = 0.0
+
+
+func physicsUpdate(delta: float) -> void:
+	# 位移按 25Hz 结算（原来 60Hz，同样的距离只用了 0.4 倍时间）
+	moveAcc += delta
+	var step: float = 1.0 / MapData.TICKS_PER_SEC
+	while moveAcc >= step and z.knockbackFrames > 0 and z.knockbackDelta.length() > 0.01:
+		moveAcc -= step
 		z.knockbackFrames -= 1
-
 		# ① 先算出本帧要走到的位置
 		var next: Vector2 = z.global_position + z.knockbackDelta * MapData.cellSize
-
 		# ② 圆形位置修正（生物 → 墙，迭代 2 次）
 		var corrected: Vector2 = z.creatureCollide(next)
-
 		# ③ 应用并衰减
 		z.global_position = corrected
 		z.knockbackDelta *= 0.65
-	else:
+	if z.knockbackFrames <= 0 or z.knockbackDelta.length() < 0.01:
 		z.knockbackDelta = Vector2.ZERO
 		z.knockbackFrames = 0
 
 	if stateTime >= z.hurtDelay and z.knockbackFrames <= 0:
+		# 致命伤：把"被打飞"演完再倒下（原版先 BulletHit 再 Dying）
+		if z.dying:
+			z.die()
+			return
 		# 击退结束时把"落到的新格子"占住（原版下一次 CellToCell_Init 会 SetCollideDirection）
 		z.claimCurrentCell()
 		stateMachine.transitionTo(&"Chase")

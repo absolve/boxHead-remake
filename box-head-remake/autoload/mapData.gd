@@ -280,6 +280,14 @@ func getZombieAt(cell: Vector2i) -> Node:
 	return zombieCells.get(cellKey(cell))
 
 
+## 友军伤害是否开启（设置面板的 friendlyFire，默认关闭）
+##
+## 原版没有这个开关（玩家之间本来就能互相误伤），这里是重制版自己的玩法选项：
+## 关闭时玩家不会被队友的子弹 / 任何爆炸伤到。
+func friendlyFireOn() -> bool:
+	return bool(mapConfig.get("friendlyFire", false))
+
+
 func isObstacle(cell: Vector2i) -> bool:
 	# 地图外一律当障碍，否则僵尸会走出边界一直移动
 	if cell.x < 0 or cell.y < 0:
@@ -551,14 +559,15 @@ func recomputeWeapon(weaponType: int) -> void:
 		if up.has(UP_INFINATE_RANGE):
 			s.wRange = 100 * int(cellSize)
 
-	# --- 霰弹散射角
-	# 原版 mWideShot 只写不读、升级实际无效（doc/03 §7.5）；
-	# 这里按"散射真的变宽"补全，属于新增设计，不是还原
+	# --- 霰弹枪 WideShot：原版 mWideShot 每级给左右各加一对弹丸
+	#   0 级 ±1.25°（3 发）→ 1 级再 +±2.5°（5 发）→ 2 级再 +±3.75°（5 发）
 	if base.has('splitAngle'):
+		var wide: int = 0
 		if up.has(UP_WIDE_SHOT):
-			s.splitAngle = base.splitAngle * 1.5
+			wide = 1
 		if up.has(UP_WIDER_SHOT):
-			s.splitAngle = base.splitAngle * 2.0
+			wide = 2
+		s.wideShot = wide
 
 	# --- 爆炸物的子爆炸 / 分裂弹
 	if base.has('biggerBang'):

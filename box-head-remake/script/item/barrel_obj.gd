@@ -57,7 +57,7 @@ func weaponUpgrade(weaponType: int) -> void:
 # @param _damage 伤害值（int）
 ## 受击；签名与角色一致（爆炸会传 4 个参数，其余忽略）
 func hit(_damage: int, _attackPos: Vector2 = Vector2.ZERO,
-		_recoil: float = 0, _fromExplosion: bool = false) -> void:
+		_knockDir: Vector2 = Vector2.ZERO, _fromExplosion: bool = false) -> void:
 	if startExploding:
 		return
 

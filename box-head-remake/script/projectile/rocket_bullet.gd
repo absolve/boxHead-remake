@@ -15,7 +15,17 @@ var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
 var vector: Vector2 = Vector2.ZERO
 
 ## 飞行速度
-var speed: int = 700
+## 初速（px/s）：原版 0.5 格/tick = 0.5 × 32 × 25
+var speed: float = 400.0
+
+## 每 1/25 秒的加速倍率（原版 mDelta.ScaleN(1.1)）
+var accelFactor: float = 1.1
+
+## 最高速度（原版无上限，这里封顶避免飞出地图太快）
+var maxSpeed: float = 1200.0
+
+## 25Hz 累积器
+var accelAcc: float = 0.0
 
 ## 伤害值
 var damage: int = 0
@@ -46,40 +56,49 @@ func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
 	queue_free()
 
 
+## 引爆：生成爆炸并销毁自己
+func explode() -> void:
+	var temp = explosion.instantiate()
+	temp.global_position = global_position
+	temp.damage = damage
+	temp.biggerBang = biggerBang
+	temp.clusterExplode = clusterExplode
+	get_tree().current_scene.add_child(temp)
+	queue_free()
+
+
 ## 物理帧更新
 func _physics_process(delta: float) -> void:
+	# 撞静态障碍格：地图里的柱子/边界墙只有障碍格数据，未必有物理体，
+	# 光靠 get_overlapping_bodies() 会穿过去，所以按格子再判一次。
+	if MapData.isObstacle(MapData.worldToCell(global_position)):
+		explode()
+		return
+
 	# 检测与物体的碰撞
 	var body = get_overlapping_bodies()
 	if body:
-		var temp = explosion.instantiate()
-		temp.global_position = global_position
-		temp.damage = damage
-		temp.biggerBang = biggerBang
-		temp.clusterExplode = clusterExplode
-		get_tree().current_scene.add_child(temp)
-		queue_free()
+		explode()
+		return
 
 	# 检测与区域的碰撞
 	var area = get_overlapping_areas()
 	if area:
-		var temp = explosion.instantiate()
-		temp.global_position = global_position
-		temp.damage = damage
-		temp.biggerBang = biggerBang
-		temp.clusterExplode = clusterExplode
-		get_tree().current_scene.add_child(temp)
-		queue_free()
+		explode()
+		return
 
 	# 到达地图边界时爆炸
 	if global_position.x < itemSize.x / 2 or global_position.x > MapData.mapSize.x - itemSize.x / 2 \
 		or global_position.y < itemSize.y / 2 or global_position.y > MapData.mapSize.y - itemSize.y / 2:
-		var temp = explosion.instantiate()
-		temp.global_position = global_position
-		temp.damage = damage
-		temp.biggerBang = biggerBang
-		temp.clusterExplode = clusterExplode
-		get_tree().current_scene.add_child(temp)
-		queue_free()
+		explode()
+		return
+
+	# 加速：原版每 1/25 秒 mDelta ×1.1（先用新速度再移动）
+	accelAcc += delta
+	var accStep: float = 1.0 / MapData.TICKS_PER_SEC
+	while accelAcc >= accStep:
+		accelAcc -= accStep
+		speed = minf(speed * accelFactor, maxSpeed)
 
 	# 沿方向移动
 	position += vector * speed * delta

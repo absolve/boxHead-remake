@@ -78,11 +78,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_1, KEY_2, KEY_3, KEY_4:
 			var idx: int = key - KEY_1
 			if idx < players.size():
-				players[idx].hit(99999, Vector2.ZERO, 0, true)
+				players[idx].hit(99999, Vector2.ZERO, Vector2.ZERO, true)
 		KEY_K:
 			for p in players:
 				if not p.isDead:
-					p.hit(99999, Vector2.ZERO, 0, true)
+					p.hit(99999, Vector2.ZERO, Vector2.ZERO, true)
 		KEY_R:
 			if map != null and map.has_method("_on_resurrection_timer_timeout"):
 				map._on_resurrection_timer_timeout()

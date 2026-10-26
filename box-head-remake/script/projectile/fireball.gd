@@ -81,10 +81,17 @@ func resolveTarget(area: Area2D) -> Node2D:
 
 
 func _physics_process(delta: float) -> void:
+	var from: Vector2 = global_position
 	global_position += dir * speed * delta
 
 	timeLeft -= delta
 	if timeLeft <= 0.0:
+		queue_free()
+		return
+
+	# 撞静态墙：原版火球被墙挡住就消失（CThing_Shot_FireBall → Collide_Map）
+	# 静态墙是 StaticBody2D，不在 get_overlapping_areas() 里，所以用格子判定。
+	if hitsStaticWall(from, global_position):
 		queue_free()
 		return
 
@@ -104,9 +111,18 @@ func _physics_process(delta: float) -> void:
 			# 可破坏物：原版用 10000，必定打碎
 			target.hit(objectDamage)
 		else:
-			# recoil 传 -1：火球只造成伤害，不产生击退
-			# （原版击退由武器/近战各自的参数决定，火球没有击退）
-			target.hit(damage, global_position, -1)
+			# knockDir 传 ZERO：火球只造成伤害，不击退
+			target.hit(damage, global_position, Vector2.ZERO)
 
 		queue_free()
 		return
+
+
+## 这一帧的移动是否撞到静态墙（按格子判障碍，墙格已被 registerWallObstacles 登记）
+func hitsStaticWall(from: Vector2, to: Vector2) -> bool:
+	var steps: int = maxi(int(from.distance_to(to) / (MapData.cellSize * 0.5)) + 1, 1)
+	for i in range(steps + 1):
+		var p: Vector2 = from.lerp(to, float(i) / float(steps))
+		if MapData.isObstacle(MapData.worldToCell(p)):
+			return true
+	return false

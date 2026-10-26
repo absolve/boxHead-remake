@@ -250,11 +250,18 @@ func beginKnockback(dir: Vector2, knockSpeed: float) -> void:
 ```gdscript
 ## 统一签名
 func hit(damage: int, attackPos: Vector2 = Vector2.ZERO,
-		recoil: float = 0, fromExplosion: bool = false) -> void:
+		knockDir: Vector2 = Vector2.ZERO, fromExplosion: bool = false) -> void:
 ```
 
 - 后三个参数**必须有默认值**，这样 `obj.hit(100000)` 这类简化调用也能用。
-- 用不到的参数加下划线前缀（`_recoil`、`_fromExplosion`），避免未使用警告。
+- `knockDir` 是**击退方向**（世界坐标向量），由调用方给：
+  - 枪械 → 射击方向（8 方向）
+  - 爆炸 → `目标位置 - 爆炸位置`
+  - 近战 → `目标位置 - 攻击者位置`
+  - 火球 → `Vector2.ZERO`（只造伤害、不击退）
+- `knockDir == Vector2.ZERO` 表示**不击退**，不再用负数当哨兵值。
+- 击退力度由被击方按伤害公式自己算（`knockbackSpeed()`），调用方不用关心。
+- 用不到的参数加下划线前缀（`_knockDir`、`_fromExplosion`），避免未使用警告。
 - 新增可受击对象时，直接复制这个签名，不要自创。
 
 当前实现（保持一致）：

@@ -31,32 +31,25 @@ const DIRS: Array[Vector2] = [
 ## `mStateCount = CMain.mFPS` = 25 帧 = **1 秒**，动画 stand，结束后回 GotoPlayer。
 ## 原版另有一个 1/3 秒的防抖停留（`State_Sleep`），用于"刚转完向又不对"。
 const BLOCKED_WAIT: float = 1.0
-
 ## 前方被同伴挡住后，等多久才侧移绕行（秒）
 ##
 ## 同伴每帧都在动，"前方有人"会逐帧翻转；立刻反应就会来回摇摆。
 const SIDESTEP_WAIT: float = 0.2
-
 ## 刚转完身、方向又不对时的防抖停留（秒）—— 原版 `CMain.mFPS / 3`
 const TURN_RETRY_WAIT: float = 1.0 / 3.0
-
 ## 和别的僵尸挤在一起时的分离速度（px/s）
 const SEPARATE_SPEED: float = 120.0
-
 ## 判定「还没贴上」的距离（px）：比这更近就允许挤过去，靠分离推力散开
 const MIN_APPROACH_DISTANCE: float = 14.0
-
 ## 超过这个距离就不再主动分离（px）
 ## 只在「深度重叠」时才调整位置（像素）——碰撞已阻止新的穿透，
 ## 这个只负责把已经叠在一起的分开
 const SEPARATE_DISTANCE: float = 12.0
-
 ## 转身后至少保持这个方向多久（秒）
 ##
 ## 对应原版：转完身要等 `State_Turn` 播完，方向又不对还会 `State_Sleep` 1/3 秒。
 ## 没有这个锁就会每帧按 ShapeCast 结果改方向 → 原地反复转。
 const TURN_WAIT: float = 0.3
-
 ## 判定「已经走到格心」的容差（像素）
 ##
 ## `gridPosition()` 用的是 floori：僵尸一跨过格子边界，就被算成"在下一格"。
@@ -64,7 +57,6 @@ const TURN_WAIT: float = 0.3
 ## 一转向就撞墙 → 转不过去 → 反复转。
 ## 所以只有真正走到格心附近（±CELL_CENTER_TOL）才允许重算方向。
 const CELL_CENTER_TOL: float = 6.0
-
 ## 承诺方向的最长保持时间（秒）
 ##
 ## 被其他僵尸挤住时，格子判定仍然说「能走」，但物理上一步也挪不动，
@@ -75,24 +67,18 @@ const COMMIT_TIMEOUT: float = 0.5
 
 ## 攻击伤害（原版 CThing_Creature_Zombie.mDamage = 50）
 @export var damage: int = 50
-
 ## 攻击范围（像素）
 # 原版是"正前方相邻格"直接扣血，1 格 = 32px，这里取略大于 1 格
 @export var attackRange: float = 35.0
-
 ## 攻击判定帧（攻击动画的第几帧结算伤害）
 @export var attackHitFrame: int = 2
-
 ## 两次挥击之间的间隔（秒）
 # 原版没有独立冷却：攻击动画播到命中帧 + State_Sleep 的 10 tick(0.4s)
 @export var attackDelay: float = 0.4
-
 ## 重新搜索目标的间隔（秒）
 @export var targetRefreshInterval: float = 0.5
-
 ## 受击后减速恢复时间（秒）
 @export var hurtDelay: float = 0.5
-
 ## 探测下一步是否可走的距离（像素）
 @export var probeSize: Vector2 = Vector2(32, 32)
 
@@ -103,36 +89,23 @@ const COMMIT_TIMEOUT: float = 0.5
 ## 0.08 太小，僵尸会在同一次走近障碍的过程中连转好几次；
 ## 0.3 跟原版 State_Turn（转一个 45° 约 0.2 秒）+ 目标保持一致。
 @export var turnCooldown: float = 0.3
-
 ## 一个方向最少连续走几格才允许重新取流场方向（原版 minMoveGrid = 2）
 ## 没有它的话，站在两格交界处时相邻两格的流场方向不同，
 ## 每帧都会判成"朝向不对"→ 转身 → 再判 → 又转身，表现就是原地摇摆。
 @export var minMoveGrid: int = 2
-
-## 质量：影响被击退的距离（原版僵尸 mMass = 1）
-@export var mass: float = 1.0
-
 ## 击退剩余时间（秒）；Hurt 状态在这段时间内持续后退
 
 
 ## 是否刚转完身（供 Chase 判断要不要防抖）
 var justTurned: bool = false
-
 ## 防抖停留的剩余时间
 var turnRetryTimer: float = 0.0
-
 ## 被挡住已经等了多久
 var blockedTimer: float = 0.0
-
 ## 自己当前登记的占用格（哨兵值表示还没登记）
 var occCell: Vector2i = Vector2i(-9999, -9999)
-
 ## 当前追踪目标（玩家；保持无类型以便动态调用 hit()）
 var target: Node2D = null
-
-## 上一次受击是否来自正面（决定播 hitFront 还是 hitRear）
-var hitFromFront: bool = false
-
 ## 出生点（Spawn 状态要走到这里）
 var initPos: Vector2 = Vector2.ZERO
 ## 击退衰减系数：每逻辑帧速度乘以它（原版 mDelta *= 0.65）
@@ -141,10 +114,8 @@ var initPos: Vector2 = Vector2.ZERO
 
 ## 目标刷新计时
 var targetTimer: float = 0.0
-
 ## 当前承诺的移动方向（ZERO = 没有承诺）
 var committedDir: Vector2 = Vector2.ZERO
-
 ## 做出承诺时所在的格子
 var commitGrid: Vector2i = Vector2i.ZERO
 
@@ -153,43 +124,29 @@ var commitGrid: Vector2i = Vector2i.ZERO
 ## 原版 `State_CellToCell` 走满一格才回 `GotoPlayer` 重算方向，
 ## 所以方向在「一格之内」保持不变——这正是它不会来回摇摆的原因。
 var cellDir: Vector2 = Vector2.ZERO
-
 var cellDirGrid: Vector2i = Vector2i(-9999, -9999)
-
 ## 当前锁定的移动方向 / 锁剩余时间
 var lockedDir: Vector2 = Vector2.ZERO
-
 var turnLockTimer: float = 0.0
-
 ## 卡住计时：连续多少秒几乎没移动
 var stuckTimer: float = 0.0
-
 var lastPhysPos: Vector2 = Vector2.ZERO
-
 ## 当前承诺已经保持了多久（秒）
 var commitTimer: float = 0.0
-
 ## 做出承诺时所处的位置（用于判断是否真的卡住没动）
 var commitPos: Vector2 = Vector2.ZERO
-
 ## 0 = 跟随流场，1 = 被挡后自主找路
 var navState: int = 0
-
 ## 当前实际移动方向（持久保存，被挡才会变）
 var currDir: Vector2 = Vector2.ZERO
-
 ## 上一次记录的格子（用于判断走了 minMoveGrid 格）
 var lastNavGrid: Vector2i = Vector2i(-9999, -9999)
-
 ## 已预留的目标格（原版 SetCollideDirection 的作用点）
 var reservedCell: Vector2i = Vector2i(-9999, -9999)
-
 ## 正在走去的目标格（到达后它就是新占据的格子）
 var moveTargetCell: Vector2i = Vector2i(-9999, -9999)
-
 ## 击退位移（每帧衰减 0.65，原版 mDelta）
 var knockbackDelta: Vector2 = Vector2.ZERO
-
 ## 击退剩余帧数（原版 mStateCount）
 var knockbackFrames: int = 0
 
@@ -596,7 +553,7 @@ func dealDamage() -> bool:
 	if not isFacingTarget():
 		return false
 	if target.has_method("hit"):
-		target.hit(damage, global_position, 20)
+		target.hit(damage, global_position, target.global_position - global_position)
 		#attackSound.play()
 		return true
 	return false
@@ -608,40 +565,34 @@ func dealDamage() -> bool:
 ##   > 0  直接用这个值当击退初速（px/s）
 ##   = 0  按原版公式由伤害推导（子弹默认行为）
 ##   < 0  完全不击退，只播受伤动画（恶魔火球用这种）
-func hit(dmg: int, attackPos: Vector2 = Vector2.ZERO,
-		recoil: float = 0, fromExplosion: bool = false) -> void:
-	if isDead:
+func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
+		knockDir: Vector2 = Vector2.ZERO, fromExplosion: bool = false) -> void:
+	if isDead or dying:
 		return
 
 	hp -= dmg
 
+	# 致命伤不立刻倒下：先标记 dying，照常进入 Hurt（被打飞 + 硬直），
+	# Hurt 结束再 die()（原版 CThing_Creature.as:336-352 先 BulletHit 后 Dying）
 	if hp <= 0:
-		die()
-		return
+		dying = true
 
-	# 判断是否来自正面：攻击方向与当前朝向同侧
-	var attackerDir := angleFromVector(attackPos - global_position)
-	var diff := wrapi(attackerDir - angle, 0, 8)
-	hitFromFront = diff <= 1 or diff >= 7
+	# 原版不区分前后：受击动画随机二选一（见 CThing_Creature.as:282），
+	# 这里不再按攻击来向算夹角。
 
 	# 先切状态再设击退速度！
 	# Chase.exit() 里有 velocity = Vector2.ZERO，先设速度会被它清掉。
 	fsm.transitionTo(&"Hurt")
 
-	# 火球这类 recoil < 0 的攻击只造伤害不推人
-	if recoil < 0.0:
-		return
-
-	# 击退：按原版公式算初速，之后由 Hurt 状态按 0.65/帧 衰减
-	# 注意：Hurt 用的是 knockbackDelta / knockbackFrames（原版 mDelta / mStateCount），
-	# 只设 velocity 不会产生任何位移。
-	var s: float = recoil if recoil > 0.0 else knockbackSpeed(dmg, fromExplosion)
-	# 原版击退方向取子弹的 8 方向（CThing_Affect_Bullet 传的是 mAngle），
-	# 不是"命中点 → 僵尸中心"的向量，所以正面命中一定是正后方，不会斜。
-	var knockDir: Vector2 = vectorFromAngle(angleFromVector(global_position - attackPos))
+	# 击退：方向由调用方给（发射方向），力度按原版伤害公式，Hurt 里按 0.65/帧 衰减
+	# knockDir == ZERO 表示不推（火球）
 	if knockDir == Vector2.ZERO:
-		knockDir = Vector2.DOWN
-	beginKnockback(knockDir, s)
+		return
+	# 方向直接用调用方给的（武器传 8 方向向量；爆炸/近战是连续向量）。
+	# beginKnockback 内部会归一化，这里不需要 angle ↔ vector 来回换算。
+	beginKnockback(knockDir, knockbackSpeed(dmg, fromExplosion))
+	# 硬直 = 击退帧数 + 3 tick（原版 State_BulletHit_Init + State_Sleep 3）
+	hurtDelay = hurtTimeFrom(knockbackFrames)
 
 
 ## 死亡：切到 Dead 状态并发出击杀信号
@@ -731,22 +682,6 @@ func clearCommit() -> void:
 	justTurned = false
 	turnRetryTimer = 0.0
 	invalidateCellDir()
-
-
-## 击退速度（px/s）—— 原版公式
-##
-## 子弹：max(damage/5*2 / cellSize, 0.3) / mass
-## 爆炸：min(damage/5*2 / cellSize / mass, 0.3)
-func knockbackSpeed(dmg: int, fromExplosion := false) -> float:
-	var raw: float = float(dmg) * 2.0 / 5.0 / MapData.cellSize
-	var cells: float
-	if fromExplosion:
-		cells = minf(raw / mass, 0.3)
-	else:
-		cells = maxf(raw, 0.3) / mass
-
-	# 格/帧 -> px/s（速度不上限，保证高伤害武器依然「砰」得有力）
-	return cells * MapData.cellSize * MapData.TICKS_PER_SEC
 
 
 ## 撞到别的僵尸时互相轻推，把已经重叠的分开
