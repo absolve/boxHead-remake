@@ -18,6 +18,7 @@
 | 文件 | 内容 |
 |---|---|
 | [future-improvements.md](future-improvements.md) | 后续功能改进：大图流场局部刷新（数组化、增量 BFS、分层窗口）与多玩家流场组织（多源叠加场 vs 每玩家一场） |
+| [decals-blood-scorch.md](decals-blood-scorch.md) | 血迹与爆炸印记（地面贴花）：原版实现链路、重制版贴花图层方案、设置里的"显示/不显示血迹"开关 |
 
 ## 如何验证
 
