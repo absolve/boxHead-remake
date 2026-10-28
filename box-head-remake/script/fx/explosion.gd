@@ -48,6 +48,9 @@ var detonated: bool = false
 
 
 func _ready() -> void:
+	# 0) 地面焦痕
+	MapData.addScorch(global_position, 2.0)
+
 	# 1) 算半径：优先用调用方指定的 wRange，否则按原版公式由伤害推导
 	radius = wRange if wRange > 0.0 else (2.0 + maxf(damage - 100, 0) * 0.005) * MapData.cellSize
 

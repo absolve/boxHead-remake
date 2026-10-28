@@ -363,7 +363,7 @@
 [ext_resource type="Texture2D" uid="uid://dt0jtm8eau54h" path="res://sprite/player/DefineSprite_1876/3.png" id="221_lsag6"]
 [ext_resource type="Texture2D" uid="uid://cqf5sku3gersi" path="res://sprite/player/DefineSprite_2201/4.png" id="222_dqq0w"]
 [ext_resource type="Texture2D" uid="uid://c5pms42mhu5na" path="res://sprite/player/DefineSprite_1876/4.png" id="222_kqkfd"]
-[ext_resource type="Texture2D" uid="uid://dxlloqlb8cesw" path="res://sprite/player/DefineSprite_1876/5.png" id="223_jqce2"]
+[ext_resource type="Texture2D" uid="uid://w800n0llvloh" path="res://sprite/player/DefineSprite_1876/5.png" id="223_jqce2"]
 [ext_resource type="Texture2D" uid="uid://crnq05qnw146n" path="res://sprite/player/DefineSprite_2201/5.png" id="223_kvj0a"]
 [ext_resource type="Texture2D" uid="uid://den3mxjuo8rk" path="res://sprite/player/DefineSprite_2201/6.png" id="224_2opwh"]
 [ext_resource type="Texture2D" uid="uid://dyedlu0xma53q" path="res://sprite/player/DefineSprite_1876/6.png" id="224_gxfhq"]
@@ -429,6 +429,10 @@
 [ext_resource type="Texture2D" uid="uid://ea2sd1dm3wgw" path="res://sprite/player/DefineSprite_1614/8.png" id="402_8sw06"]
 [ext_resource type="AudioStream" uid="uid://cegjj3n1puxvv" path="res://sound/540_540 Creature.Player.Scream.1.mp3" id="428_vluh7"]
 [ext_resource type="AudioStream" uid="uid://b6ffrlpy1idvk" path="res://sound/551_551 Object.Pickup.mp3" id="429_m6mmm"]
+[ext_resource type="Script" uid="uid://dm4ks84mtlxa2" path="res://script/fsm/state_machine.gd" id="430_fsm"]
+[ext_resource type="Script" uid="uid://cl2jaaqpj05gl" path="res://script/character/player_states/player_idle.gd" id="431_idle"]
+[ext_resource type="Script" uid="uid://chyrhnp6g6gxk" path="res://script/character/player_states/player_hurt.gd" id="432_hurt"]
+[ext_resource type="Script" uid="uid://1tolj6qaxew3" path="res://script/character/player_states/player_dead.gd" id="433_dead"]
 
 [sub_resource type="CircleShape2D" id="RectangleShape2D_8pv5j"]
 radius = 14.4
@@ -2545,21 +2549,22 @@ collision_mask = 15
 script = ExtResource("1_xo3ru")
 playerId = 1
 hp = 200
-speed = 128
 maxHp = 200
 
 [node name="shape" parent="." index="0"]
 shape = SubResource("RectangleShape2D_8pv5j")
 
 [node name="ani" parent="." index="1"]
-position = Vector2(0, -18)
+position = Vector2(0, -15)
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_4miyu")
-animation = &"walk_1_0_Pistol"
+animation = &"walk_1_4_UZI"
+metadata/_edit_lock_ = true
 
 [node name="weaponBackpack" type="Node2D" parent="." index="2" unique_id=1895631629]
 
 [node name="body" type="Area2D" parent="." index="3" unique_id=1054707257]
+visible = false
 collision_layer = 16
 collision_mask = 0
 
@@ -2596,3 +2601,16 @@ bus = &"sfx"
 [node name="player" type="AnimationPlayer" parent="." index="8" unique_id=1026648975]
 libraries/ = SubResource("AnimationLibrary_n1i1r")
 speed_scale = 8.0
+
+[node name="StateMachine" type="Node" parent="." index="9" unique_id=101151910]
+script = ExtResource("430_fsm")
+initialState = &"Idle"
+
+[node name="Idle" type="Node" parent="StateMachine" index="0" unique_id=823714953]
+script = ExtResource("431_idle")
+
+[node name="Hurt" type="Node" parent="StateMachine" index="1" unique_id=1392987898]
+script = ExtResource("432_hurt")
+
+[node name="Dead" type="Node" parent="StateMachine" index="2" unique_id=1616386533]
+script = ExtResource("433_dead")

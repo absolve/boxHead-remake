@@ -37,6 +37,20 @@ const ROWS: Array = [
 				+ "still applicable. Forfeits hiscore!",
 		"options": ["OFF", "ON"],
 	},
+
+	{
+		"key": "blood",
+		"label": "Blood:",
+		"tip": "Show blood and scorch decals",
+		"options": ["OFF", "ON"],
+	},
+
+	{
+		"key": "screenShake",
+		"label": "Screen Shake:",
+		"tip": "Camera shake on explosions",
+		"options": ["OFF", "ON"],
+	},
 	{
 		"key": "language",
 		"label": "Language:",
@@ -152,6 +166,10 @@ func onOptionPressed(key: String, index: int, group: Array) -> void:
 			MapData.mapConfig.Devils = (index == 1)
 		"friendlyFire":
 			MapData.mapConfig.friendlyFire = (index == 1)
+		"blood":
+			MapData.mapConfig.blood = (index == 1)
+		"screenShake":
+			MapData.mapConfig.screenShake = (index == 1)
 		_:
 			pass
 	Settings.saveAll()
@@ -172,6 +190,8 @@ func syncUI() -> void:
 	markSelected("collision", 1 if bool(cfg.get("collision", true)) else 0)
 	markSelected("Devils", 1 if bool(cfg.get("Devils", true)) else 0)
 	markSelected("friendlyFire", 1 if bool(cfg.get("friendlyFire", false)) else 0)
+	markSelected("blood", 1 if bool(cfg.get("blood", true)) else 0)
+	markSelected("screenShake", 1 if bool(cfg.get("screenShake", true)) else 0)
 	markSelected("language", 0 if TranslationServer.get_locale().begins_with("zh") else 1)
 
 

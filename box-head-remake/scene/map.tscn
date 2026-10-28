@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c0kuvc8gn0dj6"]
 
 [ext_resource type="Script" uid="uid://bw52mm3icvxlm" path="res://script/map.gd" id="1_rgtto"]
+[ext_resource type="Script" path="res://script/fx/decal_layer.gd" id="9_decal"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="4_bq37x"]
 [ext_resource type="Texture2D" uid="uid://36efgdakiyfu" path="res://sprite/ui/DefineSprite_59/1.png" id="5_hk4qc"]
 [ext_resource type="Texture2D" uid="uid://dxbilfahnud2g" path="res://sprite/ui/DefineSprite_59/2.png" id="6_5tpms"]
@@ -424,6 +425,9 @@ animations = [{
 [node name="map" type="Node2D" unique_id=821564601]
 script = ExtResource("1_rgtto")
 isDebug = false
+
+[node name="decals" type="Node2D" parent="."]
+script = ExtResource("9_decal")
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 

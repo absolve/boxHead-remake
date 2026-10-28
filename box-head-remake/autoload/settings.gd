@@ -156,6 +156,8 @@ func loadGame(cfg: ConfigFile) -> void:
 	MapData.mapConfig.collision = bool(cfg.get_value(SECTION_GAME, "collision", true))
 	MapData.mapConfig.Devils = bool(cfg.get_value(SECTION_GAME, "Devils", true))
 	MapData.mapConfig.friendlyFire = bool(cfg.get_value(SECTION_GAME, "friendlyFire", false))
+	MapData.mapConfig.blood = bool(cfg.get_value(SECTION_GAME, "blood", true))
+	MapData.mapConfig.screenShake = bool(cfg.get_value(SECTION_GAME, "screenShake", true))
 
 
 ## 保存游戏数值设置
@@ -164,3 +166,5 @@ func saveGame(cfg: ConfigFile) -> void:
 	cfg.set_value(SECTION_GAME, "collision", MapData.mapConfig.collision)
 	cfg.set_value(SECTION_GAME, "Devils", MapData.mapConfig.Devils)
 	cfg.set_value(SECTION_GAME, "friendlyFire", MapData.mapConfig.friendlyFire)
+	cfg.set_value(SECTION_GAME, "blood", MapData.mapConfig.blood)
+	cfg.set_value(SECTION_GAME, "screenShake", MapData.mapConfig.screenShake)

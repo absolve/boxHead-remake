@@ -132,7 +132,7 @@ var enemyData: Dictionary = {
 #   Game speed:     游戏速度倍率
 var mapConfig: Dictionary = {
 	'difficulty': 1, 'collision': true, 'Devils': true,
-	'friendlyFire': true, 'gameSpeed': 1,
+	'friendlyFire': true, 'blood': true, 'screenShake': true, 'gameSpeed': 1,
 }
 
 ## 当前连杀数（显示用）
@@ -284,6 +284,22 @@ func getZombieAt(cell: Vector2i) -> Node:
 ##
 ## 原版没有这个开关（玩家之间本来就能互相误伤），这里是重制版自己的玩法选项：
 ## 关闭时玩家不会被队友的子弹 / 任何爆炸伤到。
+## 往贴花层加一条（没有贴花层就静默忽略）
+func addDecal(pos: Vector2, kind: String = "blood", size: float = 1.0) -> void:
+	if not bool(mapConfig.get("blood", true)):
+		return
+	for d in get_tree().get_nodes_in_group("decal"):
+		d.addSplat(pos, kind, size)
+
+
+func addBlood(pos: Vector2, size: float = 1.0) -> void:
+	addDecal(pos, "blood", size)
+
+
+func addScorch(pos: Vector2, size: float = 1.0) -> void:
+	addDecal(pos, "scorch", size)
+
+
 func friendlyFireOn() -> bool:
 	return bool(mapConfig.get("friendlyFire", false))
 

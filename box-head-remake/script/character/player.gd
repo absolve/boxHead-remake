@@ -1,3 +1,4 @@
+class_name Player
 extends "res://script/character/character.gd"
 
 ## 玩家角色脚本
@@ -94,6 +95,9 @@ var hurtMoveAcc: float = 0.0
 ## 玩家精灵节点
 @onready var player: AnimationPlayer = $player
 
+## 状态机（player.tscn 里的 StateMachine 子节点）
+@onready var fsm: StateMachine = $StateMachine
+
 
 ## 初始化
 func _ready() -> void:
@@ -174,6 +178,10 @@ func _ready() -> void:
 	tween.tween_callback(func(): player.play("RESET"))
 	tween.play()
 
+	# 启动状态机：Idle 起步，受伤/死亡/复活由 player_states/*.gd 切换
+	if fsm != null:
+		fsm.start(&"Idle")
+
 
 # 初始化武器
 func initWeapon() -> void:
@@ -207,6 +215,13 @@ func resurrection() -> void:
 	tween.play()
 	isDead = false
 	state = Game.playerState.Idle
+	# 死亡时 hit() 关掉了本体碰撞和受击盒，复活必须恢复：
+	# 否则复活后会穿墙，而且再也吃不到伤害（bodyShape 一直 disabled）
+	shape.disabled = false
+	bodyShape.disabled = false
+	# 死亡状态里复活的，主动切回 Idle（Dead 状态自身也有兜底判断）
+	if fsm != null:
+		fsm.transitionTo(&"Idle")
 	hp = maxHp
 	# 复活后位置变了，立刻重算流场，让僵尸改追这个玩家
 	MapData.flowDirty = true
@@ -423,6 +438,9 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 	if hp <= 0:
 		# 死亡处理
 		state = Game.playerState.dead
+		# 先切状态再做演出：若正处在 Hurt，避免本帧继续跑击退逻辑
+		if fsm != null:
+			fsm.transitionTo(&"Dead")
 		deadSound.play()
 		ani.play("fallDown_%s" % [roundi(angle / 2.0)])
 		shape.disabled = true
@@ -432,6 +450,10 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 	else:
 		# 受伤处理
 		state = Game.playerState.hurt
+		# 先切 Hurt 再写击退参数：重复受击时 transitionTo 会先 exit 清掉旧击退，
+		# 放在后面会把刚写入的新击退清掉。
+		if fsm != null:
+			fsm.transitionTo(&"Hurt")
 		hurtTimer = 0
 
 		# 原版不区分前后：两种受击动画随机二选一
@@ -584,8 +606,23 @@ func setInvincible(seconds: float) -> void:
 		ani.modulate.a = 1.0
 
 
-## 物理帧更新
+## 物理帧更新：与状态无关的公共逻辑
+##
+## 状态相关行为由 StateMachine 子节点分发：
+##   Idle → updateIdle / Hurt → updateHurt / Dead → updateDead
+## StateMachine 是子节点，它的 _physics_process 在本函数之后执行。
 func _physics_process(delta: float) -> void:
+	updateCommon(delta)
+
+	# 场景没挂状态机时退回 Idle 行为，避免角色完全不动。
+	if fsm == null:
+		updateIdle(delta)
+
+	updateBoundsAndZ()
+
+
+## 与状态无关的每帧处理：无敌计时/闪烁、自动回血、HUD 同步
+func updateCommon(delta: float) -> void:
 	# 无敌计时 + 闪烁
 	if invincibleTime > 0.0:
 		invincibleTime -= delta
@@ -607,105 +644,10 @@ func _physics_process(delta: float) -> void:
 			hp = mini(hp + heal, maxHp)
 			lifeBar.maxHp = maxHp
 	lifeBar.hp = hp
-	if state == Game.playerState.Idle:
-		# 空闲状态：处理移动和攻击
-		currAni = "stand"
 
-		# 获取输入方向
-		var inputDir = Input.get_vector(keyMap.left, keyMap.right, keyMap.up, keyMap.down)
-		if inputDir.length() != 0:
-			vector = inputDir
-			angle = round(inputDir.angle() / (PI / 4))
-			angle = wrapi(int(angle), 0, 8)
-			currAni = "walk"
 
-		# 对角线移动时归一化速度
-		if not inputDir.is_normalized():
-			inputDir = inputDir.normalized()
-		velocity = inputDir * speed
-
-		# 根据武器类型播放对应动画
-		if aniException.has(Game.weaponName[currWeapon.type]):
-			ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % 'other')
-		else:
-			ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % Game.weaponName[currWeapon.type])
-
-		# 更新武器弹药显示
-		if currWeapon.maxAmmoNum == 0:
-			txt.text = Game.weaponName[currWeapon.type]
-		else:
-			txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
-
-		# 根据弹药量改变文字颜色
-		if currWeapon.maxAmmoNum != 0:
-			if currWeapon.ammoNum <= 0:
-				txt.modulate = Color.RED
-			else:
-				# 暖白偏黄，配黑描边在浅色地面/深色地面都看得清
-				txt.modulate = Color(1.0, 0.95, 0.75)
-		else:
-			txt.modulate = Color(1.0, 0.95, 0.75)
-
-		# 处理射击输入
-		if Input.is_action_pressed(keyMap.fire):
-			if currWeapon.type == Game.weaponType.Grenade:
-				currWeapon.increase(get_physics_process_delta_time())
-			else:
-				if currWeapon.automatic:
-					currWeapon.fire(vector)
-				elif Input.is_action_just_pressed(keyMap.fire):
-					currWeapon.fire(vector)
-
-		# 手榴弹释放时扔出
-		if Input.is_action_just_released(keyMap.fire):
-			if currWeapon.type == Game.weaponType.Grenade:
-				currWeapon.fire(vector)
-
-		# 处理武器切换输入
-		if Input.is_action_just_pressed(keyMap.nextWeapon):
-			switchWeapon()
-		if Input.is_action_just_pressed(keyMap.prevWeapon):
-			switchWeapon(false)
-
-		# 移动并处理碰撞
-		var displacement = velocity * delta
-		if displacement != Vector2.ZERO:
-			# 格子级阻挡：整体走不通就分轴尝试（原版 Collide_Map 的滑行语义）
-			# 注意：如果自己脚下已经是障碍格（比如刚在脚下放了油桶），
-			# 就允许自由离开，否则会被自己放的物体卡死。
-			var center: Vector2 = body.global_position
-			if not blockedByCell(center) and blockedByCell(center + displacement):
-				if not blockedByCell(center + Vector2(displacement.x, 0)):
-					displacement.y = 0
-				elif not blockedByCell(center + Vector2(0, displacement.y)):
-					displacement.x = 0
-				else:
-					displacement = Vector2.ZERO
-			displacement = resolveAreaBlockers(displacement)
-		move_and_collide(displacement)
-
-	elif state == Game.playerState.hurt:
-		# 受伤状态：按 25Hz 应用击退（原版每 1/25 秒位移一次并 ×0.65）
-		hurtTimer += delta
-		hurtMoveAcc += delta
-		var hudStep: float = 1.0 / MapData.TICKS_PER_SEC
-		while hurtMoveAcc >= hudStep and knockbackFrames > 0 and knockbackDelta.length() > 0.01:
-			hurtMoveAcc -= hudStep
-			knockbackFrames -= 1
-			var step: Vector2 = knockbackDelta * MapData.cellSize
-			if not blockedByCell(body.global_position + step):
-				move_and_collide(step)
-			knockbackDelta *= 0.65
-		if hurtTimer > hurtDelay and knockbackFrames <= 0:
-			hurtTimer = 0
-			knockbackDelta = Vector2.ZERO
-			state = Game.playerState.Idle
-
-	elif state == Game.playerState.dead:
-		# 死亡状态：无操作
-		pass
-
-	# 限制玩家在地图边界内
+## 限制玩家在地图边界内，并按 Y 坐标设置 Z 轴顺序（2.5D）
+func updateBoundsAndZ() -> void:
 	# 按「相机可视范围」钳取，而不是整张地图：
 	# 地图比相机大时，相机被夹在边缘 32px 内，玩家走到更外面就会出画。
 	var play: Rect2 = MapData.getPlayRect()
@@ -714,3 +656,133 @@ func _physics_process(delta: float) -> void:
 
 	# 根据Y坐标设置Z轴顺序（实现2.5D视觉效果）
 	z_index = floori(global_position.y / MapData.cellSize) + 1
+
+
+## ---- 状态钩子（供 player_states/*.gd 调用）----
+
+func onIdleEnter() -> void:
+	# 与 FSM 同步旧的 state 枚举（其它代码仍在读它）
+	state = Game.playerState.Idle
+
+
+func onIdleExit() -> void:
+	pass
+
+
+func onHurtEnter() -> void:
+	state = Game.playerState.hurt
+
+
+func onHurtExit() -> void:
+	# 离开 Hurt 时清掉击退与硬直；下一次受击由 hit() 重新写入
+	hurtTimer = 0.0
+	hurtMoveAcc = 0.0
+	knockbackDelta = Vector2.ZERO
+	knockbackFrames = 0
+
+
+func onDeadEnter() -> void:
+	state = Game.playerState.dead
+
+
+## Idle：移动 / 瞄准 / 开火 / 切武器
+func updateIdle(delta: float) -> void:
+	currAni = "stand"
+
+	# 获取输入方向
+	var inputDir = Input.get_vector(keyMap.left, keyMap.right, keyMap.up, keyMap.down)
+	if inputDir.length() != 0:
+		vector = inputDir
+		angle = round(inputDir.angle() / (PI / 4))
+		angle = wrapi(int(angle), 0, 8)
+		currAni = "walk"
+
+	# 对角线移动时归一化速度
+	if not inputDir.is_normalized():
+		inputDir = inputDir.normalized()
+	velocity = inputDir * speed
+
+	# 根据武器类型播放对应动画
+	if aniException.has(Game.weaponName[currWeapon.type]):
+		ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % 'other')
+	else:
+		ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % Game.weaponName[currWeapon.type])
+
+	# 更新武器弹药显示
+	if currWeapon.maxAmmoNum == 0:
+		txt.text = Game.weaponName[currWeapon.type]
+	else:
+		txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
+
+	# 根据弹药量改变文字颜色
+	if currWeapon.maxAmmoNum != 0:
+		if currWeapon.ammoNum <= 0:
+			txt.modulate = Color.RED
+		else:
+			# 暖白偏黄，配黑描边在浅色地面/深色地面都看得清
+			txt.modulate = Color(1.0, 0.95, 0.75)
+	else:
+		txt.modulate = Color(1.0, 0.95, 0.75)
+
+	# 处理射击输入
+	if Input.is_action_pressed(keyMap.fire):
+		if currWeapon.type == Game.weaponType.Grenade:
+			currWeapon.increase(delta)
+		else:
+			if currWeapon.automatic:
+				currWeapon.fire(vector)
+			elif Input.is_action_just_pressed(keyMap.fire):
+				currWeapon.fire(vector)
+
+	# 手榴弹释放时扔出
+	if Input.is_action_just_released(keyMap.fire):
+		if currWeapon.type == Game.weaponType.Grenade:
+			currWeapon.fire(vector)
+
+	# 处理武器切换输入
+	if Input.is_action_just_pressed(keyMap.nextWeapon):
+		switchWeapon()
+	if Input.is_action_just_pressed(keyMap.prevWeapon):
+		switchWeapon(false)
+
+	# 移动并处理碰撞
+	var displacement = velocity * delta
+	if displacement != Vector2.ZERO:
+		# 格子级阻挡：整体走不通就分轴尝试（原版 Collide_Map 的滑行语义）
+		# 注意：如果自己脚下已经是障碍格（比如刚在脚下放了油桶），
+		# 就允许自由离开，否则会被自己放的物体卡死。
+		var center: Vector2 = body.global_position
+		if not blockedByCell(center) and blockedByCell(center + displacement):
+			if not blockedByCell(center + Vector2(displacement.x, 0)):
+				displacement.y = 0
+			elif not blockedByCell(center + Vector2(0, displacement.y)):
+				displacement.x = 0
+			else:
+				displacement = Vector2.ZERO
+		displacement = resolveAreaBlockers(displacement)
+	move_and_collide(displacement)
+
+
+## Hurt：按 25Hz 应用击退（原版每 1/25 秒位移一次并 ×0.65）；播完由状态脚本切回 Idle
+func updateHurt(delta: float) -> void:
+	hurtTimer += delta
+	hurtMoveAcc += delta
+	var hudStep: float = 1.0 / MapData.TICKS_PER_SEC
+	while hurtMoveAcc >= hudStep and knockbackFrames > 0 and knockbackDelta.length() > 0.01:
+		hurtMoveAcc -= hudStep
+		knockbackFrames -= 1
+		var step: Vector2 = knockbackDelta * MapData.cellSize
+		if not blockedByCell(body.global_position + step):
+			move_and_collide(step)
+		knockbackDelta *= 0.65
+
+
+## Dead：倒地演出期间不响应输入，等 resurrection() 复活
+func updateDead(_delta: float) -> void:
+	# 死亡状态：无操作
+	pass
+
+
+## 受伤硬直是否结束（Hurt 状态用它决定何时回 Idle）
+func hurtFinished() -> bool:
+	return hurtTimer > hurtDelay and knockbackFrames <= 0

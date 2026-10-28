@@ -304,6 +304,7 @@ func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
 		return
 
 	hp -= dmg
+	MapData.addBlood(global_position, 2.5 if hp <= 0 else 1.2)
 
 	# 致命伤：先标记 dying 并进入 Hurt（被打飞），Hurt 结束再 die()
 	if hp <= 0:

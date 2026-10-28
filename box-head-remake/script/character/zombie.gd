@@ -571,6 +571,8 @@ func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
 		return
 
 	hp -= dmg
+	# 地面血迹：受伤溅一点，致命一击溅大一点
+	MapData.addBlood(global_position, 2.0 if hp <= 0 else 1.0)
 
 	# 致命伤不立刻倒下：先标记 dying，照常进入 Hurt（被打飞 + 硬直），
 	# Hurt 结束再 die()（原版 CThing_Creature.as:336-352 先 BulletHit 后 Dying）
