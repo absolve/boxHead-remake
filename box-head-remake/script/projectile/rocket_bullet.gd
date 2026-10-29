@@ -7,26 +7,19 @@ extends "res://script/item/item.gd"
 
 ## 烟雾效果场景预加载
 var smoke: PackedScene = preload("res://scene/fx/smoke.tscn")
-
 ## 爆炸效果场景预加载
 var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
-
 ## 飞行方向向量
 var vector: Vector2 = Vector2.ZERO
-
 ## 飞行速度
 ## 初速（px/s）：原版 0.5 格/tick = 0.5 × 32 × 25
 var speed: float = 400.0
-
 ## 每 1/25 秒的加速倍率（原版 mDelta.ScaleN(1.1)）
 var accelFactor: float = 1.1
-
 ## 最高速度（原版无上限，这里封顶避免飞出地图太快）
 var maxSpeed: float = 1200.0
-
 ## 25Hz 累积器
 var accelAcc: float = 0.0
-
 ## 伤害值
 var damage: int = 0
 

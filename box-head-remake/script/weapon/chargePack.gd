@@ -7,7 +7,6 @@ extends "res://script/weapon/weapon.gd"
 
 ## 充电包物体场景预加载
 var chargePackObj: PackedScene = preload("res://scene/item/chargePackObj.tscn")
-
 ## 当前放置的充电包（用于再次按下时引爆）
 var currentChargePack: Node = null
 

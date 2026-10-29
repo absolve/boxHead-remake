@@ -14,7 +14,6 @@ var d: Devil:
 
 ## 本次攻击是否已放出火球
 var hasFired: bool = false
-
 ## 攻击冷却计时（仅无攻击动画的退化路径使用）
 var cooldown: float = 0.0
 

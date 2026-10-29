@@ -6,21 +6,18 @@ extends Node2D
 
 ## 地图图片列表
 var img: Array = []
-
 ## 当前选中的地图索引
 var index: int = 0
 
 
 ## 槽位角色下拉框的文字（下标 = MapData.SLOT_*）
 const ROLE_TEXT: Array[String] = ["关闭", "1P", "2P", "CPU"]
-
 ## 卡片上显示的文字：关闭的槽位显示 "—"
 const CARD_TEXT: Array[String] = ["—", "1P", "2P", "CPU"]
 
 
 ## 设置弹窗节点
 @onready var setting: PopupPanel = $gameSetting
-
 ## 四个玩家槽位的角色下拉框
 @onready var slotButtons: Array = [
 	$Control/slot1, $Control/slot2, $Control/slot3, $Control/slot4,
@@ -34,10 +31,8 @@ const CARD_TEXT: Array[String] = ["—", "1P", "2P", "CPU"]
 
 ## 地图预览图节点
 @onready var mapImg: TextureRect = $Control/mapImg
-
 ## 地图名称显示节点
 @onready var mapName: Label = $Control/mapName
-
 ## 地图索引显示节点
 @onready var mapIndex: Label = $Control/mapIndex
 

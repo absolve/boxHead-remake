@@ -18,7 +18,6 @@ var z: Zombie:
 
 ## 结束后进入的状态
 var nextState: StringName = &"Chase"
-
 ## 剩余时间
 var timer: float = 0.0
 

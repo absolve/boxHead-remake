@@ -7,35 +7,26 @@ extends Node2D
 
 ## 动画补间节点
 var tween: Tween
-
 ## 按钮原始位置
 var originalPos: Vector2
-
 ## 动画频率（秒）
 var duration: float = 0.8
-
 ## 位置偏移量（像素）
 var offset: int = 2
-
 ## 当前选中的按钮
 var currBtn: Button = null
 
 
 ## 开始按钮节点
 @onready var btn: Button = $Control/vbox/btn_start
-
 ## 操作说明按钮节点
 @onready var btnInstructions: Button = $Control/vbox/btn_instructions
-
 ## 关于按钮节点
 @onready var btnAbout: Button = $Control/vbox/btn_about
-
 ## 按键设置按钮节点
 @onready var btnKeybind: Button = $Control/vbox/btn_keybind
-
 ## 关于弹窗（场景里的子节点）
 @onready var aboutPanel: PopupPanel = $aboutPanel
-
 ## 操作说明弹窗（场景里的子节点）
 @onready var instructionsPanel: PopupPanel = $instructionsPanel
 

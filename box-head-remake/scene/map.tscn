@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://c0kuvc8gn0dj6"]
 
 [ext_resource type="Script" uid="uid://bw52mm3icvxlm" path="res://script/map.gd" id="1_rgtto"]
-[ext_resource type="Script" path="res://script/fx/decal_layer.gd" id="9_decal"]
 [ext_resource type="Theme" uid="uid://bw4m4oh65t5aw" path="res://theme/new_theme.tres" id="4_bq37x"]
 [ext_resource type="Texture2D" uid="uid://36efgdakiyfu" path="res://sprite/ui/DefineSprite_59/1.png" id="5_hk4qc"]
 [ext_resource type="Texture2D" uid="uid://dxbilfahnud2g" path="res://sprite/ui/DefineSprite_59/2.png" id="6_5tpms"]
 [ext_resource type="Texture2D" uid="uid://bq3f0aqxml87v" path="res://sprite/ui/DefineSprite_59/3.png" id="7_6mx45"]
 [ext_resource type="Texture2D" uid="uid://0remarucg010" path="res://sprite/ui/DefineSprite_59/4.png" id="8_xd34h"]
 [ext_resource type="Texture2D" uid="uid://bn7pxfrsk5lq8" path="res://sprite/ui/DefineSprite_59/5.png" id="9_64mgr"]
+[ext_resource type="Script" uid="uid://smpdnhjoy53c" path="res://script/fx/decal_layer.gd" id="9_decal"]
 [ext_resource type="Texture2D" uid="uid://cingytwsd5ehg" path="res://sprite/ui/DefineSprite_59/6.png" id="10_8wim3"]
 [ext_resource type="Texture2D" uid="uid://b2rjcavm17dhl" path="res://sprite/ui/DefineSprite_59/7.png" id="11_myqjd"]
 [ext_resource type="Texture2D" uid="uid://dxkmw5v86lhe7" path="res://sprite/ui/DefineSprite_59/8.png" id="12_544qx"]
@@ -426,7 +426,7 @@ animations = [{
 script = ExtResource("1_rgtto")
 isDebug = false
 
-[node name="decals" type="Node2D" parent="."]
+[node name="decals" type="Node2D" parent="." unique_id=1065500711]
 script = ExtResource("9_decal")
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
@@ -435,13 +435,15 @@ script = ExtResource("9_decal")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -102.5
-offset_right = 102.5
+offset_left = -170.0
+offset_right = 170.0
 offset_bottom = 36.0
 grow_horizontal = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = ExtResource("4_bq37x")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 30
 text = "00000000000000"
 horizontal_alignment = 1

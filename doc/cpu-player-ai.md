@@ -566,7 +566,9 @@ else:
 ### 13.4 还没做
 
 - **P4**：`map.gd` 的 CPU 槽位仍走旧 `cpuUpdateAi()`，还没挂 `CpuBrain`。
-- CPU 不拾取/开箱；爆炸物只对火箭做爆区检查；"队友旁边的油桶不打"未单独处理（开火射线会被油桶挡住，算半个兜底）。
+- ~~CPU 不拾取/开箱~~：仍然不会主动去找箱子，但路过时碰撞拾取正常；低血求生会主动去最近的箱子。
+- ~~爆炸物只对火箭做爆区检查~~：已扩到火箭 / 手榴弹 / 地雷 / 充电包 / 油桶（CpuBrain.isExplosive）。
+- ~~"队友旁边的油桶不打"~~：arrelSafeToBlow() 在友伤开启时会检查爆区内的所有玩家（含队友），只有友伤关闭（反正炸不到人）才放行。
 
 ### 13.5 第二轮走位修复（2026-10-30，未运行验证）
 
@@ -593,4 +595,48 @@ else:
    - 新增 `firstHit()` 统一复用武器射线；`shotHitsTarget` / `shotHitsProp` / `propBlocker` 都基于它。
    - 顺带修正：火箭是弹丸武器（`wRange = 0`），原逻辑会让它"贴脸又永远打不到"；新增 `CpuBrain.effectiveRange()`（火箭按 320px）并统一用于交战距离、开火判定、拆物判定。
    - 去捡箱子时用 `pathDirSimple()`（只做直线+侧移，不查敌人距离场），避免"绕路时被距离场带着往敌人跑"。
+
+### 13.7 第四轮：正式地图接入 + 单人生存（2026-10-31）
+
+**① P4 完成：`map.gd` 的 CPU 槽位真正挂上 `CpuBrain`**
+
+```gdscript
+const CPU_BRAIN_SCRIPT := preload("res://script/ai/cpu_brain.gd")
+...
+if role == MapData.SLOT_CPU:
+	p.playerId = 3 + cpuIndex
+	cpuIndex += 1
+	p.isCpu = true
+	var brain: Node = CPU_BRAIN_SCRIPT.new()
+	brain.name = "CpuBrain"
+	p.add_child(brain)          # 进树后 CpuBrain._ready 认领 player.cpuBrain
+```
+
+在此之前 `cpuBrain` 从来没有被赋值过（只有测试场景手工挂），正式地图里的 CPU 其实一直走的是旧的 `cpuUpdateAi()`。
+
+**② 策略调整：不再守尸体，改成单人生存**
+
+| 位置 | 改动 |
+|---|---|
+| `CpuBrain.updateStrategy()` | 删掉「有队友倒地 → 转 DEFENSIVE（守尸/等复活）」整段；改为 `isSolo()` 时「有敌人 → KITER，没敌人 → PATROL」 |
+| `CpuBrain.livingHumanCount()` / `isSolo()` | 新增：统计还活着的真人（CPU 与死亡的不计）；为 0 即单人生存 |
+| `CpuBrain.surviveThreshold()` | 求生阈值：平常 25%，**单人生存 40%** |
+| `CpuBrain.retreatThreshold()` | 撤退阈值：平常 30%，**单人生存 45%** |
+| `should_survive.gd` / `should_retreat.gd` | 改用上面两个阈值函数，不再用常量 |
+| `rescue.gd` | 队友死亡时清掉 `rescue_start` / `rescue_ally` 并停下，不再往尸体跑 |
+| `nearestAlly()` / `follow_ally.gd` / `has_ally.gd` | 只认活着的真人（原本已跳过 `isDead`，本轮确认无遗漏） |
+
+设计意图：人类死光之后，CPU 不再守着尸体或等复活，而是拉开距离、见势不妙就撤，尽量活得久一点。
+
+**③ 实测（headless，`tools/_cpu_solo_test`）**
+
+```
+玩家: 人类=true  CPU=2  CPU 有 brain=[true, true]
+人类死后: CPU3 strategy=巡逻 solo=true 距尸体 8.0 格
+人类死后: CPU4 strategy=巡逻 solo=true 距尸体 1.7 格
+```
+
+- 正式地图的 CPU 确实拿到了 `CpuBrain`
+- 人类死亡后 `isSolo() == true`，策略立刻切到巡逻（当时场上无敌人）；有敌人时会切 KITER
+
 

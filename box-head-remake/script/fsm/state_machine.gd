@@ -30,25 +30,19 @@ signal stateChanged(fromName: StringName, toName: StringName)
 
 ## 宿主（为空时取父节点）
 @export var actor: Node2D = null
-
 @export var actorPath: NodePath = NodePath("..")
-
 ## 初始状态子节点名（留空 = 自动取第一个 State 子节点）
 @export var initialState: StringName = &""
-
 ## 是否在 _ready 后自动启动（关闭则由宿主自行调用 start()）
 @export var autostart: bool = true
 
 
 ## 状态名(小写) -> State
 var states: Dictionary = {}
-
 ## 当前状态
 var currentState: State = null
-
 ## 置 false 可整体暂停 AI（死亡/冰冻）
 var enabled: bool = true
-
 var lastState: StringName = &""
 
 

@@ -7,19 +7,15 @@ extends "res://script/item/item.gd"
 
 ## 伤害值
 @export var damage: int = 0
-
 @export var wRange: int = 0 #爆炸范围
 
 
 ## 爆炸效果场景预加载
 var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
-
 ## 爆炸烟团（原版 Effect.SmokeCloud 的 15 帧）
 var smoke: PackedScene = preload("res://scene/fx/smoke.tscn")
-
 ## 是否正在爆炸中
 var startExploding: bool = false
-
 ## 分裂爆炸数量
 var splitExplosion: int = 0
 

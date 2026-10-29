@@ -7,7 +7,6 @@ extends "res://script/item/item.gd"
 
 ## 墙壁血量
 var hp: int = 10
-
 ## 烟雾效果场景预加载
 var smoke: PackedScene = preload("res://scene/fx/smoke.tscn")
 

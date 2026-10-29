@@ -8,20 +8,22 @@ extends PopupPanel
 
 ## 等待输入的动作名；空 = 不在等待
 var waitingAction: String = ""
-
 ## 当前等待中的那行按钮
 var waitingButton: Button = null
+
+## 动作名 → 显示文案：直接显示 p1_left 这种内部名字玩家看不懂
+const ACTION_LABEL: Dictionary = {
+	"left": "Left", "right": "Right", "up": "Up", "down": "Down",
+	"fire": "Fire", "nextWeapon": "Next Weapon", "prevWeapon": "Prev Weapon",
+}
 
 
 ## 行容器
 @onready var list: VBoxContainer = $margin/content/scroll/list
-
 ## 状态提示
 @onready var hint: Label = $margin/content/hint
-
 ## 关闭按钮
 @onready var btnClose: Button = $margin/content/btnRow/btnClose
-
 ## 全部恢复默认按钮
 @onready var btnDefaultAll: Button = $margin/content/btnRow/btnDefaultAll
 
@@ -62,13 +64,20 @@ func buildList() -> void:
 		list.add_child(buildRow(action))
 
 
+## 动作名 → 玩家看得懂的名字（p1_left -> 左）
+func actionLabel(action: String) -> String:
+	var short: String = action.substr(3) if action.length() > 3 else action
+	var text: String = ACTION_LABEL.get(short, short)
+	return tr(text)
+
+
 ## 造一行：动作名 + 当前按键按钮 + 重置
 func buildRow(action: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
 
 	var nameLabel := Label.new()
-	nameLabel.text = action
+	nameLabel.text = actionLabel(action)
 	nameLabel.custom_minimum_size = Vector2(200, 0)
 	row.add_child(nameLabel)
 

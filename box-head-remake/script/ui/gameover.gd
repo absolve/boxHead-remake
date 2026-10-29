@@ -3,13 +3,10 @@ extends Node2D
 
 ## 结算音效
 @onready var sound: AudioStreamPlayer2D = $sound
-
 ## 分数标签
 @onready var scoreLabel: Label = $Control/score
-
 ## 菜单项：select new Level / retry / back to menu
 @onready var levelLabel: Control = $Control/UILabel
-
 @onready var retryLabel: Control = $Control/UILabel2
 
 
@@ -17,7 +14,7 @@ func _ready() -> void:
 	sound.play()
 
 	# 本局真实得分（和游戏中一样的 14 位补零格式）
-	scoreLabel.text = str("%d" % MapData.score).pad_zeros(14)
+	scoreLabel.text = str(MapData.score)
 
 	# 这两项的场景里没连信号，这里连
 	levelLabel.gui_input.connect(onLevelPressed)

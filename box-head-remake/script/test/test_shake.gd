@@ -25,15 +25,12 @@ const DECAL_SCRIPT: Script = preload("res://script/fx/decal_layer.gd")
 
 var cam: Camera2D = null
 var label: Label = null
-
 var room: Node2D = null
-
 ## 上一次抖动的统计
 var peak: float = 0.0
 var shakeStartMs: int = 0
 var lastDurationMs: int = 0
 var timing: bool = false
-
 ## 进场景前的设置值，退出时还原（测试里的切换不写 settings.cfg）
 var shakeWasEnabled: bool = true
 

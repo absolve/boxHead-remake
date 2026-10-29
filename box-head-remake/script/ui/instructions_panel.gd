@@ -25,7 +25,6 @@ const PLAYER_COUNT: int = 4
 
 ## 返回按钮
 @onready var btnBack: Button = $margin/content/btnBack
-
 ## 正文
 @onready var body: RichTextLabel = $margin/content/body
 

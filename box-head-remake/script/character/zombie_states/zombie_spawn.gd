@@ -9,7 +9,6 @@ extends State
 
 ## 判定"到位"的距离（像素）
 const ARRIVE_DISTANCE: float = 2.0
-
 ## 兜底超时：超过这个时间还没走进来就强制进 Chase
 ## 防止出生点被墙挡住时僵尸永远停在地图外（那样它既不参与寻路也不会被发现）
 const ARRIVE_TIMEOUT: float = 4.0

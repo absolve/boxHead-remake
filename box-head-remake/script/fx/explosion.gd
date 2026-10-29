@@ -16,29 +16,23 @@ extends "res://script/item/item.gd"
 
 ## 子爆炸延迟范围（秒）——原版是 2..5 帧，按 25fps 换算
 const SUB_DELAY_MIN: float = 2.0 / 25.0
-
 const SUB_DELAY_MAX: float = 5.0 / 25.0
 
 
 ## 伤害值
 @export var damage: int = 0
-
 ## 爆炸半径覆盖（像素）；为 0 时按 damage 推导
 @export var wRange: float = 0.0
 
 
 ## 爆炸类型
 var explosionType: int = Game.explosionType.normal
-
 ## 已处理碰撞的对象列表（避免同一目标被多次结算）
 var excludeObj: Array = []
-
 ## 本次爆炸的实际半径（像素）
 var radius: float = 64.0
-
 ## 额外延迟（秒）——子爆炸用，原版是 mDelay
 var mDelay: float = 0.0
-
 ## 是否已经爆开（子爆炸延迟期间不结算伤害）
 var detonated: bool = false
 

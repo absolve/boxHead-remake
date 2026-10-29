@@ -16,6 +16,10 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 
 	var ally: Player = blackboard.get_value("rescue_ally")
 	if ally == null or not is_instance_valid(ally) or ally.isDead:
+		# 队友死了就立刻放弃救援，不再往尸体那边跑
+		blackboard.set_value("rescue_start", 0)
+		blackboard.set_value("rescue_ally", null)
+		p.cpuMoveDir = Vector2.ZERO
 		return FAILURE
 
 	# 优先打队友身边的敌人，没有就退回普通目标

@@ -61,6 +61,7 @@
 | 10 | 注释符号后**必须一个空格**：`# 文字`、`## 文字` | 被注释掉的代码除外：`#print(...)` |
 | 11 | **`.tscn` / `.tres` 里绝对不能写 `#` 注释** | 会整个场景加载失败，见 §6.3 |
 | 12 | 玩家可见文案走 `tr()` + `lang/lang.zh.translation` | 不硬编码中文/英文 |
+| 13 | 成员声明**连续写，中间不空行** | 同一类别内部不空行；类别之间可空一行，见 §1.3 |
 
 ---
 
@@ -98,7 +99,26 @@ const DIRS: Array[Vector2] = [
 ### 1.3 空行
 
 - 函数之间空**两行**；函数内部用**一行**分隔逻辑段落。
-- 成员声明块内部（signal/enum/const/export/var/@onready）不强制空行。
+- 成员声明块内部（signal/enum/const/export/var/@onready）**不空行**。
+  同类成员连续写，不要一个变量一个空行：
+
+  ```gdscript
+  # 好：连续声明
+  @onready var btn: Button = $Control/vbox/btn_start
+  @onready var btn_instructions: Button = $Control/vbox/btn_instructions
+  @onready var btn_about: Button = $Control/vbox/btn_about
+
+  # 不好：每个变量之间夹空行，浪费纵向空间
+  @onready var btn: Button = $Control/vbox/btn_start
+
+  @onready var btn_instructions: Button = $Control/vbox/btn_instructions
+
+  @onready var btn_about: Button = $Control/vbox/btn_about
+  ```
+
+- 例外：**不同类别**的成员块之间可以空一行（例如 `@export` 块 → `@onready` 块），
+  让"配置项"和"节点引用"分得开；同一类别内部仍然不空行。
+- `##` 文档注释紧贴它所描述的成员，注释与成员之间不空行。
 
 ### 1.4 行宽
 

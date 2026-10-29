@@ -8,7 +8,6 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 	if p == null:
 		return FAILURE
 	var b := p.cpuBrain as CpuBrain
-
 	var t: Node2D = blackboard.get_value("target")
 	if t == null or not is_instance_valid(t):
 		return FAILURE

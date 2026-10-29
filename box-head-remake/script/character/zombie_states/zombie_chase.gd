@@ -18,15 +18,10 @@ var z: Zombie:
 
 ## 是否正在走一格
 var moving: bool = false
-
 var moveTimer: float = 0.0
-
 var moveDuration: float = 1.0
-
 var moveFrom: Vector2 = Vector2.ZERO
-
 var moveTo: Vector2 = Vector2.ZERO
-
 ## 无路时的等待计时
 var waitTimer: float = 0.0
 
@@ -86,7 +81,6 @@ func physicsUpdate(delta: float) -> void:
 	var cell: Vector2i = z.gridPosition()
 	var cDir: int = z.angle
 	var tDir: int = Zombie.angleFromVector(z.target.global_position - z.global_position)
-
 	var d: int = z.navDirection(cDir, tDir)
 
 	if d == -1:

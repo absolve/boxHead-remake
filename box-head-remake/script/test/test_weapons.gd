@@ -39,18 +39,15 @@ const UNLOCK_BUTTONS: Dictionary = {
 
 ## 靶子数量
 @export var targetCount: int = 6
-
 ## 靶子血量（调大方便反复打）
 @export var targetHp: int = 5000
 
 
 var player: Character
-
 var targets: Array = []
 
 
 @onready var label: Label = $ui/label
-
 @onready var panel: VBoxContainer = $ui/panel
 
 

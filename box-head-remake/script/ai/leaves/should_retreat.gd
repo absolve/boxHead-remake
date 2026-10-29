@@ -11,7 +11,10 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 	if p == null:
 		return FAILURE
 
-	if float(p.hp) / maxf(float(p.maxHp), 1.0) > HP_RATIO:
+	# 单人生存（真人队友全死）时更怕死：血量掉到 45% 就开始撤
+	var b := p.cpuBrain as CpuBrain
+	var ratioLimit: float = b.retreatThreshold() if b != null else HP_RATIO
+	if float(p.hp) / maxf(float(p.maxHp), 1.0) > ratioLimit:
 		return FAILURE
 
 	var t: Node2D = blackboard.get_value("target")

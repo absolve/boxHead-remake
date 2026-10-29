@@ -13,7 +13,6 @@ const SQUASH: float = 0.6
 const BLOOD_JITTER_CELLS: float = 0.25
 ## 单条贴花上限（超出丢最旧的）
 const MAX_DECALS: int = 400
-
 ## 原版导出的帧（preload 保证导出包里有这两个目录）
 const BLOOD_FRAMES = [
 	preload("res://sprite/fx/DefineSprite_599/1.png"),
@@ -28,18 +27,15 @@ const SCORCH_FRAMES = [
 ## 贴图覆盖：留空 = 用上面的原版帧；两者都留空则退回画圆点占位
 @export var bloodTextures: Array[Texture2D] = []
 @export var scorchTextures: Array[Texture2D] = []
-
 ## 基准大小（贴图原始尺寸 × 该系数，再乘调用方传的 size）
 ## 血迹 1.0 → 约 1.8 格宽，和原版一致；这里略收一点，避免死亡时糊成一片
 @export var bloodScale: float = 0.7
 ## 爆炸印记调用方传 size=2.0，配 0.5 正好等于原版那张 92×55
 @export var scorchScale: float = 0.5
-
 ## 基准透明度：原版是直接烧进地面位图（几乎不透明），这里略降以免盖住地面纹理。
 ## 导出的印记素材本身最大 alpha 只有 122（约 0.48），所以它不再额外压暗
 @export var bloodAlpha: float = 0.85
 @export var scorchAlpha: float = 1.0
-
 ## 占位圆点半径（没有贴图时才用）
 @export var fallbackRadius: float = 8.0
 
@@ -53,10 +49,10 @@ func _ready() -> void:
 		bloodTextures.assign(BLOOD_FRAMES)
 	if scorchTextures.is_empty():
 		scorchTextures.assign(SCORCH_FRAMES)
-	# 地面 Sprite2D 是 z_index 0，墙 ≥ 1，角色按 y 排成 ≥ 1。
-	# 贴花要压在地面之上、墙和角色之下：取 1，同 z 时后加入树的画在上面，
-	# 而墙（房间子节点）和角色（运行时 add_child）都排在 decals 后面，所以都会盖住血。
-	z_index = 1
+	# 房间地面 Sprite2D 是 z_index 1，墙是 7~18，角色按 y 排成 ≥ 2。
+	# 贴花要压在地面之上、墙和角色之下：取 2。
+	# （取 1 会和地面同层，而房间是运行时后加进树的，会把血整片盖住）
+	z_index = 2
 
 
 ## 加一条贴花

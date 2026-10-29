@@ -29,25 +29,18 @@ var host: Character:
 
 ## 目标朝向
 var targetAngle: int = 0
-
 ## 转完后的下一个状态
 var nextState: StringName = &"Chase"
-
 ## 旋转方向：+1 顺时针，-1 逆时针
 var stepDir: int = 1
-
 ## 起始帧（enter 时按 oldAngle 对齐）
 var startFrame: int = 0
-
 ## 沿 stepDir 还要走多少帧（0 = 已经对准）
 var stepCount: int = 0
-
 ## 已经走过的帧数（浮点，按时间累积）
 var walked: float = 0.0
-
 ## rotate 每个朝向占用几帧（32 帧 / 8 方向 = 4；换成 128 帧素材也自适应）
 var framesPerDir: int = 4
-
 ## 总帧数
 var totalFrames: int = 32
 

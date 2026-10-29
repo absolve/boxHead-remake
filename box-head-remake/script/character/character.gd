@@ -29,7 +29,6 @@ var oldAngle: int = 0
 var currAni: String = ""
 ## 是否已死亡
 var isDead: bool = false
-
 ## 致命伤后的“演出中”状态：血已扣光但还在播受击/击退，
 ## 演完才真正 die()（原版 State_BulletHit → CheckForDead → State_Dying）
 var dying: bool = false
@@ -46,7 +45,6 @@ var lastState: int
 
 ## 碰撞形状节点（在_ready后获取）
 @onready var shape: CollisionShape2D = $shape
-
 ## 动画节点（各角色场景都有同名子节点）
 @onready var ani: AnimatedSprite2D = $ani
 

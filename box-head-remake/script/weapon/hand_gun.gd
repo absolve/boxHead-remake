@@ -12,7 +12,6 @@ var targetPos: Vector2 = Vector2.ZERO
 
 ## 动画节点
 @onready var ani: AnimatedSprite2D = $ani
-
 ## 玩家精灵节点（用于播放射击动画）
 @onready var player: AnimationPlayer = $player
 

@@ -11,10 +11,8 @@ extends "res://script/character/character.gd"
 
 ## 出生无敌时长（秒）：原版 mInvincible = 200 tick（doc/04 §2.3）
 const SPAWN_INVINCIBLE: float = 8.0
-
 ## 复活后无敌时长（秒）：原版 125 tick = 5 秒
 const RESPAWN_INVINCIBLE: float = 5.0
-
 ## 每个玩家一套颜色（绿 / 红 / 蓝 / 黄）
 ## 原版 Boxhead 多人就是「同一套精灵 + 染色」，所以用色相旋转而不是独立素材。
 ## 玩家默认绿色 = 0x00FF00（doc/04 §2.1）；色相旋转量按绿→红/蓝/黄换算。
@@ -23,17 +21,14 @@ const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 
 ## 玩家ID（用于多人游戏区分）
 @export var playerId: int = 1
-
 ## 是否由 CPU 控制（关卡选择里的 NPC 玩家）：true 时不读按键，交给 AI 决策
 @export var isCpu: bool = false
 
 ## CPU 行为树大脑（子节点 CpuBrain 在 _ready 里认领；为空时退回下面的临时 AI）
 var cpuBrain: Node = null
-
 ## 行为树写入的每帧指令（由 Idle 状态消费）
 var cpuMoveDir: Vector2 = Vector2.ZERO
 var cpuAimDir: Vector2 = Vector2.ZERO
-
 ## ---- CPU AI 状态（isCpu 时才用）----
 ## 当前锁定目标（敌人）
 var cpuTarget: Node2D = null
@@ -50,14 +45,10 @@ var cpuDetourTime: float = 0.0
 var cpuLastPos: Vector2 = Vector2.ZERO
 ## 空枪换枪冷却
 var cpuSwitchCd: float = 0.0
-
-
 ## 自动回血的亚血量累加器（hp 是整数，不回血小数会被截断）
 var regenAcc: float = 0.0
-
 ## 无敌剩余时间（秒）；>0 时免疫伤害并闪烁
 var invincibleTime: float = 0.0
-
 ## 按键映射（根据玩家ID分配不同按键）
 var keyMap: Dictionary = {
 	'left': '', 'right': '', 'up': '', 'down': '',
@@ -66,62 +57,44 @@ var keyMap: Dictionary = {
 
 ## 当前使用的武器
 var currWeapon: Node2D = null
-
 ## 武器列表（玩家拥有的所有武器）
 var weaponList: Array = []
-
 ## 当前武器索引
 var currWeaponIndex: int = 0
-
 ## 当前朝向向量
 var vector: Vector2 = Vector2.RIGHT
-
 ## 不需要显示武器的动画例外列表
 var aniException: Array = ['Mine', 'ChargePack', 'Wall', 'Barrel', 'Grenade']
-
 ## 形状查询参数（用于碰撞检测）
 var shapeQuery: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
-
 ## 受伤计时器
 var hurtTimer: float = 0
-
 ## 受伤持续时间（秒）；每次受击按击退帧数重算
 var hurtDelay: float = 0.5
-
 ## 击退位移（格/帧，25Hz 结算时再 ×cellSize）
 var knockbackDelta: Vector2 = Vector2.ZERO
-
 ## 剩余击退帧数
 var knockbackFrames: int = 0
-
 ## 25Hz 累积器
 var hurtMoveAcc: float = 0.0
 
 
 ## 武器背包节点（存放所有武器）
 @onready var weaponBackpack: Node2D = $weaponBackpack
-
 ## 武器名称显示节点
 @onready var txt: Label = $txt
-
 ## 身体碰撞体节点
 @onready var body: Area2D = $body
-
 ## 身体碰撞形状节点
 @onready var bodyShape: CollisionShape2D = $body/bodyShape
-
 ## 血条节点
 @onready var lifeBar: Control = $lifeBar
-
 ## 死亡音效节点
 @onready var deadSound: AudioStreamPlayer2D = $dead
-
 ## 拾取音效节点
 @onready var pickupSound: AudioStreamPlayer2D = $pickup
-
 ## 玩家精灵节点
 @onready var player: AnimationPlayer = $player
-
 ## 状态机（player.tscn 里的 StateMachine 子节点）
 @onready var fsm: StateMachine = $StateMachine
 
@@ -502,8 +475,8 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 
 ## 玩家自身碰撞体的半宽高（矩形取 size/2，圆形按内接正方形近似）
 ## 由击退速度算出每帧位移（格/帧）与持续帧数（每帧 ×0.65）
-func beginKnockback(dir: Vector2, speed: float) -> void:
-	knockbackDelta = dir.normalized() * speed / MapData.TICKS_PER_SEC / MapData.cellSize
+func beginKnockback(dir: Vector2, _speed: float) -> void:
+	knockbackDelta = dir.normalized() * _speed / MapData.TICKS_PER_SEC / MapData.cellSize
 	knockbackFrames = 0
 	hurtMoveAcc = 0.0
 	var l: float = knockbackDelta.length()
@@ -746,7 +719,11 @@ func updateIdle(delta: float) -> void:
 		ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % Game.weaponName[currWeapon.type])
 
 	# 更新武器弹药显示
-	if currWeapon.maxAmmoNum == 0:
+	# CPU 不显示武器名（同屏 4 人时全是字，挡视线）
+	txt.visible = not isCpu
+	if isCpu:
+		pass
+	elif currWeapon.maxAmmoNum == 0:
 		txt.text = Game.weaponName[currWeapon.type]
 	else:
 		txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
@@ -754,12 +731,12 @@ func updateIdle(delta: float) -> void:
 	# 根据弹药量改变文字颜色
 	if currWeapon.maxAmmoNum != 0:
 		if currWeapon.ammoNum <= 0:
-			txt.modulate = Color.RED
+			txt.modulate = Color(1.0, 0.25, 0.25, 0.85)
 		else:
 			# 暖白偏黄，配黑描边在浅色地面/深色地面都看得清
-			txt.modulate = Color(1.0, 0.95, 0.75)
+			txt.modulate = Color(1.0, 0.95, 0.75, 0.85)
 	else:
-		txt.modulate = Color(1.0, 0.95, 0.75)
+		txt.modulate = Color(1.0, 0.95, 0.75, 0.85)
 
 	# 处理射击输入（CPU 由 AI 决定是否开火；武器自身有冷却）
 	if isCpu:
@@ -903,8 +880,8 @@ func cpuSwitchWeapon() -> void:
 
 
 ## 放置/投掷类武器（地雷、油桶、墙、炸药包、手榴弹）不交给 CPU
-func cpuIsGun(type: int) -> bool:
-	return type in [Game.weaponType.Pistol, Game.weaponType.Railgun, Game.weaponType.Rocket,
+func cpuIsGun(_type: int) -> bool:
+	return _type in [Game.weaponType.Pistol, Game.weaponType.Railgun, Game.weaponType.Rocket,
 			Game.weaponType.Shotgun, Game.weaponType.UZI]
 
 

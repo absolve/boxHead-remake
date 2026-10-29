@@ -7,50 +7,37 @@ extends "res://script/item/item.gd"
 
 ## 伤害值
 @export var damage: int = 0
-
 @export var wRange: int = 0
 
 
 ## 爆炸效果场景预加载
 var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
-
 ## 飞行方向向量
 var vector: Vector2 = Vector2.ZERO
-
 ## 初始高度
 var height: int = 30
-
 ## 飞行速度
 var speed: int = 50
-
 ## 动画补间节点（用于延迟爆炸）
 var tween: Tween = null
-
 ## 落地位置
 var floorPos: Vector2 = Vector2.ZERO
-
 ## 落地弹跳：撞击竖直速度低于这个值就不再弹（px/s）
 var verticalBounceMin: float = 120.0
-
 ## 每次弹跳保留的竖直速度比例
 var verticalBounceFactor: float = 0.6
-
 ## 是否已落地
 var isOnFloor: bool = false
-
 ## 飞行角度
 var angle: float = 0
-
 ## 重力向量
 var gVec: Vector2 = Vector2(0, -100)
-
 ## 物理形状查询参数
 var params: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
 
 
 ## 音效节点
 @onready var sound: AudioStreamPlayer2D = $sound
-
 ## 碰撞形状节点
 @onready var shape: CollisionShape2D = $shape
 

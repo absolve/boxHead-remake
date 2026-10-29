@@ -10,7 +10,6 @@ extends CanvasLayer
 
 ## 遮罩
 var overlay: ColorRect
-
 ## 提示文字
 var label: Label
 
@@ -27,7 +26,7 @@ func _ready() -> void:
 	add_child(overlay)
 
 	label = Label.new()
-	label.text = "PAUSED\n\nESC 继续"
+	label.text = "%s\n\n%s" % [tr("PAUSED"), tr("ESC to resume")]
 	label.add_theme_font_size_override("font_size", 28)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

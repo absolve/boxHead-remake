@@ -9,7 +9,6 @@ extends CanvasLayer
 
 ## 已获得的标记
 const MARK_GOT: String = "[color=#5f5]★[/color]"
-
 ## 未获得的标记
 const MARK_TODO: String = "[color=#666]·[/color]"
 

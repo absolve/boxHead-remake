@@ -11,7 +11,6 @@ signal remove
 
 ## 显示时长（秒）
 var displayTime: int = 2
-
 ## 消息文本
 var s: String:
 	set(value):
@@ -20,13 +19,10 @@ var s: String:
 
 ## 边距配置
 var margin: Dictionary = {'top': 10, 'bottom': 10, 'left': 10, 'right': 10}
-
 ## 屏幕尺寸
 var screenSize: Rect2
-
 ## 消息颜色
 var color: Color = Color.WHITE
-
 ## 底部偏移位置（像素）
 var fixedOffsetY: int = 70
 

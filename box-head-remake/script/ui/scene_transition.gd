@@ -15,13 +15,10 @@ const DEFAULT_DURATION: float = 0.6
 
 ## 是否正在切换中（切换期间忽略新的请求）
 var isTransitioning: bool = false
-
 ## 待加载的场景路径
 var pendingScenePath: String = ""
-
 ## 本次切换的时长
 var pendingDuration: float = 0.0
-
 ## 覆盖层的着色器材质
 var overlayMaterial: ShaderMaterial = null
 

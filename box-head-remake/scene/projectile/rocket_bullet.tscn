@@ -37,6 +37,3 @@ shape = SubResource("CircleShape2D_c1dc3")
 sprite_frames = SubResource("SpriteFrames_0q7pg")
 frame_progress = 0.0587781
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." index="2" unique_id=374587377]
-
-[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

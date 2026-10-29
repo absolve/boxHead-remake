@@ -7,7 +7,6 @@ extends Control
 
 ## 消息标签列表
 var labelList: Array = []
-
 ## 消息标签场景预加载
 var label: PackedScene = preload("res://scene/ui/toast_label.tscn")
 

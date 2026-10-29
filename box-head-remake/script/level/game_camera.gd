@@ -9,7 +9,6 @@ extends Camera2D
 
 ## 跟随平滑速度（越大越跟手）
 @export var smoothSpeed: float = 8.0
-
 ## 相机四周至少离地图边缘多远（像素）：原版相机不会贴到地图边界
 @export var edgeMargin: float = 32.0
 
@@ -22,17 +21,13 @@ extends Camera2D
 
 ## 单次爆炸的可见峰值（像素）
 @export var shakeImpulse: float = 15.0
-
 ## 叠加后的峰值上限：原版 Shake 里 |mShake| < 32 才允许累加，
 ## 可见峰值大约封顶在 31，也就是 2 倍单发
 @export var shakeMax: float = 32.0
-
 ## 换向频率：原版每 40ms 换一次向 → 12.5Hz
 @export var shakeFrequency: float = 12.5
-
 ## 幅度半衰期：原版每 40ms ×0.5
 @export var shakeHalfLife: float = 0.04
-
 ## 低于该幅度直接归零（避免长时间亚像素抖动）
 @export var shakeMin: float = 0.3
 
@@ -40,8 +35,6 @@ extends Camera2D
 ## 当前抖动幅度与相位
 var shakeAmp: float = 0.0
 var shakePhase: float = 0.0
-
-
 ## 当前跟随目标
 var target: Node2D = null
 

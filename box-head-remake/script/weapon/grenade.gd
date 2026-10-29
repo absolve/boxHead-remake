@@ -7,23 +7,18 @@ extends "res://script/weapon/weapon.gd"
 
 ## 手榴弹物体场景预加载
 var grenadeObj: PackedScene = preload("res://scene/projectile/grenade_obj.tscn")
-
 ## 蓄力速度增量
 ## 蓄力时长（秒），原版 CMath.Range(按住秒数, 0.25, 0.75)
 var holdTime: float = 0.0
-
 ## 当前投掷速度
 ## 投掷速度（px/s），由蓄力时长换算
 var speed: float = 0.0
-
 ## 最大投掷速度
 ## 原版最大距离系数 0.75 格/帧 → 0.75 * 32 * 25 = 600 px/s
 var maxSpeed: float = 600.0
-
 ## 最小投掷速度
 ## 原版最小距离系数 0.25 格/帧 → 0.25 * 32 * 25 = 200 px/s
 var minSpeed: float = 200.0
-
 ## 投掷高度偏移
 var height: int = 25
 

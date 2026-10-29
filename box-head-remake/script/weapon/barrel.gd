@@ -11,7 +11,6 @@ extends "res://script/weapon/weapon.gd"
 
 ## 油桶物体场景预加载
 var barrelObj: PackedScene = preload("res://scene/item/barrel_obj.tscn")
-
 ## 分裂爆炸数量
 var splitExplosion: int = 0
 

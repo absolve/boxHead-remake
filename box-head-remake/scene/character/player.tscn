@@ -2548,6 +2548,7 @@ _data = {
 collision_mask = 15
 script = ExtResource("1_xo3ru")
 playerId = 1
+isCpu = false
 hp = 200
 maxHp = 200
 

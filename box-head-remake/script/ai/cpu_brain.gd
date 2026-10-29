@@ -22,13 +22,11 @@ extends Node
 ##       └── idle
 
 const LEAF_DIR := "res://script/ai/leaves/"
-
 ## 物理层（project.godot）：敌人本体 / 敌人受击区 / 危险物（恶魔火球）/ 可拆物品（油桶、墙）
 const LAYER_ENEMY := 2
 const LAYER_ENEMY_BODY := 32
 const LAYER_ITEM := 4
 const LAYER_HAZARD := 128
-
 ## 低血求生：血量比例低于它就优先找箱子 / 拉开距离
 const SURVIVE_HP_RATIO := 0.25
 
@@ -37,16 +35,12 @@ enum Strategy { AGGRESSIVE, DEFENSIVE, SUPPORT, KITER, PATROL }
 
 ## 感知半径（像素）：默认 12 格
 @export var senseRadius: float = 384.0
-
 ## 行为树 tick 间隔（帧）：6 帧 ≈ 0.1s（Beehave 的 tick_rate 按帧算）
 @export var tickEveryFrames: int = 6
-
 ## 换枪冷却（毫秒）
 @export var switchCooldownMs: int = 2000
-
 ## 策略驻留时间（毫秒）：非强制切换时，至少隔这么久才重评
 @export var strategyDwellMs: int = 15000
-
 ## 性格：-1 = 按 playerId 自动分配（3 突进 / 4 防守 / 5 放风筝）
 @export var personality: int = -1
 
@@ -55,7 +49,6 @@ var player: Player = null
 var area: Area2D = null
 var tree: BeehaveTree = null
 var board: Blackboard = null
-
 ## 感知结果
 var target: Node2D = null
 var hazards: Array = []
@@ -63,15 +56,12 @@ var hazards: Array = []
 var props: Array = []
 ## 低血时最近的补给箱
 var boxTarget: Node2D = null
-
 ## 目标记忆：丢失目标后去最后看到的位置找 1.2 秒
 var targetSeenMs: int = 0
 var lastKnownPos: Vector2 = Vector2.ZERO
 var hasLastKnown: bool = false
-
 ## 换枪冷却
 var lastSwitchMs: int = 0
-
 ## 策略
 var strategy: int = Strategy.DEFENSIVE
 var strategySinceMs: int = 0
@@ -119,7 +109,15 @@ func buildPerception() -> void:
 	area.add_child(cs)
 	# 注意：必须挂在玩家（Node2D）下面。挂在 brain（普通 Node）下面时，
 	# Area2D 的变换相对画布原点，会永远停在 (0,0)，探不到身边的敌人。
-	player.add_child(area)
+	#
+	# 用 deferred：map.gd 先把 brain 挂到玩家、再把玩家加进树，
+	# brain._ready 执行时玩家正在建自己的子节点，直接 add_child 会报
+	# "Parent node is busy setting up children" 并静默失败，
+	# 结果就是正式地图里的 CPU 全部看不见敌人（只会巡逻挨打）。
+	# 用 deferred：无论在 _ready 还是 tree_entered 里，玩家都可能正处于
+	# "busy setting up children" 状态，直接 add_child 会报错并静默失败，
+	# 结果就是正式地图里的 CPU 全部看不见敌人（只会巡逻挨打）。
+	player.add_child.call_deferred(area)
 
 
 ## 用代码拼行为树：先把整棵子树建好，再挂进场景，避免 BeehaveTree 空树 tick
@@ -304,7 +302,6 @@ func _targetScore(e: Node2D) -> float:
 		return 0.0
 	var distScore := 1.0 / (1.0 + d / 96.0)
 	var threat := 1.4 if e.get("type") == Game.roleType.Devil else 1.0
-
 	var allyBonus := 1.0
 	var ally := nearestAlly()
 	if ally != null and ally.global_position.distance_to(e.global_position) < 3.0 * MapData.cellSize:
@@ -344,6 +341,25 @@ func nearestAlly() -> Player:
 			bestD = d
 			best = p
 	return best
+
+
+## 场上还活着的真人玩家数量（CPU 不计入；死亡的不计）
+func livingHumanCount() -> int:
+	var n := 0
+	for node in get_tree().get_nodes_in_group("player"):
+		var p := node as Player
+		if p == null or not is_instance_valid(p):
+			continue
+		if p.isCpu or p.isDead:
+			continue
+		n += 1
+	return n
+
+
+## 单人生存模式：没有活着的真人队友（人类全死了）
+##   这时不守尸体、不等复活，优先自保：拉远距离、见势不妙就跑
+func isSolo() -> bool:
+	return livingHumanCount() == 0
 
 
 ## 某点附近最近的敌人（救援时用来找"威胁队友的那只"）
@@ -505,6 +521,16 @@ func weaponBias(w) -> float:
 			return 0.25 if r >= 300.0 else 0.0
 
 
+## 求生阈值：单人生存时更怕死（提前进求生分支）
+func surviveThreshold() -> float:
+	return 0.40 if isSolo() else SURVIVE_HP_RATIO
+
+
+## 撤退阈值：单人生存时更早撤（有队友时可以顶一顶）
+func retreatThreshold() -> float:
+	return 0.45 if isSolo() else 0.30
+
+
 ## 每 tick 调用（内部 1 秒节流）
 func updateStrategy() -> void:
 	if player == null:
@@ -523,17 +549,17 @@ func updateStrategy() -> void:
 
 	# 强制切换：立即生效，不等驻留
 	# 血量很低先放风筝拉开距离（求生分支负责找箱子/后退）
-	if hpRatio < SURVIVE_HP_RATIO:
+	if hpRatio < surviveThreshold():
 		_setStrategy(Strategy.KITER, now)
+		return
+	# 单人生存：真人队友全死了，不守尸体、不等复活，优先保命
+	#   有敌人 → 放风筝（拉远打），没敌人 → 巡逻警戒（别乱冲）
+	if isSolo():
+		_setStrategy(Strategy.KITER if target != null else Strategy.PATROL, now)
 		return
 	if hpRatio < 0.35:
 		_setStrategy(Strategy.DEFENSIVE, now)
 		return
-	# 有队友倒地 → 转防守（守尸/等复活）
-	for n in get_tree().get_nodes_in_group("player"):
-		if n.get("isCpu") != true and n.get("isDead") == true:
-			_setStrategy(Strategy.DEFENSIVE, now)
-			return
 	if target == null:
 		# 没敌人：队友太远就归队，否则在附近巡逻
 		var far := 0.0
@@ -852,8 +878,16 @@ func isGun(w) -> bool:
 
 
 ## 爆发类武器（会炸到自己/队友）
+##
+## 之前只判了火箭，手榴弹/地雷/充电包/油桶同样是范围伤害，
+## 开火前也要过一遍爆区检查（`explosiveSafe`），否则 CPU 会往脚边扔雷。
 func isExplosive(w) -> bool:
-	return w != null and w.type == Game.weaponType.Rocket
+	if w == null:
+		return false
+	return w.type in [
+		Game.weaponType.Rocket, Game.weaponType.Grenade,
+		Game.weaponType.Mine, Game.weaponType.ChargePack, Game.weaponType.Barrel,
+	]
 
 
 ## 爆炸半径（像素）：与原版/explosion.gd 同一公式

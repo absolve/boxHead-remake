@@ -8,34 +8,24 @@ extends Node2D
 
 ## 一次性生成的僵尸数量
 @export var zombieCount: int = 50
-
 ## 测试用的僵尸移速（原版 16 太慢，看不清寻路效果）
 @export var zombieSpeed: float = 50.0
-
 ## 刷怪间隔（秒），像 map 的 spawnTimer 一样逐个刷，避免一次性叠在出生点互相卡死
 @export var spawnInterval: float = 0.4
-
 ## 是否显示网格 / 障碍 / 流场箭头 / FPS
 @export var isDebug: bool = true
 
 
 var zombie: PackedScene = preload("res://scene/character/zombie.tscn")
-
 var player: PackedScene = preload("res://scene/character/player.tscn")
-
 ## 房间实例（room_001）
 var room: Node2D = null
-
 var font: FontFile
-
 ## 流场刷新间隔（物理帧）
 var updateFlowFieldDelay: int = 60
-
 var updateTimer: int = 0
-
 ## 已生成僵尸数
 var spawnedCount: int = 0
-
 ## 刷怪计时器（代码创建，等价于 map 场景里的 spawnTimer）
 var spawnTimer: Timer
 

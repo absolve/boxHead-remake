@@ -13,7 +13,6 @@ const TINT_SHADER: Shader = preload("res://shader/life_bar_tint.gdshader")
 
 ## 是否始终显示血条
 @export var alwaysShows: bool = false
-
 ## 当前血量：设置时自动更新进度条
 @export var hp: int = 10:
 	set(val):
@@ -43,14 +42,12 @@ const TINT_SHADER: Shader = preload("res://shader/life_bar_tint.gdshader")
 
 ## 淡出补间
 var tween: Tween = null
-
 ## 运行时挂到进度条上的染色材质
 var tint: ShaderMaterial = null
 
 
 ## 纹理进度条节点
 @onready var bar: TextureProgressBar = $TextureProgressBar
-
 ## 隐藏计时器
 @onready var timer: Timer = $Timer
 

@@ -81,7 +81,6 @@ const COMMIT_TIMEOUT: float = 0.5
 @export var hurtDelay: float = 0.5
 ## 探测下一步是否可走的距离（像素）
 @export var probeSize: Vector2 = Vector2(32, 32)
-
 ## 转身后至少要走这么久才允许再次转身（秒）
 ## 用来消除"站在两格交界、相邻两格方向不同"时原地反复 45° 打转
 ## 两次转身之间的最小间隔（秒）
@@ -118,7 +117,6 @@ var targetTimer: float = 0.0
 var committedDir: Vector2 = Vector2.ZERO
 ## 做出承诺时所在的格子
 var commitGrid: Vector2i = Vector2i.ZERO
-
 ## 当前格选定的移动方向 / 它是给哪一格算的
 ##
 ## 原版 `State_CellToCell` 走满一格才回 `GotoPlayer` 重算方向，
@@ -153,19 +151,14 @@ var knockbackFrames: int = 0
 
 ## 状态机（zombie.tscn 里的 StateMachine 子节点）
 @onready var fsm: StateMachine = $StateMachine
-
 ## 邻近检测区域（圆形，用于生物/物件的碰撞解算）
 @onready var detect: Area2D = $detect
-
 ## 身体受击区域
 @onready var body: Area2D = $body
-
 ## 身体受击形状
 @onready var bodyShape: CollisionShape2D = $body/bodyShape
-
 ## 前进方向碰撞探测（判断下一步能不能走）
 @onready var shapeCast: ShapeCast2D = $ShapeCast2D
-
 @onready var attackSound: AudioStreamPlayer2D = $attackSound
 
 

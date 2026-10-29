@@ -7,27 +7,20 @@ extends Node2D
 
 # 地图中静态障碍物
 @export var wallObstacles: Array = []
-
 @export var wallPoint: Array = []
-
 @export var barrelPoint: Array = []
-
 ## 地图大小
 @export var mapSize: Vector2 = Vector2(640, 480)
-
 ## 是否开启调试模式
 @export var debug: bool = false
 
 
 ## 玩家出生点列表
 var playerSpawnPoint: Array = []
-
 ## 僵尸出生点列表
 var zombieSpawnPoint: Array = []
-
 ## 恶魔出生点列表
 var devilSpawnPoint: Array = []
-
 ## 物品刷新点列表
 var itemSpawnPoint: Array = []
 

@@ -15,29 +15,22 @@ extends Area2D
 
 ## 打人的伤害
 @export var damage: int = 50
-
 ## 拆物/拆墙的伤害（原版 10000，比任何血量都大，等于必碎）
 @export var objectDamage: int = 10000
-
 ## 飞行速度（像素/秒）
 @export var speed: float = 120.0
-
 ## 命中判定圆半径（像素）
 @export var hitRadius: float = 8.0
-
 ## 最长存活时间（秒），防止飞出地图后一直存在
 @export var lifeTime: float = 4.0
 
 
 ## 飞行方向（单位向量）
 var dir: Vector2 = Vector2.RIGHT
-
 ## 开火者，用于避免打到自己
 var shooter: Node2D = null
-
 ## 已命中的对象，避免同一目标重复结算
 var excludeObj: Array = []
-
 ## 剩余存活时间
 var timeLeft: float = 0.0
 

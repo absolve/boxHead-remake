@@ -37,7 +37,6 @@ func _draw() -> void:
 	q.collide_with_areas = true
 	q.exclude = [player.get_rid()]
 	var hit: Dictionary = space.intersect_ray(q)
-
 	var world_hit: Vector2 = end_world
 	if not hit.is_empty():
 		world_hit = hit.position

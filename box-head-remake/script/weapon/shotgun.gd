@@ -38,17 +38,14 @@ var hitFlags: Array = []
 ## 每颗子弹唯一的命中点（世界坐标）
 # 命中时是命中点，未命中时是该子弹的射线终点；绘制、烟雾全部用它
 var targetPosList: Array = []
-
 ## 每颗弹丸的散射方向（绘制曳光用，和判定无关）
 var spreadDirList: Array = []
-
 ## 本轮齐射是否已经结算过伤害（detecframes 有 2 帧，只结算第一帧）
 var hitApplied: bool = false
 
 
 ## 动画节点
 @onready var ani: AnimatedSprite2D = $ani
-
 ## 玩家精灵节点（用于播放射击动画）
 @onready var player: AnimationPlayer = $player
 

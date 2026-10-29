@@ -8,17 +8,14 @@ extends "res://script/weapon/weapon.gd"
 ## 唯一的命中点（世界坐标）
 # 命中时是命中点，未命中时是射线终点；绘制全部用它
 var targetPos: Vector2 = Vector2.ZERO
-
 ## 被静态墙挡住的距离（-1 = 这一枪没被墙挡）
 var wallDist: float = -1.0
 
 
 ## 动画节点
 @onready var ani: AnimatedSprite2D = $ani
-
 ## 玩家精灵节点（用于播放射击动画）
 @onready var player: AnimationPlayer = $player
-
 ## 射线检测节点
 @onready var ray: Area2D = $ray
 

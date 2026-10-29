@@ -17,10 +17,8 @@ extends Node
 
 ## 状态机（由父级 StateMachine 节点注入）
 var stateMachine: StateMachine = null
-
 ## 状态机所属宿主（zombie），由 state_machine.actor 下发
 var actor: Node2D = null
-
 ## 本状态已持续时长（enter 时清零，由 StateMachine 每物理帧累加）
 var stateTime: float = 0.0
 

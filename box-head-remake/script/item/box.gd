@@ -13,14 +13,12 @@ extends "res://script/item/item.gd"
 
 ## 过期时间（秒，0 表示永不过期）
 @export var expiredTime: int = 0
-
 ## 回血阈值：血量占最大血量的比例低于它时，箱子改为回血
 @export var healThreshold: float = 0.5
 
 
 ## 计时器节点
 @onready var timer: Timer = $Timer
-
 ## 动画节点
 @onready var player: AnimationPlayer = $player
 

@@ -7,10 +7,8 @@ extends Node2D
 
 ## 爆炸效果场景预加载
 var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
-
 ## 飞行方向向量
 var vector: Vector2
-
 ## 飞行距离（像素）
 var distance: int = 40
 

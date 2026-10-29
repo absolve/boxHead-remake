@@ -27,7 +27,6 @@ const BURST_FRAMES: Array[Texture2D] = [
 
 ## 烟雾类型（Game.smokeType枚举值）
 @export var type: Game.smokeType = Game.smokeType.RocketSmoke
-
 ## 颜色：默认原色；>1 的份量会提亮（墙被打爆用 2 倍接近白色，油桶用默认灰）
 @export var tint: Color = Color.WHITE
 

@@ -32,41 +32,30 @@ const ROOMS: Array = [
 
 ## 相机模式名称
 const CAM_NAMES: Array = ["正常跟随", "方向键移动"]
-
 ## 方向键移动相机的速度（px/s）
 const PAN_SPEED: float = 600.0
 
 
 var room: Node2D = null
-
 ## 鼠标当前所在格（-1,-1 = 不在房间内）
 var hoverCell: Vector2i = Vector2i(-1, -1)
-
 var player: Character = null
-
 var index: int = 0
-
 ## 是否显示障碍物
 var showObstacles: bool = true
-
 ## 相机模式：0 正常跟随玩家 / 1 方向键自由移动
 var camMode: int = 0
-
 ## 手动相机的基准位置（按 M 切换瞬间的相机位置）
 var camBase: Vector2 = Vector2.ZERO
-
 ## 相对基准位置的偏移
 var camOffset: Vector2 = Vector2.ZERO
-
 ## 是否正在拖动相机
 var dragging: bool = false
 
 
 @onready var label: Label = $ui/label
-
 ## 跟随鼠标显示的格子坐标（场景里已摆好）
 @onready var hoverLabel: Label = $ui/hoverLabel
-
 ## 障碍物显示开关（默认显示：墙体/油桶 + 红色障碍格）
 @onready var toggleBtn: Button = $ui/toggleObstacles
 

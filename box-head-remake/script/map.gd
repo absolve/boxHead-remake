@@ -12,7 +12,8 @@ extends Node2D
 ## 飘分最低显示阈值：低于这个分数不弹 "+N"
 ## （连杀倍率 1 时的 100 分太频繁，不显示；倍率 ≥2 才飘）
 const SCORE_POPUP_MIN: int = 200
-
+## CPU 玩家的行为树大脑（槽位选 CPU 时挂到玩家下）
+const CPU_BRAIN_SCRIPT := preload("res://script/ai/cpu_brain.gd")
 ## 敌人速度倍率（原版 CUpgrades：SpeedUp = min(1 + 等级/10, 5)）
 ##
 ## 等级 = currWave + 1（currWave 从 0 开始，进第一关时是 1）。
@@ -27,91 +28,63 @@ const ENEMY_SPEED_MAX_MUL: float = 5.0
 ## 房间节点
 ## 当前房间（运行时由 swapRoom 按 selectedMapId 创建）
 var room: Node2D = null
-
 ## 僵尸场景预加载
 var zombie: PackedScene = preload("res://scene/character/zombie.tscn")
-
 var devil: PackedScene = preload("res://scene/character/devil.tscn")
-
 ## 箱子场景预加载
 var box: PackedScene = preload("res://scene/item/box.tscn")
-
 ## 玩家场景预加载
 var player: PackedScene = preload("res://scene/character/player.tscn")
-
 ## 字体资源
 var font: FontFile
-
 ## 当前波次序号
 var currWave: int = 0
-
 ## 当前波次僵尸总数
 # 原版曲线：第 L 关 = 5L + 5，即 10 / 15 / 20 / 25 / 30 …（见 applyWaveQuota）
 var zombieCount: int = 10
-
 ## 当前波次恶魔总数
 # 原版曲线：第 1 关 0 只，之后约 floor(0.25L + 0.5)，即 0 / 1 / 1 / 1 / 1 / 2 …
 var devilCount: int = 0
-
 ## 所有出生点及其分配的敌人数量
 var allSpawnPoint: Array = []
-
 ## 流场更新延迟（帧数）
 var updateFlowFieldDelay: int = 60
-
 ## 流场更新计时器
 var updateTimer: int = 0
-
 ## 同屏僵尸上限
 # 原版 Zombie_Count：min(5L + 5, 60)，即前 11 关逐关放开、之后恒定 60
 var maxZombieCount: int = 10
-
 ## 同屏恶魔上限
 # 原版 Devil_Count：每 4 关 +1，第 16 关封顶 5
 var maxDevilCount: int = 0
-
 ## 补给刷新时间（秒）
 var pickupRefreshTime: int = 20
-
 ## 固定箱子刷新点列表
 var itemSpawnPoint: Array = []
-
 ## 玩家出生点列表
 var playerSpawnPoint: Array = []
-
 var zombieSound: Array = [] # 僵尸声音列表
-
 var zombieAmbience: Array[AudioStream] = [] # 僵尸低吼候选（4 个）
-
 var isGameOver: bool = false # 游戏结束
-
 var awaitingResurrectionPlayer: Array = [] # 等待复活的玩家列表
 
 
 ## 分数显示节点
 @onready var scoreNode: Label = $ui/score
-
 ## 连杀数显示节点
 @onready var countNode: Label = $ui/count
-
 ## 连杀动画节点
 @onready var countAniNode: AnimatedSprite2D = $ui/countAni
-
 ## 敌人生成计时器
 @onready var spawnTimer: Timer = $spawnTimer
-
 ## 下一波次等待计时器
 @onready var nextWaveTimer: Timer = $nextWaveTimer
-
 ## 消息提示节点
 @onready var toastInfo: Control = $ui/toastInfo
-
 ## 补给刷新计时器
 @onready var refreshTimer: Timer = $refreshTimer
-
 ## 僵尸声音播放计时器
 @onready var soundTimer: Timer = $soundTimer
-
 @onready var resurrectionTimer: Timer = $resurrectionTimer
 
 
@@ -163,6 +136,13 @@ func _ready() -> void:
 			p.playerId = 3 + cpuIndex
 			cpuIndex += 1
 			p.isCpu = true
+			# 等玩家真正进树后再挂大脑：CpuBrain._ready 里要 player.add_child(感知区)，
+			# 玩家正在建子节点时直接挂会失败（CPU 会变成瞎子，只会巡逻挨打）
+			p.tree_entered.connect(func() -> void:
+				var brain: Node = CPU_BRAIN_SCRIPT.new()
+				brain.name = "CpuBrain"
+				p.add_child(brain)
+			, CONNECT_ONE_SHOT)
 		else:
 			p.playerId = role
 		var sp = playerSpawnPoint[mini(slot, playerSpawnPoint.size() - 1)]
@@ -288,25 +268,32 @@ func startNextWave() -> void:
 func addEnemy(p: Node2D) -> void:
 	if p.type == Game.mapSign.Zombie:
 		var z = zombie.instantiate()
-		z.position = p.position
+		# 出生点先按方向做 ±20px 偏移（原版"从边缘走进来"的起始位置），
+		# 再统一做障碍纠偏 —— 顺序反了会把偏移后的坐标推进墙里。
+		var spawnPos: Vector2 = p.position
+		var dirVec := Vector2.ZERO
+		if p.dir == Game.mapSignDir.Down:
+			dirVec = Vector2.DOWN
+			spawnPos -= Vector2(0, 20)
+		elif p.dir == Game.mapSignDir.Up:
+			dirVec = Vector2.UP
+			spawnPos += Vector2(0, 20)
+		elif p.dir == Game.mapSignDir.Left:
+			dirVec = Vector2.LEFT
+			spawnPos -= Vector2(20, 0)
+		elif p.dir == Game.mapSignDir.Right:
+			dirVec = Vector2.RIGHT
+			spawnPos += Vector2(20, 0)
+
+		# 少数刷怪点标在了障碍格上（18 张图里 16 个），直接用会让僵尸卡在墙里。
+		# 只在地图内部的坏点做就近修正；地图外的出生点保持原样（僵尸从外面走进来）。
+		spawnPos = freeEnemySpawn(spawnPos)
+		z.position = spawnPos
 		z.state = Game.enemyState.init
-		z.initPos = p.position
+		z.initPos = spawnPos
 		# 按关卡提速（基数是场景里配置的速度，最高 5 倍）
 		z.speed = z.speed * enemySpeedMul(currWave + 1)
-
-		# 根据出生点方向设置初始速度和位置偏移
-		if p.dir == Game.mapSignDir.Down:
-			z.velocity = Vector2.DOWN
-			z.position -= Vector2(0, 20)
-		elif p.dir == Game.mapSignDir.Up:
-			z.velocity = Vector2.UP
-			z.position += Vector2(0, 20)
-		elif p.dir == Game.mapSignDir.Left:
-			z.velocity = Vector2.LEFT
-			z.position -= Vector2(20, 0)
-		elif p.dir == Game.mapSignDir.Right:
-			z.velocity = Vector2.RIGHT
-			z.position += Vector2(20, 0)
+		z.velocity = dirVec
 
 		get_tree().current_scene.add_child(z)
 	elif p.type == Game.mapSign.Devil:
@@ -641,6 +628,21 @@ func findFreeSpawn(pos: Vector2) -> Vector2:
 				if not MapData.isObstacle(c):
 					return MapData.cellCenter(c)
 	return pos
+
+
+## 敌人出生点纠偏：只处理"地图内部 + 落在障碍格"的坏点
+##
+## 地图外的出生点是僵尸「从外面走进来」的入口，不能挪进地图里，
+## 所以这里只在格子坐标合法时才做就近修正。
+func freeEnemySpawn(pos: Vector2) -> Vector2:
+	var cell: Vector2i = MapData.worldToCell(pos)
+	var grid := Vector2i(int(MapData.mapSize.x / MapData.cellSize),
+		int(MapData.mapSize.y / MapData.cellSize))
+	if cell.x < 0 or cell.y < 0 or cell.x >= grid.x or cell.y >= grid.y:
+		return pos
+	if not MapData.isObstacle(cell):
+		return pos
+	return findFreeSpawn(pos)
 
 
 ## 飘分：在死亡位置生成 "+N"，飞向顶部总分并淡出

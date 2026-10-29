@@ -19,12 +19,10 @@ const PLAYER_SCENE := preload("res://scene/character/player.tscn")
 const ZOMBIE_SCENE := preload("res://scene/character/zombie.tscn")
 const DEVIL_SCENE := preload("res://scene/character/devil.tscn")
 const BRAIN_SCRIPT := preload("res://script/ai/cpu_brain.gd")
-
 ## 玩家流场的刷新间隔（物理帧）：僵尸寻路 + CPU 归队都靠它
 const FLOW_REFRESH_FRAMES: int = 30
 
 @export var cpuCount: int = 1
-
 ## 测试用敌人移速（原版僵尸 16 太慢，看不清）
 @export var enemySpeed: float = 60.0
 
@@ -35,7 +33,6 @@ var label: Label = null
 var font: FontFile
 var treesPaused := false
 var humanInvincible := true
-
 var _flowTimer := 0
 
 

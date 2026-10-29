@@ -22,7 +22,6 @@ var z: Zombie:
 
 ## 本次挥击是否已经结算过伤害
 var hasHit: bool = false
-
 ## 距上次挥击结束的冷却计时
 var cooldown: float = 0.0
 

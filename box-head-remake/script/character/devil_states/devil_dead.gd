@@ -5,7 +5,6 @@ extends State
 
 ## 尸体停留时间（秒）
 const CORPSE_TIME: float = 3.0
-
 ## 淡出时长（秒）
 const FADE_TIME: float = 1.0
 

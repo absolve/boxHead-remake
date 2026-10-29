@@ -64,7 +64,7 @@ Shotgun+: Wider Shot,Shotgun+: Wider Shot,霰弹枪+：散射更广
 Grenade+: Quad Ammo,Grenade+: Quad Ammo,手榴弹+：四倍弹药
 Fake Wall+: Quad Ammo,Fake Wall+: Quad Ammo,墙+：四倍弹药
 Claymore+: Double Ammo,Claymore+: Double Ammo,地雷+：双倍弹药
-New Weapon: Chargepack,New Weapon: Chargepack,新武器：Chargepack
+New Weapon: Chargepack,New Weapon: Chargepack,新武器：充电包
 Shotgun+: Double Damage,Shotgun+: Double Damage,霰弹枪+：双倍伤害
 Grenade+: Bigger Bang,Grenade+: Bigger Bang,手榴弹+：超大爆炸
 Claymore+: Big Bang,Claymore+: Big Bang,地雷+：大爆炸
@@ -170,6 +170,14 @@ Devils:,Devils:,恶魔：
 Friendly Fire:,Friendly Fire:,友军伤害：
 Language:,Language:,语言：
 Blood:,Blood:,血迹：
-"Show blood and scorch decals","Show blood and scorch decals","显示血迹和爆炸焦痕"
+Show blood and scorch decals,Show blood and scorch decals,显示血迹和爆炸焦痕
 Screen Shake:,Screen Shake:,画面抖动：
-"Camera shake on explosions","Camera shake on explosions","爆炸时画面抖动"
+Camera shake on explosions,Camera shake on explosions,爆炸时画面抖动
+Left,Left,左
+Right,Right,右
+Up,Up,上
+Down,Down,下
+Fire,Fire,射击
+Players:,Players:,玩家：
+PAUSED,PAUSED,已暂停
+ESC to resume,ESC to resume,ESC 继续游戏

@@ -8,7 +8,6 @@ extends PopupPanel
 
 ## 难度名（原版用词）
 const DIFFICULTY_NAMES: Array = ["BEGINNER", "INTERMEDIATE", "EXPERT", "NIGHTMARE"]
-
 ## 每一行的配置：key / 标题 / 说明 / 选项文字
 ## 说明文字直接作为 i18n 的 key（英文原文），中文在 lang.csv 里
 const ROWS: Array = [
@@ -62,23 +61,18 @@ const ROWS: Array = [
 
 ## 选中态背景色（取自原版选项按钮的浅蓝 #BCD7FE）
 var selectedColor: Color = Color(0.737, 0.843, 0.996)
-
 ## 选中态的文字颜色（浅蓝底上要用深色才看得清）
 var selectedTextColor: Color = Color(0.102, 0.102, 0.102)
-
 ## 各行按钮引用：key -> Array[Button]
 var buttonGroups: Dictionary = {}
 
 
 ## 行容器
 @onready var list: VBoxContainer = $margin/content/scroll/list
-
 ## 标题
 @onready var titleLabel: Label = $margin/content/title
-
 ## 重置按钮
 @onready var btnReset: Button = $margin/content/btnRow/btnReset
-
 ## 关闭按钮
 @onready var btnClose: Button = $margin/content/btnRow/btnClose
 

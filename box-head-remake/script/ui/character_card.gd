@@ -15,17 +15,14 @@ extends Control
 
 ## 当前选中的角色索引
 var index: int = 0
-
 ## 玩家角色列表
 var player: Array = []
 
 
 ## 头像节点
 @onready var img: TextureRect = $img
-
 ## ID显示节点
 @onready var idNode: Label = $id
-
 ## 名称显示节点
 @onready var nameNode: Label = $name
 
