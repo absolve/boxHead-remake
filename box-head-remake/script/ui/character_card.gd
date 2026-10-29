@@ -47,6 +47,14 @@ func _ready() -> void:
 	showInfo()
 
 
+## 显示本槽位的角色（"1P" / "2P" / "CPU" / "—"）；未启用时整张卡变暗
+func setSlotRole(text: String, enabled: bool) -> void:
+	if idNode == null:
+		return
+	idNode.text = text
+	modulate.a = 1.0 if enabled else 0.4
+
+
 ## 显示角色信息
 # 更新头像和名称显示
 func showInfo() -> void:

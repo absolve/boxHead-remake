@@ -27,6 +27,8 @@ Game="*res://autoload/game.gd"
 MapData="*res://autoload/mapData.gd"
 SfxManage="*res://autoload/sfxManage.gd"
 SoundUtil="*uid://bmhmxhlfsbq1d"
+BeehaveGlobalMetrics="*res://addons/beehave/metrics/beehave_global_metrics.gd"
+BeehaveGlobalDebugger="*res://addons/beehave/debug/global_debugger.gd"
 
 [display]
 
@@ -203,9 +205,14 @@ locale/test="zh"
 2d_physics/layer_5="playerBody"
 2d_physics/layer_6="enemyBody"
 2d_physics/layer_7="box"
+2d_physics/layer_8="hazard"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/beehave/plugin.cfg")

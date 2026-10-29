@@ -66,8 +66,67 @@ const LAYER_WALL: int = 8
 const CAMERA_MARGIN: float = 32.0
 
 
-## 当前玩家人数
+## 当前玩家人数（含 CPU；由 playerSlots 推导，map.gd 生成玩家时刷新）
 var playerCount: int = 1
+
+
+## ---- 玩家槽位（关卡选择界面写入）----
+##
+## 4 个槽位，每个槽位一个角色：
+##   0 = 关闭，1 = 1P，2 = 2P，3 = CPU
+## 规则：1P / 2P 各最多一个；CPU 可以有多个；总数 ≤ 4；至少保留一个人类
+const SLOT_OFF: int = 0
+const SLOT_P1: int = 1
+const SLOT_P2: int = 2
+const SLOT_CPU: int = 3
+
+## 每个槽位的角色
+var playerSlots: Array[int] = [SLOT_P1, SLOT_OFF, SLOT_OFF, SLOT_OFF]
+
+## 每个槽位选的角色（Game.playerName 的下标）；目前只用于界面展示
+var playerSlotChars: Array[int] = [0, 1, 2, 3]
+
+
+## 槽位总数（含 CPU）
+func playerSlotTotal() -> int:
+	var n := 0
+	for r in playerSlots:
+		if r != SLOT_OFF:
+			n += 1
+	return n
+
+
+## 人类玩家数（1P + 2P）
+func playerSlotHumans() -> int:
+	var n := 0
+	for r in playerSlots:
+		if r == SLOT_P1 or r == SLOT_P2:
+			n += 1
+	return n
+
+
+## 把槽位修正到合法状态：1P/2P 去重、至少一个人类、至少一个玩家
+func normalizeSlots() -> void:
+	var seen := {}
+	for i in playerSlots.size():
+		var r: int = playerSlots[i]
+		if r == SLOT_P1 or r == SLOT_P2:
+			if seen.has(r):
+				playerSlots[i] = SLOT_OFF
+			else:
+				seen[r] = true
+	if playerSlotHumans() == 0:
+		var placed := false
+		for i in playerSlots.size():
+			if playerSlots[i] != SLOT_OFF:
+				playerSlots[i] = SLOT_P1
+				placed = true
+				break
+		if not placed:
+			playerSlots[0] = SLOT_P1
+	if playerSlotTotal() == 0:
+		playerSlots[0] = SLOT_P1
+
 
 ## 武器基本参数信息
 # 键：武器类型（Game.weaponType）
@@ -825,3 +884,104 @@ func computeFieldMulti(seeds: Array) -> void:
 			field[key] = best.normalized() if best != Vector2.ZERO else Vector2.ZERO
 
 	flowFieldDict["multi"] = field
+
+
+## ---- CPU 玩家用的敌人源距离场 ----
+##
+## 与敌人的 "multi" 场完全独立：那份以玩家为种子、方向指向玩家，而且共用全局 navDist。
+## 这里只存"到最近敌人的距离"，方向由 CPU 在自己所在格现算（8 邻域比较），
+## 省掉整张方向场的遍历；一张场服务所有 CPU。
+var cpuDist: Dictionary = {}
+var cpuFieldAtMs: int = 0
+var cpuFieldObstacleVersion: int = -1
+
+
+## 需要时（默认 0.4s / 障碍变化）重算敌人源距离场；多个 CPU 共享，只算一次
+func ensureCpuField(intervalMs: int = 400) -> void:
+	var now := Time.get_ticks_msec()
+	var stale: bool = cpuDist.is_empty() \
+			or now - cpuFieldAtMs >= intervalMs \
+			or cpuFieldObstacleVersion != obstacleVersion
+	if not stale:
+		return
+	cpuFieldAtMs = now
+	cpuFieldObstacleVersion = obstacleVersion
+	computeCpuField()
+
+
+## 以所有存活敌人为种子做 BFS（只存距离，不生成方向场）
+func computeCpuField() -> void:
+	cpuDist.clear()
+	var cellX := int(mapSize.x / cellSize)
+	var cellY := int(mapSize.y / cellSize)
+	if cellX <= 0 or cellY <= 0:
+		return
+
+	var queue: Array[Vector2i] = []
+	for e in get_tree().get_nodes_in_group("enemy"):
+		if not is_instance_valid(e) or e.get("isDead") == true:
+			continue
+		var c := worldToCell(e.global_position)
+		if c.x < 0 or c.y < 0 or c.x >= cellX or c.y >= cellY:
+			continue
+		var k := cellKey(c)
+		if cpuDist.has(k):
+			continue
+		cpuDist[k] = 0
+		queue.append(c)
+
+	var head := 0
+	while head < queue.size():
+		var p: Vector2i = queue[head]
+		head += 1
+		var d: int = cpuDist[cellKey(p)]
+		for i in NEIGHBOR_DIRS:
+			var n: Vector2i = p + i
+			if n.x < 0 or n.y < 0 or n.x >= cellX or n.y >= cellY:
+				continue
+			var nk := cellKey(n)
+			if obstacle.has(nk):
+				continue
+			if i.x != 0 and i.y != 0:
+				# 斜向不能从两个障碍的夹角穿过去
+				if obstacle.has(cellKey(Vector2i(p.x + i.x, p.y))) \
+						or obstacle.has(cellKey(Vector2i(p.x, p.y + i.y))):
+					continue
+			if cpuDist.has(nk):
+				continue
+			cpuDist[nk] = d + (1414 if (i.x != 0 and i.y != 0) else 1000)
+			queue.append(n)
+
+
+## 往"距离更小"的邻格走一格的方向（8 向）；没有场/孤立格返回 ZERO
+func cpuFieldDir(pos: Vector2) -> Vector2:
+	return _cpuFieldStep(pos, false)
+
+
+## 撤退用：往"距离更大"的邻格走一格
+func cpuFieldAwayDir(pos: Vector2) -> Vector2:
+	return _cpuFieldStep(pos, true)
+
+
+func _cpuFieldStep(pos: Vector2, uphill: bool) -> Vector2:
+	if cpuDist.is_empty():
+		return Vector2.ZERO
+	var cell := worldToCell(pos)
+	var here := cellKey(cell)
+	if not cpuDist.has(here):
+		return Vector2.ZERO
+	var bestD: int = cpuDist[here]
+	var best := Vector2.ZERO
+	for i in NEIGHBOR_DIRS:
+		var k := cellKey(cell + i)
+		if not cpuDist.has(k) or obstacle.has(k):
+			continue
+		var d: int = cpuDist[k]
+		if uphill:
+			if d > bestD:
+				bestD = d
+				best = Vector2(i)
+		elif d < bestD:
+			bestD = d
+			best = Vector2(i)
+	return best.normalized() if best != Vector2.ZERO else Vector2.ZERO

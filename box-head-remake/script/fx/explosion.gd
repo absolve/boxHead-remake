@@ -73,6 +73,13 @@ func _ready() -> void:
 		ani.play("1")
 	SfxManage.playExplosion()
 
+	# 4.5) 屏幕抖动
+	# 原版 CThing_Effect_Explosion.Process_Delay → mWorld.Shake(Point(0, 30))，
+	# 每个爆炸（含 BigBang / 分裂子爆）各抖一次，由相机端封顶。
+	var cam: Node = get_viewport().get_camera_2d()
+	if cam != null and cam.has_method("shake"):
+		cam.call("shake")
+
 	# 5) 升级带来的附加爆炸
 	spawnCluster()
 	spawnSubExplosions()

@@ -14,6 +14,34 @@ extends Camera2D
 @export var edgeMargin: float = 32.0
 
 
+## ---- 画面抖动（爆炸）----
+## 原版是 CWorld.Shake(0, 30) + 每 25Hz tick 换向并 ×0.5。
+## 但 Draw 里先 Process_Shake 再画，所以玩家看到的第一帧已经是 ±15，
+## 之后 7.5 / 3.75 / …，约 0.2s 肉眼可见、0.36s 归零（640×480 舞台上约 3% 屏高）。
+## 这里用连续正弦 + 指数包络还原同样的手感，避免 60Hz 步进抖动。
+
+## 单次爆炸的可见峰值（像素）
+@export var shakeImpulse: float = 15.0
+
+## 叠加后的峰值上限：原版 Shake 里 |mShake| < 32 才允许累加，
+## 可见峰值大约封顶在 31，也就是 2 倍单发
+@export var shakeMax: float = 32.0
+
+## 换向频率：原版每 40ms 换一次向 → 12.5Hz
+@export var shakeFrequency: float = 12.5
+
+## 幅度半衰期：原版每 40ms ×0.5
+@export var shakeHalfLife: float = 0.04
+
+## 低于该幅度直接归零（避免长时间亚像素抖动）
+@export var shakeMin: float = 0.3
+
+
+## 当前抖动幅度与相位
+var shakeAmp: float = 0.0
+var shakePhase: float = 0.0
+
+
 ## 当前跟随目标
 var target: Node2D = null
 
@@ -33,12 +61,25 @@ func _ready() -> void:
 
 func refreshTarget() -> void:
 	var ps := get_tree().get_nodes_in_group("player")
+	# 优先跟「活着的人类玩家」：槽位顺序里 CPU 可能排在前面，人类也可能已经倒地
+	for p in ps:
+		if bool(p.get("isCpu")) or bool(p.get("isDead")):
+			continue
+		target = p
+		return
+	for p in ps:
+		if not bool(p.get("isCpu")):
+			target = p
+			return
 	if ps.size() > 0:
 		target = ps[0]
 
 
 func _physics_process(delta: float) -> void:
-	if target == null or not is_instance_valid(target):
+	_updateShake(delta)
+
+	if target == null or not is_instance_valid(target) \
+			or bool(target.get("isCpu")) or bool(target.get("isDead")):
 		refreshTarget()
 		if target == null:
 			return
@@ -80,3 +121,31 @@ func _physics_process(delta: float) -> void:
 		anchorFix = -vp * 0.5
 
 	global_position = global_position.lerp(goalCenter + anchorFix, minf(smoothSpeed * delta, 1.0))
+
+
+## 一次爆炸给相机加一下抖动（多个爆炸叠加，封顶在 shakeMax）
+func shake(amount: float = -1.0) -> void:
+	if not bool(MapData.mapConfig.get("screenShake", true)):
+		return
+	if shakeAmp <= 0.0:
+		# 从峰值起步：原版第一帧就是 ±15 的硬跳，不是从 0 慢慢荡起来
+		shakePhase = PI * 0.5
+	shakeAmp = minf(shakeAmp + (shakeImpulse if amount < 0.0 else amount), shakeMax)
+
+
+## 抖动衰减：指数包络 + 12.5Hz 正弦，写进 Camera2D.offset
+## 不写 global_position —— 那是跟随插值的状态，混进去会互相打架
+func _updateShake(delta: float) -> void:
+	if shakeAmp > 0.0:
+		if bool(MapData.mapConfig.get("screenShake", true)):
+			shakeAmp *= exp(-delta * (log(2.0) / shakeHalfLife))
+			shakePhase = fmod(shakePhase + TAU * shakeFrequency * delta, TAU)
+			if shakeAmp < shakeMin:
+				shakeAmp = 0.0
+		else:
+			shakeAmp = 0.0      # 设置里关掉开关：立刻停
+	if shakeAmp <= 0.0:
+		offset = Vector2.ZERO
+		return
+	# 原版是纯竖直抖动；取整避免像素画在亚像素偏移下发糊
+	offset = Vector2(0.0, shakeAmp * sin(shakePhase)).round()

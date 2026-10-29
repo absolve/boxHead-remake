@@ -149,13 +149,26 @@ func _ready() -> void:
 	refreshTimer.start()
 
 	# 设置玩家出生点并生成玩家
+	# 槽位来自关卡选择界面：0 关闭 / 1 1P / 2 2P / 3 CPU
 	playerSpawnPoint = room.playerSpawnPoint
-	for i in range(MapData.playerCount):
+	MapData.normalizeSlots()
+	var cpuIndex := 0
+	for slot in range(MapData.playerSlots.size()):
+		var role: int = MapData.playerSlots[slot]
+		if role == MapData.SLOT_OFF:
+			continue
 		var p = player.instantiate()
-		# playerId 决定用哪套按键（p1_*/p2_*/p3_*/p4_*）和颜色，必须逐个指定
-		p.playerId = i + 1
-		p.global_position = findFreeSpawn(playerSpawnPoint[i].global_position)
+		# playerId 决定用哪套按键（p1_*..p4_*）和颜色；CPU 用 3 起的编号，不读按键
+		if role == MapData.SLOT_CPU:
+			p.playerId = 3 + cpuIndex
+			cpuIndex += 1
+			p.isCpu = true
+		else:
+			p.playerId = role
+		var sp = playerSpawnPoint[mini(slot, playerSpawnPoint.size() - 1)]
+		p.global_position = findFreeSpawn(sp.global_position)
 		add_child.call_deferred(p)
+	MapData.playerCount = MapData.playerSlotTotal()
 
 	# 延迟3秒后开始第一波
 	var tween = create_tween()
@@ -572,7 +585,8 @@ func pickRespawnPos(dead_player: Node2D, alivePlayers: Array) -> Vector2:
 		return MapData.cellCenter(cells[randi() % cells.size()])
 
 	# 3. 兜底
-	return findFreeSpawn(playerSpawnPoint[dead_player.playerId].global_position)
+	var fallback := mini(dead_player.playerId, playerSpawnPoint.size() - 1)
+	return findFreeSpawn(playerSpawnPoint[maxi(fallback, 0)].global_position)
 
 
 ## 把地图 id 解析成房间场景路径

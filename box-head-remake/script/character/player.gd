@@ -24,6 +24,33 @@ const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 ## 玩家ID（用于多人游戏区分）
 @export var playerId: int = 1
 
+## 是否由 CPU 控制（关卡选择里的 NPC 玩家）：true 时不读按键，交给 AI 决策
+@export var isCpu: bool = false
+
+## CPU 行为树大脑（子节点 CpuBrain 在 _ready 里认领；为空时退回下面的临时 AI）
+var cpuBrain: Node = null
+
+## 行为树写入的每帧指令（由 Idle 状态消费）
+var cpuMoveDir: Vector2 = Vector2.ZERO
+var cpuAimDir: Vector2 = Vector2.ZERO
+
+## ---- CPU AI 状态（isCpu 时才用）----
+## 当前锁定目标（敌人）
+var cpuTarget: Node2D = null
+## 索敌/换目标倒计时
+var cpuRetarget: float = 0.0
+## 本帧想开火
+var cpuWantFire: bool = false
+## 卡住检测
+var cpuStuck: float = 0.0
+## 绕行方向与剩余时间
+var cpuDetour: Vector2 = Vector2.ZERO
+var cpuDetourTime: float = 0.0
+## 上一帧位置（判定是否卡住）
+var cpuLastPos: Vector2 = Vector2.ZERO
+## 空枪换枪冷却
+var cpuSwitchCd: float = 0.0
+
 
 ## 自动回血的亚血量累加器（hp 是整数，不回血小数会被截断）
 var regenAcc: float = 0.0
@@ -689,11 +716,21 @@ func onDeadEnter() -> void:
 func updateIdle(delta: float) -> void:
 	currAni = "stand"
 
-	# 获取输入方向
-	var inputDir = Input.get_vector(keyMap.left, keyMap.right, keyMap.up, keyMap.down)
+	# 获取输入方向（CPU：有行为树就消费它的意图，没有则退回临时 AI）
+	var inputDir: Vector2
+	if isCpu:
+		if cpuBrain != null:
+			if cpuAimDir != Vector2.ZERO:
+				vector = cpuAimDir
+			inputDir = cpuMoveDir
+		else:
+			inputDir = cpuUpdateAi(delta)
+	else:
+		inputDir = Input.get_vector(keyMap.left, keyMap.right, keyMap.up, keyMap.down)
 	if inputDir.length() != 0:
-		vector = inputDir
-		angle = round(inputDir.angle() / (PI / 4))
+		if not isCpu:
+			vector = inputDir
+		angle = round(vector.angle() / (PI / 4))
 		angle = wrapi(int(angle), 0, 8)
 		currAni = "walk"
 
@@ -724,26 +761,30 @@ func updateIdle(delta: float) -> void:
 	else:
 		txt.modulate = Color(1.0, 0.95, 0.75)
 
-	# 处理射击输入
-	if Input.is_action_pressed(keyMap.fire):
-		if currWeapon.type == Game.weaponType.Grenade:
-			currWeapon.increase(delta)
-		else:
-			if currWeapon.automatic:
-				currWeapon.fire(vector)
-			elif Input.is_action_just_pressed(keyMap.fire):
-				currWeapon.fire(vector)
-
-	# 手榴弹释放时扔出
-	if Input.is_action_just_released(keyMap.fire):
-		if currWeapon.type == Game.weaponType.Grenade:
+	# 处理射击输入（CPU 由 AI 决定是否开火；武器自身有冷却）
+	if isCpu:
+		if cpuWantFire:
 			currWeapon.fire(vector)
+	else:
+		if Input.is_action_pressed(keyMap.fire):
+			if currWeapon.type == Game.weaponType.Grenade:
+				currWeapon.increase(delta)
+			else:
+				if currWeapon.automatic:
+					currWeapon.fire(vector)
+				elif Input.is_action_just_pressed(keyMap.fire):
+					currWeapon.fire(vector)
 
-	# 处理武器切换输入
-	if Input.is_action_just_pressed(keyMap.nextWeapon):
-		switchWeapon()
-	if Input.is_action_just_pressed(keyMap.prevWeapon):
-		switchWeapon(false)
+		# 手榴弹释放时扔出
+		if Input.is_action_just_released(keyMap.fire):
+			if currWeapon.type == Game.weaponType.Grenade:
+				currWeapon.fire(vector)
+
+		# 处理武器切换输入
+		if Input.is_action_just_pressed(keyMap.nextWeapon):
+			switchWeapon()
+		if Input.is_action_just_pressed(keyMap.prevWeapon):
+			switchWeapon(false)
 
 	# 移动并处理碰撞
 	var displacement = velocity * delta
@@ -761,6 +802,142 @@ func updateIdle(delta: float) -> void:
 				displacement = Vector2.ZERO
 		displacement = resolveAreaBlockers(displacement)
 	move_and_collide(displacement)
+
+
+## ---- CPU AI ----
+##
+## 简易行为：索敌 → 保持武器射程的 60% → 朝向目标开火；
+## 没有敌人时跟着最近的人类队友。卡住 0.6 秒就侧向绕行 0.5 秒。
+## 返回本帧的移动方向；同时写 vector（瞄准，供开火/动画用）与 cpuWantFire。
+func cpuUpdateAi(delta: float) -> Vector2:
+	cpuSwitchCd -= delta
+	cpuDetourTime -= delta
+	cpuRetarget -= delta
+
+	if cpuRetarget <= 0.0 or cpuTarget == null or not is_instance_valid(cpuTarget) \
+			or cpuTarget.get("isDead") == true:
+		cpuRetarget = 0.3
+		cpuTarget = cpuNearest("enemy")
+
+	# CPU 只用枪械：手里是地雷/油桶/墙壁这类放置物，或枪没子弹了，就换一把
+	if cpuSwitchCd <= 0.0 and (not cpuIsGun(currWeapon.type)
+			or (currWeapon.maxAmmoNum > 0 and currWeapon.ammoNum <= 0)):
+		cpuSwitchWeapon()
+		cpuSwitchCd = 0.5
+
+	var move := Vector2.ZERO
+	var aim := Vector2.ZERO
+	cpuWantFire = false
+
+	if cpuTarget != null:
+		var to: Vector2 = cpuTarget.global_position - global_position
+		var dist: float = to.length()
+		aim = to / maxf(dist, 0.001)
+		var rangePx: float = maxf(float(currWeapon.wRange), 48.0)
+		var want: float = rangePx * 0.6
+		if dist > want + 24.0:
+			move = aim
+		elif dist < want - 32.0:
+			move = -aim
+		else:
+			# 射程内左右游走，避免站着挨打 / 挡队友枪线
+			var side := 1.0 if fmod(Time.get_ticks_msec() / 1000.0, 2.0) < 1.0 else -1.0
+			move = aim.orthogonal() * side
+		cpuWantFire = dist <= rangePx and not cpuAllyInLine(aim, dist)
+	else:
+		# 没敌人：跟紧最近的人类队友
+		var ally := cpuNearest("player", true)
+		if ally != null:
+			var to: Vector2 = ally.global_position - global_position
+			if to.length() > 72.0:
+				move = to.normalized()
+			aim = move
+
+	# 卡住检测：想走却 0.6 秒没挪动 → 侧向绕行
+	if move != Vector2.ZERO:
+		if global_position.distance_to(cpuLastPos) < 2.0:
+			cpuStuck += delta
+			if cpuStuck > 0.6 and cpuDetourTime <= 0.0:
+				cpuDetour = move.orthogonal() * (1.0 if randf() < 0.5 else -1.0)
+				cpuDetourTime = 0.5
+				cpuStuck = 0.0
+		else:
+			cpuStuck = 0.0
+		if cpuDetourTime > 0.0:
+			move = cpuDetour
+	cpuLastPos = global_position
+
+	if aim == Vector2.ZERO:
+		aim = move
+	if aim != Vector2.ZERO:
+		vector = aim
+	return move
+
+
+## 行为树请求换枪：当前枪还在冷却时先不换，避免打断射击动画
+func cpuRequestWeapon(wtype: int) -> void:
+	if currWeapon != null and currWeapon.type == wtype:
+		return
+	if currWeapon != null and not currWeapon.canShoot:
+		return
+	for i in weaponList.size():
+		if weaponList[i].type == wtype:
+			currWeaponIndex = i
+			currWeapon = weaponList[i]
+			return
+
+
+## CPU 换枪：只换枪械，且优先还有弹药（或无限弹药）的那把
+func cpuSwitchWeapon() -> void:
+	var n := weaponList.size()
+	for i in range(1, n):
+		var idx := (currWeaponIndex + i) % n
+		var w = weaponList[idx]
+		if not cpuIsGun(w.type):
+			continue
+		if w.maxAmmoNum > 0 and w.ammoNum <= 0:
+			continue
+		currWeaponIndex = idx
+		currWeapon = w
+		return
+
+
+## 放置/投掷类武器（地雷、油桶、墙、炸药包、手榴弹）不交给 CPU
+func cpuIsGun(type: int) -> bool:
+	return type in [Game.weaponType.Pistol, Game.weaponType.Railgun, Game.weaponType.Rocket,
+			Game.weaponType.Shotgun, Game.weaponType.UZI]
+
+
+## 瞄准方向上有没有更近的队友（避免 CPU 打自己人）
+func cpuAllyInLine(aim: Vector2, targetDist: float = 1e9) -> bool:
+	for n in get_tree().get_nodes_in_group("player"):
+		if n == self or not is_instance_valid(n) or n.get("isDead") == true:
+			continue
+		var to: Vector2 = n.global_position - global_position
+		# 只算"挡在目标前面、且离射线足够近"的队友（垂直距离 < 24px）
+		if to.dot(aim) <= 0.0 or to.dot(aim) > targetDist - 24.0:
+			continue
+		if absf(to.cross(aim)) < 24.0:
+			return true
+	return false
+
+
+## 找最近的节点（group 内）；humansOnly 时跳过 CPU 玩家
+func cpuNearest(groupName: String, humansOnly: bool = false) -> Node2D:
+	var best: Node2D = null
+	var bestD := INF
+	for n in get_tree().get_nodes_in_group(groupName):
+		if n == self or not is_instance_valid(n):
+			continue
+		if n.get("isDead") == true:
+			continue
+		if humansOnly and bool(n.get("isCpu")):
+			continue
+		var d: float = global_position.distance_squared_to(n.global_position)
+		if d < bestD:
+			bestD = d
+			best = n
+	return best
 
 
 ## Hurt：按 25Hz 应用击退（原版每 1/25 秒位移一次并 ×0.65）；播完由状态脚本切回 Idle

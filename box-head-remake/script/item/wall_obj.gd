@@ -21,9 +21,12 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 	hp -= damage
 
 	if hp <= 0:
-		# 创建烟雾效果
+		# 创建烟团（和油桶爆炸同一个 626 素材，墙的这版提亮成白色）
 		var temp = smoke.instantiate()
 		temp.global_position = global_position
+		temp.type = Game.smokeType.ExplosionSmoke
+		# 同一张烟团贴图提亮 2 倍 ≈ 白色（原版墙的这版是偏白的 Effect.SmokeCloud）
+		temp.tint = Color(2.0, 2.0, 2.0)
 		get_tree().current_scene.add_child(temp)
 
 		# 销毁墙壁

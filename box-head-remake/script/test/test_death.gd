@@ -25,6 +25,8 @@ var map: Node = null
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color("#EDE2CF"))
+	# 4 个槽位都填满：1P + 2P + 两只 CPU（playerId 依次 1/2/3/4）
+	MapData.playerSlots = [MapData.SLOT_P1, MapData.SLOT_P2, MapData.SLOT_CPU, MapData.SLOT_CPU]
 	MapData.playerCount = 4
 	MapData.selectedMapId = 17      # room_0018
 

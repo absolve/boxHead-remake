@@ -997,7 +997,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_5hg7i"]
 radius = 13.0
 
-[node name="devil" unique_id=571049386 instance=ExtResource("1_char")]
+[node name="devil" unique_id=571049386 groups=["enemy"] instance=ExtResource("1_char")]
 script = ExtResource("2_devil")
 damage = 50
 objectDamage = 100000

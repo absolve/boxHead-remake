@@ -14,6 +14,9 @@ extends "res://script/item/item.gd"
 ## 爆炸效果场景预加载
 var explosion: PackedScene = preload("res://scene/fx/explosion.tscn")
 
+## 爆炸烟团（原版 Effect.SmokeCloud 的 15 帧）
+var smoke: PackedScene = preload("res://scene/fx/smoke.tscn")
+
 ## 是否正在爆炸中
 var startExploding: bool = false
 
@@ -74,6 +77,12 @@ func hit(_damage: int, _attackPos: Vector2 = Vector2.ZERO,
 	temp.biggerBang = biggerBang
 	temp.clusterExplode = clusterExplode
 	get_tree().current_scene.add_child(temp)
+
+	# 爆炸烟团（只跟主爆炸走，分裂的小爆炸不再各来一团）
+	var s = smoke.instantiate()
+	s.global_position = global_position
+	s.type = Game.smokeType.ExplosionSmoke
+	get_tree().current_scene.add_child(s)
 
 	# 如果配置了分裂爆炸，创建多个小爆炸
 	if splitExplosion > 0:

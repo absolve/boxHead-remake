@@ -85,7 +85,8 @@ enum roleType {
 # 定义不同类型的烟雾效果
 enum smokeType {
 	RocketSmoke = 200,  # 火箭弹烟雾轨迹
-	SmokeCloud          # 爆炸烟雾云
+	SmokeCloud,         # 爆炸烟雾云
+	ExplosionSmoke      # 油桶爆炸 / 墙被炸开的烟团（原版 Effect.SmokeCloud，15 帧）
 }
 
 ## 爆炸类型枚举

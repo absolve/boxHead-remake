@@ -74,6 +74,8 @@
 | `scene/test/test_weapons.tscn` | 全武器靶场，含增删敌人 / 解锁武器按钮 |
 | `scene/test/test_death.tscn` | 多玩家死亡与复活测试 |
 | `scene/test/test_flow_field.tscn` | 流场可视化与僵尸寻路压力测试 |
+| `scene/test/test_shake.tscn` | 爆炸画面抖动：单发 / 同帧多发 / 连锁 / BigBang 叠加与参数调节 |
+| `scene/test/test_cpu.tscn` | CPU 玩家 AI：1 人类 + 0~3 CPU（Beehave 行为树），可刷怪、切友伤/策略、发枪、压血、暂停 AI |
 
 ---
 
