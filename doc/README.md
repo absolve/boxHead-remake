@@ -20,6 +20,7 @@
 | [future-improvements.md](future-improvements.md) | 后续功能改进：大图流场局部刷新（数组化、增量 BFS、分层窗口）与多玩家流场组织（多源叠加场 vs 每玩家一场） |
 | [decals-blood-scorch.md](decals-blood-scorch.md) | 血迹与爆炸印记（地面贴花）：原版实现链路、重制版贴花图层方案、设置里的"显示/不显示血迹"开关 |
 | [cpu-player-ai.md](cpu-player-ai.md) | CPU 玩家 AI：Beehave 决策层、敌人源距离场导航、感知与友伤、策略与武器选择、测试场景与分阶段计划 |
+| [test-checklist.md](test-checklist.md) | AI 自动化测试：工具选型（GdUnit4/GUT + 自建 TestBridge）、玩家-敌人/CPU/武器/系统/长跑测试清单，以及驱动脚本的生成规格与提示词 |
 
 ## 如何验证
 
