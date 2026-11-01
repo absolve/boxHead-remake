@@ -28,6 +28,8 @@ signal notice
 # 玩家死亡
 @warning_ignore("unused_signal")
 signal playerDead
+## 枪声：位置 + 开枪者。CPU 听到别人开枪会过去查看
+signal gunshot(pos: Vector2, shooter: Node)
 
 
 ## 武器类型枚举

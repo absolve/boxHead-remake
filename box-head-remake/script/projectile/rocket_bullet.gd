@@ -20,6 +20,8 @@ var accelFactor: float = 1.1
 var maxSpeed: float = 1200.0
 ## 25Hz 累积器
 var accelAcc: float = 0.0
+## 烟雾 25Hz 累积器（原版每 tick 50% 概率喷烟）
+var smokeAcc: float = 0.0
 ## 伤害值
 var damage: int = 0
 
@@ -29,11 +31,7 @@ func _ready() -> void:
 	# 播放默认动画
 	ani.play("default")
 
-	# 创建循环补间，定期生成烟雾轨迹
-	var tween = create_tween()
-	tween.set_loops()
-	tween.tween_callback(addSmoke)
-	tween.tween_interval(0.2)
+	pass
 
 
 ## 添加烟雾效果
@@ -42,6 +40,16 @@ func addSmoke() -> void:
 	var temp = smoke.instantiate()
 	temp.global_position = global_position
 	get_tree().current_scene.add_child(temp)
+
+
+## 每物理帧：按 25Hz 累积，50% 概率喷一个烟（原版 random(2)）
+func _updateSmokeTrail(delta: float) -> void:
+	var tick: float = 1.0 / MapData.TICKS_PER_SEC
+	smokeAcc += delta
+	while smokeAcc >= tick:
+		smokeAcc -= tick
+		if randi() % 2 == 0:
+			addSmoke()
 
 
 ## 离开屏幕时销毁
@@ -62,6 +70,8 @@ func explode() -> void:
 
 ## 物理帧更新
 func _physics_process(delta: float) -> void:
+	_updateSmokeTrail(delta)
+
 	# 撞静态障碍格：地图里的柱子/边界墙只有障碍格数据，未必有物理体，
 	# 光靠 get_overlapping_bodies() 会穿过去，所以按格子再判一次。
 	if MapData.isObstacle(MapData.worldToCell(global_position)):

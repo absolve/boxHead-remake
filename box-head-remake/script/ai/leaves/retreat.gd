@@ -10,24 +10,21 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 		return FAILURE
 
 	var t: Node2D = blackboard.get_value("target")
-	var away := Vector2.ZERO
-	if t != null and is_instance_valid(t):
-		away = (p.global_position - t.global_position).normalized()
+	if t == null or not is_instance_valid(t):
+		return FAILURE
 
-	# 有队友就往队友那边退，没有就单纯远离
+	# 优先往队友方向退（有人接应），但同样要避开墙角
 	var ally := b.nearestAlly()
+	var away := Vector2.ZERO
 	if ally != null:
 		var toAlly: Vector2 = ally.global_position - p.global_position
 		if toAlly.length() > 3.0 * MapData.cellSize:
-			away = (away + toAlly.normalized() * 1.5).normalized()
-
+			away = b.pathDirSimple(p.global_position, toAlly.normalized())
 	if away == Vector2.ZERO:
+		away = b.fleeDirection(t.global_position)
+	if away == Vector2.ZERO:
+		# 无路可退：就地打，不要贴着墙角左右摇
 		return FAILURE
-
-	if not b.canStepTo(p.global_position, away * MapData.cellSize):
-		var f := MapData.cpuFieldAwayDir(p.global_position)
-		if f != Vector2.ZERO and b.canStepTo(p.global_position, f * MapData.cellSize):
-			away = f
 
 	p.cpuMoveDir = away
 	if t != null and is_instance_valid(t):

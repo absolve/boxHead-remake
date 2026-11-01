@@ -25,15 +25,14 @@ func tick(actor: Node, _blackboard: Blackboard) -> int:
 		_tryFire(p, b)
 		return RUNNING
 
-	# 2) 没箱子：沿远离敌人的方向后退
+	# 2) 没箱子：选一个「远离威胁 + 不钻墙角」的方向后撤
 	var t: Node2D = b.target
 	if t == null or not is_instance_valid(t):
 		return FAILURE
-	var away: Vector2 = (p.global_position - t.global_position).normalized()
-	if not b.canStepTo(p.global_position, away * MapData.cellSize):
-		var f := MapData.cpuFieldAwayDir(p.global_position)
-		if f != Vector2.ZERO:
-			away = f
+	var away: Vector2 = b.fleeDirection(t.global_position)
+	if away == Vector2.ZERO:
+		# 四面被堵死（墙角/被围）：别再原地抖，交给 combat 就地打
+		return FAILURE
 	p.cpuMoveDir = away
 	_tryFire(p, b)
 	return RUNNING

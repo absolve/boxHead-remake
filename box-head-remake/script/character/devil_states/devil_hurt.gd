@@ -13,24 +13,18 @@ func enter(_msg: Dictionary = {}) -> void:
 	d.playAnim("hitFront" if randi() % 2 == 1 else "hitRear", true)
 
 
-## 25Hz 累积器（和僵尸一致）
-var moveAcc: float = 0.0
-
-
 func physicsUpdate(delta: float) -> void:
-	moveAcc += delta
-	var step: float = 1.0 / MapData.TICKS_PER_SEC
-	while moveAcc >= step and d.knockbackFrames > 0 and d.knockbackDelta.length() > 0.01:
-		moveAcc -= step
-		d.knockbackFrames -= 1
-		var next: Vector2 = d.global_position + d.knockbackDelta * MapData.cellSize
-		d.move_and_collide(next - d.global_position)
-		d.knockbackDelta *= 0.65
-	if d.knockbackFrames <= 0 or d.knockbackDelta.length() < 0.01:
-		d.knockbackDelta = Vector2.ZERO
-		d.knockbackFrames = 0
+	# 击退：连续衰减（快→慢），每帧推进一小段
+	var stepVec: Vector2 = d.advanceKnockback(delta)
+	if stepVec != Vector2.ZERO:
+		var next: Vector2 = d.global_position + stepVec
+		# 后面有墙 / 敌人 / 可玩区域边界 → 直接停住
+		if d.knockbackBlocked(next, d.bodyRadius()):
+			d.clearKnockback()
+		else:
+			d.move_and_collide(stepVec)
 
-	if stateTime >= d.hurtDelay and d.knockbackFrames <= 0:
+	if stateTime >= d.hurtDelay and d.knockbackDone():
 		if d.dying:
 			d.die()
 			return

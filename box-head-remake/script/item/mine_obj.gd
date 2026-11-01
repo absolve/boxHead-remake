@@ -10,8 +10,10 @@ extends "res://script/item/item.gd"
 @export var wRange: int = 0
 
 
-## 爆炸延迟时间（秒）
-var delay: float = 1
+## 引爆倒计时（秒）：原版 mDetonateCounter = mFPS * 2（CThing_Object_Mine.as:64）
+@export var delay: float = 2.0
+## 倒计时闪烁速度：原版每 tick 推进 1 帧，约 25 帧/秒
+@export var blinkSpeed: float = 25.0
 ## 动画补间节点
 var tween: Tween = null
 ## 分裂爆炸数量
@@ -78,8 +80,9 @@ func _on_body_entered(_body: Node2D) -> void:
 	if tween == null:
 		sound.play()
 		tween = create_tween()
-		# 加速动画
-		tween.tween_property(ani, "speed_scale", 4, 0)
+		# 急速闪烁：原版倒计时期间每 tick 都 Animate_Cycle(1)，
+		# 相当于每秒推进约 25 帧；speed_scale = 25 才是那个闪烁速度
+		tween.tween_property(ani, "speed_scale", blinkSpeed, 0)
 		# 延迟爆炸
 		tween.tween_interval(delay)
 		# 触发爆炸

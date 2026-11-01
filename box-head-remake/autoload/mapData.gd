@@ -66,6 +66,25 @@ const LAYER_WALL: int = 8
 const CAMERA_MARGIN: float = 32.0
 
 
+## 世界物体的 z 序：原版 CMap.Draw 是按脚底 y 做画家算法排序的。
+## 这里直接用「脚底 y（像素）」当 z_index，映射范围 ±4096 够所有地图。
+func worldZ(feetY: float) -> int:
+	return clampi(int(roundf(feetY)), -4000, 4000)
+
+
+## 动态放置物（墙/油桶/地雷/充电包）的 z_order。
+##
+## 原版只按 y 排；但墙/桶的贴图里**烘焙了右下角的阴影**，
+## 同一行并排时如果 z 完全一样，后画的那只的阴影会盖在前一只身上（能看到黑缝）。
+## 这里在同一行内做 0~15 的 x 递减偏移：左边那只 z 更高、后画，
+## 正好把自己的身体盖到右边那只的阴影上。偏移 < 一格（32px），不会破坏行序。
+func itemZ(cell: Vector2i) -> int:
+	var base := worldZ(cellCenter(cell).y + cellSize * 0.5)
+	# 同一行里：x 越大 z 越小（右边先画、左边后画，左边用自己的身体盖住右边的烘焙阴影）。
+	# 偏移 0~31，一定小于一格（32px），所以不会破坏上下行的前后关系。
+	return base - (cell.x % 32)
+
+
 ## 当前玩家人数（含 CPU；由 playerSlots 推导，map.gd 生成玩家时刷新）
 var playerCount: int = 1
 
@@ -73,12 +92,14 @@ var playerCount: int = 1
 ## ---- 玩家槽位（关卡选择界面写入）----
 ##
 ## 4 个槽位，每个槽位一个角色：
-##   0 = 关闭，1 = 1P，2 = 2P，3 = CPU
-## 规则：1P / 2P 各最多一个；CPU 可以有多个；总数 ≤ 4；至少保留一个人类
+##   0 = 关闭，1 = 1P，2 = 2P，3 = 3P，4 = 4P，5 = CPU
+## 规则：1P~4P 各自最多一个；CPU 可以有多个；总数 ≤ 4；全关不能开局
 const SLOT_OFF: int = 0
 const SLOT_P1: int = 1
 const SLOT_P2: int = 2
-const SLOT_CPU: int = 3
+const SLOT_P3: int = 3
+const SLOT_P4: int = 4
+const SLOT_CPU: int = 5
 
 ## 每个槽位的角色
 var playerSlots: Array[int] = [SLOT_P1, SLOT_OFF, SLOT_OFF, SLOT_OFF]
@@ -96,36 +117,30 @@ func playerSlotTotal() -> int:
 	return n
 
 
-## 人类玩家数（1P + 2P）
+## 人类玩家数（1P + 2P + 3P + 4P）
 func playerSlotHumans() -> int:
 	var n := 0
 	for r in playerSlots:
-		if r == SLOT_P1 or r == SLOT_P2:
+		if r >= SLOT_P1 and r <= SLOT_P4:
 			n += 1
 	return n
 
 
-## 把槽位修正到合法状态：1P/2P 去重、至少一个人类、至少一个玩家
+## 把槽位修正到合法状态：1P~4P 各自去重（允许全是 CPU / 全是人类）
+##
+## 全关也允许（关卡选择会把「全关」当成非法开局拦下来）；
+## 直接运行 map.tscn 这类绕过界面的情况由 map.gd 自己兜底。
 func normalizeSlots() -> void:
 	var seen := {}
 	for i in playerSlots.size():
 		var r: int = playerSlots[i]
-		if r == SLOT_P1 or r == SLOT_P2:
+		if r >= SLOT_P1 and r <= SLOT_P4:
 			if seen.has(r):
 				playerSlots[i] = SLOT_OFF
 			else:
 				seen[r] = true
-	if playerSlotHumans() == 0:
-		var placed := false
-		for i in playerSlots.size():
-			if playerSlots[i] != SLOT_OFF:
-				playerSlots[i] = SLOT_P1
-				placed = true
-				break
-		if not placed:
-			playerSlots[0] = SLOT_P1
-	if playerSlotTotal() == 0:
-		playerSlots[0] = SLOT_P1
+	# 全关也允许（关卡选择会把"全关"当成非法开局拦下来）；
+	# 直接运行 map.tscn 这类绕过界面的情况由 map.gd 自己兜底
 
 
 ## 武器基本参数信息
@@ -806,6 +821,24 @@ func resetMapConfig() -> void:
 ## [32, mapSize-32] 内），所以这里要单独给一个更小的矩形。
 func getPlayRect() -> Rect2:
 	return Rect2(Vector2.ZERO, mapSize).grow(-CAMERA_MARGIN)
+
+
+# ---------------------------------------------------------------- 相机视野
+
+## 当前相机可视区域（世界坐标），由 game_camera 每帧写入
+var viewRect: Rect2 = Rect2()
+
+
+## 玩家/CPU 的可移动范围：相机视野内缩 8px，再和地图取交集。
+## 没有相机（测试场景/未初始化）时退回整张地图。
+func moveRect() -> Rect2:
+	var map := Rect2(Vector2.ZERO, mapSize)
+	if viewRect.size.x <= 0.0 or viewRect.size.y <= 0.0:
+		return map.grow(-CAMERA_MARGIN)
+	var inner := viewRect.grow(-8.0).intersection(map)
+	if inner.size.x <= 0.0 or inner.size.y <= 0.0:
+		return map
+	return inner
 
 
 # ---------------------------------------------------------------- 多源流场（方案 A）

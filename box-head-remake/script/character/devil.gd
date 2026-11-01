@@ -43,12 +43,6 @@ var target: Node2D = null
 var targetTimer: float = 0.0
 ## 出生首发延迟倒计时（原版 mFireRateCount = 5 tick）
 var firstAttackTimer: float = 0.0
-## 击退位移（单位：格/帧，Hurt 状态里再 ×cellSize）
-var knockbackDelta: Vector2 = Vector2.ZERO
-## 剩余击退帧数
-var knockbackFrames: int = 0
-
-
 ## 状态机（devil.tscn 里的 StateMachine 子节点）
 @onready var fsm: StateMachine = $StateMachine
 ## 身体受击区域
@@ -298,9 +292,17 @@ func fireFireball() -> void:
 
 ## 受伤（子弹/爆炸调用）
 ## 受击；签名与 Zombie.hit 保持一致（爆炸会传第 4 个参数）
+## 碰撞半径（体型和僵尸接近）
+func bodyRadius() -> float:
+	return 14.0
+
+
 func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
 		knockDir: Vector2 = Vector2.ZERO, fromExplosion: bool = false) -> void:
 	if isDead or dying:
+		return
+	# 还在从地图外走进来（原版 State_EnterMap）→ 打不到、也推不动
+	if not isInsidePlay():
 		return
 
 	hp -= dmg
@@ -319,17 +321,7 @@ func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
 		return
 	beginKnockback(knockDir, knockbackSpeed(dmg, fromExplosion))
 	# 硬直 = 击退帧数 + 3 tick（和僵尸同一套原版公式）
-	hurtDelay = hurtTimeFrom(knockbackFrames)
-
-
-## 由击退速度算出每帧位移（格/帧）和持续帧数（每帧衰减 0.65）
-func beginKnockback(dir: Vector2, speed: float) -> void:
-	knockbackDelta = dir.normalized() * speed / MapData.TICKS_PER_SEC / MapData.cellSize
-	knockbackFrames = 0
-	var l: float = knockbackDelta.length()
-	while l >= 0.01:
-		knockbackFrames += 1
-		l *= 0.65
+	hurtDelay = knockbackTotalTime + 3.0 / MapData.TICKS_PER_SEC
 
 
 func die() -> void:
@@ -359,4 +351,4 @@ func _physics_process(delta: float) -> void:
 	if not isDead:
 		position.x = clampf(position.x, bodySize.x / 2.0, MapData.mapSize.x - bodySize.x / 2.0)
 		position.y = clampf(position.y, bodySize.y / 2.0, MapData.mapSize.y - bodySize.y / 2.0)
-	z_index = roundi(global_position.y / MapData.cellSize) + 1
+	z_index = MapData.worldZ(global_position.y)

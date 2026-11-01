@@ -50,6 +50,10 @@ func _ready() -> void:
 	# 按格坐标生成墙和油桶（它们自带碰撞，不算静态障碍格）
 	spawnPointObjects()
 
+	# 静态墙体 / 地面的 z_index 由场景里手写维护（不再运行时重算）。
+	# 需要自动排的时候把下面这行解开：
+	# sortStaticShapes()
+
 	# 重建障碍
 	MapData.clearObstacle()
 	registerWallObstacles()
@@ -70,12 +74,87 @@ func spawnPointObjects() -> void:
 		var w: Node2D = WALL_OBJ.instantiate()
 		w.name = "wall_%d_%d" % [cell.x, cell.y]
 		w.position = Vector2(cell.x * cs + cs * 0.5, cell.y * cs + cs * 0.5)
+		w.z_index = MapData.itemZ(cell)
 		add_child(w)
 	for cell in barrelPoint:
 		var b: Node2D = BARREL_OBJ.instantiate()
 		b.name = "barrel_%d_%d" % [cell.x, cell.y]
 		b.position = Vector2(cell.x * cs + cs * 0.5, cell.y * cs + cs * 0.5)
+		b.z_index = MapData.itemZ(cell)
 		add_child(b)
+
+
+## 贴图「可见底边」相对贴图顶部的偏移（缓存，避免每张图每次扫描）
+#static var _tex_bottom: Dictionary = {}
+
+
+#func visibleBottom(tex: Texture2D) -> float:
+	#if tex == null:
+		#return 0.0
+	#var key: int = tex.get_instance_id()
+	#if _tex_bottom.has(key):
+		#return _tex_bottom[key]
+	#var img: Image = tex.get_image()
+	#var bottom: float = tex.get_size().y
+	#if img != null:
+		#var h: int = img.get_height()
+		#var w: int = img.get_width()
+		#if img.is_compressed():
+			#img.decompress()
+		#for y in range(h - 1, -1, -1):
+			#var found := false
+			#for x in range(w):
+				#if img.get_pixel(x, y).a > 0.02:
+					#found = true
+					#break
+			#if found:
+				#bottom = float(y + 1)
+				#break
+	#_tex_bottom[key] = bottom
+	#return bottom
+
+
+## 把场景里预摆的墙体精灵按「脚底 y」设置 z_index
+#func sortStaticShapes() -> void:
+	#for n in get_children():
+		#if not (n is Node2D):
+			#continue
+		#var nm: String = String(n.name)
+		#var node2d := n as Node2D
+		## 地板：压到最底（贴花在 -50）
+		#if nm == "Sprite2D" or nm == "Floor":
+			#node2d.z_index = -100
+			#continue
+		#if not (nm.begins_with("wallShape") or nm.begins_with("blk") or nm.begins_with("barrelShape")):
+			#continue
+		#var feet: float = node2d.position.y
+		#var best: float = -INF
+		#for c in node2d.find_children("*", "CanvasItem", true, false):
+			#if not (c is Sprite2D or c is AnimatedSprite2D):
+				#continue
+			#var spr := c as Node2D
+			#var tex: Texture2D = null
+			#var off := Vector2.ZERO
+			#var centered: bool = true
+			#if spr is Sprite2D:
+				#tex = (spr as Sprite2D).texture
+				#off = (spr as Sprite2D).offset
+				#centered = (spr as Sprite2D).centered
+			#else:
+				#var a := spr as AnimatedSprite2D
+				#off = a.offset
+				#centered = a.centered
+				#if a.sprite_frames != null and a.sprite_frames.get_frame_count(a.animation) > 0:
+					#tex = a.sprite_frames.get_frame_texture(a.animation, 0)
+			#if tex == null:
+				#continue
+			#var h: float = tex.get_size().y
+			#var top: float = (-h * 0.5 if centered else 0.0) + off.y
+			#var bottom: float = top + visibleBottom(tex)
+			#best = maxf(best, spr.global_position.y + bottom - node2d.global_position.y)
+		#if best > -INF:
+			#feet += best
+		#node2d.z_index = MapData.worldZ(feet)
 
 
 ## 从所有墙体 StaticBody2D 的矩形碰撞盒推导障碍格

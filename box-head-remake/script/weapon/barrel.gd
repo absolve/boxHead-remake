@@ -31,7 +31,7 @@ func fire(_v: Vector2) -> void:
 
 	var temp = barrelObj.instantiate()
 	temp.global_position = center
-	temp.z_index = cell.y
+	temp.z_index = MapData.itemZ(cell)
 	temp.damage = damage
 	temp.biggerBang = biggerBang
 	temp.clusterExplode = clusterExplode

@@ -15,7 +15,10 @@ func tick(actor: Node, _blackboard: Blackboard) -> int:
 		return FAILURE
 
 	var dir := b.patrolMove()
-	p.cpuMoveDir = dir
+	if dir == Vector2.ZERO:
+		b.steer(Vector2.ZERO)
+	else:
+		b.steer(dir, 500)
 	if dir != Vector2.ZERO:
 		p.cpuAimDir = dir
 	return RUNNING

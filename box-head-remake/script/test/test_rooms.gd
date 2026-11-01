@@ -268,7 +268,11 @@ func _process(delta: float) -> void:
 	if hoverLabel != null:
 		if hoverCell.x >= 0:
 			hoverLabel.visible = true
-			hoverLabel.text = "第 %d 列  第 %d 行" % [hoverCell.x, hoverCell.y]
+			# 列/行 + 这一格的格子中心世界坐标（道具/角色的摆位都按中心算）
+			var center: Vector2 = MapData.cellCenter(hoverCell)
+			var local: Vector2 = mp - center
+			hoverLabel.text = "第 %d 列  第 %d 行   中心 (%d, %d)   偏移 (%+.1f, %+.1f)" % [
+				hoverCell.x, hoverCell.y, int(center.x), int(center.y), local.x, local.y]
 			# 默认放在光标右下；贴近右/下边缘时翻到另一侧，保证始终可见
 			var screen: Vector2 = get_viewport().get_mouse_position()
 			var vp: Vector2 = get_viewport().get_visible_rect().size

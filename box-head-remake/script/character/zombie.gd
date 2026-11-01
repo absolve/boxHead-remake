@@ -143,10 +143,6 @@ var lastNavGrid: Vector2i = Vector2i(-9999, -9999)
 var reservedCell: Vector2i = Vector2i(-9999, -9999)
 ## 正在走去的目标格（到达后它就是新占据的格子）
 var moveTargetCell: Vector2i = Vector2i(-9999, -9999)
-## 击退位移（每帧衰减 0.65，原版 mDelta）
-var knockbackDelta: Vector2 = Vector2.ZERO
-## 击退剩余帧数（原版 mStateCount）
-var knockbackFrames: int = 0
 
 
 ## 状态机（zombie.tscn 里的 StateMachine 子节点）
@@ -562,6 +558,9 @@ func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
 		knockDir: Vector2 = Vector2.ZERO, fromExplosion: bool = false) -> void:
 	if isDead or dying:
 		return
+	# 还在从地图外走进来（原版 State_EnterMap）→ 打不到、也推不动
+	if not isInsidePlay():
+		return
 
 	hp -= dmg
 	# 地面血迹：受伤溅一点，致命一击溅大一点
@@ -587,7 +586,7 @@ func hit(dmg: int, _attackPos: Vector2 = Vector2.ZERO,
 	# beginKnockback 内部会归一化，这里不需要 angle ↔ vector 来回换算。
 	beginKnockback(knockDir, knockbackSpeed(dmg, fromExplosion))
 	# 硬直 = 击退帧数 + 3 tick（原版 State_BulletHit_Init + State_Sleep 3）
-	hurtDelay = hurtTimeFrom(knockbackFrames)
+	hurtDelay = knockbackTotalTime + 3.0 / MapData.TICKS_PER_SEC
 
 
 ## 死亡：切到 Dead 状态并发出击杀信号
@@ -834,17 +833,17 @@ func clearReservation() -> void:
 		reservedCell = Vector2i(-9999, -9999)
 
 
-## 原版 State_BulletHit_Init：由击退初速算出衰减帧数
+## 对应原版 State_BulletHit_Init：击退初速（连续衰减在 Character 基类里）
+## 碰撞半径：原版 SetRadius(0.45) × 32
+func bodyRadius() -> float:
+	return 14.4
+
+
 func beginKnockback(dir: Vector2, knockSpeed: float) -> void:
-	# knockSpeed 是 px/s（不与成员变量 speed 同名）；hurt 里按 delta * cellSize 使用
-	knockbackDelta = dir.normalized() * knockSpeed / MapData.TICKS_PER_SEC / MapData.cellSize
-	knockbackFrames = 0
-	var l: float = knockbackDelta.length()
-	while l >= 0.01:
-		knockbackFrames += 1
-		l *= 0.65
+	super.beginKnockback(dir, knockSpeed)
+	# 原版：如果已经在静态障碍格里，直接把 mDelta 清零（不推）
 	if MapData.isObstacle(gridPosition()):
-		knockbackDelta = Vector2.ZERO
+		clearKnockback()
 
 
 ## 对应原版 CreatureCollide：圆形位置修正
@@ -960,7 +959,7 @@ func _physics_process(delta: float) -> void:
 		# 用可玩矩形会被直接推到 y=32，看起来就是出生时瞬移 16px。
 		position.x = clampf(position.x, 0.0, MapData.mapSize.x)
 		position.y = clampf(position.y, 0.0, MapData.mapSize.y)
-	z_index = roundi(global_position.y / MapData.cellSize) + 1
+	z_index = MapData.worldZ(global_position.y)
 
 	# 卡住检测：这一帧几乎没挪动就累加，动了就清零
 	if global_position.distance_to(lastPhysPos) < 0.3:

@@ -98,7 +98,12 @@ func hitOrigin() -> Vector2:
 ## 视觉枪口有偏移，判定从身体中心出发，所以把偏移长度补进射程，
 ## 保证 8 个方向的有效距离一致。
 func hitEnd(dir: Vector2) -> Vector2:
-	return hitOrigin() + dir * (float(wRange) + muzzleOffset(dir).length())
+	var r: float = float(wRange)
+	# 火箭筒没有 wRange（靠弹丸撞），AI 的视线检测需要一个有效射程，
+	# 否则射线长度为 0 → shotHitsTarget 永远 false → CPU 死活不开火
+	if r <= 0.0 and type == Game.weaponType.Rocket:
+		r = 320.0
+	return hitOrigin() + dir * (r + muzzleOffset(dir).length())
 
 
 ## 曳光终点（局部坐标）

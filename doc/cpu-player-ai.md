@@ -26,7 +26,7 @@ CPU 玩家 = **低频决策（Beehave，10Hz 左右）+ 每帧执行（现有 Id
 
 | 已有能力 | 位置 | 说明 |
 |---|---|---|
-| 4 个玩家槽位、1P/2P/CPU | [mapData.gd:74-84](file:///F:/boxHead-remake/box-head-remake/autoload/mapData.gd#L74) | `playerSlots`，关卡选择界面已接好 |
+| 4 个玩家槽位、1P~4P/CPU | [mapData.gd:74-84](file:///F:/boxHead-remake/box-head-remake/autoload/mapData.gd#L74) | `playerSlots`，关卡选择界面已接好 |
 | 按槽位生成玩家 | [map.gd:150-168](file:///F:/boxHead-remake/box-head-remake/script/map.gd#L150) | CPU 用 `playerId = 3,4,5` |
 | CPU 开关 | [player.gd:28](file:///F:/boxHead-remake/box-head-remake/script/character/player.gd#L28) | `isCpu`；挂了 `CpuBrain` 走行为树，没挂则退回内联临时 AI |
 | 临时 AI（回退） | [player.gd:800](file:///F:/boxHead-remake/box-head-remake/script/character/player.gd#L800) | `cpuUpdateAi()`：索敌 + 保持距离 + 开火 + 卡住绕行（P4 删除） |
@@ -604,7 +604,9 @@ else:
 const CPU_BRAIN_SCRIPT := preload("res://script/ai/cpu_brain.gd")
 ...
 if role == MapData.SLOT_CPU:
-	p.playerId = 3 + cpuIndex
+	# CPU 用 5 起的编号，避开 1P~4P 的 1~4
+	p.playerId = 5 + cpuIndex
+	p.cpuIndex = cpuIndex
 	cpuIndex += 1
 	p.isCpu = true
 	var brain: Node = CPU_BRAIN_SCRIPT.new()
@@ -639,4 +641,91 @@ if role == MapData.SLOT_CPU:
 - 正式地图的 CPU 确实拿到了 `CpuBrain`
 - 人类死亡后 `isSolo() == true`，策略立刻切到巡逻（当时场上无敌人）；有敌人时会切 KITER
 
+### 13.8 第五轮：低血逃跑不再"墙角摇摆"（2026-10-31）
 
+**问题**（用户实测）：血量低、场上几只恶魔时，CPU 会缩在角落里左右摇摆——
+既逃不出去，也不打，看起来像卡住。
+
+**原因**：
+
+1. `survive.gd` / `retreat.gd` 每帧重新算「远离最近敌人」的方向，目标一换方向就翻转；
+2. 被墙挡住时退回 `cpuFieldAwayDir`，在墙角两个方向来回失效 → 原地抖；
+3. `canStepTo()` 把 **敌人格子** 也当障碍，几只恶魔围住就"无路可走"，只能原地；
+4. 远处一只僵尸也会触发恐慌，实际它根本追不上。
+
+**改法**：
+
+| 位置 | 改动 |
+|---|---|
+| `CpuBrain.fleeDirection(threatPos)` | 新增。八方向打分：远离威胁（×1.6）+ 前方开阔度（×0.7）+ 朝场地中心（×1.0），贴墙目标点额外扣 1.5；**每 0.7 秒才重选一次**（`fleeDir` / `fleeUntilMs` 承诺） |
+| `CpuBrain.canFleeTo()` | 逃跑专用可走性：只判地图边界 + 静态障碍，**不把敌人当障碍**（敌人可以从面前走过去） |
+| `survive.gd` / `retreat.gd` | 改用 `fleeDirection()`；返回 `ZERO`（四面被堵死）时 **返回 FAILURE**，让 combat 接管就地反击，而不是原地抖 |
+| `should_survive.gd` | 敌人在 6 格外不逃；僵尸在 2.5 格外不逃（近战慢，追不上） |
+| `should_retreat.gd` | 同上：僵尸 2.5 格外不撤，只有恶魔才拉距离 |
+| `CpuBrain.scan()` | `_validEnemy(target)` 前先判 `is_instance_valid`，修掉敌人被 free 后 `previously freed` 报错刷屏 |
+
+**实测**（`tools/qa/qa_flee.tscn`，CPU 血量 15%、贴在可玩区域角落、3 只恶魔围 2~3 格，8 秒采样）：
+
+| 指标 | 结果 |
+|---|---|
+| 方向反转 | 3~6 次 / 8 秒（阈值 12）✅ |
+| 离开角落 | 最远 87~94px ✅ |
+| 移动路径 | 65~85px ✅ |
+| 只有僵尸时（5 秒） | 移动 229px、继续输出 ✅ |
+
+**回归**：`qa_runner` 46、`qa_weapons` 19、`qa_upgrades` 14、`qa_allcpu` 13、
+`qa_cpu_battle` 5、`qa_entry` 14、`qa_flee` 3，全部通过。
+
+> 顺带修了 `qa_entry` 的环境隔离：`quietMap()` 关刷怪清敌人、`setCpusPaused()`
+> 暂停 CPU——CPU 修好后会开枪打测试僵尸，击退方向不可控（曾导致 Mass/Pickup 假失败）。
+
+
+### 13.9 第六轮：走位去抖（2026-10-31）
+
+**问题**（用户实测）：CPU 打敌人时来回小幅移动，尤其斜着抖，不像人操作。
+
+**原因**：
+
+1. 距离带只有 ±24/32px，目标稍微动一下就在"前进/后退"之间反复切换；
+2. 每帧重新算方向、直接写 `cpuMoveDir`，没有方向承诺；
+3. 被挡住时 `pathDir` 回退到距离场方向，下一帧又变回直线 → 左右抖。
+
+**改法**：
+
+| 位置 | 改动 |
+|---|---|
+| `CpuBrain.steer(dir, holdMs=400)` | 新增：方向吸附到 **8 方向**（≈键盘 WASD），并保持 0.4 秒；方向变化 < 25° 继续沿用旧方向 |
+| `CpuBrain.strafeDirection()` | 遮挡侧移方向每 1.2 秒才可能换边，不再每帧左右翻 |
+| `move_to_range.gd` | **能打到就完全站定**（`steer(ZERO)`）：只要射线第一命中是目标或另一只敌人就停；打不到才按距离接近/后退/侧移 |
+| `fire_if_safe.gd` | 第一命中是「另一只敌人」时也开火（打谁都掉血），只有墙/油桶/队友挡路才不开火 |
+| `patrol.gd` | 也走 `steer`（巡逻时不再碎步） |
+
+**实测**（CPU 与一只僵尸对峙 6 秒，10Hz 采样）：
+
+| 指标 | 结果 |
+|---|---|
+| 采样帧 | 59 |
+| 移动帧 | 9（只在接近阶段） |
+| 斜向移动帧 | **0** |
+| 方向切换（夹角 > 45°） | **0** |
+| 距离带内还在移动 | 4（跨带瞬间） |
+
+**回归**：qa_allcpu 13、qa_cpu_battle 5、qa_entry 14、qa_flee 3，全部通过。
+
+
+**补充（同日第二轮）**：上一轮只做了"距离带内站定"，实测 CPU 仍会在僵尸贴脸时后撤、被别的僵尸挡住时来回侧移。
+这轮改成：
+
+- 先打一条射线，**第一命中是目标或任意敌人 → 原地开枪**，不再后退/侧移；
+- 只有第一命中是墙/油桶/队友，才按距离接近、后退或侧移（侧移方向 1.2 秒才换边）；
+- `fire_if_safe` 同步放宽：挡路的是敌人时也扣扳机。
+
+实测（4 CPU，20 秒实战，10Hz 采样）：
+
+| 指标 | 僵尸战 | 僵尸+恶魔 |
+|---|---|---|
+| 有目标帧 | 836 | 746 |
+| 能打中目标帧 | 649 | 517 |
+| 能打中却还在移动 | **9（1.4%）** | **20（3.9%）** |
+
+恶魔那 3.9% 主要是躲火球的 `dodge`，属于刻意行为。

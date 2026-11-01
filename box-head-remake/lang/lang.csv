@@ -32,16 +32,16 @@ _start_game,Start Game,开始游戏
 _instructions,Instructions,操作说明
 start game,Start Game,开始游戏
 Pistol+: Fast Fire,Pistol+: Fast Fire,手枪+：快速射击
-New Weapon: UZI,New Weapon: UZI,新武器：UZI
+New Weapon: UZI,New Weapon: UZI,新武器：乌兹
 Pistol+: Double Damage,Pistol+: Double Damage,手枪+：双倍伤害
 New Weapon: Shotgun,New Weapon: Shotgun,新武器：霰弹枪
-UZI+: Rapid Fire,UZI+: Rapid Fire,UZI+：极速连射
+UZI+: Rapid Fire,UZI+: Rapid Fire,乌兹+：极速连射
 New Weapon: Barrel,New Weapon: Barrel,新武器：油桶
-UZI+: Double Ammo,UZI+: Double Ammo,UZI+：双倍弹药
+UZI+: Double Ammo,UZI+: Double Ammo,乌兹+：双倍弹药
 Shotgun+: Fast Fire,Shotgun+: Fast Fire,霰弹枪+：快速射击
 New Weapon: Grenade,New Weapon: Grenade,新武器：手榴弹
 Shotgun+: Double Ammo,Shotgun+: Double Ammo,霰弹枪+：双倍弹药
-UZI+: Long Shot,UZI+: Long Shot,UZI+：射程提升
+UZI+: Long Shot,UZI+: Long Shot,乌兹+：射程提升
 Barrel+: Double Ammo,Barrel+: Double Ammo,油桶+：双倍弹药
 New Weapon: Fake walls,New Weapon: Fake walls,新武器：墙
 Shotgun+: Wide Shot,Shotgun+: Wide Shot,霰弹枪+：散射扩大
@@ -50,7 +50,7 @@ Grenade+: Cluster Explode,Grenade+: Cluster Explode,手榴弹+：分裂爆炸
 Shotgun+: Long Shot,Shotgun+: Long Shot,霰弹枪+：射程提升
 Barrel+: Quad Ammo,Barrel+: Quad Ammo,油桶+：四倍弹药
 Fake Wall+: Double Ammo,Fake Wall+: Double Ammo,墙+：双倍弹药
-UZI+: Quad Ammo,UZI+: Quad Ammo,UZI+：四倍弹药
+UZI+: Quad Ammo,UZI+: Quad Ammo,乌兹+：四倍弹药
 New Weapon: Claymore,New Weapon: Claymore,新武器：地雷
 Shotgun+: Quad Ammo,Shotgun+: Quad Ammo,霰弹枪+：四倍弹药
 Grenade+: Double Ammo,Grenade+: Double Ammo,手榴弹+：双倍弹药
@@ -58,7 +58,7 @@ Shotgun+: Rapid Fire,Shotgun+: Rapid Fire,霰弹枪+：极速连射
 Barrel+: Bigger Bang,Barrel+: Bigger Bang,油桶+：超大爆炸
 Grenade+: Big Bang,Grenade+: Big Bang,手榴弹+：大爆炸
 Claymore+: Cluster Explode,Claymore+: Cluster Explode,地雷+：分裂爆炸
-UZI+: Double Damage,UZI+: Double Damage,UZI+：双倍伤害
+UZI+: Double Damage,UZI+: Double Damage,乌兹+：双倍伤害
 New Weapon: Rocket,New Weapon: Rocket,新武器：火箭
 Shotgun+: Wider Shot,Shotgun+: Wider Shot,霰弹枪+：散射更广
 Grenade+: Quad Ammo,Grenade+: Quad Ammo,手榴弹+：四倍弹药
@@ -69,7 +69,7 @@ Shotgun+: Double Damage,Shotgun+: Double Damage,霰弹枪+：双倍伤害
 Grenade+: Bigger Bang,Grenade+: Bigger Bang,手榴弹+：超大爆炸
 Claymore+: Big Bang,Claymore+: Big Bang,地雷+：大爆炸
 Rocket+: Fast Fire,Rocket+: Fast Fire,火箭+：快速射击
-UZI+: Infinate Range,UZI+: Infinate Range,UZI+：无限射程
+UZI+: Infinate Range,UZI+: Infinate Range,乌兹+：无限射程
 Claymore+: Bigger Bang,Claymore+: Bigger Bang,地雷+：超大爆炸
 Charge Pack+: Cluster Explode,Charge Pack+: Cluster Explode,充电包+：分裂爆炸
 Claymore+: Quad Ammo,Claymore+: Quad Ammo,地雷+：四倍弹药
@@ -82,7 +82,7 @@ Charge Pack+: Quad Ammo,Charge Pack+: Quad Ammo,充电包+：四倍弹药
 Railgun+: Fast Fire,Railgun+: Fast Fire,电磁炮+：快速射击
 Railgun+: Double Ammo,Railgun+: Double Ammo,电磁炮+：双倍弹药
 Rocket+: Quad Ammo,Rocket+: Quad Ammo,火箭+：四倍弹药
-UZI+: Quad Damage,UZI+: Quad Damage,UZI+：四倍伤害
+UZI+: Quad Damage,UZI+: Quad Damage,乌兹+：四倍伤害
 Charge Pack+: Bigger Bang,Charge Pack+: Bigger Bang,充电包+：超大爆炸
 Railgun+: Rapid Fire,Railgun+: Rapid Fire,电磁炮+：极速连射
 Rocket+: Bigger Bang,Rocket+: Bigger Bang,火箭+：超大爆炸
@@ -181,3 +181,19 @@ Fire,Fire,射击
 Players:,Players:,玩家：
 PAUSED,PAUSED,已暂停
 ESC to resume,ESC to resume,ESC 继续游戏
+Pistol,Pistol,手枪
+UZI,UZI,乌兹
+Shotgun,Shotgun,霰弹枪
+Rocket,Rocket,火箭
+Grenade,Grenade,手榴弹
+Mine,Mine,地雷
+Claymore,Claymore,地雷
+Barrel,Barrel,油桶
+Wall,Wall,墙
+ChargePack,ChargePack,充电包
+Railgun,Railgun,电磁炮
+Life,Life,生命
++++Level %d +++,+++Level %d +++,+++第 %d 波+++
+Level %d,Level %d,第 %d 关
+Select at least one player (1P / 2P / CPU),Select at least one player (1P / 2P / CPU),至少选择 1 个玩家（1P / 2P / CPU）
+"Up to 4 local players: 1P~4P, or fill with CPU","Up to 4 local players: 1P~4P, or fill with CPU",最多 4 人：1P~4P 各一个，也可以选 CPU（本地 4 人）

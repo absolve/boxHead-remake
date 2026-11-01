@@ -26,7 +26,7 @@ func fire(_v: Vector2) -> void:
 
 	var temp = wallObj.instantiate()
 	temp.global_position = center
-	temp.z_index = cell.y
+	temp.z_index = MapData.itemZ(cell)
 	temp.blocksPath = true
 	temp.cell = cell
 

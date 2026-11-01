@@ -25,6 +25,7 @@ extends "res://script/item/item.gd"
 
 ## 初始化
 func _ready() -> void:
+	add_to_group("box")
 	# 如果设置了过期时间，启动计时器
 	if expiredTime != 0:
 		timer.start(expiredTime)
@@ -33,13 +34,20 @@ func _ready() -> void:
 ## 玩家进入碰撞区域时触发
 # @param body 进入的玩家身体节点
 func _on_body_entered(body: Node2D) -> void:
-	content = rollContent(body)
+	# 只有玩家能开箱：僵尸/恶魔/其它 CharacterBody2D 碰上来会没有 pickItem（Devil 报错就是这个）
+	if body == null or not body.has_method("pickItem"):
+		return
+	content = rollContent(body) as Game.boxContent
 
-	# 让玩家拾取物品
-	body.pickItem(content)
+	# 让玩家拾取物品。
+	# 不能在 body_entered 回调里直接加武器节点（物理回调中改碰撞体会报
+	# area_set_shape_disabled 错误），所以延后一帧执行。
+	var b := body
+	var c = content
+	b.call_deferred("pickItem", c)
 
 	# 显示拾取通知
-	Game.notice.emit("%s %s" % [tr("Pickup"), Game.getBoxContentName(content)])
+	Game.notice.emit("%s %s" % [tr("Pickup"), tr(Game.getBoxContentName(c))])
 
 	queue_free()
 

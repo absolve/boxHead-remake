@@ -12,6 +12,15 @@ extends Node2D
 ## 飘分最低显示阈值：低于这个分数不弹 "+N"
 ## （连杀倍率 1 时的 100 分太频繁，不显示；倍率 ≥2 才飘）
 const SCORE_POPUP_MIN: int = 200
+## 飘分动画参数（原版 CHud.AddScore：每 25Hz tick 位置 += delta，delta *= 1.05）
+const SCORE_POPUP_SPEED: float = 125.0      # 5px/tick * 25 ticks/s
+const SCORE_POPUP_ACCEL: float = 1.2199     # ln(1.05) * 25
+
+## 连杀衰减计时器（原版 CUpgrades 的 mMultiplierTick）
+var streakDecayTimer: Timer = null
+
+## 正在飞的飘分标签
+var scorePopups: Array = []
 ## CPU 玩家的行为树大脑（槽位选 CPU 时挂到玩家下）
 const CPU_BRAIN_SCRIPT := preload("res://script/ai/cpu_brain.gd")
 ## 敌人速度倍率（原版 CUpgrades：SpeedUp = min(1 + 等级/10, 5)）
@@ -45,8 +54,9 @@ var zombieCount: int = 10
 ## 当前波次恶魔总数
 # 原版曲线：第 1 关 0 只，之后约 floor(0.25L + 0.5)，即 0 / 1 / 1 / 1 / 1 / 2 …
 var devilCount: int = 0
-## 所有出生点及其分配的敌人数量
-var allSpawnPoint: Array = []
+## 本波还没刷出来的数量（每次从所有出生点里随机挑一个刷）
+var zombiesLeft: int = 0
+var devilsLeft: int = 0
 ## 流场更新延迟（帧数）
 var updateFlowFieldDelay: int = 60
 ## 流场更新计时器
@@ -86,12 +96,22 @@ var awaitingResurrectionPlayer: Array = [] # 等待复活的玩家列表
 ## 僵尸声音播放计时器
 @onready var soundTimer: Timer = $soundTimer
 @onready var resurrectionTimer: Timer = $resurrectionTimer
+## 左上角 FPS / 关卡信息
+@onready var fpsLabel: Label = $ui/fpsLabel
+@onready var levelLabel: Label = $ui/levelLabel
 
 
 ## 初始化
 func _ready() -> void:
+	updateLevelLabel()
+	# 连杀衰减计时器：按原版 GetTicks 公式逐级衰减
+	streakDecayTimer = Timer.new()
+	streakDecayTimer.one_shot = true
+	streakDecayTimer.timeout.connect(_on_streak_decay_timeout)
+	add_child(streakDecayTimer)
 	# 按 selectedMapId 创建房间（必须在用到 room 之前）
 	swapRoom()
+	updateLevelLabel()
 
 	RenderingServer.set_default_clear_color(Color("#EDE2CF"))
 	# 设置地图大小
@@ -125,7 +145,15 @@ func _ready() -> void:
 	# 槽位来自关卡选择界面：0 关闭 / 1 1P / 2 2P / 3 CPU
 	playerSpawnPoint = room.playerSpawnPoint
 	MapData.normalizeSlots()
+	# 兜底：没有任何玩家（正常从关卡选择进来会被拦），直接跑场景时至少给一个 1P
+	if MapData.playerSlotTotal() == 0:
+		push_warning("map: 所有槽位都是关闭，强制使用 1P")
+		MapData.playerSlots[0] = MapData.SLOT_P1
 	var cpuIndex := 0
+	# 出生点按「第几个玩家」分配，不能按槽位值：
+	# 4 个 CPU 的槽位都是 SLOT_CPU(5)，按槽位取会全挤到最后一个出生点
+	var spawnIndex := 0
+	var takenSpawns: Array = []
 	for slot in range(MapData.playerSlots.size()):
 		var role: int = MapData.playerSlots[slot]
 		if role == MapData.SLOT_OFF:
@@ -133,7 +161,9 @@ func _ready() -> void:
 		var p = player.instantiate()
 		# playerId 决定用哪套按键（p1_*..p4_*）和颜色；CPU 用 3 起的编号，不读按键
 		if role == MapData.SLOT_CPU:
-			p.playerId = 3 + cpuIndex
+			# CPU 用 5 起的编号，避开 1P~4P 的 1~4
+			p.playerId = 5 + cpuIndex
+			p.cpuIndex = cpuIndex
 			cpuIndex += 1
 			p.isCpu = true
 			# 等玩家真正进树后再挂大脑：CpuBrain._ready 里要 player.add_child(感知区)，
@@ -145,8 +175,14 @@ func _ready() -> void:
 			, CONNECT_ONE_SHOT)
 		else:
 			p.playerId = role
-		var sp = playerSpawnPoint[mini(slot, playerSpawnPoint.size() - 1)]
-		p.global_position = findFreeSpawn(sp.global_position)
+		p.colorIndex = slot
+		p.spawnSlot = spawnIndex
+		var spawnPos: Vector2 = MapData.getPlayRect().get_center()
+		if playerSpawnPoint.size() > 0:
+			spawnPos = playerSpawnPoint[mini(spawnIndex, playerSpawnPoint.size() - 1)].global_position
+		p.global_position = findPlayerSpawn(spawnPos, takenSpawns)
+		takenSpawns.append(p.global_position)
+		spawnIndex += 1
 		add_child.call_deferred(p)
 	MapData.playerCount = MapData.playerSlotTotal()
 
@@ -222,6 +258,12 @@ func applyWaveQuota() -> void:
 	var q := waveQuota(currWave + 1)
 	zombieCount = q.zombie
 	maxZombieCount = q.zombieAlive
+	# 设置里关掉恶魔就一只都不刷
+	# （之前这个开关只被设置面板读写，没有任何生成逻辑读它，等于摆设）
+	if not bool(MapData.mapConfig.get("Devils", true)):
+		devilCount = 0
+		maxDevilCount = 0
+		return
 	devilCount = q.devil
 	maxDevilCount = q.devilAlive
 
@@ -231,35 +273,50 @@ func applyWaveQuota() -> void:
 func startNextWave() -> void:
 	SoundUtil.playStartLevel()
 
-	# 获取所有敌人出生点，平均分配敌人数量
-	allSpawnPoint = []
-	var sp = room.zombieSpawnPoint
+	var sp: Array = room.zombieSpawnPoint
 	if sp.size() <= 0:
 		# 房间没摆僵尸出生点：跳过本波，避免除零
 		push_warning("startNextWave: room.zombieSpawnPoint 为空，跳过第 %d 波" % (currWave + 1))
+		zombiesLeft = 0
+		devilsLeft = 0
 		nextWaveTimer.start()
 		return
-	var num: int = zombieCount / sp.size()
-	for i in sp:
-		allSpawnPoint.append({'obj': i, 'num': num})
 
-	# 处理余数，将多余敌人分配到第一个出生点
-	if num * sp.size() < zombieCount:
-		allSpawnPoint[0].num += zombieCount - num * sp.size()
-
-	# 恶魔：按 devilCount 分配到恶魔出生点（原版 Devil_Count）
-	if devilCount > 0 and room.devilSpawnPoint.size() > 0:
-		var dsp: Array = room.devilSpawnPoint
-		var dnum: int = maxi(devilCount / dsp.size(), 1)
-		for i in dsp:
-			allSpawnPoint.append({'obj': i, 'num': dnum})
-		print("[%s] 本波恶魔 %d 只，出生点 %d 个" % [name, devilCount, dsp.size()])
+	# 原版 CWorld.Spawn_Zombie：每次刷怪都从出生点列表里**随机**挑一个能用的，
+	# 不是平均分配，也不是固定顺序。这里照做：只记"还剩几只"。
+	zombiesLeft = zombieCount
+	devilsLeft = 0
+	if devilCount > 0:
+		if room.devilSpawnPoint.is_empty():
+			# 房间没有恶魔出生点 → 本波一只恶魔也刷不出来（原版按标记点生成）
+			push_warning("%s: 本波要刷 %d 只恶魔，但房间没有恶魔出生点，已跳过" % [name, devilCount])
+		else:
+			devilsLeft = devilCount
+			print("[%s] 本波恶魔 %d 只，出生点 %d 个" % [name, devilCount,
+				room.devilSpawnPoint.size()])
 
 	# 启动生成计时器
 	spawnTimer.start()
 
 	# 显示波次开始提示
-	notice('+++Level %d +++' % (currWave + 1), Color.GREEN)
+	notice(tr("+++Level %d +++") % (currWave + 1), Color.GREEN)
+	updateLevelLabel()
+
+
+## 原版 Spawn_ValidPosition：随机起点，向后找第一个没被挡住的出生点
+func pickSpawnPoint(list: Array) -> Node2D:
+	var n: int = list.size()
+	if n <= 0:
+		return null
+	var start: int = randi() % n
+	for k in range(n):
+		var p = list[(start + k) % n]
+		if p == null or not is_instance_valid(p):
+			continue
+		if p.hasBlock():
+			continue
+		return p
+	return null
 
 
 ## 添加敌人到场景
@@ -336,6 +393,9 @@ func enemyKilled(pos: Vector2, baseScore: int = 100) -> void:
 	var gained: int = baseScore * maxi(MapData.currKillStreak, 1)
 	MapData.score += gained
 
+	# 连杀衰减计时（连杀越高，衰减越快）
+	restartStreakDecay()
+
 	# 死亡点飘分（原版 CHud.AddScore）
 	spawnScorePopup(pos, gained)
 
@@ -348,20 +408,35 @@ func enemyKilled(pos: Vector2, baseScore: int = 100) -> void:
 	countAniNode.speed_scale = 1 + 0.1 * (MapData.currKillStreak / 10)
 	countAniNode.play("default")
 
-	if MapData.currKillStreak > 0  and  MapData.currKillStreak%MapData.killRewardBox == 0:
-		var boxs = get_tree().get_nodes_in_group("box")
-		var flag = true
-		var tempPos = Vector2(int(pos.x / MapData.cellSize), int(pos.y / MapData.cellSize))
-		for i in boxs:
-			if tempPos.is_equal_approx(Vector2(int(i.global_position.x / MapData.cellSize),
-					int(i.global_position.x / MapData.cellSize))):
-				flag = true
-				break
-		if not flag:
-			var temp = box.instantiate()
-			temp.global_position = tempPos * MapData.cellSize + MapData.cellSize / 2
-			temp.expiredTime = 15
-			add_child(temp)
+	# 原版 CWorld.LogKill：恶魔必掉补给箱；僵尸按连杀倍数掉。
+	var isDevil: bool = baseScore >= 1000
+	if isDevil or (MapData.currKillStreak > 0 and MapData.currKillStreak % MapData.killRewardBox == 0):
+		spawnRewardBox(pos)
+
+
+## 在死亡点掉一个补给箱（原版 CWorld._CreatePickup：墙里不放，10 秒后消失）
+func spawnRewardBox(pos: Vector2) -> void:
+	var cell: Vector2i = MapData.worldToCell(pos)
+	if MapData.isObstacle(cell):
+		return
+	# 同一格已经有箱子就不重复放
+	for i in get_tree().get_nodes_in_group("box"):
+		if is_instance_valid(i) and MapData.worldToCell((i as Node2D).global_position) == cell:
+			return
+	var temp = box.instantiate()
+	temp.global_position = MapData.cellCenter(cell)
+	temp.expiredTime = 15
+	add_child(temp)
+
+
+## 左上角关卡标题：第 N 关 + 房间名
+func updateLevelLabel() -> void:
+	if levelLabel == null:
+		return
+	var roomName := ""
+	if room != null and room.scene_file_path != "":
+		roomName = room.scene_file_path.get_file().get_basename()
+	levelLabel.text = "%s   %s" % [tr("Level %d") % (currWave + 1), roomName]
 
 
 ## 显示消息通知
@@ -417,47 +492,72 @@ func playerDead() -> void:
 		resurrectionTimer.start()
 
 
-## 连杀动画结束回调
-# 递减连杀计数，最小减到1
+## 连杀动画结束回调（衰减改由 streakDecayTimer 控制，这里不再递减）
 func _on_count_ani_animation_finished() -> void:
+	pass
+
+
+## 原版 CUpgrades.GetTicks：连杀越高，衰减越快
+##   index = 100 - (min(streak,100)-1)
+##   ticks = index^2.5 / 100000 * (FPS*3 - 3) + 3
+func streakDecayTicks(streak: int) -> float:
+	var idx: float = 100.0 - (minf(float(streak), 100.0) - 1.0)
+	return pow(idx, 2.5) / 100000.00000000003 * (MapData.TICKS_PER_SEC * 3.0 - 3.0) + 3.0
+
+
+## 当前连杀等级下，衰减一步需要多少秒
+func streakDecaySeconds(streak: int) -> float:
+	return streakDecayTicks(streak) / float(MapData.TICKS_PER_SEC)
+
+
+## 每次击杀后：按当前连杀数重置衰减计时
+func restartStreakDecay() -> void:
+	streakDecayTimer.stop()
+	if MapData.currKillStreak <= 1:
+		return
+	var dur: float = streakDecaySeconds(MapData.currKillStreak)
+	streakDecayTimer.start(maxf(dur, 0.04))
+	# 连杀动画也跟着变快（动画时长 / 衰减时长）
+	var speed: float = countAniNode.sprite_frames.get_animation_speed("default")
+	var frames: int = countAniNode.sprite_frames.get_frame_count("default")
+	var animLen: float = float(frames) / maxf(speed, 1.0)
+	countAniNode.speed_scale = clampf(animLen / maxf(dur, 0.04), 1.0, 60.0)
+
+
+func _on_streak_decay_timeout() -> void:
 	if MapData.currKillStreak - 1 >= 1:
 		MapData.currKillStreak -= 1
 		countNode.text = str('x', MapData.currKillStreak)
-
-		@warning_ignore("integer_division")
-		countAniNode.speed_scale = 1 + 0.1 * (MapData.currKillStreak / 10)
-
-		if MapData.currKillStreak >= 0:
-			countAniNode.play("default")
+		countAniNode.play("default")
+		restartStreakDecay()
 
 
 ## 生成计时器超时回调
 # 检查每个出生点，如果没有被阻挡且还有剩余敌人，生成一个敌人
 # 同屏数量达到本波上限（maxZombieCount）时先不刷，等场上有空位再继续
 func _on_spawn_timer_timeout() -> void:
-	# 同屏上限：原版 Zombie_Count，避免一次性把整波都倒进场上
-	if aliveEnemies(Game.mapSign.Zombie) >= maxZombieCount:
-		spawnTimer.start()
-		return
+	# 同屏上限：原版 Zombie_Count / Devil_Count，避免一次性把整波都倒进场上
+	var spawned := false
 
-	for i in allSpawnPoint:
-		if not i.obj.hasBlock()  and  i.num > 0:
-			if aliveEnemies(Game.mapSign.Zombie) >= maxZombieCount:
-				break
-			addEnemy(i.obj)
-			i.num -= 1
-			await get_tree().create_timer(1).timeout
+	if zombiesLeft > 0 and aliveEnemies(Game.mapSign.Zombie) < maxZombieCount:
+		var p: Node2D = pickSpawnPoint(room.zombieSpawnPoint)
+		if p != null:
+			addEnemy(p)
+			zombiesLeft -= 1
+			spawned = true
 
-	# 检查是否所有敌人都已生成
-	var finalNum = 0
-	for i in allSpawnPoint:
-		finalNum += i.num
+	if devilsLeft > 0 and aliveEnemies(Game.mapSign.Devil) < maxDevilCount:
+		var d: Node2D = pickSpawnPoint(room.devilSpawnPoint)
+		if d != null:
+			addEnemy(d)
+			devilsLeft -= 1
+			spawned = true
 
-	if finalNum != 0:
-		# 还有敌人未生成，继续生成
+	if zombiesLeft > 0 or devilsLeft > 0:
+		# 还有没刷完的（包括"这次所有点都被挡住"的情况），下个 tick 继续
 		spawnTimer.start()
 	else:
-		# 所有敌人已生成，开始等待下一波
+		# 全部刷完，开始等清场
 		nextWaveTimer.start()
 
 
@@ -572,7 +672,10 @@ func pickRespawnPos(dead_player: Node2D, alivePlayers: Array) -> Vector2:
 		return MapData.cellCenter(cells[randi() % cells.size()])
 
 	# 3. 兜底
-	var fallback := mini(dead_player.playerId, playerSpawnPoint.size() - 1)
+	var want: int = int(dead_player.get("spawnSlot"))
+	if want < 0:
+		want = maxi(dead_player.playerId - 1, 0)
+	var fallback := mini(want, playerSpawnPoint.size() - 1)
 	return findFreeSpawn(playerSpawnPoint[maxi(fallback, 0)].global_position)
 
 
@@ -630,6 +733,38 @@ func findFreeSpawn(pos: Vector2) -> Vector2:
 	return pos
 
 
+## 玩家出生点：先找最近的空格，再避开已经站了人的位置（多人不能叠在一起）
+func findPlayerSpawn(base: Vector2, taken: Array) -> Vector2:
+	var pos: Vector2 = findFreeSpawn(base)
+	if spawnClear(pos, taken):
+		return pos
+
+	var cs: int = int(MapData.cellSize)
+	var cell: Vector2i = MapData.worldToCell(base)
+	var grid := Vector2i(int(MapData.mapSize.x / cs), int(MapData.mapSize.y / cs))
+	for r in range(1, 12):
+		for dx in range(-r, r + 1):
+			for dy in range(-r, r + 1):
+				if absi(dx) != r and absi(dy) != r:
+					continue
+				var c: Vector2i = cell + Vector2i(dx, dy)
+				if c.x < 0 or c.y < 0 or c.x >= grid.x or c.y >= grid.y:
+					continue
+				if MapData.isObstacle(c):
+					continue
+				var p: Vector2 = MapData.cellCenter(c)
+				if spawnClear(p, taken):
+					return p
+	return pos
+
+
+func spawnClear(pos: Vector2, taken: Array) -> bool:
+	for t in taken:
+		if pos.distance_to(t) < MapData.cellSize * 0.9:
+			return false
+	return true
+
+
 ## 敌人出生点纠偏：只处理"地图内部 + 落在障碍格"的坏点
 ##
 ## 地图外的出生点是僵尸「从外面走进来」的入口，不能挪进地图里，
@@ -653,21 +788,49 @@ func spawnScorePopup(worldPos: Vector2, amount: int) -> void:
 		return
 	var label := Label.new()
 	label.text = "+%d" % amount
-	label.add_theme_font_size_override("font_size", 14)
-	label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.55))
+	# 白字黑边（原版得分文字样式）
+	label.add_theme_font_size_override("font_size", 20)
+	label.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+	label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.95))
+	label.add_theme_constant_override("outline_size", 4)
 	label.z_index = 100
 	# 世界坐标 → 屏幕坐标
 	label.position = get_viewport().get_canvas_transform() * worldPos
 	$ui.add_child(label)
 
 	var target: Vector2 = scoreNode.get_global_rect().get_center()
-	var dist: float = label.position.distance_to(target)
-	var dur: float = clampf(dist / 320.0, 0.25, 1.2)
-	var tw := create_tween()
-	tw.set_parallel(true)
-	tw.tween_property(label, "position", target, dur)
-	tw.tween_property(label, "modulate:a", 0.0, dur).set_delay(dur * 0.45)
-	tw.chain().tween_callback(label.queue_free)
+	var delta: Vector2 = (target - label.position).normalized() * SCORE_POPUP_SPEED
+	scorePopups.append({
+		"label": label,
+		"delta": delta,
+		"age": 0.0,
+	})
+
+
+## 飘分更新：越飞越快 + 靠近顶部淡出
+## 原版 CHud.Draw：
+##   position += delta; delta *= 1.05（每 25Hz tick）
+##   alpha = position.y < 140 ? position.y - 40 : 100
+func _process(delta: float) -> void:
+	if fpsLabel != null:
+		fpsLabel.text = "FPS %d" % Engine.get_frames_per_second()
+	if scorePopups.is_empty():
+		return
+	var target: Vector2 = scoreNode.get_global_rect().get_center()
+	for i in range(scorePopups.size() - 1, -1, -1):
+		var item: Dictionary = scorePopups[i]
+		var label: Label = item.label
+		item.age += delta
+		if not is_instance_valid(label):
+			scorePopups.remove_at(i)
+			continue
+		label.position += item.delta * delta
+		item.delta *= exp(SCORE_POPUP_ACCEL * delta)
+		var y: float = label.position.y
+		label.modulate.a = clampf((y - 40.0) / 100.0, 0.0, 1.0) if y < 140.0 else 1.0
+		if y <= 0.0 or label.position.distance_to(target) <= 6.0 or item.age > 4.0:
+			label.queue_free()
+			scorePopups.remove_at(i)
 
 
 ## 统计场上某一类敌人数量（zombie / devil 分别限流）

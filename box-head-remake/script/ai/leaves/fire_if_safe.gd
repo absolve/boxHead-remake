@@ -22,7 +22,10 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 	var range: float = float(p.currWeapon.wRange) if b == null else b.effectiveRange(p.currWeapon)
 	var inRange: bool = p.global_position.distance_to(t.global_position) <= range
 	# 用武器的真实射线：第一命中必须是目标（挡枪的队友 / 墙 / 油桶都会拦住）
-	var clear: bool = b == null or b.shotHitsTarget(aim, t)
+	# 第一命中是目标，或另一只敌人（打谁都行）→ 都能开火；
+	# 命中墙/油桶/队友才不开火
+	var hit: Node = t if b == null else b.firstHit(aim)
+	var clear: bool = b == null or hit == t or (hit != null and b.isEnemy(hit))
 	# 爆炸物还要检查爆区里有没有自己人（含自己）
 	var safe := true
 	if clear and b != null and MapData.friendlyFireOn() and b.isExplosive(p.currWeapon):

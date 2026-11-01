@@ -431,6 +431,28 @@ script = ExtResource("9_decal")
 
 [node name="ui" type="CanvasLayer" parent="." unique_id=1839810521]
 
+[node name="fpsLabel" type="Label" parent="ui" unique_id=135880247]
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 200.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "FPS 60"
+
+[node name="levelLabel" type="Label" parent="ui" unique_id=800910152]
+offset_left = 8.0
+offset_top = 26.0
+offset_right = 260.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "Level 1"
+
 [node name="score" type="Label" parent="ui" unique_id=1367829159]
 anchors_preset = 5
 anchor_left = 0.5

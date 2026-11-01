@@ -36,7 +36,7 @@ func fire(_v: Vector2) -> void:
 				Vector2(MapData.cellSize / 2, MapData.cellSize / 2)
 
 		# 设置Z轴顺序
-		temp.z_index = floori(pos.y / MapData.cellSize)
+		temp.z_index = MapData.itemZ(MapData.worldToCell(temp.global_position))
 
 		# 设置伤害值
 		temp.damage = damage

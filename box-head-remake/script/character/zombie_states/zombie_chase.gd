@@ -139,7 +139,7 @@ func finishMove() -> void:
 	# 不再吸附到格心：lerp 终点本来就是 moveTo，
 	# 若途中被钳取/脱困改过位置，这里再赋值会把差值一次性补上（瞬移）。
 	z.velocity = Vector2.ZERO
-	z.knockbackDelta = Vector2.ZERO
+	z.clearKnockback()
 	moving = false
 	moveTimer = 0.0
 

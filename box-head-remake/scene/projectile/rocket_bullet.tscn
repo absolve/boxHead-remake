@@ -22,7 +22,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"default",
-"speed": 20.0
+"speed": 25.0
 }]
 
 [node name="rocketBullet" unique_id=1625732642 instance=ExtResource("1_ncq0d")]

@@ -5,82 +5,113 @@
 
 [node name="room_0005" type="Node2D" unique_id=107308223]
 script = ExtResource("1_room")
-wallObstacles = [Vector2i(15, 1), Vector2i(16, 1), Vector2i(15, 2), Vector2i(16, 2), Vector2i(29, 1), Vector2i(30, 1), Vector2i(29, 2), Vector2i(30, 2), Vector2i(36, 1), Vector2i(37, 1), Vector2i(36, 2), Vector2i(37, 2), Vector2i(36, 3), Vector2i(37, 3), Vector2i(36, 4), Vector2i(37, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(8, 5), Vector2i(9, 5), Vector2i(15, 8), Vector2i(16, 8), Vector2i(15, 9), Vector2i(16, 9), Vector2i(29, 8), Vector2i(30, 8), Vector2i(29, 9), Vector2i(30, 9), Vector2i(36, 8), Vector2i(37, 8), Vector2i(36, 9), Vector2i(37, 9), Vector2i(22, 11), Vector2i(23, 11), Vector2i(22, 12), Vector2i(23, 12), Vector2i(36, 13), Vector2i(37, 13), Vector2i(36, 14), Vector2i(37, 14), Vector2i(36, 15), Vector2i(37, 15), Vector2i(36, 16), Vector2i(37, 16), Vector2i(15, 15), Vector2i(16, 15), Vector2i(15, 16), Vector2i(16, 16), Vector2i(29, 15), Vector2i(30, 15), Vector2i(29, 16), Vector2i(30, 16)]
+wallObstacles = [Vector2i(15, 1), Vector2i(16, 1), Vector2i(29, 1), Vector2i(30, 1), Vector2i(36, 1), Vector2i(37, 1), Vector2i(15, 2), Vector2i(16, 2), Vector2i(22, 2), Vector2i(23, 2), Vector2i(29, 2), Vector2i(30, 2), Vector2i(36, 2), Vector2i(37, 2), Vector2i(22, 3), Vector2i(23, 3), Vector2i(36, 3), Vector2i(37, 3), Vector2i(8, 4), Vector2i(9, 4), Vector2i(22, 4), Vector2i(23, 4), Vector2i(36, 4), Vector2i(37, 4), Vector2i(8, 5), Vector2i(9, 5), Vector2i(15, 8), Vector2i(16, 8), Vector2i(29, 8), Vector2i(30, 8), Vector2i(36, 8), Vector2i(37, 8), Vector2i(15, 9), Vector2i(16, 9), Vector2i(29, 9), Vector2i(30, 9), Vector2i(36, 9), Vector2i(37, 9), Vector2i(8, 10), Vector2i(9, 10), Vector2i(8, 11), Vector2i(9, 11), Vector2i(22, 11), Vector2i(23, 11), Vector2i(8, 12), Vector2i(9, 12), Vector2i(22, 12), Vector2i(23, 12), Vector2i(36, 13), Vector2i(37, 13), Vector2i(36, 14), Vector2i(37, 14), Vector2i(15, 15), Vector2i(16, 15), Vector2i(29, 15), Vector2i(30, 15), Vector2i(36, 15), Vector2i(37, 15), Vector2i(15, 16), Vector2i(16, 16), Vector2i(29, 16), Vector2i(30, 16), Vector2i(36, 16), Vector2i(37, 16)]
 mapSize = Vector2(1472, 544)
 barrelPoint = [Vector2i(3, 6), Vector2i(3, 10)]
-wallPoint = [Vector2i(4, 4), Vector2i(4, 5), Vector2i(4, 6), Vector2i(4, 10), Vector2i(4, 11)]
+wallPoint = [Vector2i(4, 4), Vector2i(4, 5), Vector2i(4, 6), Vector2i(4, 10), Vector2i(4, 11), Vector2i(4, 12)]
 
-[node name="zombie0" parent="." unique_id=714243636 instance=ExtResource("2_sign")]
+
+[node name="mapSign" parent="." instance=ExtResource("2_sign")]
+position = Vector2(720, 240)
+type = 700
+dir = 1
+
+[node name="mapSign2" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 240)
+type = 700
+dir = 1
+
+[node name="mapSign3" parent="." instance=ExtResource("2_sign")]
+position = Vector2(720, 304)
+type = 700
+dir = 1
+
+[node name="mapSign4" parent="." instance=ExtResource("2_sign")]
+position = Vector2(784, 304)
+type = 700
+dir = 1
+
+[node name="mapSign5" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 80)
+type = 701
+dir = 1
 
-[node name="zombie1" parent="." unique_id=309312033 instance=ExtResource("2_sign")]
+[node name="mapSign6" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 112)
+type = 701
+dir = 1
 
-[node name="zombie2" parent="." unique_id=1877215980 instance=ExtResource("2_sign")]
+[node name="mapSign7" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 176)
+type = 701
+dir = 1
 
-[node name="zombie3" parent="." unique_id=445949801 instance=ExtResource("2_sign")]
+[node name="mapSign8" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 208)
+type = 701
+dir = 1
 
-[node name="zombie4" parent="." unique_id=1061023040 instance=ExtResource("2_sign")]
+[node name="mapSign9" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 240)
+type = 701
+dir = 1
 
-[node name="zombie5" parent="." unique_id=1305684912 instance=ExtResource("2_sign")]
+[node name="mapSign10" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 304)
+type = 701
+dir = 1
 
-[node name="zombie6" parent="." unique_id=174400712 instance=ExtResource("2_sign")]
+[node name="mapSign11" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 336)
+type = 701
+dir = 1
 
-[node name="zombie7" parent="." unique_id=1068262862 instance=ExtResource("2_sign")]
+[node name="mapSign12" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 368)
+type = 701
+dir = 1
 
-[node name="zombie8" parent="." unique_id=1877907238 instance=ExtResource("2_sign")]
+[node name="mapSign13" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 432)
+type = 701
+dir = 1
 
-[node name="zombie9" parent="." unique_id=1287432213 instance=ExtResource("2_sign")]
+[node name="mapSign14" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 464)
+type = 701
+dir = 1
 
-[node name="devil0" parent="." unique_id=122280443 instance=ExtResource("2_sign")]
+[node name="mapSign15" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 144)
 type = 702
+dir = 1
 
-[node name="devil1" parent="." unique_id=808746080 instance=ExtResource("2_sign")]
+[node name="mapSign16" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 272)
 type = 702
+dir = 1
 
-[node name="devil2" parent="." unique_id=167812653 instance=ExtResource("2_sign")]
+[node name="mapSign17" parent="." instance=ExtResource("2_sign")]
 position = Vector2(16, 400)
 type = 702
+dir = 1
 
-[node name="box0" parent="." unique_id=685576153 instance=ExtResource("2_sign")]
+[node name="mapSign18" parent="." instance=ExtResource("2_sign")]
 position = Vector2(1328, 112)
 type = 703
+dir = 3
 
-[node name="box1" parent="." unique_id=65829164 instance=ExtResource("2_sign")]
+[node name="mapSign19" parent="." instance=ExtResource("2_sign")]
 position = Vector2(112, 176)
 type = 703
+dir = 3
 
-[node name="box2" parent="." unique_id=10398710 instance=ExtResource("2_sign")]
+[node name="mapSign20" parent="." instance=ExtResource("2_sign")]
 position = Vector2(112, 368)
 type = 703
+dir = 3
 
-[node name="box3" parent="." unique_id=2007880898 instance=ExtResource("2_sign")]
+[node name="mapSign21" parent="." instance=ExtResource("2_sign")]
 position = Vector2(1328, 400)
 type = 703
-
-[node name="player0" parent="." unique_id=1586688274 instance=ExtResource("2_sign")]
-position = Vector2(720, 256)
-type = 700
-
-[node name="player1" parent="." unique_id=1073392646 instance=ExtResource("2_sign")]
-position = Vector2(752, 256)
-type = 700
-
-[node name="player2" parent="." unique_id=589042894 instance=ExtResource("2_sign")]
-position = Vector2(720, 288)
-type = 700
-
-[node name="player3" parent="." unique_id=428997615 instance=ExtResource("2_sign")]
-position = Vector2(752, 288)
-type = 700
-
+dir = 3

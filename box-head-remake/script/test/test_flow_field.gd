@@ -6,6 +6,31 @@ extends Node2D
 ## 用来对照 godot4flow-field demo 的群体追击行为 / 性能。
 
 
+## 房间列表（和 test_rooms 一致）
+const ROOMS: Array = [
+	"res://scene/level/room_001.tscn",
+	"res://scene/level/room_0002.tscn",
+	"res://scene/level/room_0003.tscn",
+	"res://scene/level/room_0004.tscn",
+	"res://scene/level/room_0005.tscn",
+	"res://scene/level/room_0006.tscn",
+	"res://scene/level/room_0007.tscn",
+	"res://scene/level/room_0008.tscn",
+	"res://scene/level/room_0009.tscn",
+	"res://scene/level/room_0010.tscn",
+	"res://scene/level/room_0011.tscn",
+	"res://scene/level/room_0012.tscn",
+	"res://scene/level/room_0013.tscn",
+	"res://scene/level/room_0014.tscn",
+	"res://scene/level/room_0015.tscn",
+	"res://scene/level/room_0016.tscn",
+	"res://scene/level/room_0017.tscn",
+	"res://scene/level/room_0018.tscn",
+]
+
+## 当前房间下标（static：reload 场景后还能保持）
+static var roomIndex: int = 0
+
 ## 一次性生成的僵尸数量
 @export var zombieCount: int = 50
 ## 测试用的僵尸移速（原版 16 太慢，看不清寻路效果）
@@ -35,11 +60,13 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color("#EDE2CF"))
 	MapData.playerCount = 1
 
-	var path := "res://scene/level/room_001.tscn"
-	if MapData.selectedMapId > 0:
-		var alt := "res://scene/level/room_%04d.tscn" % MapData.selectedMapId
-		if ResourceLoader.exists(alt):
-			path = alt
+	# 命令行可直接指定房间：-- room=5（就是列表第 5 个）
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("room="):
+			roomIndex = clampi(int(a.get_slice("=", 1)) - 1, 0, ROOMS.size() - 1)
+	roomIndex = wrapi(roomIndex, 0, ROOMS.size())
+	var path: String = ROOMS[roomIndex]
+	print("[test_flow_field] 房间 %s（roomIndex=%d）" % [path, roomIndex])
 
 	room = load(path).instantiate()
 	add_child(room)
@@ -54,6 +81,19 @@ func _ready() -> void:
 	ground.position = Vector2.ZERO
 	ground.size = MapData.mapSize
 	add_child(ground)
+
+	# 左上角：当前房间 + 切换提示
+	var info := Label.new()
+	info.name = "roomInfo"
+	info.position = Vector2(8, 6)
+	info.add_theme_font_size_override("font_size", 13)
+	info.add_theme_color_override("font_color", Color(0.1, 0.1, 0.1))
+	info.add_theme_color_override("font_shadow_color", Color(1, 1, 1, 0.7))
+	info.add_theme_constant_override("shadow_offset_x", 1)
+	info.add_theme_constant_override("shadow_offset_y", 1)
+	info.text = "[%d/%d] %s    ← → 切换房间   R 重开" % [
+		roomIndex + 1, ROOMS.size(), path.get_file().get_basename()]
+	add_child(info)
 
 	# 一个玩家当追击目标（必须在僵尸之前生成，僵尸 _ready 里要找目标）
 	var p: Node2D = player.instantiate()
@@ -75,6 +115,21 @@ func _ready() -> void:
 	spawnTimer.timeout.connect(spawnOneZombie)
 	add_child(spawnTimer)
 	spawnTimer.start()
+
+
+## ← → 切换房间（重载场景，玩家/僵尸/流场全部重建）；R 重开当前房间
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventKey) or not event.pressed or event.echo:
+		return
+	var key: int = (event as InputEventKey).physical_keycode
+	if key == KEY_LEFT or key == KEY_BRACKETLEFT:
+		roomIndex = wrapi(roomIndex - 1, 0, ROOMS.size())
+		get_tree().reload_current_scene()
+	elif key == KEY_RIGHT or key == KEY_BRACKETRIGHT:
+		roomIndex = wrapi(roomIndex + 1, 0, ROOMS.size())
+		get_tree().reload_current_scene()
+	elif key == KEY_R:
+		get_tree().reload_current_scene()
 
 
 ## 生成一只僵尸：只在没被占住的出生点刷（照 map 的 hasBlock 判定，
@@ -181,33 +236,44 @@ func _draw() -> void:
 	var width := int(MapData.mapSize.x / MapData.cellSize)
 	var height := int(MapData.mapSize.y / MapData.cellSize)
 
+	# 只画相机可见范围：大房间（如 room_0018 是 85x85 格）全画会掉到个位数帧
+	var x0 := 0
+	var x1 := width
+	var y0 := 0
+	var y1 := height
+	var cam := get_viewport().get_camera_2d()
+	if cam != null:
+		var half: Vector2 = get_viewport_rect().size * 0.5 / cam.zoom
+		var view := Rect2(cam.get_screen_center_position() - half, half * 2.0).grow(96.0)
+		x0 = clampi(floori(view.position.x / MapData.cellSize), 0, width)
+		x1 = clampi(ceili(view.end.x / MapData.cellSize), 0, width)
+		y0 = clampi(floori(view.position.y / MapData.cellSize), 0, height)
+		y1 = clampi(ceili(view.end.y / MapData.cellSize), 0, height)
+
 	# 网格线
-	for i in range(width + 1):
-		draw_line(Vector2(i * MapData.cellSize, 0),
-				Vector2(i * MapData.cellSize, MapData.cellSize * height), Color.GRAY, 0.5, true)
-	for i in range(height + 1):
-		draw_line(Vector2(0, i * MapData.cellSize),
-				Vector2(MapData.cellSize * width, i * MapData.cellSize), Color.GRAY, 0.5, true)
+	for i in range(x0, x1 + 1):
+		draw_line(Vector2(i * MapData.cellSize, y0 * MapData.cellSize),
+				Vector2(i * MapData.cellSize, y1 * MapData.cellSize), Color.GRAY, 0.5, true)
+	for j in range(y0, y1 + 1):
+		draw_line(Vector2(x0 * MapData.cellSize, j * MapData.cellSize),
+				Vector2(x1 * MapData.cellSize, j * MapData.cellSize), Color.GRAY, 0.5, true)
 
 	# 障碍格
-	for key in MapData.obstacle.keys():
-		var parts = key.split("-")
-		if parts.size() != 2:
-			continue
-		draw_rect(Rect2(int(parts[0]) * MapData.cellSize, int(parts[1]) * MapData.cellSize,
-				MapData.cellSize, MapData.cellSize), Color(1, 0, 0, 0.5), true)
+	for x in range(x0, x1):
+		for y in range(y0, y1):
+			if not MapData.obstacle.has("%d-%d" % [x, y]):
+				continue
+			draw_rect(Rect2(x * MapData.cellSize, y * MapData.cellSize,
+					MapData.cellSize, MapData.cellSize), Color(1, 0, 0, 0.5), true)
 
 	# 流场箭头
 	for id in MapData.flowFieldDict.keys():
 		var field = MapData.flowFieldDict[id]
 		if typeof(field) != TYPE_DICTIONARY:
 			continue
-		for x in range(width):
-			for y in range(height):
-				var key := "%s-%s" % [x, y]
-				if not field.has(key):
-					continue
-				var dir: Vector2 = field[key]
+		for x in range(x0, x1):
+			for y in range(y0, y1):
+				var dir: Vector2 = field.get("%d-%d" % [x, y], Vector2.ZERO)
 				if dir == Vector2.ZERO:
 					continue
 				var center := Vector2(x * MapData.cellSize + MapData.cellSize * 0.5,

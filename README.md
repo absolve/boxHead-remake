@@ -71,6 +71,8 @@
 | 场景 | 用途 |
 |---|---|
 | `scene/test/test_rooms.tscn` | 逐个房间查看尺寸、障碍格、出生点 |
+| `scene/test/test_obstacles.tscn` | **障碍格编辑器**：切地图 / 缩放平移；左键加、右键删、Shift 拖拽矩形批量；`S` 直接写回房间 `.tscn` 的 `wallObstacles` |
+| `scene/test/test_spawns.tscn` | **出生点 / 油桶 / 墙编辑器**：静态障碍只读；墙、油桶、僵尸/恶魔出生点可编辑；玩家出生点按槽位 P1~P4（` , . ` 切槽），`S` 写回 `wallPoint` / `barrelPoint` / map_sign 节点 |
 | `scene/test/test_weapons.tscn` | 全武器靶场，含增删敌人 / 解锁武器按钮 |
 | `scene/test/test_death.tscn` | 多玩家死亡与复活测试 |
 | `scene/test/test_flow_field.tscn` | 流场可视化与僵尸寻路压力测试 |

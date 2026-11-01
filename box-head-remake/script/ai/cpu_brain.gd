@@ -62,6 +62,35 @@ var lastKnownPos: Vector2 = Vector2.ZERO
 var hasLastKnown: bool = false
 ## 换枪冷却
 var lastSwitchMs: int = 0
+
+## 开箱失败后的冷却（毫秒）：箱子在墙后时不要一直绕
+var pickupBlockedUntilMs: int = 0
+## 逃跑方向承诺：每 0.7 秒才重选，避免在墙角左右摇摆
+var fleeDir: Vector2 = Vector2.ZERO
+var fleeUntilMs: int = 0
+
+## 走位方向平滑：一段时间内保持同一方向，避免每帧小幅修正导致左右/斜向抖动
+var moveDirSmooth: Vector2 = Vector2.ZERO
+var moveDirUntilMs: int = 0
+## 目标粘滞：换目标后 0.5 秒内不再换（避免左右摇摆）
+var lastTargetSwitchMs: int = 0
+## 活动区域回滞：跑到外圈后要一直回到内圈才算“回家”
+var returningHome: bool = false
+## 放置类武器冷却与放完后的撤退
+var placeCooldownMs: int = 0
+var postPlaceUntilMs: int = 0
+var postPlaceDir: Vector2 = Vector2.ZERO
+## 最近的枪声（听到后过去查看）
+var noisePos: Vector2 = Vector2.ZERO
+var noiseUntilMs: int = 0
+## 卡住检测：想走却没位移时临时侧移
+var stuckSinceMs: int = -1
+var stuckLastPos: Vector2 = Vector2.ZERO
+var detourDir: Vector2 = Vector2.ZERO
+var detourUntilMs: int = 0
+## 侧移方向（躲遮挡时用），定期换边
+var strafeSide: float = 1.0
+var strafeUntilMs: int = 0
 ## 策略
 var strategy: int = Strategy.DEFENSIVE
 var strategySinceMs: int = 0
@@ -90,6 +119,22 @@ func _ready() -> void:
 	strategySinceMs = Time.get_ticks_msec()
 	buildPerception()
 	buildTree()
+	Game.gunshot.connect(_on_gunshot)
+
+
+## 听到枪声：记住位置，7 秒内过去查看（太远的不管）
+func _on_gunshot(pos: Vector2, shooter: Node) -> void:
+	if player == null or player.isDead or shooter == player:
+		return
+	if player.global_position.distance_to(pos) > 10.0 * MapData.cellSize:
+		return
+	var now := Time.get_ticks_msec()
+	# 已有的枪声更近就不换目标
+	if now < noiseUntilMs and player.global_position.distance_to(noisePos) \
+			< player.global_position.distance_to(pos):
+		return
+	noisePos = pos
+	noiseUntilMs = now + 7000
 
 
 ## Area2D 感知：一次查询拿到范围内的敌人（本体 + 受击区）和火球
@@ -141,12 +186,15 @@ func buildTree() -> void:
 	behaviour.add_child(_sequence("survive", [["should_survive", true], ["survive", false]]))
 	behaviour.add_child(_sequence("rescue", [["should_rescue", true], ["rescue", false]]))
 	behaviour.add_child(_sequence("retreat", [["should_retreat", true], ["retreat", false]]))
+	behaviour.add_child(_sequence("pickup", [["should_pickup", true], ["pickup", false]]))
 	behaviour.add_child(_sequence("demolish", [["should_demolish", true], ["demolish", false]]))
+	behaviour.add_child(_sequence("place", [["should_place", true], ["place_weapon", false]]))
 	behaviour.add_child(_sequence("combat", [
 		["has_target", true], ["pick_weapon", false],
 		["move_to_range", false], ["fire_if_safe", false],
 	]))
 	behaviour.add_child(_sequence("search", [["has_last_known", true], ["move_to_last_known", false]]))
+	behaviour.add_child(_sequence("investigate", [["has_noise", true], ["investigate", false]]))
 	behaviour.add_child(_sequence("patrol", [["should_patrol", true], ["patrol", false]]))
 	behaviour.add_child(_sequence("follow", [["has_ally", true], ["follow_ally", false]]))
 	behaviour.add_child(_makeLeaf("idle", false))
@@ -194,11 +242,23 @@ func scan() -> void:
 			bestScore = s
 			best = e
 
-	# 粘滞：原目标还有效且新目标优势不到 15%，就继续打原目标
-	if _validEnemy(target):
-		var cur: float = _targetScore(target)
-		if cur > 0.0 and bestScore <= cur * 1.15:
+	# 选择规则：恶魔优先 > 距离近优先；
+	# 同类型里只有明显更近（25%）才换，且换目标有 0.5 秒冷却，避免一直换方向。
+	if target != null and is_instance_valid(target) and _validEnemy(target):
+		var keep := false
+		if best == null:
+			keep = true
+		elif _tier(target) < _tier(best):
+			keep = true                      # 当前是恶魔，新目标不是
+		elif _tier(target) == _tier(best):
+			var curD: float = player.global_position.distance_to(target.global_position)
+			var newD: float = player.global_position.distance_to(best.global_position)
+			if newD > curD * 0.75 or now - lastTargetSwitchMs < 500:
+				keep = true
+		if keep:
 			best = target
+	if best != target:
+		lastTargetSwitchMs = now
 
 	target = best
 	if target != null:
@@ -240,16 +300,19 @@ func _scanProps() -> void:
 				props.append(n)
 
 
-## 低血时找最近的补给箱（血量 > 50% 不找，因为箱子只给武器）
+## 找最近的补给箱：血量低（回血）或武器少（开新武器）时才去
 func _scanBox() -> void:
 	boxTarget = null
 	if player == null:
 		return
 	var hpRatio := float(player.hp) / maxf(float(player.maxHp), 1.0)
-	if hpRatio > 0.5:
+	# 低血优先找箱子回血；否则武器少于 3 把时也主动去开箱
+	var wantsWeapon := player.weaponList.size() < 3
+	if hpRatio > 0.5 and not wantsWeapon:
 		return
 	var best := INF
-	var limit := 14.0 * MapData.cellSize
+	var limitCells := 14.0 if hpRatio <= 0.5 else 10.0
+	var limit := limitCells * MapData.cellSize
 	for b in get_tree().get_nodes_in_group("box"):
 		if not is_instance_valid(b):
 			continue
@@ -268,6 +331,8 @@ func _collectEnemies() -> Array:
 	for b in area.get_overlapping_bodies():
 		if not isEnemy(b):
 			continue
+		if not insideView((b as Node2D).global_position):
+			continue
 		var id := b.get_instance_id()
 		if not seen.has(id):
 			seen[id] = true
@@ -277,6 +342,8 @@ func _collectEnemies() -> Array:
 			continue
 		var n: Node = a.owner if a.owner != null else a
 		if not isEnemy(n):
+			continue
+		if not insideView((n as Node2D).global_position):
 			continue
 		var id2 := n.get_instance_id()
 		if not seen.has(id2):
@@ -300,8 +367,9 @@ func _targetScore(e: Node2D) -> float:
 	var d: float = player.global_position.distance_to(e.global_position)
 	if d > senseRadius * 1.1:
 		return 0.0
-	var distScore := 1.0 / (1.0 + d / 96.0)
-	var threat := 1.4 if e.get("type") == Game.roleType.Devil else 1.0
+	var distScore := 1.0 / (1.0 + d / 64.0)
+	# 层级分：恶魔永远比僵尸优先（1000 远大于距离分 0~1）
+	var threat := 1000.0 if _tier(e) == 0 else 1.0
 	var allyBonus := 1.0
 	var ally := nearestAlly()
 	if ally != null and ally.global_position.distance_to(e.global_position) < 3.0 * MapData.cellSize:
@@ -388,7 +456,7 @@ func ensureField() -> void:
 ## ignore 一般传"当前目标"：否则目标自己占的格子会把接近路线挡掉。
 func canStepTo(pos: Vector2, step: Vector2, ignore: Node = null) -> bool:
 	var target: Vector2 = pos + step
-	if not MapData.getPlayRect().has_point(target):
+	if not MapData.moveRect().has_point(target):
 		return false
 	if MapData.isObstacle(MapData.worldToCell(target)):
 		return false
@@ -450,16 +518,146 @@ func pathDirSimple(pos: Vector2, desired: Vector2, ignore: Node = null) -> Vecto
 	return desired
 
 
+## 走位指令：把方向吸附到 8 方向并保持 0.4 秒，
+## 看起来像玩家按 WASD 走，而不是每帧微调导致的斜向抖动。
+func steer(dir: Vector2, holdMs: int = 400) -> void:
+	if player == null:
+		return
+	# 刚放完地雷/油桶：强制后退一会儿，别踩在自己的雷上
+	if Time.get_ticks_msec() < postPlaceUntilMs and postPlaceDir != Vector2.ZERO:
+		player.cpuMoveDir = postPlaceDir
+		return
+	if dir == Vector2.ZERO:
+		moveDirSmooth = Vector2.ZERO
+		moveDirUntilMs = 0
+		player.cpuMoveDir = Vector2.ZERO
+		return
+	var want: Vector2 = dir.normalized()
+	# 8 方向吸附（≈ 键盘）；吸附后走不通就保留原方向
+	var snapped: Vector2 = Vector2.RIGHT.rotated(
+			roundf(want.angle() / (PI / 4.0)) * (PI / 4.0))
+	if canFleeTo(player.global_position, snapped * MapData.cellSize):
+		want = snapped
+	var now := Time.get_ticks_msec()
+
+	# 卡住检测：有移动意图但 0.45 秒几乎没动 → 侧向绕一下（被队友/墙角顶住）
+	if now < detourUntilMs and detourDir != Vector2.ZERO:
+		player.cpuMoveDir = detourDir
+		return
+	if player.global_position.distance_to(stuckLastPos) > 1.5:
+		stuckSinceMs = now
+		stuckLastPos = player.global_position
+	elif stuckSinceMs >= 0 and now - stuckSinceMs > 450:
+		var side := 1.0 if randi() % 2 == 0 else -1.0
+		detourDir = Vector2(-want.y, want.x) * side
+		detourUntilMs = now + 420
+		stuckSinceMs = now
+		stuckLastPos = player.global_position
+		player.cpuMoveDir = detourDir
+		return
+
+	if now < moveDirUntilMs and moveDirSmooth != Vector2.ZERO \
+			and moveDirSmooth.dot(want) > 0.9:
+		player.cpuMoveDir = moveDirSmooth
+		return
+	moveDirSmooth = want
+	moveDirUntilMs = now + holdMs
+	player.cpuMoveDir = want
+
+
+## 遮挡时侧移用哪一边（每 1.2 秒可能换边，避免一直朝同一侧蹭墙）
+func strafeDirection() -> float:
+	var now := Time.get_ticks_msec()
+	if now >= strafeUntilMs:
+		strafeUntilMs = now + 1200
+		if randi() % 2 == 0:
+			strafeSide = -strafeSide
+	return strafeSide
+
+
+## 逃跑/拉开距离时的可走性：只看地形，不把敌人当障碍。
+## 敌人（尤其慢速僵尸）可以绕过去，被怪格子挡住只会把自己困在角落。
+func canFleeTo(pos: Vector2, step: Vector2) -> bool:
+	var target: Vector2 = pos + step
+	if not MapData.getPlayRect().has_point(target):
+		return false
+	if MapData.isObstacle(MapData.worldToCell(target)):
+		return false
+	return not player.blockedByCell(target)
+
+
+## 选一个「远离威胁 + 前方开阔 + 不钻墙角」的逃跑方向。
+##
+## 每 0.7 秒才重选一次（方向承诺），否则目标一换就会在墙角左右摇摆。
+## 返回 ZERO 表示四面都被堵死：调用方应该就地反击，而不是原地抖。
+func fleeDirection(threatPos: Vector2) -> Vector2:
+	if player == null:
+		return Vector2.ZERO
+	var now := Time.get_ticks_msec()
+	if now < fleeUntilMs and fleeDir != Vector2.ZERO \
+			and canFleeTo(player.global_position, fleeDir * MapData.cellSize):
+		return fleeDir
+
+	var cell: float = MapData.cellSize
+	var playRect: Rect2 = MapData.getPlayRect()
+	var center: Vector2 = playRect.get_center()
+	var best := Vector2.ZERO
+	var bestScore := -INF
+	for i in range(8):
+		var dir: Vector2 = Vector2.RIGHT.rotated(TAU * float(i) / 8.0)
+		# 至少要走得动两步，避免选到差半步就撞墙的方向
+		if not canFleeTo(player.global_position, dir * cell * 2.0):
+			continue
+		var ahead: Vector2 = player.global_position + dir * cell * 2.0
+		var gain: float = (player.global_position.distance_to(threatPos)
+				- ahead.distance_to(threatPos)) / cell
+		# 前方开阔度（看 3 格）
+		var open := 0.0
+		for k in range(1, 4):
+			if canFleeTo(player.global_position, dir * cell * float(k)):
+				open += 1.0
+		# 靠近边界/角落时往场地中间带
+		var toCenter: float = dir.dot((center - player.global_position).normalized())
+		var score: float = gain * 1.6 + open * 0.7 + toCenter * 1.0
+		# 贴墙的目标点扣分（防止沿墙原地蹭）
+		var wallGap: float = minf(
+			minf(ahead.x - playRect.position.x, playRect.end.x - ahead.x),
+			minf(ahead.y - playRect.position.y, playRect.end.y - ahead.y))
+		if wallGap < cell:
+			score -= 1.5
+		if score > bestScore:
+			bestScore = score
+			best = dir
+
+	fleeDir = best
+	fleeUntilMs = now + 700
+	return best
+
+
+## 清掉逃跑方向承诺
+func clearFlee() -> void:
+	fleeDir = Vector2.ZERO
+	fleeUntilMs = 0
+
+
 # ---------------------------------------------------------------- 策略
 
 func personalityOf() -> int:
 	if personality >= 0:
 		return personality
-	var pid := player.playerId if player != null else 0
-	match pid:
-		3:
+	var idx: int = int(player.get("cpuIndex")) if player != null else -1
+	if idx < 0 and player != null:
+		# 兼容手工挂 brain 的测试场景（老编号 3=突进 / 5=放风筝）
+		if player.playerId == 3:
+			idx = 0
+		elif player.playerId == 5:
+			idx = 2
+		else:
+			idx = 1
+	match idx:
+		0:
 			return Strategy.AGGRESSIVE
-		5:
+		2:
 			return Strategy.KITER
 		_:
 			return Strategy.DEFENSIVE
@@ -508,17 +706,26 @@ func weaponBias(w) -> float:
 	if w == null:
 		return 0.0
 	var r := float(w.wRange)
+	var b := 0.0
 	match strategy:
 		Strategy.AGGRESSIVE:
-			return 0.35 if r <= 256.0 else -0.15
+			b = 0.35 if r <= 256.0 else -0.15
 		Strategy.KITER:
-			return 0.35 if r >= 300.0 else -0.30
+			b = 0.35 if r >= 300.0 else -0.30
 		Strategy.SUPPORT:
 			if w.type == Game.weaponType.Railgun:
-				return 0.25
-			return 0.10 if w.type == Game.weaponType.Pistol else 0.0
+				b = 0.25
+			else:
+				b = 0.10 if w.type == Game.weaponType.Pistol else 0.0
 		_:
-			return 0.25 if r >= 300.0 else 0.0
+			b = 0.25 if r >= 300.0 else 0.0
+	# 每个 CPU 一个偏好武器，避免全队都拿同一把
+	if player != null and player.cpuIndex >= 0:
+		var pref := [Game.weaponType.Shotgun, Game.weaponType.UZI,
+				Game.weaponType.Railgun, Game.weaponType.Rocket]
+		if w.type == pref[player.cpuIndex % pref.size()]:
+			b += 1.5
+	return b
 
 
 ## 求生阈值：单人生存时更怕死（提前进求生分支）
@@ -646,6 +853,188 @@ func startPatrol() -> void:
 	patrolWaitUntilMs = Time.get_ticks_msec() + randi_range(1000, 2500)
 
 
+## CPU 的活动软区域：相机视野内缩 2 格，避免所有人贴着相机边缘站
+func roamRect() -> Rect2:
+	var r: Rect2 = MapData.moveRect()
+	if r.size.x <= 4.0 * MapData.cellSize or r.size.y <= 4.0 * MapData.cellSize:
+		return r
+	return r.grow(-2.0 * MapData.cellSize)
+
+
+## 自己是不是在「外围」：离可移动区域边界 3 格以内
+func nearOuterBand() -> bool:
+	if MapData.moveRect().size.x <= 0.0:
+		return false
+	return not MapData.moveRect().grow(-3.0 * MapData.cellSize).has_point(player.global_position)
+
+
+## 可用的放置类武器列表（有弹药）
+func placeableWeapons() -> Array:
+	var out: Array = []
+	if player == null:
+		return out
+	for w in player.weaponList:
+		if w == null:
+			continue
+		# 墙和油桶 CPU 用不明白（容易把自己堵住/炸到），只用这三种
+		if w.type not in [Game.weaponType.Mine, Game.weaponType.ChargePack,
+				Game.weaponType.Grenade]:
+			continue
+		if w.maxAmmoNum > 0 and w.ammoNum <= 0:
+			continue
+		out.append(w)
+	return out
+
+
+## 某个放置物在当前距离下是否合适
+func placementOk(w: Node, dist: float) -> bool:
+	var cs: float = MapData.cellSize
+	match w.type:
+		Game.weaponType.Wall:
+			return dist >= 2.0 * cs and dist <= 4.5 * cs
+		Game.weaponType.Mine:
+			return dist >= 2.0 * cs and dist <= 5.0 * cs
+		Game.weaponType.Barrel, Game.weaponType.ChargePack:
+			return dist >= 2.5 * cs and dist <= 6.0 * cs
+		Game.weaponType.Grenade:
+			return dist >= 2.5 * cs and dist <= 6.0 * cs and explosiveSafe(target.global_position)
+	return false
+
+
+## 现在该不该放：按武器类型和敌人距离判断（防守/封路/铺雷）
+func placementChoice() -> Node:
+	if player == null or player.isDead:
+		return null
+	if Time.get_ticks_msec() < placeCooldownMs:
+		return null
+	var list: Array = placeableWeapons()
+	if list.is_empty():
+		return null
+
+	# 放置类武器只在外围部署，不要在战斗中心/自己脚下乱丢
+	if not nearOuterBand():
+		return null
+	list.shuffle()
+
+	# 没有目标：在外围顺路布防（地雷/油桶/充电包，手雷需要目标不在此列）
+	if target == null or not is_instance_valid(target):
+		for w in list:
+			if w.type == Game.weaponType.Grenade:
+				continue
+			return w
+		return null
+
+	var dist: float = player.global_position.distance_to(target.global_position)
+	# 敌人贴脸时不放（避免炸到自己、也避免中途乱放）
+	if dist < 3.5 * MapData.cellSize:
+		return null
+	# 血少时优先用墙封路
+	if player.hp < player.maxHp * 0.5:
+		for w in list:
+			if w.type == Game.weaponType.Wall and placementOk(w, dist):
+				return w
+	for w in list:
+		if placementOk(w, dist):
+			return w
+	return null
+
+
+## 身边敌人太多（被围）→ 先拉开距离
+## 阈值：3 格内 >= 4 只敌人；触发后方向保持 0.8 秒，避免抖动
+var crowdUntilMs: int = 0
+var crowdDirCache: Vector2 = Vector2.ZERO
+
+func crowdDir() -> Vector2:
+	if player == null or player.isDead:
+		return Vector2.ZERO
+	# 低血时交给 survive/retreat 分支处理，避免两套逃跑逻辑互相打架
+	if player.hp < player.maxHp * 0.5:
+		return Vector2.ZERO
+	var now := Time.get_ticks_msec()
+	if now < crowdUntilMs:
+		return crowdDirCache
+	var r: float = 3.0 * MapData.cellSize
+	var count := 0
+	var away := Vector2.ZERO
+	for e in get_tree().get_nodes_in_group("enemy"):
+		if not is_instance_valid(e) or e.get("isDead") == true:
+			continue
+		var d: Vector2 = player.global_position - (e as Node2D).global_position
+		var dist: float = d.length()
+		if dist < r:
+			count += 1
+			away += d / maxf(dist, 1.0) * (1.0 - dist / r)
+	if count < 5:
+		return Vector2.ZERO
+	away = away.normalized()
+	if away == Vector2.ZERO:
+		return Vector2.ZERO
+	crowdDirCache = away
+	crowdUntilMs = now + 800
+	return away
+
+
+## 和队友保持距离：避免开火时所有人挤成一团
+func separationDir(radiusCells: float = 1.8) -> Vector2:
+	if player == null:
+		return Vector2.ZERO
+	var r: float = radiusCells * MapData.cellSize
+	var out := Vector2.ZERO
+	for n in get_tree().get_nodes_in_group("player"):
+		if n == player or not is_instance_valid(n) or bool(n.get("isDead")):
+			continue
+		var d: Vector2 = player.global_position - (n as Node2D).global_position
+		var dist: float = d.length()
+		if dist > 0.01 and dist < r:
+			out += d / dist * (1.0 - dist / r)
+	return out.normalized() if out.length() > 0.01 else Vector2.ZERO
+
+
+## 自己拿的是范围武器、而且有队友在爆区里
+func allyInBlast() -> bool:
+	if player == null or player.currWeapon == null or not isExplosive(player.currWeapon):
+		return false
+	var r: float = blastRadius(player.currWeapon) * 0.95
+	for n in get_tree().get_nodes_in_group("player"):
+		if n == player or not is_instance_valid(n) or bool(n.get("isDead")):
+			continue
+		if (n as Node2D).global_position.distance_to(player.global_position) < r:
+			return true
+	return false
+
+
+## 目标层级：0 = 恶魔（最优先），1 = 僵尸
+func _tier(e: Node) -> int:
+	if e != null and e.get("type") == Game.roleType.Devil:
+		return 0
+	return 1
+
+
+## 活动区域回滞：在外圈就一路回到内圈，避免在边界反复摇摆。
+## 返回非 ZERO 表示这一帧应该往家走。
+func roamHomeDir() -> Vector2:
+	if player == null:
+		return Vector2.ZERO
+	var outer: Rect2 = roamRect()
+	var inner: Rect2 = outer.grow(-MapData.cellSize)
+	var pos: Vector2 = player.global_position
+	if not outer.has_point(pos):
+		returningHome = true
+	if returningHome:
+		if inner.has_point(pos):
+			returningHome = false
+			return Vector2.ZERO
+		return snap8(inner.get_center() - pos)
+	return Vector2.ZERO
+
+
+## 目标点是否在相机视野内（多留 64px，避免贴边抖动）
+func insideView(pos: Vector2) -> bool:
+	if MapData.viewRect.size.x <= 0.0:
+		return true
+	return MapData.viewRect.grow(64.0).has_point(pos)
+
+
 ## 巡逻的一步：一格一格走，4~7 格歇一次；被挡/离锚点太远就重新选方向
 func patrolMove() -> Vector2:
 	if player == null:
@@ -653,6 +1042,12 @@ func patrolMove() -> Vector2:
 	var now := Time.get_ticks_msec()
 	if now < patrolWaitUntilMs:
 		return Vector2.ZERO
+
+	# 跑到软区域外了：一路回到内圈（带回滞，不在边界来回摆）
+	var home: Vector2 = roamHomeDir()
+	if home != Vector2.ZERO:
+		if canStepTo(player.global_position, home * MapData.cellSize):
+			return home
 
 	# 队友走远了：锚点跟过去，避免自己走丢
 	var ally := nearestAlly()
@@ -702,6 +1097,9 @@ func pickPatrolDir() -> Vector2:
 	for d in dirs:
 		var v: Vector2 = d
 		v = v.normalized()
+		# 别朝画面边缘走：再走两格就出软区域的方向直接跳过
+		if not roamRect().has_point(player.global_position + v * MapData.cellSize * 2.0):
+			continue
 		if canStepTo(player.global_position, v * MapData.cellSize):
 			return v
 	return Vector2.ZERO
@@ -849,7 +1247,7 @@ func idealDistance(w) -> float:
 		Game.weaponType.Railgun:
 			d = 300.0
 		Game.weaponType.Rocket:
-			d = 240.0
+			d = 300.0      # 火箭筒范围伤害，站远一点打，别贴队友
 		_:
 			d = 160.0
 	match strategy:
@@ -923,10 +1321,30 @@ func gunScore(w, dist: float) -> float:
 	return fit * 2.0 + minf(dps / 200.0, 1.0) + ammo * 0.3 + weaponBias(w)
 
 
+## 每个 CPU 的偏好武器（保证队伍里不是清一色同一把枪）
+func preferredGun() -> Node:
+	if player == null or player.cpuIndex < 0:
+		return null
+	var pref := [Game.weaponType.Shotgun, Game.weaponType.UZI,
+			Game.weaponType.Railgun, Game.weaponType.Rocket]
+	var want: int = pref[player.cpuIndex % pref.size()]
+	for w in player.weaponList:
+		if w == null or w.type != want:
+			continue
+		if w.maxAmmoNum > 0 and w.ammoNum <= 0:
+			continue
+		return w
+	return null
+
+
 ## 选枪：带滞回（差距不够/冷却中就不换），空弹强制换
 func bestGun(dist: float) -> Node:
 	if player == null:
 		return null
+	# 偏好武器在射程内就先用它（各 CPU 用不同的枪）
+	var pref := preferredGun()
+	if pref != null and dist <= effectiveRange(pref):
+		return pref
 	var cur = player.currWeapon
 	var best = null
 	var bestScore := -INF

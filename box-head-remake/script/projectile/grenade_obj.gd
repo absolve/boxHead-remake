@@ -131,7 +131,7 @@ func _physics_process(delta: float) -> void:
 	position.y = clampf(position.y, pr.position.y + rad, pr.end.y - rad)
 
 	# 设置Z轴顺序
-	z_index = floori(global_position.y / MapData.cellSize) + 1
+	z_index = MapData.worldZ(global_position.y + MapData.cellSize * 0.5)
 
 	# 应用移动
 	position += vector * delta + gVec * delta

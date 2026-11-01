@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://csmcf5g6p4geb"]
+
+[ext_resource type="Script" uid="uid://x3olxhnkrp7p" path="res://script/test/test_spawns.gd" id="1_spawns"]
+
+[node name="testSpawns" type="Node2D" unique_id=424193671]
+script = ExtResource("1_spawns")
+
+[node name="camera" type="Camera2D" parent="." unique_id=596459349]
+
+[node name="ui" type="CanvasLayer" parent="." unique_id=1603911793]
+
+[node name="label" type="Label" parent="ui" unique_id=2066825624]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 632.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+
+[node name="hoverLabel" type="Label" parent="ui" unique_id=919373909]
+offset_right = 320.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+
+[node name="btn0" type="Button" parent="ui" unique_id=1903910621]
+offset_left = 8.0
+offset_top = 424.0
+offset_right = 72.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "1 墙"
+
+[node name="btn1" type="Button" parent="ui" unique_id=472457985]
+offset_left = 76.0
+offset_top = 424.0
+offset_right = 144.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "2 油桶"
+
+[node name="btn2" type="Button" parent="ui" unique_id=1462483652]
+offset_left = 148.0
+offset_top = 424.0
+offset_right = 216.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "3 僵尸"
+
+[node name="btn3" type="Button" parent="ui" unique_id=1562426077]
+offset_left = 220.0
+offset_top = 424.0
+offset_right = 288.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "4 恶魔"
+
+[node name="btn4" type="Button" parent="ui" unique_id=1685190208]
+offset_left = 292.0
+offset_top = 424.0
+offset_right = 360.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "5 玩家"
+
+[node name="btn5" type="Button" parent="ui" unique_id=704354683]
+offset_left = 364.0
+offset_top = 424.0
+offset_right = 432.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "6 擦除"
+
+[node name="btnSave" type="Button" parent="ui" unique_id=1185950341]
+offset_left = 444.0
+offset_top = 424.0
+offset_right = 552.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "保存 (S)"
+
+[node name="btnReload" type="Button" parent="ui" unique_id=477927439]
+offset_left = 556.0
+offset_top = 424.0
+offset_right = 632.0
+offset_bottom = 448.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "重载 (R)"

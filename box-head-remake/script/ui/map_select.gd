@@ -11,9 +11,9 @@ var index: int = 0
 
 
 ## 槽位角色下拉框的文字（下标 = MapData.SLOT_*）
-const ROLE_TEXT: Array[String] = ["关闭", "1P", "2P", "CPU"]
+const ROLE_TEXT: Array[String] = ["关闭", "1P", "2P", "3P", "4P", "CPU"]
 ## 卡片上显示的文字：关闭的槽位显示 "—"
-const CARD_TEXT: Array[String] = ["—", "1P", "2P", "CPU"]
+const CARD_TEXT: Array[String] = ["—", "1P", "2P", "3P", "4P", "CPU"]
 
 
 ## 设置弹窗节点
@@ -35,6 +35,8 @@ const CARD_TEXT: Array[String] = ["—", "1P", "2P", "CPU"]
 @onready var mapName: Label = $Control/mapName
 ## 地图索引显示节点
 @onready var mapIndex: Label = $Control/mapIndex
+## 底部「点击开始关卡」提示（全关时变成红色警告）
+@onready var playTip: Label = $Control/Label3
 
 
 ## 初始化
@@ -53,6 +55,19 @@ func _ready() -> void:
 		mapImg.gui_input.connect(onMapImgGuiInput)
 
 
+## 底部提示：全关时显示红色警告，否则恢复正常文字
+func refreshPlayTip() -> void:
+	if playTip == null:
+		return
+	if MapData.playerSlotTotal() == 0:
+		playTip.text = tr("Select at least one player (1P / 2P / CPU)")
+		playTip.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35))
+	else:
+		playTip.text = tr("CLICK TO PLAY LEVEL")
+		# 恢复场景里原来那个深色（不能 remove，那样会退回默认白色，几乎看不见）
+		playTip.add_theme_color_override("font_color", Color(0.1254902, 0.0, 0.0, 1.0))
+
+
 ## 初始化 4 个槽位的下拉框，并回填 MapData 里的选择
 func initSlots() -> void:
 	for i in slotButtons.size():
@@ -63,37 +78,24 @@ func initSlots() -> void:
 		b.select(b.get_item_index(MapData.playerSlots[i]))
 		b.item_selected.connect(_onSlotRoleSelected.bind(i))
 	refreshSlotCards()
+	refreshPlayTip()
 
 
-## 槽位角色改变：1P / 2P 全局唯一，且至少保留一个人类
+## 槽位角色改变：1P~4P 各自全局唯一；允许全人类 / 全 CPU / 混合，但全关不能开局
 func _onSlotRoleSelected(itemIdx: int, slot: int) -> void:
 	var role: int = slotButtons[slot].get_item_id(itemIdx)
 
-	# 其他槽位上的人类数量（1P + 2P）
-	var humansOther := 0
-	for i in MapData.playerSlots.size():
-		if i == slot:
-			continue
-		var r: int = MapData.playerSlots[i]
-		if r == MapData.SLOT_P1 or r == MapData.SLOT_P2:
-			humansOther += 1
-
-	# 不允许把最后一个人类关掉
-	if role == MapData.SLOT_OFF and humansOther == 0:
-		slotButtons[slot].select(slotButtons[slot].get_item_index(MapData.playerSlots[slot]))
-		return
-
-	# 1P / 2P 已经被别的槽位占着：对方让位（它是唯一人类时改成交换）
-	if role == MapData.SLOT_P1 or role == MapData.SLOT_P2:
+	# 该人类槽位已被别的槽位占着：和当前槽位交换，相当于"把人挪到这个槽"
+	if role >= MapData.SLOT_P1 and role <= MapData.SLOT_P4:
 		for i in MapData.playerSlots.size():
 			if i != slot and MapData.playerSlots[i] == role:
-				MapData.playerSlots[i] = MapData.playerSlots[slot] if humansOther <= 1 \
-						else MapData.SLOT_OFF
+				MapData.playerSlots[i] = MapData.playerSlots[slot]
 
 	MapData.playerSlots[slot] = role
 	MapData.normalizeSlots()
 	syncSlotButtons()
 	refreshSlotCards()
+	refreshPlayTip()
 	SoundUtil.playClick()
 
 
@@ -170,6 +172,11 @@ func onMapImgGuiInput(event: InputEvent) -> void:
 
 ## 开始游戏：记录选择并切到游戏场景
 func startGame() -> void:
+	# 四个槽位全关 → 不允许开始
+	if MapData.playerSlotTotal() == 0:
+		refreshPlayTip()
+		SoundUtil.playClick()
+		return
 	MapData.selectedMapId = int(img[index].id)
 	# 槽位 + 每张卡选的角色（角色目前只影响界面展示，游戏内仍按槽位换色）
 	MapData.normalizeSlots()

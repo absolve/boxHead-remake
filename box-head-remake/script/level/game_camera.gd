@@ -35,7 +35,7 @@ extends Camera2D
 ## 当前抖动幅度与相位
 var shakeAmp: float = 0.0
 var shakePhase: float = 0.0
-## 当前跟随目标
+## 当前跟随目标（兜底用）
 var target: Node2D = null
 
 
@@ -71,14 +71,27 @@ func refreshTarget() -> void:
 func _physics_process(delta: float) -> void:
 	_updateShake(delta)
 
-	if target == null or not is_instance_valid(target) \
-			or bool(target.get("isCpu")) or bool(target.get("isDead")):
+	if target == null or not is_instance_valid(target) or bool(target.get("isDead")):
+		# 只在「没目标 / 目标失效 / 目标死亡」时重挑。
+		# 不再因为「目标是 CPU」就重挑 —— 全 CPU 观战模式下那样会每帧重建目标。
+		# refreshTarget() 本身优先挑活着的人类，有真人时不会被 CPU 抢走。
 		refreshTarget()
 		if target == null:
 			return
 
 	var vp: Vector2 = get_viewport_rect().size
+
+	# 多人：相机跟所有存活玩家的中心（原版 CWorld.TrackThing 是求平均）
 	var goal: Vector2 = target.global_position
+	var alive: Array = []
+	var sum := Vector2.ZERO
+	for n in get_tree().get_nodes_in_group("player"):
+		if not is_instance_valid(n) or bool(n.get("isDead")):
+			continue
+		alive.append(n)
+		sum += (n as Node2D).global_position
+	if alive.size() > 0:
+		goal = sum / float(alive.size())
 
 	# 地图边界用「格子网格」= (0,0)..mapSize，而不是房间内容的实际包围盒。
 	# 用 mapRect 会让相机跟着墙体包围盒偏移（room_001 里整体下移 25px），
@@ -114,6 +127,13 @@ func _physics_process(delta: float) -> void:
 		anchorFix = -vp * 0.5
 
 	global_position = global_position.lerp(goalCenter + anchorFix, minf(smoothSpeed * delta, 1.0))
+
+	# 把「当前可视区域」写回 MapData：玩家和 CPU 都用它当移动边界
+	var center: Vector2 = global_position
+	if anchor_mode == 0:      # FIXED_TOP：position 是左上角
+		center += vp * 0.5
+	var viewSize: Vector2 = vp / zoom
+	MapData.viewRect = Rect2(center - viewSize * 0.5, viewSize)
 
 
 ## 一次爆炸给相机加一下抖动（多个爆炸叠加，封顶在 shakeMax）

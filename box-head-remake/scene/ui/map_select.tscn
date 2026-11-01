@@ -1,5 +1,4 @@
 [gd_scene format=3 uid="uid://clotqhi0x4sm8"]
-[ext_resource type="PackedScene" path="res://scene/ui/instructions_panel.tscn" id="970_instr"]
 
 [ext_resource type="Script" uid="uid://ee7h4fwpyng3" path="res://script/ui/map_select.gd" id="1_wdws0"]
 [ext_resource type="Texture2D" uid="uid://yxrhq7x1plkq" path="res://sprite/shape/DefineSprite_198/1.png" id="2_4kp6q"]
@@ -11,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://fr8u4yllgc4g" path="res://sprite/ui/33.png" id="6_pwkbp"]
 [ext_resource type="Texture2D" uid="uid://fbvggpyqds52" path="res://sprite/ui/331.png" id="7_7s5k5"]
 [ext_resource type="PackedScene" uid="uid://mjmgeklu220x" path="res://scene/ui/character_card.tscn" id="9_1o3hr"]
+[ext_resource type="PackedScene" path="res://scene/ui/instructions_panel.tscn" id="970_instr"]
 
 [node name="mapSelect" type="Node2D" unique_id=346840057]
 script = ExtResource("1_wdws0")
@@ -123,7 +123,7 @@ texture = ExtResource("4_p7kmg")
 layout_mode = 0
 offset_left = 376.0
 offset_top = 325.0
-offset_right = 467.0
+offset_right = 488.0
 offset_bottom = 348.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
@@ -149,7 +149,7 @@ offset_right = 240.0
 offset_bottom = 166.0
 theme_override_colors/font_color = Color(0.1254902, 0, 0, 1)
 theme_override_font_sizes/font_size = 11
-text = "最多 4 人：1P / 2P 各一个，其余可选 CPU"
+text = "Up to 4 local players: 1P~4P, or fill with CPU"
 
 [node name="slot1" type="OptionButton" parent="Control" unique_id=1400000001]
 layout_mode = 0
@@ -219,12 +219,11 @@ scale = Vector2(0.5, 0.5)
 ids = 4
 
 [node name="gameSetting" parent="." unique_id=1401346272 instance=ExtResource("2_wbm38")]
-visible = false
 
+[node name="instructionsPanel" parent="." unique_id=1284596793 instance=ExtResource("970_instr")]
 
-[node name="instructionsPanel" parent="." instance=ExtResource("970_instr")]
-[connection signal="pressed" from="Control/btnControl" to="." method="_on_btn_control_pressed"]
 [connection signal="pressed" from="Control/btnOption" to="." method="_on_btn_option_pressed"]
+[connection signal="pressed" from="Control/btnControl" to="." method="_on_btn_control_pressed"]
 [connection signal="pressed" from="Control/btnBack" to="." method="_on_btn_back_pressed"]
 [connection signal="pressed" from="Control/btnPrev" to="." method="_on_btn_prev_pressed"]
 [connection signal="pressed" from="Control/btnNext" to="." method="_on_btn_next_pressed"]

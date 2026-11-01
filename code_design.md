@@ -294,6 +294,47 @@ func hit(damage: int, attackPos: Vector2 = Vector2.ZERO,
 | `script/item/barrel_obj.gd` | 油桶（忽略后 3 个参数） |
 | `script/item/wall_obj.gd` | 假墙（忽略后 3 个参数） |
 
+### 2.5 击退：用连续衰减，不要按 25Hz 逐帧跳（本项目约定）
+
+原版是每 1/25 秒位移一格并 `mDelta *= 0.65`（`CThing_Creature.as:291-323`）。
+原版本身跑 25fps，所以每帧都在动；照搬到 60fps 就变成"两三帧不动、然后跳一下"，
+看起来像**瞬间退后固定距离**。
+
+`Character` 里统一用等价的连续指数衰减：
+
+```gdscript
+const KNOCKBACK_DECAY = 10.77          # 25 · ln(1/0.65)
+const KNOCKBACK_TOTAL_FACTOR = 2.63    # 校正后总位移 = 原版 step0 / (1-0.65)
+
+func beginKnockback(dir, speed) -> void   # hit() 里调用
+func advanceKnockback(delta) -> Vector2   # 每个物理帧推进一小段
+func knockbackDone() -> bool
+func clearKnockback() -> void
+```
+
+- 各角色**不要**再自己写 `knockbackDelta *= 0.65` 的循环；
+- Hurt 状态每帧 `advanceKnockback(delta)`，**先用 `knockbackBlocked()` 判能不能走**：
+  - 下一步会出可玩区域（`MapData.getPlayRect()`）
+  - 或静态障碍格（墙 / 油桶 / 假墙）
+  - 或撞到另一个角色（敌人 / 玩家，按半径和判定）
+  任一命中就 `clearKnockback()` **停住**——不贴墙滑、不挤开别人、不推出边界；
+- 硬直时长用 `knockbackTotalTime + 3 tick`。
+
+实测曲线（26 伤害，僵尸）：
+
+```
+每帧位移 4.9 → 4.1 → 3.4 → 2.9 → 2.4 → 2.0 → 1.7 → …  总位移 28.9px
+（改前是 10.4 → 0 → 6.8 → 0 → 4.4 … 看起来一跳一跳）
+```
+
+阻挡实测：
+
+| 场景 | 位移 |
+|---|---|
+| 后面紧贴另一只僵尸 | 0.0px |
+| 后面是墙 | 0.0px |
+| 贴着可玩区域边界打 | 停在边界内 |
+
 ---
 
 ## 3. 类型与静态类型

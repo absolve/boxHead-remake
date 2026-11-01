@@ -21,5 +21,10 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 	if t == null or not is_instance_valid(t):
 		return FAILURE
 
-	return SUCCESS if p.global_position.distance_to(t.global_position) \
-			< DANGER_CELLS * MapData.cellSize else FAILURE
+	var dist: float = p.global_position.distance_to(t.global_position)
+	if dist >= DANGER_CELLS * MapData.cellSize:
+		return FAILURE
+	# 僵尸近战慢，2.5 格外不用撤；恶魔（火球）才需要拉距离
+	if t.get("type") == Game.roleType.Zombie and dist > 2.5 * MapData.cellSize:
+		return FAILURE
+	return SUCCESS

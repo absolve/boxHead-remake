@@ -7,8 +7,11 @@ extends Node2D
 ## 与 Effect.ScorchMark（92×92，1 帧），格子 32 px。
 ## 用法：MapData.addBlood(pos) / MapData.addScorch(pos)
 
-## 原版烘焙贴花时竖方向压扁 0.6（pGlobalScale.y），做出俯视透视
-const SQUASH: float = 0.6
+## 原版烘焙贴花时竖方向压扁 0.6（pGlobalScale.y），做出俯视透视。
+## 但压扁后的图看起来像被挤扁，这里默认不压缩（1.0），直接用原图比例。
+const SQUASH: float = 1.0
+## 压扁系数（1.0 = 不压扁；想要原版俯视感可以调回 0.6）
+@export var squash: float = SQUASH
 ## 原版血迹在格内有 ±0.25 格随机抖动；爆炸印记不抖动
 const BLOOD_JITTER_CELLS: float = 0.25
 ## 单条贴花上限（超出丢最旧的）
@@ -94,9 +97,12 @@ func _draw() -> void:
 				fallback = Color(0.08, 0.08, 0.08, s.alpha)
 			draw_circle(s.pos, fallbackRadius * s.scale, fallback)
 			continue
-		# 先在未旋转的局部空间压扁，再由 draw_set_transform 旋转 —— 与原版烘焙顺序一致
+		# 绕自身中心旋转，再在屏幕纵向压扁（squash=1 时不压缩），最后平移到 pos。
+		# 注意：压扁只能作用在「旋转后的世界纵向」，否则平移的 y 会被一起缩放，血迹会飘。
 		var sz: Vector2 = tex.get_size() * s.scale
-		sz.y *= SQUASH
-		draw_set_transform(s.pos, s.rot, Vector2.ONE)
+		var r := Transform2D(s.rot, Vector2.ZERO)
+		var ax := Vector2(r.x.x, r.x.y * squash)
+		var ay := Vector2(r.y.x, r.y.y * squash)
+		draw_set_transform_matrix(Transform2D(ax, ay, s.pos))
 		draw_texture_rect(tex, Rect2(-sz * 0.5, sz), false, Color(1, 1, 1, s.alpha))
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		draw_set_transform_matrix(Transform2D.IDENTITY)

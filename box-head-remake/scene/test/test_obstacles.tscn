@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://1clag27vblsa"]
+
+[ext_resource type="Script" uid="uid://dd8w5x528pe2w" path="res://script/test/test_obstacles.gd" id="1_edit"]
+
+[node name="testObstacles" type="Node2D" unique_id=1188900407]
+script = ExtResource("1_edit")
+
+[node name="camera" type="Camera2D" parent="." unique_id=1873136735]
+
+[node name="ui" type="CanvasLayer" parent="." unique_id=1863051094]
+
+[node name="label" type="Label" parent="ui" unique_id=1848131857]
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 632.0
+offset_bottom = 84.0
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+
+[node name="hoverLabel" type="Label" parent="ui" unique_id=753741099]
+offset_right = 300.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.85)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+
+[node name="btnSave" type="Button" parent="ui" unique_id=428775849]
+offset_left = 8.0
+offset_top = 446.0
+offset_right = 140.0
+offset_bottom = 474.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "保存到场景 (S)"
+
+[node name="btnReload" type="Button" parent="ui" unique_id=1034844005]
+offset_left = 148.0
+offset_top = 446.0
+offset_right = 272.0
+offset_bottom = 474.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "重新载入 (R)"

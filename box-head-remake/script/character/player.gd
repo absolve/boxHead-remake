@@ -21,6 +21,12 @@ const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 
 ## 玩家ID（用于多人游戏区分）
 @export var playerId: int = 1
+## 槽位颜色编号（0~3）；由 map.gd 按槽位写入，-1 = 退回用 playerId 推算
+var colorIndex: int = -1
+## 出生槽位（复活兜底时用）
+var spawnSlot: int = -1
+## CPU 序号（0 起）；非 CPU 为 -1
+var cpuIndex: int = -1
 ## 是否由 CPU 控制（关卡选择里的 NPC 玩家）：true 时不读按键，交给 AI 决策
 @export var isCpu: bool = false
 
@@ -71,14 +77,6 @@ var shapeQuery: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.ne
 var hurtTimer: float = 0
 ## 受伤持续时间（秒）；每次受击按击退帧数重算
 var hurtDelay: float = 0.5
-## 击退位移（格/帧，25Hz 结算时再 ×cellSize）
-var knockbackDelta: Vector2 = Vector2.ZERO
-## 剩余击退帧数
-var knockbackFrames: int = 0
-## 25Hz 累积器
-var hurtMoveAcc: float = 0.0
-
-
 ## 武器背包节点（存放所有武器）
 @onready var weaponBackpack: Node2D = $weaponBackpack
 ## 武器名称显示节点
@@ -183,11 +181,22 @@ func _ready() -> void:
 		fsm.start(&"Idle")
 
 
+# 武器显示名（翻译后的；动画名仍然用 Game.weaponName 里的英文）
+func weaponDisplayName() -> String:
+	if currWeapon == null:
+		return ""
+	return tr(Game.weaponName[currWeapon.type])
+
+
 # 初始化武器
 func initWeapon() -> void:
 	weaponList.clear()
 	for i in weaponBackpack.get_children():
 		weaponBackpack.remove_child(i)
+		# remove_child 只是摘下来，不释放 —— 不 free 的话每次复活都会漏掉
+		# 一整棵武器子树（武器本体 + ani + sound + AnimationPlayer），
+		# 长时间对局里孤儿节点会随阵亡次数线性增长。
+		i.queue_free()
 	# 初始化武器列表（默认装备手枪）
 	var temp = load("res://scene/weapon/pistol.tscn")
 	var gun = temp.instantiate()
@@ -201,8 +210,8 @@ func initWeapon() -> void:
 	weaponBackpack.add_child(gun)
 
 	currWeapon = gun
-	# 设置武器名称显示
-	txt.text = Game.weaponName[currWeapon.type]
+	# 设置武器名称显示（名字要跟着语言走）
+	txt.text = weaponDisplayName()
 
 
 func resurrection() -> void:
@@ -264,7 +273,7 @@ func switchWeapon(next: bool = true) -> void:
 			currWeaponIndex -= 1
 		currWeaponIndex = wrapi(currWeaponIndex, 0, weaponList.size())
 		currWeapon = weaponList[currWeaponIndex]
-		Game.notice.emit("%s:%s" % [tr("Switch"), Game.weaponName[currWeapon.type]])
+		Game.notice.emit("%s:%s" % [tr("Switch"), weaponDisplayName()])
 
 
 ## 拾取物品
@@ -442,7 +451,8 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 		if fsm != null:
 			fsm.transitionTo(&"Dead")
 		deadSound.play()
-		ani.play("fallDown_%s" % [roundi(angle / 2.0)])
+		# 8 方向 → 4 张倒地图；angle=7 时 round(3.5)=4 会越界（fallDown_4 不存在）
+		ani.play("fallDown_%s" % [mini(roundi(angle / 2.0), 3)])
 		shape.disabled = true
 		bodyShape.disabled = true
 		isDead = true
@@ -466,23 +476,16 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 		# 应用击退：和僵尸/恶魔同一套（25Hz、每帧 ×0.65）
 		if knockDir != Vector2.ZERO:
 			beginKnockback(knockDir, knockbackSpeed(damage, fromExplosion))
-			hurtDelay = hurtTimeFrom(knockbackFrames)
+			hurtDelay = knockbackTotalTime + 3.0 / MapData.TICKS_PER_SEC
 		else:
-			knockbackDelta = Vector2.ZERO
-			knockbackFrames = 0
+			clearKnockback()
 			velocity = Vector2.ZERO
 
 
 ## 玩家自身碰撞体的半宽高（矩形取 size/2，圆形按内接正方形近似）
-## 由击退速度算出每帧位移（格/帧）与持续帧数（每帧 ×0.65）
+## 击退用基类的连续衰减（Character.beginKnockback）
 func beginKnockback(dir: Vector2, _speed: float) -> void:
-	knockbackDelta = dir.normalized() * _speed / MapData.TICKS_PER_SEC / MapData.cellSize
-	knockbackFrames = 0
-	hurtMoveAcc = 0.0
-	var l: float = knockbackDelta.length()
-	while l >= 0.01:
-		knockbackFrames += 1
-		l *= 0.65
+	super.beginKnockback(dir, _speed)
 
 
 func shapeExtents() -> Vector2:
@@ -508,6 +511,10 @@ func blockedByCell(pos: Vector2) -> bool:
 
 
 ## 玩家碰撞半径（圆形取 radius，矩形取宽高的一半里较小的）
+func bodyRadius() -> float:
+	return playerRadius()
+
+
 func playerRadius() -> float:
 	var s = shape.shape
 	if s is CircleShape2D:
@@ -593,7 +600,8 @@ func applyPlayerColor() -> void:
 		return
 	var mat := ShaderMaterial.new()
 	mat.shader = shader
-	var hueIndex: int = absi(playerId - 1) % PLAYER_HUE_SHIFT.size()
+	var idx: int = colorIndex if colorIndex >= 0 else absi(playerId - 1)
+	var hueIndex: int = idx % PLAYER_HUE_SHIFT.size()
 	mat.set_shader_parameter("hue_shift", PLAYER_HUE_SHIFT[hueIndex])
 	ani.material = mat
 
@@ -654,8 +662,30 @@ func updateBoundsAndZ() -> void:
 	position.x = clampf(position.x, play.position.x + bodySize.x / 2, play.end.x - bodySize.x / 2)
 	position.y = clampf(position.y, play.position.y + bodySize.y / 2, play.end.y - bodySize.y / 2)
 
+	# 玩家之间轻微分离：两个人叠在同一点时，互相的碰撞会把彼此卡死
+	# （room_0009 四个 CPU 出现过两个叠在同一个坐标、8 秒不动的现象）
+	for other in get_tree().get_nodes_in_group("player"):
+		if other == self or not is_instance_valid(other):
+			continue
+		if bool(other.get("isDead")):
+			continue
+		var d: Vector2 = global_position - (other as Node2D).global_position
+		var dist: float = d.length()
+		if dist > 0.001 and dist < 18.0:
+			position += d / dist * (18.0 - dist) * 0.5
+		elif dist <= 0.001:
+			var a: float = float(get_instance_id() % 8) * PI * 0.25
+			position += Vector2.RIGHT.rotated(a) * 0.5
+
+	# 再夹进「相机视野」：多人共用一个相机时，谁也不能单独走出画面。
+	# 已经死亡的不夹：尸体可以留在原地，不用跟着相机跑。
+	var move: Rect2 = MapData.moveRect()
+	if not isDead and move.size.x > bodySize.x and move.size.y > bodySize.y:
+		position.x = clampf(position.x, move.position.x + bodySize.x / 2, move.end.x - bodySize.x / 2)
+		position.y = clampf(position.y, move.position.y + bodySize.y / 2, move.end.y - bodySize.y / 2)
+
 	# 根据Y坐标设置Z轴顺序（实现2.5D视觉效果）
-	z_index = floori(global_position.y / MapData.cellSize) + 1
+	z_index = MapData.worldZ(global_position.y)
 
 
 ## ---- 状态钩子（供 player_states/*.gd 调用）----
@@ -676,9 +706,7 @@ func onHurtEnter() -> void:
 func onHurtExit() -> void:
 	# 离开 Hurt 时清掉击退与硬直；下一次受击由 hit() 重新写入
 	hurtTimer = 0.0
-	hurtMoveAcc = 0.0
-	knockbackDelta = Vector2.ZERO
-	knockbackFrames = 0
+	clearKnockback()
 
 
 func onDeadEnter() -> void:
@@ -703,9 +731,15 @@ func updateIdle(delta: float) -> void:
 	if inputDir.length() != 0:
 		if not isCpu:
 			vector = inputDir
-		angle = round(vector.angle() / (PI / 4))
-		angle = wrapi(int(angle), 0, 8)
 		currAni = "walk"
+
+	# 朝向：站着也要跟着瞄准方向转（以前 CPU 站着开枪时角度不更新 → 枪口和人物对不上）
+	var faceVec: Vector2 = vector
+	if isCpu and inputDir.length() != 0 and not cpuWantFire:
+		# 走路时动画跟走路方向；开火那一帧用瞄准方向（子弹和枪口一致）
+		faceVec = inputDir
+	if faceVec.length() > 0.001:
+		angle = wrapi(int(round(faceVec.angle() / (PI / 4))), 0, 8)
 
 	# 对角线移动时归一化速度
 	if not inputDir.is_normalized():
@@ -718,15 +752,12 @@ func updateIdle(delta: float) -> void:
 	else:
 		ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % Game.weaponName[currWeapon.type])
 
-	# 更新武器弹药显示
-	# CPU 不显示武器名（同屏 4 人时全是字，挡视线）
-	txt.visible = not isCpu
-	if isCpu:
-		pass
-	elif currWeapon.maxAmmoNum == 0:
-		txt.text = Game.weaponName[currWeapon.type]
+	# 更新武器弹药显示（CPU 也显示，方便看出它在用什么武器）
+	txt.visible = true
+	if currWeapon.maxAmmoNum == 0:
+		txt.text = weaponDisplayName()
 	else:
-		txt.text = '%s:%s' % [Game.weaponName[currWeapon.type], currWeapon.ammoNum]
+		txt.text = '%s:%s' % [weaponDisplayName(), currWeapon.ammoNum]
 
 	# 根据弹药量改变文字颜色
 	if currWeapon.maxAmmoNum != 0:
@@ -741,16 +772,22 @@ func updateIdle(delta: float) -> void:
 	# 处理射击输入（CPU 由 AI 决定是否开火；武器自身有冷却）
 	if isCpu:
 		if cpuWantFire:
+			var ammoBefore: int = currWeapon.ammoNum
 			currWeapon.fire(vector)
+			if currWeapon.ammoNum != ammoBefore:
+				Game.gunshot.emit(global_position, self)
 	else:
 		if Input.is_action_pressed(keyMap.fire):
 			if currWeapon.type == Game.weaponType.Grenade:
 				currWeapon.increase(delta)
 			else:
+				var a0: int = currWeapon.ammoNum
 				if currWeapon.automatic:
 					currWeapon.fire(vector)
 				elif Input.is_action_just_pressed(keyMap.fire):
 					currWeapon.fire(vector)
+				if currWeapon.ammoNum != a0:
+					Game.gunshot.emit(global_position, self)
 
 		# 手榴弹释放时扔出
 		if Input.is_action_just_released(keyMap.fire):
@@ -917,18 +954,17 @@ func cpuNearest(groupName: String, humansOnly: bool = false) -> Node2D:
 	return best
 
 
-## Hurt：按 25Hz 应用击退（原版每 1/25 秒位移一次并 ×0.65）；播完由状态脚本切回 Idle
+## Hurt：击退按连续衰减推进（原版是每 1/25 秒位移一次并 ×0.65，见 Character.beginKnockback）
 func updateHurt(delta: float) -> void:
 	hurtTimer += delta
-	hurtMoveAcc += delta
-	var hudStep: float = 1.0 / MapData.TICKS_PER_SEC
-	while hurtMoveAcc >= hudStep and knockbackFrames > 0 and knockbackDelta.length() > 0.01:
-		hurtMoveAcc -= hudStep
-		knockbackFrames -= 1
-		var step: Vector2 = knockbackDelta * MapData.cellSize
-		if not blockedByCell(body.global_position + step):
+	var step: Vector2 = advanceKnockback(delta)
+	if step != Vector2.ZERO:
+		var next: Vector2 = body.global_position + step
+		# 后面有墙 / 敌人 / 可玩区域边界 → 直接停住
+		if knockbackBlocked(next, playerRadius()):
+			clearKnockback()
+		elif not blockedByCell(next):
 			move_and_collide(step)
-		knockbackDelta *= 0.65
 
 
 ## Dead：倒地演出期间不响应输入，等 resurrection() 复活
@@ -939,4 +975,4 @@ func updateDead(_delta: float) -> void:
 
 ## 受伤硬直是否结束（Hurt 状态用它决定何时回 Idle）
 func hurtFinished() -> bool:
-	return hurtTimer > hurtDelay and knockbackFrames <= 0
+	return hurtTimer > hurtDelay and knockbackDone()
