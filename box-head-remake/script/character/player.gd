@@ -23,6 +23,15 @@ const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
 @export var playerId: int = 1
 ## 槽位颜色编号（0~3）；由 map.gd 按槽位写入，-1 = 退回用 playerId 推算
 var colorIndex: int = -1
+## 皮肤编号（0~3 = SWAT/BOND/GIJOE/BAMBO）；由 map.gd 按角色卡写入，-1 = 用场景默认（skin1）
+var skinIndex: int = -1
+## 四套原版角色素材（XSI 烘焙帧），下标 = skinIndex
+const PLAYER_SKINS: Array[String] = [
+	"res://sprite/player/skin1/frames.tres",
+	"res://sprite/player/skin2/frames.tres",
+	"res://sprite/player/skin3/frames.tres",
+	"res://sprite/player/skin4/frames.tres",
+]
 ## 出生槽位（复活兜底时用）
 var spawnSlot: int = -1
 ## CPU 序号（0 起）；非 CPU 为 -1
@@ -156,7 +165,8 @@ func _ready() -> void:
 		keyMap.nextWeapon = 'p4_nextWeapon'
 		keyMap.prevWeapon = 'p4_prevWeapon'
 
-	# 按玩家编号换色（绿/红/蓝/黄）
+	# 角色皮肤（地图选择界面的角色卡）+ 按玩家编号换色（绿/红/蓝/黄）
+	applyPlayerSkin()
 	applyPlayerColor()
 
 	# 出生无敌 8 秒
@@ -593,14 +603,41 @@ func resolveAreaBlockers(displacement: Vector2) -> Vector2:
 	return target - center
 
 
+## 换角色皮肤（原版 4 个可选角色：SWAT / BOND / GIJOE / BAMBO）
+## 必须在任何 ani.play() 之前调用：四套皮肤的动画名相同（stand_<角度>_<武器>），
+## 但精灵资源不同，先播动画再换 frames 会有一帧空图。
+func applyPlayerSkin() -> void:
+	if ani == null or skinIndex < 0:
+		return
+	var frames: SpriteFrames = load(PLAYER_SKINS[skinIndex % PLAYER_SKINS.size()]) as SpriteFrames
+	if frames != null:
+		ani.sprite_frames = frames
+
+
+## 本局是否有别的槽位也选了同一个角色（决定要不要额外染色区分）
+func skinSharedWithOtherSlot(skin: int) -> bool:
+	var seen: int = 0
+	for slot in MapData.playerSlots.size():
+		if MapData.playerSlots[slot] == MapData.SLOT_OFF:
+			continue
+		if slot < MapData.playerSlotChars.size() and MapData.playerSlotChars[slot] == skin:
+			seen += 1
+	return seen > 1
+
+
 ## 给身体精灵套一个换色材质（每人一份独立实例）
+## 4 套角色素材本身配色就不同（SWAT 深蓝 / BOND 黑西装 / GIJOE 沙漠迷彩 / BAMBO 赤膊红头巾），
+## 只有多个槽位撞了同一个角色时才需要色相旋转来区分，否则保留原版配色。
 func applyPlayerColor() -> void:
 	var shader = load("res://shader/player_tint.gdshader")
 	if shader == null or ani == null:
 		return
+	var idx: int = colorIndex if colorIndex >= 0 else absi(playerId - 1)
+	if skinIndex >= 0 and not skinSharedWithOtherSlot(skinIndex):
+		ani.material = null
+		return
 	var mat := ShaderMaterial.new()
 	mat.shader = shader
-	var idx: int = colorIndex if colorIndex >= 0 else absi(playerId - 1)
 	var hueIndex: int = idx % PLAYER_HUE_SHIFT.size()
 	mat.set_shader_parameter("hue_shift", PLAYER_HUE_SHIFT[hueIndex])
 	ani.material = mat
@@ -748,9 +785,9 @@ func updateIdle(delta: float) -> void:
 
 	# 根据武器类型播放对应动画
 	if aniException.has(Game.weaponName[currWeapon.type]):
-		ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % 'other')
+		ani.play(currAni + "_%s" % angle + "_%s" % 'other')
 	else:
-		ani.play(currAni + "_%s" % 1 + "_%s" % angle + "_%s" % Game.weaponName[currWeapon.type])
+		ani.play(currAni + "_%s" % angle + "_%s" % Game.weaponName[currWeapon.type])
 
 	# 更新武器弹药显示（CPU 也显示，方便看出它在用什么武器）
 	txt.visible = true

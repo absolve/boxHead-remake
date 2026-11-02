@@ -176,6 +176,8 @@ func _ready() -> void:
 		else:
 			p.playerId = role
 		p.colorIndex = slot
+		# 角色卡选的原版角色（0~3）决定用哪套皮肤素材
+		p.skinIndex = MapData.playerSlotChars[mini(slot, MapData.playerSlotChars.size() - 1)]
 		p.spawnSlot = spawnIndex
 		var spawnPos: Vector2 = MapData.getPlayRect().get_center()
 		if playerSpawnPoint.size() > 0:

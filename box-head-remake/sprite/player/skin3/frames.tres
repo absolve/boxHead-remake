@@ -1,0 +1,2559 @@
+[gd_resource type="SpriteFrames" load_steps=489 format=3]
+
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/dead/0.png" id="1_gijo0001"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/dead/1.png" id="2_gijo0002"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/dead/2.png" id="3_gijo0003"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/dead/3.png" id="4_gijo0004"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/0_0.png" id="5_gijo0005"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/0_1.png" id="6_gijo0006"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/0_2.png" id="7_gijo0007"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/0_3.png" id="8_gijo0008"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/0_4.png" id="9_gijo0009"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/1_0.png" id="10_gijo0010"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/1_1.png" id="11_gijo0011"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/1_2.png" id="12_gijo0012"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/1_3.png" id="13_gijo0013"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/1_4.png" id="14_gijo0014"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/2_0.png" id="15_gijo0015"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/2_1.png" id="16_gijo0016"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/2_2.png" id="17_gijo0017"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/2_3.png" id="18_gijo0018"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/2_4.png" id="19_gijo0019"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/3_0.png" id="20_gijo0020"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/3_1.png" id="21_gijo0021"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/3_2.png" id="22_gijo0022"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/3_3.png" id="23_gijo0023"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/fallDown/3_4.png" id="24_gijo0024"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/0_0.png" id="25_gijo0025"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/0_1.png" id="26_gijo0026"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/1_0.png" id="27_gijo0027"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/1_1.png" id="28_gijo0028"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/2_0.png" id="29_gijo0029"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/2_1.png" id="30_gijo0030"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/3_0.png" id="31_gijo0031"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/3_1.png" id="32_gijo0032"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/4_0.png" id="33_gijo0033"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/4_1.png" id="34_gijo0034"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/5_0.png" id="35_gijo0035"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/5_1.png" id="36_gijo0036"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/6_0.png" id="37_gijo0037"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/6_1.png" id="38_gijo0038"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/7_0.png" id="39_gijo0039"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitFront/7_1.png" id="40_gijo0040"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/0_0.png" id="41_gijo0041"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/0_1.png" id="42_gijo0042"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/1_0.png" id="43_gijo0043"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/1_1.png" id="44_gijo0044"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/2_0.png" id="45_gijo0045"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/2_1.png" id="46_gijo0046"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/3_0.png" id="47_gijo0047"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/3_1.png" id="48_gijo0048"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/4_0.png" id="49_gijo0049"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/4_1.png" id="50_gijo0050"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/5_0.png" id="51_gijo0051"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/5_1.png" id="52_gijo0052"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/6_0.png" id="53_gijo0053"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/6_1.png" id="54_gijo0054"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/7_0.png" id="55_gijo0055"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/hitRear/7_1.png" id="56_gijo0056"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/0.png" id="57_gijo0057"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/0.png" id="58_gijo0058"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/0.png" id="59_gijo0059"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/0.png" id="60_gijo0060"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/0.png" id="61_gijo0061"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/0.png" id="62_gijo0062"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/1.png" id="63_gijo0063"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/1.png" id="64_gijo0064"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/1.png" id="65_gijo0065"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/1.png" id="66_gijo0066"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/1.png" id="67_gijo0067"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/1.png" id="68_gijo0068"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/2.png" id="69_gijo0069"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/2.png" id="70_gijo0070"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/2.png" id="71_gijo0071"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/2.png" id="72_gijo0072"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/2.png" id="73_gijo0073"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/2.png" id="74_gijo0074"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/3.png" id="75_gijo0075"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/3.png" id="76_gijo0076"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/3.png" id="77_gijo0077"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/3.png" id="78_gijo0078"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/3.png" id="79_gijo0079"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/3.png" id="80_gijo0080"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/4.png" id="81_gijo0081"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/4.png" id="82_gijo0082"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/4.png" id="83_gijo0083"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/4.png" id="84_gijo0084"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/4.png" id="85_gijo0085"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/4.png" id="86_gijo0086"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/5.png" id="87_gijo0087"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/5.png" id="88_gijo0088"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/5.png" id="89_gijo0089"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/5.png" id="90_gijo0090"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/5.png" id="91_gijo0091"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/5.png" id="92_gijo0092"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/6.png" id="93_gijo0093"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/6.png" id="94_gijo0094"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/6.png" id="95_gijo0095"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/6.png" id="96_gijo0096"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/6.png" id="97_gijo0097"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/6.png" id="98_gijo0098"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Pistol/7.png" id="99_gijo0099"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Railgun/7.png" id="100_gijo0100"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Rocket/7.png" id="101_gijo0101"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_Shotgun/7.png" id="102_gijo0102"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_UZI/7.png" id="103_gijo0103"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/stand_other/7.png" id="104_gijo0104"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_0.png" id="105_gijo0105"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_1.png" id="106_gijo0106"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_2.png" id="107_gijo0107"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_3.png" id="108_gijo0108"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_4.png" id="109_gijo0109"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_5.png" id="110_gijo0110"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_6.png" id="111_gijo0111"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/0_7.png" id="112_gijo0112"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_0.png" id="113_gijo0113"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_1.png" id="114_gijo0114"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_2.png" id="115_gijo0115"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_3.png" id="116_gijo0116"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_4.png" id="117_gijo0117"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_5.png" id="118_gijo0118"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_6.png" id="119_gijo0119"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/0_7.png" id="120_gijo0120"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_0.png" id="121_gijo0121"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_1.png" id="122_gijo0122"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_2.png" id="123_gijo0123"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_3.png" id="124_gijo0124"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_4.png" id="125_gijo0125"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_5.png" id="126_gijo0126"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_6.png" id="127_gijo0127"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/0_7.png" id="128_gijo0128"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_0.png" id="129_gijo0129"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_1.png" id="130_gijo0130"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_2.png" id="131_gijo0131"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_3.png" id="132_gijo0132"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_4.png" id="133_gijo0133"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_5.png" id="134_gijo0134"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_6.png" id="135_gijo0135"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/0_7.png" id="136_gijo0136"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_0.png" id="137_gijo0137"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_1.png" id="138_gijo0138"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_2.png" id="139_gijo0139"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_3.png" id="140_gijo0140"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_4.png" id="141_gijo0141"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_5.png" id="142_gijo0142"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_6.png" id="143_gijo0143"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/0_7.png" id="144_gijo0144"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_0.png" id="145_gijo0145"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_1.png" id="146_gijo0146"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_2.png" id="147_gijo0147"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_3.png" id="148_gijo0148"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_4.png" id="149_gijo0149"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_5.png" id="150_gijo0150"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_6.png" id="151_gijo0151"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/0_7.png" id="152_gijo0152"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_0.png" id="153_gijo0153"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_1.png" id="154_gijo0154"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_2.png" id="155_gijo0155"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_3.png" id="156_gijo0156"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_4.png" id="157_gijo0157"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_5.png" id="158_gijo0158"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_6.png" id="159_gijo0159"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/1_7.png" id="160_gijo0160"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_0.png" id="161_gijo0161"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_1.png" id="162_gijo0162"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_2.png" id="163_gijo0163"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_3.png" id="164_gijo0164"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_4.png" id="165_gijo0165"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_5.png" id="166_gijo0166"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_6.png" id="167_gijo0167"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/1_7.png" id="168_gijo0168"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_0.png" id="169_gijo0169"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_1.png" id="170_gijo0170"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_2.png" id="171_gijo0171"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_3.png" id="172_gijo0172"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_4.png" id="173_gijo0173"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_5.png" id="174_gijo0174"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_6.png" id="175_gijo0175"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/1_7.png" id="176_gijo0176"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_0.png" id="177_gijo0177"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_1.png" id="178_gijo0178"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_2.png" id="179_gijo0179"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_3.png" id="180_gijo0180"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_4.png" id="181_gijo0181"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_5.png" id="182_gijo0182"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_6.png" id="183_gijo0183"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/1_7.png" id="184_gijo0184"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_0.png" id="185_gijo0185"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_1.png" id="186_gijo0186"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_2.png" id="187_gijo0187"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_3.png" id="188_gijo0188"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_4.png" id="189_gijo0189"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_5.png" id="190_gijo0190"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_6.png" id="191_gijo0191"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/1_7.png" id="192_gijo0192"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_0.png" id="193_gijo0193"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_1.png" id="194_gijo0194"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_2.png" id="195_gijo0195"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_3.png" id="196_gijo0196"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_4.png" id="197_gijo0197"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_5.png" id="198_gijo0198"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_6.png" id="199_gijo0199"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/1_7.png" id="200_gijo0200"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_0.png" id="201_gijo0201"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_1.png" id="202_gijo0202"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_2.png" id="203_gijo0203"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_3.png" id="204_gijo0204"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_4.png" id="205_gijo0205"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_5.png" id="206_gijo0206"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_6.png" id="207_gijo0207"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/2_7.png" id="208_gijo0208"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_0.png" id="209_gijo0209"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_1.png" id="210_gijo0210"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_2.png" id="211_gijo0211"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_3.png" id="212_gijo0212"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_4.png" id="213_gijo0213"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_5.png" id="214_gijo0214"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_6.png" id="215_gijo0215"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/2_7.png" id="216_gijo0216"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_0.png" id="217_gijo0217"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_1.png" id="218_gijo0218"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_2.png" id="219_gijo0219"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_3.png" id="220_gijo0220"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_4.png" id="221_gijo0221"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_5.png" id="222_gijo0222"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_6.png" id="223_gijo0223"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/2_7.png" id="224_gijo0224"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_0.png" id="225_gijo0225"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_1.png" id="226_gijo0226"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_2.png" id="227_gijo0227"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_3.png" id="228_gijo0228"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_4.png" id="229_gijo0229"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_5.png" id="230_gijo0230"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_6.png" id="231_gijo0231"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/2_7.png" id="232_gijo0232"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_0.png" id="233_gijo0233"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_1.png" id="234_gijo0234"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_2.png" id="235_gijo0235"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_3.png" id="236_gijo0236"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_4.png" id="237_gijo0237"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_5.png" id="238_gijo0238"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_6.png" id="239_gijo0239"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/2_7.png" id="240_gijo0240"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_0.png" id="241_gijo0241"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_1.png" id="242_gijo0242"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_2.png" id="243_gijo0243"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_3.png" id="244_gijo0244"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_4.png" id="245_gijo0245"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_5.png" id="246_gijo0246"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_6.png" id="247_gijo0247"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/2_7.png" id="248_gijo0248"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_0.png" id="249_gijo0249"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_1.png" id="250_gijo0250"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_2.png" id="251_gijo0251"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_3.png" id="252_gijo0252"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_4.png" id="253_gijo0253"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_5.png" id="254_gijo0254"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_6.png" id="255_gijo0255"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/3_7.png" id="256_gijo0256"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_0.png" id="257_gijo0257"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_1.png" id="258_gijo0258"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_2.png" id="259_gijo0259"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_3.png" id="260_gijo0260"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_4.png" id="261_gijo0261"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_5.png" id="262_gijo0262"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_6.png" id="263_gijo0263"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/3_7.png" id="264_gijo0264"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_0.png" id="265_gijo0265"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_1.png" id="266_gijo0266"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_2.png" id="267_gijo0267"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_3.png" id="268_gijo0268"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_4.png" id="269_gijo0269"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_5.png" id="270_gijo0270"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_6.png" id="271_gijo0271"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/3_7.png" id="272_gijo0272"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_0.png" id="273_gijo0273"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_1.png" id="274_gijo0274"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_2.png" id="275_gijo0275"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_3.png" id="276_gijo0276"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_4.png" id="277_gijo0277"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_5.png" id="278_gijo0278"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_6.png" id="279_gijo0279"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/3_7.png" id="280_gijo0280"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_0.png" id="281_gijo0281"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_1.png" id="282_gijo0282"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_2.png" id="283_gijo0283"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_3.png" id="284_gijo0284"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_4.png" id="285_gijo0285"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_5.png" id="286_gijo0286"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_6.png" id="287_gijo0287"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/3_7.png" id="288_gijo0288"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_0.png" id="289_gijo0289"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_1.png" id="290_gijo0290"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_2.png" id="291_gijo0291"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_3.png" id="292_gijo0292"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_4.png" id="293_gijo0293"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_5.png" id="294_gijo0294"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_6.png" id="295_gijo0295"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/3_7.png" id="296_gijo0296"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_0.png" id="297_gijo0297"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_1.png" id="298_gijo0298"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_2.png" id="299_gijo0299"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_3.png" id="300_gijo0300"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_4.png" id="301_gijo0301"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_5.png" id="302_gijo0302"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_6.png" id="303_gijo0303"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/4_7.png" id="304_gijo0304"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_0.png" id="305_gijo0305"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_1.png" id="306_gijo0306"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_2.png" id="307_gijo0307"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_3.png" id="308_gijo0308"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_4.png" id="309_gijo0309"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_5.png" id="310_gijo0310"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_6.png" id="311_gijo0311"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/4_7.png" id="312_gijo0312"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_0.png" id="313_gijo0313"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_1.png" id="314_gijo0314"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_2.png" id="315_gijo0315"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_3.png" id="316_gijo0316"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_4.png" id="317_gijo0317"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_5.png" id="318_gijo0318"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_6.png" id="319_gijo0319"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/4_7.png" id="320_gijo0320"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_0.png" id="321_gijo0321"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_1.png" id="322_gijo0322"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_2.png" id="323_gijo0323"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_3.png" id="324_gijo0324"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_4.png" id="325_gijo0325"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_5.png" id="326_gijo0326"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_6.png" id="327_gijo0327"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/4_7.png" id="328_gijo0328"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_0.png" id="329_gijo0329"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_1.png" id="330_gijo0330"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_2.png" id="331_gijo0331"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_3.png" id="332_gijo0332"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_4.png" id="333_gijo0333"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_5.png" id="334_gijo0334"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_6.png" id="335_gijo0335"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/4_7.png" id="336_gijo0336"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_0.png" id="337_gijo0337"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_1.png" id="338_gijo0338"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_2.png" id="339_gijo0339"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_3.png" id="340_gijo0340"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_4.png" id="341_gijo0341"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_5.png" id="342_gijo0342"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_6.png" id="343_gijo0343"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/4_7.png" id="344_gijo0344"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_0.png" id="345_gijo0345"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_1.png" id="346_gijo0346"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_2.png" id="347_gijo0347"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_3.png" id="348_gijo0348"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_4.png" id="349_gijo0349"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_5.png" id="350_gijo0350"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_6.png" id="351_gijo0351"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/5_7.png" id="352_gijo0352"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_0.png" id="353_gijo0353"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_1.png" id="354_gijo0354"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_2.png" id="355_gijo0355"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_3.png" id="356_gijo0356"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_4.png" id="357_gijo0357"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_5.png" id="358_gijo0358"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_6.png" id="359_gijo0359"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/5_7.png" id="360_gijo0360"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_0.png" id="361_gijo0361"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_1.png" id="362_gijo0362"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_2.png" id="363_gijo0363"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_3.png" id="364_gijo0364"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_4.png" id="365_gijo0365"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_5.png" id="366_gijo0366"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_6.png" id="367_gijo0367"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/5_7.png" id="368_gijo0368"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_0.png" id="369_gijo0369"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_1.png" id="370_gijo0370"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_2.png" id="371_gijo0371"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_3.png" id="372_gijo0372"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_4.png" id="373_gijo0373"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_5.png" id="374_gijo0374"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_6.png" id="375_gijo0375"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/5_7.png" id="376_gijo0376"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_0.png" id="377_gijo0377"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_1.png" id="378_gijo0378"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_2.png" id="379_gijo0379"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_3.png" id="380_gijo0380"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_4.png" id="381_gijo0381"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_5.png" id="382_gijo0382"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_6.png" id="383_gijo0383"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/5_7.png" id="384_gijo0384"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_0.png" id="385_gijo0385"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_1.png" id="386_gijo0386"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_2.png" id="387_gijo0387"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_3.png" id="388_gijo0388"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_4.png" id="389_gijo0389"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_5.png" id="390_gijo0390"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_6.png" id="391_gijo0391"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/5_7.png" id="392_gijo0392"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_0.png" id="393_gijo0393"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_1.png" id="394_gijo0394"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_2.png" id="395_gijo0395"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_3.png" id="396_gijo0396"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_4.png" id="397_gijo0397"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_5.png" id="398_gijo0398"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_6.png" id="399_gijo0399"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/6_7.png" id="400_gijo0400"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_0.png" id="401_gijo0401"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_1.png" id="402_gijo0402"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_2.png" id="403_gijo0403"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_3.png" id="404_gijo0404"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_4.png" id="405_gijo0405"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_5.png" id="406_gijo0406"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_6.png" id="407_gijo0407"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/6_7.png" id="408_gijo0408"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_0.png" id="409_gijo0409"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_1.png" id="410_gijo0410"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_2.png" id="411_gijo0411"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_3.png" id="412_gijo0412"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_4.png" id="413_gijo0413"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_5.png" id="414_gijo0414"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_6.png" id="415_gijo0415"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/6_7.png" id="416_gijo0416"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_0.png" id="417_gijo0417"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_1.png" id="418_gijo0418"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_2.png" id="419_gijo0419"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_3.png" id="420_gijo0420"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_4.png" id="421_gijo0421"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_5.png" id="422_gijo0422"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_6.png" id="423_gijo0423"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/6_7.png" id="424_gijo0424"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_0.png" id="425_gijo0425"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_1.png" id="426_gijo0426"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_2.png" id="427_gijo0427"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_3.png" id="428_gijo0428"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_4.png" id="429_gijo0429"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_5.png" id="430_gijo0430"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_6.png" id="431_gijo0431"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/6_7.png" id="432_gijo0432"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_0.png" id="433_gijo0433"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_1.png" id="434_gijo0434"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_2.png" id="435_gijo0435"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_3.png" id="436_gijo0436"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_4.png" id="437_gijo0437"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_5.png" id="438_gijo0438"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_6.png" id="439_gijo0439"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/6_7.png" id="440_gijo0440"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_0.png" id="441_gijo0441"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_1.png" id="442_gijo0442"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_2.png" id="443_gijo0443"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_3.png" id="444_gijo0444"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_4.png" id="445_gijo0445"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_5.png" id="446_gijo0446"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_6.png" id="447_gijo0447"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Pistol/7_7.png" id="448_gijo0448"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_0.png" id="449_gijo0449"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_1.png" id="450_gijo0450"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_2.png" id="451_gijo0451"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_3.png" id="452_gijo0452"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_4.png" id="453_gijo0453"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_5.png" id="454_gijo0454"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_6.png" id="455_gijo0455"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Railgun/7_7.png" id="456_gijo0456"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_0.png" id="457_gijo0457"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_1.png" id="458_gijo0458"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_2.png" id="459_gijo0459"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_3.png" id="460_gijo0460"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_4.png" id="461_gijo0461"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_5.png" id="462_gijo0462"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_6.png" id="463_gijo0463"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Rocket/7_7.png" id="464_gijo0464"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_0.png" id="465_gijo0465"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_1.png" id="466_gijo0466"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_2.png" id="467_gijo0467"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_3.png" id="468_gijo0468"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_4.png" id="469_gijo0469"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_5.png" id="470_gijo0470"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_6.png" id="471_gijo0471"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_Shotgun/7_7.png" id="472_gijo0472"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_0.png" id="473_gijo0473"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_1.png" id="474_gijo0474"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_2.png" id="475_gijo0475"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_3.png" id="476_gijo0476"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_4.png" id="477_gijo0477"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_5.png" id="478_gijo0478"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_6.png" id="479_gijo0479"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_UZI/7_7.png" id="480_gijo0480"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_0.png" id="481_gijo0481"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_1.png" id="482_gijo0482"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_2.png" id="483_gijo0483"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_3.png" id="484_gijo0484"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_4.png" id="485_gijo0485"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_5.png" id="486_gijo0486"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_6.png" id="487_gijo0487"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin3/walk_other/7_7.png" id="488_gijo0488"]
+
+[resource]
+animations = [
+{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gijo0001")
+}],
+"loop": 0,
+"name": &"dead_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_gijo0002")
+}],
+"loop": 0,
+"name": &"dead_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_gijo0003")
+}],
+"loop": 0,
+"name": &"dead_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_gijo0004")
+}],
+"loop": 0,
+"name": &"dead_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_gijo0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gijo0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_gijo0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_gijo0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_gijo0009")
+}],
+"loop": 0,
+"name": &"fallDown_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_gijo0010")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_gijo0011")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_gijo0012")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_gijo0013")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_gijo0014")
+}],
+"loop": 0,
+"name": &"fallDown_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_gijo0015")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_gijo0016")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_gijo0017")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_gijo0018")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_gijo0019")
+}],
+"loop": 0,
+"name": &"fallDown_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_gijo0020")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_gijo0021")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_gijo0022")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_gijo0023")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_gijo0024")
+}],
+"loop": 0,
+"name": &"fallDown_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_gijo0025")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_gijo0026")
+}],
+"loop": 0,
+"name": &"hitFront_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_gijo0027")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_gijo0028")
+}],
+"loop": 0,
+"name": &"hitFront_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_gijo0029")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_gijo0030")
+}],
+"loop": 0,
+"name": &"hitFront_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_gijo0031")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_gijo0032")
+}],
+"loop": 0,
+"name": &"hitFront_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_gijo0033")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_gijo0034")
+}],
+"loop": 0,
+"name": &"hitFront_4",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_gijo0035")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_gijo0036")
+}],
+"loop": 0,
+"name": &"hitFront_5",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("37_gijo0037")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_gijo0038")
+}],
+"loop": 0,
+"name": &"hitFront_6",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("39_gijo0039")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_gijo0040")
+}],
+"loop": 0,
+"name": &"hitFront_7",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("41_gijo0041")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_gijo0042")
+}],
+"loop": 0,
+"name": &"hitRear_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_gijo0043")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_gijo0044")
+}],
+"loop": 0,
+"name": &"hitRear_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("45_gijo0045")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_gijo0046")
+}],
+"loop": 0,
+"name": &"hitRear_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("47_gijo0047")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_gijo0048")
+}],
+"loop": 0,
+"name": &"hitRear_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("49_gijo0049")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_gijo0050")
+}],
+"loop": 0,
+"name": &"hitRear_4",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("51_gijo0051")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_gijo0052")
+}],
+"loop": 0,
+"name": &"hitRear_5",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("53_gijo0053")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_gijo0054")
+}],
+"loop": 0,
+"name": &"hitRear_6",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("55_gijo0055")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_gijo0056")
+}],
+"loop": 0,
+"name": &"hitRear_7",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("57_gijo0057")
+}],
+"loop": 1,
+"name": &"stand_0_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("58_gijo0058")
+}],
+"loop": 1,
+"name": &"stand_0_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("59_gijo0059")
+}],
+"loop": 1,
+"name": &"stand_0_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("60_gijo0060")
+}],
+"loop": 1,
+"name": &"stand_0_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("61_gijo0061")
+}],
+"loop": 1,
+"name": &"stand_0_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("62_gijo0062")
+}],
+"loop": 1,
+"name": &"stand_0_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("63_gijo0063")
+}],
+"loop": 1,
+"name": &"stand_1_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("64_gijo0064")
+}],
+"loop": 1,
+"name": &"stand_1_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("65_gijo0065")
+}],
+"loop": 1,
+"name": &"stand_1_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("66_gijo0066")
+}],
+"loop": 1,
+"name": &"stand_1_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_gijo0067")
+}],
+"loop": 1,
+"name": &"stand_1_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("68_gijo0068")
+}],
+"loop": 1,
+"name": &"stand_1_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("69_gijo0069")
+}],
+"loop": 1,
+"name": &"stand_2_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("70_gijo0070")
+}],
+"loop": 1,
+"name": &"stand_2_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("71_gijo0071")
+}],
+"loop": 1,
+"name": &"stand_2_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("72_gijo0072")
+}],
+"loop": 1,
+"name": &"stand_2_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("73_gijo0073")
+}],
+"loop": 1,
+"name": &"stand_2_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("74_gijo0074")
+}],
+"loop": 1,
+"name": &"stand_2_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("75_gijo0075")
+}],
+"loop": 1,
+"name": &"stand_3_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("76_gijo0076")
+}],
+"loop": 1,
+"name": &"stand_3_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("77_gijo0077")
+}],
+"loop": 1,
+"name": &"stand_3_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("78_gijo0078")
+}],
+"loop": 1,
+"name": &"stand_3_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("79_gijo0079")
+}],
+"loop": 1,
+"name": &"stand_3_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("80_gijo0080")
+}],
+"loop": 1,
+"name": &"stand_3_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("81_gijo0081")
+}],
+"loop": 1,
+"name": &"stand_4_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("82_gijo0082")
+}],
+"loop": 1,
+"name": &"stand_4_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("83_gijo0083")
+}],
+"loop": 1,
+"name": &"stand_4_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("84_gijo0084")
+}],
+"loop": 1,
+"name": &"stand_4_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("85_gijo0085")
+}],
+"loop": 1,
+"name": &"stand_4_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("86_gijo0086")
+}],
+"loop": 1,
+"name": &"stand_4_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("87_gijo0087")
+}],
+"loop": 1,
+"name": &"stand_5_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("88_gijo0088")
+}],
+"loop": 1,
+"name": &"stand_5_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("89_gijo0089")
+}],
+"loop": 1,
+"name": &"stand_5_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("90_gijo0090")
+}],
+"loop": 1,
+"name": &"stand_5_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("91_gijo0091")
+}],
+"loop": 1,
+"name": &"stand_5_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("92_gijo0092")
+}],
+"loop": 1,
+"name": &"stand_5_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("93_gijo0093")
+}],
+"loop": 1,
+"name": &"stand_6_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("94_gijo0094")
+}],
+"loop": 1,
+"name": &"stand_6_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("95_gijo0095")
+}],
+"loop": 1,
+"name": &"stand_6_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("96_gijo0096")
+}],
+"loop": 1,
+"name": &"stand_6_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("97_gijo0097")
+}],
+"loop": 1,
+"name": &"stand_6_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("98_gijo0098")
+}],
+"loop": 1,
+"name": &"stand_6_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("99_gijo0099")
+}],
+"loop": 1,
+"name": &"stand_7_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("100_gijo0100")
+}],
+"loop": 1,
+"name": &"stand_7_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("101_gijo0101")
+}],
+"loop": 1,
+"name": &"stand_7_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("102_gijo0102")
+}],
+"loop": 1,
+"name": &"stand_7_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("103_gijo0103")
+}],
+"loop": 1,
+"name": &"stand_7_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("104_gijo0104")
+}],
+"loop": 1,
+"name": &"stand_7_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("105_gijo0105")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_gijo0106")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_gijo0107")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_gijo0108")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_gijo0109")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_gijo0110")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_gijo0111")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_gijo0112")
+}],
+"loop": 1,
+"name": &"walk_0_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("113_gijo0113")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_gijo0114")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_gijo0115")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_gijo0116")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_gijo0117")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_gijo0118")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_gijo0119")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_gijo0120")
+}],
+"loop": 1,
+"name": &"walk_0_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("121_gijo0121")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_gijo0122")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_gijo0123")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_gijo0124")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_gijo0125")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_gijo0126")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_gijo0127")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_gijo0128")
+}],
+"loop": 1,
+"name": &"walk_0_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("129_gijo0129")
+}, {
+"duration": 1.0,
+"texture": ExtResource("130_gijo0130")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_gijo0131")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_gijo0132")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_gijo0133")
+}, {
+"duration": 1.0,
+"texture": ExtResource("134_gijo0134")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_gijo0135")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_gijo0136")
+}],
+"loop": 1,
+"name": &"walk_0_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("137_gijo0137")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_gijo0138")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_gijo0139")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_gijo0140")
+}, {
+"duration": 1.0,
+"texture": ExtResource("141_gijo0141")
+}, {
+"duration": 1.0,
+"texture": ExtResource("142_gijo0142")
+}, {
+"duration": 1.0,
+"texture": ExtResource("143_gijo0143")
+}, {
+"duration": 1.0,
+"texture": ExtResource("144_gijo0144")
+}],
+"loop": 1,
+"name": &"walk_0_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("145_gijo0145")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_gijo0146")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_gijo0147")
+}, {
+"duration": 1.0,
+"texture": ExtResource("148_gijo0148")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_gijo0149")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_gijo0150")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_gijo0151")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_gijo0152")
+}],
+"loop": 1,
+"name": &"walk_0_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("153_gijo0153")
+}, {
+"duration": 1.0,
+"texture": ExtResource("154_gijo0154")
+}, {
+"duration": 1.0,
+"texture": ExtResource("155_gijo0155")
+}, {
+"duration": 1.0,
+"texture": ExtResource("156_gijo0156")
+}, {
+"duration": 1.0,
+"texture": ExtResource("157_gijo0157")
+}, {
+"duration": 1.0,
+"texture": ExtResource("158_gijo0158")
+}, {
+"duration": 1.0,
+"texture": ExtResource("159_gijo0159")
+}, {
+"duration": 1.0,
+"texture": ExtResource("160_gijo0160")
+}],
+"loop": 1,
+"name": &"walk_1_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("161_gijo0161")
+}, {
+"duration": 1.0,
+"texture": ExtResource("162_gijo0162")
+}, {
+"duration": 1.0,
+"texture": ExtResource("163_gijo0163")
+}, {
+"duration": 1.0,
+"texture": ExtResource("164_gijo0164")
+}, {
+"duration": 1.0,
+"texture": ExtResource("165_gijo0165")
+}, {
+"duration": 1.0,
+"texture": ExtResource("166_gijo0166")
+}, {
+"duration": 1.0,
+"texture": ExtResource("167_gijo0167")
+}, {
+"duration": 1.0,
+"texture": ExtResource("168_gijo0168")
+}],
+"loop": 1,
+"name": &"walk_1_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("169_gijo0169")
+}, {
+"duration": 1.0,
+"texture": ExtResource("170_gijo0170")
+}, {
+"duration": 1.0,
+"texture": ExtResource("171_gijo0171")
+}, {
+"duration": 1.0,
+"texture": ExtResource("172_gijo0172")
+}, {
+"duration": 1.0,
+"texture": ExtResource("173_gijo0173")
+}, {
+"duration": 1.0,
+"texture": ExtResource("174_gijo0174")
+}, {
+"duration": 1.0,
+"texture": ExtResource("175_gijo0175")
+}, {
+"duration": 1.0,
+"texture": ExtResource("176_gijo0176")
+}],
+"loop": 1,
+"name": &"walk_1_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("177_gijo0177")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_gijo0178")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_gijo0179")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_gijo0180")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_gijo0181")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_gijo0182")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_gijo0183")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_gijo0184")
+}],
+"loop": 1,
+"name": &"walk_1_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("185_gijo0185")
+}, {
+"duration": 1.0,
+"texture": ExtResource("186_gijo0186")
+}, {
+"duration": 1.0,
+"texture": ExtResource("187_gijo0187")
+}, {
+"duration": 1.0,
+"texture": ExtResource("188_gijo0188")
+}, {
+"duration": 1.0,
+"texture": ExtResource("189_gijo0189")
+}, {
+"duration": 1.0,
+"texture": ExtResource("190_gijo0190")
+}, {
+"duration": 1.0,
+"texture": ExtResource("191_gijo0191")
+}, {
+"duration": 1.0,
+"texture": ExtResource("192_gijo0192")
+}],
+"loop": 1,
+"name": &"walk_1_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("193_gijo0193")
+}, {
+"duration": 1.0,
+"texture": ExtResource("194_gijo0194")
+}, {
+"duration": 1.0,
+"texture": ExtResource("195_gijo0195")
+}, {
+"duration": 1.0,
+"texture": ExtResource("196_gijo0196")
+}, {
+"duration": 1.0,
+"texture": ExtResource("197_gijo0197")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_gijo0198")
+}, {
+"duration": 1.0,
+"texture": ExtResource("199_gijo0199")
+}, {
+"duration": 1.0,
+"texture": ExtResource("200_gijo0200")
+}],
+"loop": 1,
+"name": &"walk_1_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("201_gijo0201")
+}, {
+"duration": 1.0,
+"texture": ExtResource("202_gijo0202")
+}, {
+"duration": 1.0,
+"texture": ExtResource("203_gijo0203")
+}, {
+"duration": 1.0,
+"texture": ExtResource("204_gijo0204")
+}, {
+"duration": 1.0,
+"texture": ExtResource("205_gijo0205")
+}, {
+"duration": 1.0,
+"texture": ExtResource("206_gijo0206")
+}, {
+"duration": 1.0,
+"texture": ExtResource("207_gijo0207")
+}, {
+"duration": 1.0,
+"texture": ExtResource("208_gijo0208")
+}],
+"loop": 1,
+"name": &"walk_2_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("209_gijo0209")
+}, {
+"duration": 1.0,
+"texture": ExtResource("210_gijo0210")
+}, {
+"duration": 1.0,
+"texture": ExtResource("211_gijo0211")
+}, {
+"duration": 1.0,
+"texture": ExtResource("212_gijo0212")
+}, {
+"duration": 1.0,
+"texture": ExtResource("213_gijo0213")
+}, {
+"duration": 1.0,
+"texture": ExtResource("214_gijo0214")
+}, {
+"duration": 1.0,
+"texture": ExtResource("215_gijo0215")
+}, {
+"duration": 1.0,
+"texture": ExtResource("216_gijo0216")
+}],
+"loop": 1,
+"name": &"walk_2_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("217_gijo0217")
+}, {
+"duration": 1.0,
+"texture": ExtResource("218_gijo0218")
+}, {
+"duration": 1.0,
+"texture": ExtResource("219_gijo0219")
+}, {
+"duration": 1.0,
+"texture": ExtResource("220_gijo0220")
+}, {
+"duration": 1.0,
+"texture": ExtResource("221_gijo0221")
+}, {
+"duration": 1.0,
+"texture": ExtResource("222_gijo0222")
+}, {
+"duration": 1.0,
+"texture": ExtResource("223_gijo0223")
+}, {
+"duration": 1.0,
+"texture": ExtResource("224_gijo0224")
+}],
+"loop": 1,
+"name": &"walk_2_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("225_gijo0225")
+}, {
+"duration": 1.0,
+"texture": ExtResource("226_gijo0226")
+}, {
+"duration": 1.0,
+"texture": ExtResource("227_gijo0227")
+}, {
+"duration": 1.0,
+"texture": ExtResource("228_gijo0228")
+}, {
+"duration": 1.0,
+"texture": ExtResource("229_gijo0229")
+}, {
+"duration": 1.0,
+"texture": ExtResource("230_gijo0230")
+}, {
+"duration": 1.0,
+"texture": ExtResource("231_gijo0231")
+}, {
+"duration": 1.0,
+"texture": ExtResource("232_gijo0232")
+}],
+"loop": 1,
+"name": &"walk_2_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("233_gijo0233")
+}, {
+"duration": 1.0,
+"texture": ExtResource("234_gijo0234")
+}, {
+"duration": 1.0,
+"texture": ExtResource("235_gijo0235")
+}, {
+"duration": 1.0,
+"texture": ExtResource("236_gijo0236")
+}, {
+"duration": 1.0,
+"texture": ExtResource("237_gijo0237")
+}, {
+"duration": 1.0,
+"texture": ExtResource("238_gijo0238")
+}, {
+"duration": 1.0,
+"texture": ExtResource("239_gijo0239")
+}, {
+"duration": 1.0,
+"texture": ExtResource("240_gijo0240")
+}],
+"loop": 1,
+"name": &"walk_2_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("241_gijo0241")
+}, {
+"duration": 1.0,
+"texture": ExtResource("242_gijo0242")
+}, {
+"duration": 1.0,
+"texture": ExtResource("243_gijo0243")
+}, {
+"duration": 1.0,
+"texture": ExtResource("244_gijo0244")
+}, {
+"duration": 1.0,
+"texture": ExtResource("245_gijo0245")
+}, {
+"duration": 1.0,
+"texture": ExtResource("246_gijo0246")
+}, {
+"duration": 1.0,
+"texture": ExtResource("247_gijo0247")
+}, {
+"duration": 1.0,
+"texture": ExtResource("248_gijo0248")
+}],
+"loop": 1,
+"name": &"walk_2_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("249_gijo0249")
+}, {
+"duration": 1.0,
+"texture": ExtResource("250_gijo0250")
+}, {
+"duration": 1.0,
+"texture": ExtResource("251_gijo0251")
+}, {
+"duration": 1.0,
+"texture": ExtResource("252_gijo0252")
+}, {
+"duration": 1.0,
+"texture": ExtResource("253_gijo0253")
+}, {
+"duration": 1.0,
+"texture": ExtResource("254_gijo0254")
+}, {
+"duration": 1.0,
+"texture": ExtResource("255_gijo0255")
+}, {
+"duration": 1.0,
+"texture": ExtResource("256_gijo0256")
+}],
+"loop": 1,
+"name": &"walk_3_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("257_gijo0257")
+}, {
+"duration": 1.0,
+"texture": ExtResource("258_gijo0258")
+}, {
+"duration": 1.0,
+"texture": ExtResource("259_gijo0259")
+}, {
+"duration": 1.0,
+"texture": ExtResource("260_gijo0260")
+}, {
+"duration": 1.0,
+"texture": ExtResource("261_gijo0261")
+}, {
+"duration": 1.0,
+"texture": ExtResource("262_gijo0262")
+}, {
+"duration": 1.0,
+"texture": ExtResource("263_gijo0263")
+}, {
+"duration": 1.0,
+"texture": ExtResource("264_gijo0264")
+}],
+"loop": 1,
+"name": &"walk_3_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("265_gijo0265")
+}, {
+"duration": 1.0,
+"texture": ExtResource("266_gijo0266")
+}, {
+"duration": 1.0,
+"texture": ExtResource("267_gijo0267")
+}, {
+"duration": 1.0,
+"texture": ExtResource("268_gijo0268")
+}, {
+"duration": 1.0,
+"texture": ExtResource("269_gijo0269")
+}, {
+"duration": 1.0,
+"texture": ExtResource("270_gijo0270")
+}, {
+"duration": 1.0,
+"texture": ExtResource("271_gijo0271")
+}, {
+"duration": 1.0,
+"texture": ExtResource("272_gijo0272")
+}],
+"loop": 1,
+"name": &"walk_3_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("273_gijo0273")
+}, {
+"duration": 1.0,
+"texture": ExtResource("274_gijo0274")
+}, {
+"duration": 1.0,
+"texture": ExtResource("275_gijo0275")
+}, {
+"duration": 1.0,
+"texture": ExtResource("276_gijo0276")
+}, {
+"duration": 1.0,
+"texture": ExtResource("277_gijo0277")
+}, {
+"duration": 1.0,
+"texture": ExtResource("278_gijo0278")
+}, {
+"duration": 1.0,
+"texture": ExtResource("279_gijo0279")
+}, {
+"duration": 1.0,
+"texture": ExtResource("280_gijo0280")
+}],
+"loop": 1,
+"name": &"walk_3_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("281_gijo0281")
+}, {
+"duration": 1.0,
+"texture": ExtResource("282_gijo0282")
+}, {
+"duration": 1.0,
+"texture": ExtResource("283_gijo0283")
+}, {
+"duration": 1.0,
+"texture": ExtResource("284_gijo0284")
+}, {
+"duration": 1.0,
+"texture": ExtResource("285_gijo0285")
+}, {
+"duration": 1.0,
+"texture": ExtResource("286_gijo0286")
+}, {
+"duration": 1.0,
+"texture": ExtResource("287_gijo0287")
+}, {
+"duration": 1.0,
+"texture": ExtResource("288_gijo0288")
+}],
+"loop": 1,
+"name": &"walk_3_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("289_gijo0289")
+}, {
+"duration": 1.0,
+"texture": ExtResource("290_gijo0290")
+}, {
+"duration": 1.0,
+"texture": ExtResource("291_gijo0291")
+}, {
+"duration": 1.0,
+"texture": ExtResource("292_gijo0292")
+}, {
+"duration": 1.0,
+"texture": ExtResource("293_gijo0293")
+}, {
+"duration": 1.0,
+"texture": ExtResource("294_gijo0294")
+}, {
+"duration": 1.0,
+"texture": ExtResource("295_gijo0295")
+}, {
+"duration": 1.0,
+"texture": ExtResource("296_gijo0296")
+}],
+"loop": 1,
+"name": &"walk_3_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("297_gijo0297")
+}, {
+"duration": 1.0,
+"texture": ExtResource("298_gijo0298")
+}, {
+"duration": 1.0,
+"texture": ExtResource("299_gijo0299")
+}, {
+"duration": 1.0,
+"texture": ExtResource("300_gijo0300")
+}, {
+"duration": 1.0,
+"texture": ExtResource("301_gijo0301")
+}, {
+"duration": 1.0,
+"texture": ExtResource("302_gijo0302")
+}, {
+"duration": 1.0,
+"texture": ExtResource("303_gijo0303")
+}, {
+"duration": 1.0,
+"texture": ExtResource("304_gijo0304")
+}],
+"loop": 1,
+"name": &"walk_4_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("305_gijo0305")
+}, {
+"duration": 1.0,
+"texture": ExtResource("306_gijo0306")
+}, {
+"duration": 1.0,
+"texture": ExtResource("307_gijo0307")
+}, {
+"duration": 1.0,
+"texture": ExtResource("308_gijo0308")
+}, {
+"duration": 1.0,
+"texture": ExtResource("309_gijo0309")
+}, {
+"duration": 1.0,
+"texture": ExtResource("310_gijo0310")
+}, {
+"duration": 1.0,
+"texture": ExtResource("311_gijo0311")
+}, {
+"duration": 1.0,
+"texture": ExtResource("312_gijo0312")
+}],
+"loop": 1,
+"name": &"walk_4_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("313_gijo0313")
+}, {
+"duration": 1.0,
+"texture": ExtResource("314_gijo0314")
+}, {
+"duration": 1.0,
+"texture": ExtResource("315_gijo0315")
+}, {
+"duration": 1.0,
+"texture": ExtResource("316_gijo0316")
+}, {
+"duration": 1.0,
+"texture": ExtResource("317_gijo0317")
+}, {
+"duration": 1.0,
+"texture": ExtResource("318_gijo0318")
+}, {
+"duration": 1.0,
+"texture": ExtResource("319_gijo0319")
+}, {
+"duration": 1.0,
+"texture": ExtResource("320_gijo0320")
+}],
+"loop": 1,
+"name": &"walk_4_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("321_gijo0321")
+}, {
+"duration": 1.0,
+"texture": ExtResource("322_gijo0322")
+}, {
+"duration": 1.0,
+"texture": ExtResource("323_gijo0323")
+}, {
+"duration": 1.0,
+"texture": ExtResource("324_gijo0324")
+}, {
+"duration": 1.0,
+"texture": ExtResource("325_gijo0325")
+}, {
+"duration": 1.0,
+"texture": ExtResource("326_gijo0326")
+}, {
+"duration": 1.0,
+"texture": ExtResource("327_gijo0327")
+}, {
+"duration": 1.0,
+"texture": ExtResource("328_gijo0328")
+}],
+"loop": 1,
+"name": &"walk_4_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("329_gijo0329")
+}, {
+"duration": 1.0,
+"texture": ExtResource("330_gijo0330")
+}, {
+"duration": 1.0,
+"texture": ExtResource("331_gijo0331")
+}, {
+"duration": 1.0,
+"texture": ExtResource("332_gijo0332")
+}, {
+"duration": 1.0,
+"texture": ExtResource("333_gijo0333")
+}, {
+"duration": 1.0,
+"texture": ExtResource("334_gijo0334")
+}, {
+"duration": 1.0,
+"texture": ExtResource("335_gijo0335")
+}, {
+"duration": 1.0,
+"texture": ExtResource("336_gijo0336")
+}],
+"loop": 1,
+"name": &"walk_4_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("337_gijo0337")
+}, {
+"duration": 1.0,
+"texture": ExtResource("338_gijo0338")
+}, {
+"duration": 1.0,
+"texture": ExtResource("339_gijo0339")
+}, {
+"duration": 1.0,
+"texture": ExtResource("340_gijo0340")
+}, {
+"duration": 1.0,
+"texture": ExtResource("341_gijo0341")
+}, {
+"duration": 1.0,
+"texture": ExtResource("342_gijo0342")
+}, {
+"duration": 1.0,
+"texture": ExtResource("343_gijo0343")
+}, {
+"duration": 1.0,
+"texture": ExtResource("344_gijo0344")
+}],
+"loop": 1,
+"name": &"walk_4_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("345_gijo0345")
+}, {
+"duration": 1.0,
+"texture": ExtResource("346_gijo0346")
+}, {
+"duration": 1.0,
+"texture": ExtResource("347_gijo0347")
+}, {
+"duration": 1.0,
+"texture": ExtResource("348_gijo0348")
+}, {
+"duration": 1.0,
+"texture": ExtResource("349_gijo0349")
+}, {
+"duration": 1.0,
+"texture": ExtResource("350_gijo0350")
+}, {
+"duration": 1.0,
+"texture": ExtResource("351_gijo0351")
+}, {
+"duration": 1.0,
+"texture": ExtResource("352_gijo0352")
+}],
+"loop": 1,
+"name": &"walk_5_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("353_gijo0353")
+}, {
+"duration": 1.0,
+"texture": ExtResource("354_gijo0354")
+}, {
+"duration": 1.0,
+"texture": ExtResource("355_gijo0355")
+}, {
+"duration": 1.0,
+"texture": ExtResource("356_gijo0356")
+}, {
+"duration": 1.0,
+"texture": ExtResource("357_gijo0357")
+}, {
+"duration": 1.0,
+"texture": ExtResource("358_gijo0358")
+}, {
+"duration": 1.0,
+"texture": ExtResource("359_gijo0359")
+}, {
+"duration": 1.0,
+"texture": ExtResource("360_gijo0360")
+}],
+"loop": 1,
+"name": &"walk_5_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("361_gijo0361")
+}, {
+"duration": 1.0,
+"texture": ExtResource("362_gijo0362")
+}, {
+"duration": 1.0,
+"texture": ExtResource("363_gijo0363")
+}, {
+"duration": 1.0,
+"texture": ExtResource("364_gijo0364")
+}, {
+"duration": 1.0,
+"texture": ExtResource("365_gijo0365")
+}, {
+"duration": 1.0,
+"texture": ExtResource("366_gijo0366")
+}, {
+"duration": 1.0,
+"texture": ExtResource("367_gijo0367")
+}, {
+"duration": 1.0,
+"texture": ExtResource("368_gijo0368")
+}],
+"loop": 1,
+"name": &"walk_5_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("369_gijo0369")
+}, {
+"duration": 1.0,
+"texture": ExtResource("370_gijo0370")
+}, {
+"duration": 1.0,
+"texture": ExtResource("371_gijo0371")
+}, {
+"duration": 1.0,
+"texture": ExtResource("372_gijo0372")
+}, {
+"duration": 1.0,
+"texture": ExtResource("373_gijo0373")
+}, {
+"duration": 1.0,
+"texture": ExtResource("374_gijo0374")
+}, {
+"duration": 1.0,
+"texture": ExtResource("375_gijo0375")
+}, {
+"duration": 1.0,
+"texture": ExtResource("376_gijo0376")
+}],
+"loop": 1,
+"name": &"walk_5_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("377_gijo0377")
+}, {
+"duration": 1.0,
+"texture": ExtResource("378_gijo0378")
+}, {
+"duration": 1.0,
+"texture": ExtResource("379_gijo0379")
+}, {
+"duration": 1.0,
+"texture": ExtResource("380_gijo0380")
+}, {
+"duration": 1.0,
+"texture": ExtResource("381_gijo0381")
+}, {
+"duration": 1.0,
+"texture": ExtResource("382_gijo0382")
+}, {
+"duration": 1.0,
+"texture": ExtResource("383_gijo0383")
+}, {
+"duration": 1.0,
+"texture": ExtResource("384_gijo0384")
+}],
+"loop": 1,
+"name": &"walk_5_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("385_gijo0385")
+}, {
+"duration": 1.0,
+"texture": ExtResource("386_gijo0386")
+}, {
+"duration": 1.0,
+"texture": ExtResource("387_gijo0387")
+}, {
+"duration": 1.0,
+"texture": ExtResource("388_gijo0388")
+}, {
+"duration": 1.0,
+"texture": ExtResource("389_gijo0389")
+}, {
+"duration": 1.0,
+"texture": ExtResource("390_gijo0390")
+}, {
+"duration": 1.0,
+"texture": ExtResource("391_gijo0391")
+}, {
+"duration": 1.0,
+"texture": ExtResource("392_gijo0392")
+}],
+"loop": 1,
+"name": &"walk_5_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("393_gijo0393")
+}, {
+"duration": 1.0,
+"texture": ExtResource("394_gijo0394")
+}, {
+"duration": 1.0,
+"texture": ExtResource("395_gijo0395")
+}, {
+"duration": 1.0,
+"texture": ExtResource("396_gijo0396")
+}, {
+"duration": 1.0,
+"texture": ExtResource("397_gijo0397")
+}, {
+"duration": 1.0,
+"texture": ExtResource("398_gijo0398")
+}, {
+"duration": 1.0,
+"texture": ExtResource("399_gijo0399")
+}, {
+"duration": 1.0,
+"texture": ExtResource("400_gijo0400")
+}],
+"loop": 1,
+"name": &"walk_6_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("401_gijo0401")
+}, {
+"duration": 1.0,
+"texture": ExtResource("402_gijo0402")
+}, {
+"duration": 1.0,
+"texture": ExtResource("403_gijo0403")
+}, {
+"duration": 1.0,
+"texture": ExtResource("404_gijo0404")
+}, {
+"duration": 1.0,
+"texture": ExtResource("405_gijo0405")
+}, {
+"duration": 1.0,
+"texture": ExtResource("406_gijo0406")
+}, {
+"duration": 1.0,
+"texture": ExtResource("407_gijo0407")
+}, {
+"duration": 1.0,
+"texture": ExtResource("408_gijo0408")
+}],
+"loop": 1,
+"name": &"walk_6_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("409_gijo0409")
+}, {
+"duration": 1.0,
+"texture": ExtResource("410_gijo0410")
+}, {
+"duration": 1.0,
+"texture": ExtResource("411_gijo0411")
+}, {
+"duration": 1.0,
+"texture": ExtResource("412_gijo0412")
+}, {
+"duration": 1.0,
+"texture": ExtResource("413_gijo0413")
+}, {
+"duration": 1.0,
+"texture": ExtResource("414_gijo0414")
+}, {
+"duration": 1.0,
+"texture": ExtResource("415_gijo0415")
+}, {
+"duration": 1.0,
+"texture": ExtResource("416_gijo0416")
+}],
+"loop": 1,
+"name": &"walk_6_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("417_gijo0417")
+}, {
+"duration": 1.0,
+"texture": ExtResource("418_gijo0418")
+}, {
+"duration": 1.0,
+"texture": ExtResource("419_gijo0419")
+}, {
+"duration": 1.0,
+"texture": ExtResource("420_gijo0420")
+}, {
+"duration": 1.0,
+"texture": ExtResource("421_gijo0421")
+}, {
+"duration": 1.0,
+"texture": ExtResource("422_gijo0422")
+}, {
+"duration": 1.0,
+"texture": ExtResource("423_gijo0423")
+}, {
+"duration": 1.0,
+"texture": ExtResource("424_gijo0424")
+}],
+"loop": 1,
+"name": &"walk_6_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("425_gijo0425")
+}, {
+"duration": 1.0,
+"texture": ExtResource("426_gijo0426")
+}, {
+"duration": 1.0,
+"texture": ExtResource("427_gijo0427")
+}, {
+"duration": 1.0,
+"texture": ExtResource("428_gijo0428")
+}, {
+"duration": 1.0,
+"texture": ExtResource("429_gijo0429")
+}, {
+"duration": 1.0,
+"texture": ExtResource("430_gijo0430")
+}, {
+"duration": 1.0,
+"texture": ExtResource("431_gijo0431")
+}, {
+"duration": 1.0,
+"texture": ExtResource("432_gijo0432")
+}],
+"loop": 1,
+"name": &"walk_6_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("433_gijo0433")
+}, {
+"duration": 1.0,
+"texture": ExtResource("434_gijo0434")
+}, {
+"duration": 1.0,
+"texture": ExtResource("435_gijo0435")
+}, {
+"duration": 1.0,
+"texture": ExtResource("436_gijo0436")
+}, {
+"duration": 1.0,
+"texture": ExtResource("437_gijo0437")
+}, {
+"duration": 1.0,
+"texture": ExtResource("438_gijo0438")
+}, {
+"duration": 1.0,
+"texture": ExtResource("439_gijo0439")
+}, {
+"duration": 1.0,
+"texture": ExtResource("440_gijo0440")
+}],
+"loop": 1,
+"name": &"walk_6_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("441_gijo0441")
+}, {
+"duration": 1.0,
+"texture": ExtResource("442_gijo0442")
+}, {
+"duration": 1.0,
+"texture": ExtResource("443_gijo0443")
+}, {
+"duration": 1.0,
+"texture": ExtResource("444_gijo0444")
+}, {
+"duration": 1.0,
+"texture": ExtResource("445_gijo0445")
+}, {
+"duration": 1.0,
+"texture": ExtResource("446_gijo0446")
+}, {
+"duration": 1.0,
+"texture": ExtResource("447_gijo0447")
+}, {
+"duration": 1.0,
+"texture": ExtResource("448_gijo0448")
+}],
+"loop": 1,
+"name": &"walk_7_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("449_gijo0449")
+}, {
+"duration": 1.0,
+"texture": ExtResource("450_gijo0450")
+}, {
+"duration": 1.0,
+"texture": ExtResource("451_gijo0451")
+}, {
+"duration": 1.0,
+"texture": ExtResource("452_gijo0452")
+}, {
+"duration": 1.0,
+"texture": ExtResource("453_gijo0453")
+}, {
+"duration": 1.0,
+"texture": ExtResource("454_gijo0454")
+}, {
+"duration": 1.0,
+"texture": ExtResource("455_gijo0455")
+}, {
+"duration": 1.0,
+"texture": ExtResource("456_gijo0456")
+}],
+"loop": 1,
+"name": &"walk_7_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("457_gijo0457")
+}, {
+"duration": 1.0,
+"texture": ExtResource("458_gijo0458")
+}, {
+"duration": 1.0,
+"texture": ExtResource("459_gijo0459")
+}, {
+"duration": 1.0,
+"texture": ExtResource("460_gijo0460")
+}, {
+"duration": 1.0,
+"texture": ExtResource("461_gijo0461")
+}, {
+"duration": 1.0,
+"texture": ExtResource("462_gijo0462")
+}, {
+"duration": 1.0,
+"texture": ExtResource("463_gijo0463")
+}, {
+"duration": 1.0,
+"texture": ExtResource("464_gijo0464")
+}],
+"loop": 1,
+"name": &"walk_7_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("465_gijo0465")
+}, {
+"duration": 1.0,
+"texture": ExtResource("466_gijo0466")
+}, {
+"duration": 1.0,
+"texture": ExtResource("467_gijo0467")
+}, {
+"duration": 1.0,
+"texture": ExtResource("468_gijo0468")
+}, {
+"duration": 1.0,
+"texture": ExtResource("469_gijo0469")
+}, {
+"duration": 1.0,
+"texture": ExtResource("470_gijo0470")
+}, {
+"duration": 1.0,
+"texture": ExtResource("471_gijo0471")
+}, {
+"duration": 1.0,
+"texture": ExtResource("472_gijo0472")
+}],
+"loop": 1,
+"name": &"walk_7_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("473_gijo0473")
+}, {
+"duration": 1.0,
+"texture": ExtResource("474_gijo0474")
+}, {
+"duration": 1.0,
+"texture": ExtResource("475_gijo0475")
+}, {
+"duration": 1.0,
+"texture": ExtResource("476_gijo0476")
+}, {
+"duration": 1.0,
+"texture": ExtResource("477_gijo0477")
+}, {
+"duration": 1.0,
+"texture": ExtResource("478_gijo0478")
+}, {
+"duration": 1.0,
+"texture": ExtResource("479_gijo0479")
+}, {
+"duration": 1.0,
+"texture": ExtResource("480_gijo0480")
+}],
+"loop": 1,
+"name": &"walk_7_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("481_gijo0481")
+}, {
+"duration": 1.0,
+"texture": ExtResource("482_gijo0482")
+}, {
+"duration": 1.0,
+"texture": ExtResource("483_gijo0483")
+}, {
+"duration": 1.0,
+"texture": ExtResource("484_gijo0484")
+}, {
+"duration": 1.0,
+"texture": ExtResource("485_gijo0485")
+}, {
+"duration": 1.0,
+"texture": ExtResource("486_gijo0486")
+}, {
+"duration": 1.0,
+"texture": ExtResource("487_gijo0487")
+}, {
+"duration": 1.0,
+"texture": ExtResource("488_gijo0488")
+}],
+"loop": 1,
+"name": &"walk_7_other",
+"speed": 10.0
+}
+]

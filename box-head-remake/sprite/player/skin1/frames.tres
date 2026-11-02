@@ -1,0 +1,2559 @@
+[gd_resource type="SpriteFrames" load_steps=489 format=3]
+
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/dead/0.png" id="1_swat0001"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/dead/1.png" id="2_swat0002"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/dead/2.png" id="3_swat0003"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/dead/3.png" id="4_swat0004"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/0_0.png" id="5_swat0005"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/0_1.png" id="6_swat0006"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/0_2.png" id="7_swat0007"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/0_3.png" id="8_swat0008"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/0_4.png" id="9_swat0009"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/1_0.png" id="10_swat0010"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/1_1.png" id="11_swat0011"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/1_2.png" id="12_swat0012"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/1_3.png" id="13_swat0013"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/1_4.png" id="14_swat0014"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/2_0.png" id="15_swat0015"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/2_1.png" id="16_swat0016"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/2_2.png" id="17_swat0017"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/2_3.png" id="18_swat0018"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/2_4.png" id="19_swat0019"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/3_0.png" id="20_swat0020"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/3_1.png" id="21_swat0021"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/3_2.png" id="22_swat0022"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/3_3.png" id="23_swat0023"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/fallDown/3_4.png" id="24_swat0024"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/0_0.png" id="25_swat0025"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/0_1.png" id="26_swat0026"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/1_0.png" id="27_swat0027"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/1_1.png" id="28_swat0028"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/2_0.png" id="29_swat0029"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/2_1.png" id="30_swat0030"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/3_0.png" id="31_swat0031"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/3_1.png" id="32_swat0032"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/4_0.png" id="33_swat0033"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/4_1.png" id="34_swat0034"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/5_0.png" id="35_swat0035"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/5_1.png" id="36_swat0036"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/6_0.png" id="37_swat0037"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/6_1.png" id="38_swat0038"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/7_0.png" id="39_swat0039"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitFront/7_1.png" id="40_swat0040"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/0_0.png" id="41_swat0041"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/0_1.png" id="42_swat0042"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/1_0.png" id="43_swat0043"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/1_1.png" id="44_swat0044"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/2_0.png" id="45_swat0045"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/2_1.png" id="46_swat0046"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/3_0.png" id="47_swat0047"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/3_1.png" id="48_swat0048"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/4_0.png" id="49_swat0049"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/4_1.png" id="50_swat0050"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/5_0.png" id="51_swat0051"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/5_1.png" id="52_swat0052"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/6_0.png" id="53_swat0053"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/6_1.png" id="54_swat0054"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/7_0.png" id="55_swat0055"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/hitRear/7_1.png" id="56_swat0056"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/0.png" id="57_swat0057"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/0.png" id="58_swat0058"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/0.png" id="59_swat0059"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/0.png" id="60_swat0060"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/0.png" id="61_swat0061"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/0.png" id="62_swat0062"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/1.png" id="63_swat0063"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/1.png" id="64_swat0064"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/1.png" id="65_swat0065"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/1.png" id="66_swat0066"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/1.png" id="67_swat0067"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/1.png" id="68_swat0068"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/2.png" id="69_swat0069"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/2.png" id="70_swat0070"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/2.png" id="71_swat0071"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/2.png" id="72_swat0072"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/2.png" id="73_swat0073"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/2.png" id="74_swat0074"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/3.png" id="75_swat0075"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/3.png" id="76_swat0076"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/3.png" id="77_swat0077"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/3.png" id="78_swat0078"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/3.png" id="79_swat0079"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/3.png" id="80_swat0080"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/4.png" id="81_swat0081"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/4.png" id="82_swat0082"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/4.png" id="83_swat0083"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/4.png" id="84_swat0084"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/4.png" id="85_swat0085"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/4.png" id="86_swat0086"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/5.png" id="87_swat0087"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/5.png" id="88_swat0088"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/5.png" id="89_swat0089"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/5.png" id="90_swat0090"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/5.png" id="91_swat0091"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/5.png" id="92_swat0092"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/6.png" id="93_swat0093"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/6.png" id="94_swat0094"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/6.png" id="95_swat0095"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/6.png" id="96_swat0096"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/6.png" id="97_swat0097"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/6.png" id="98_swat0098"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Pistol/7.png" id="99_swat0099"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Railgun/7.png" id="100_swat0100"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Rocket/7.png" id="101_swat0101"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_Shotgun/7.png" id="102_swat0102"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_UZI/7.png" id="103_swat0103"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/stand_other/7.png" id="104_swat0104"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_0.png" id="105_swat0105"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_1.png" id="106_swat0106"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_2.png" id="107_swat0107"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_3.png" id="108_swat0108"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_4.png" id="109_swat0109"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_5.png" id="110_swat0110"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_6.png" id="111_swat0111"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/0_7.png" id="112_swat0112"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_0.png" id="113_swat0113"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_1.png" id="114_swat0114"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_2.png" id="115_swat0115"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_3.png" id="116_swat0116"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_4.png" id="117_swat0117"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_5.png" id="118_swat0118"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_6.png" id="119_swat0119"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/0_7.png" id="120_swat0120"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_0.png" id="121_swat0121"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_1.png" id="122_swat0122"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_2.png" id="123_swat0123"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_3.png" id="124_swat0124"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_4.png" id="125_swat0125"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_5.png" id="126_swat0126"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_6.png" id="127_swat0127"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/0_7.png" id="128_swat0128"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_0.png" id="129_swat0129"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_1.png" id="130_swat0130"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_2.png" id="131_swat0131"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_3.png" id="132_swat0132"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_4.png" id="133_swat0133"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_5.png" id="134_swat0134"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_6.png" id="135_swat0135"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/0_7.png" id="136_swat0136"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_0.png" id="137_swat0137"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_1.png" id="138_swat0138"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_2.png" id="139_swat0139"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_3.png" id="140_swat0140"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_4.png" id="141_swat0141"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_5.png" id="142_swat0142"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_6.png" id="143_swat0143"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/0_7.png" id="144_swat0144"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_0.png" id="145_swat0145"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_1.png" id="146_swat0146"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_2.png" id="147_swat0147"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_3.png" id="148_swat0148"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_4.png" id="149_swat0149"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_5.png" id="150_swat0150"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_6.png" id="151_swat0151"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/0_7.png" id="152_swat0152"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_0.png" id="153_swat0153"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_1.png" id="154_swat0154"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_2.png" id="155_swat0155"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_3.png" id="156_swat0156"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_4.png" id="157_swat0157"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_5.png" id="158_swat0158"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_6.png" id="159_swat0159"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/1_7.png" id="160_swat0160"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_0.png" id="161_swat0161"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_1.png" id="162_swat0162"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_2.png" id="163_swat0163"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_3.png" id="164_swat0164"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_4.png" id="165_swat0165"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_5.png" id="166_swat0166"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_6.png" id="167_swat0167"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/1_7.png" id="168_swat0168"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_0.png" id="169_swat0169"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_1.png" id="170_swat0170"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_2.png" id="171_swat0171"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_3.png" id="172_swat0172"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_4.png" id="173_swat0173"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_5.png" id="174_swat0174"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_6.png" id="175_swat0175"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/1_7.png" id="176_swat0176"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_0.png" id="177_swat0177"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_1.png" id="178_swat0178"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_2.png" id="179_swat0179"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_3.png" id="180_swat0180"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_4.png" id="181_swat0181"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_5.png" id="182_swat0182"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_6.png" id="183_swat0183"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/1_7.png" id="184_swat0184"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_0.png" id="185_swat0185"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_1.png" id="186_swat0186"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_2.png" id="187_swat0187"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_3.png" id="188_swat0188"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_4.png" id="189_swat0189"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_5.png" id="190_swat0190"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_6.png" id="191_swat0191"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/1_7.png" id="192_swat0192"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_0.png" id="193_swat0193"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_1.png" id="194_swat0194"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_2.png" id="195_swat0195"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_3.png" id="196_swat0196"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_4.png" id="197_swat0197"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_5.png" id="198_swat0198"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_6.png" id="199_swat0199"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/1_7.png" id="200_swat0200"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_0.png" id="201_swat0201"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_1.png" id="202_swat0202"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_2.png" id="203_swat0203"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_3.png" id="204_swat0204"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_4.png" id="205_swat0205"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_5.png" id="206_swat0206"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_6.png" id="207_swat0207"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/2_7.png" id="208_swat0208"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_0.png" id="209_swat0209"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_1.png" id="210_swat0210"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_2.png" id="211_swat0211"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_3.png" id="212_swat0212"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_4.png" id="213_swat0213"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_5.png" id="214_swat0214"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_6.png" id="215_swat0215"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/2_7.png" id="216_swat0216"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_0.png" id="217_swat0217"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_1.png" id="218_swat0218"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_2.png" id="219_swat0219"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_3.png" id="220_swat0220"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_4.png" id="221_swat0221"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_5.png" id="222_swat0222"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_6.png" id="223_swat0223"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/2_7.png" id="224_swat0224"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_0.png" id="225_swat0225"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_1.png" id="226_swat0226"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_2.png" id="227_swat0227"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_3.png" id="228_swat0228"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_4.png" id="229_swat0229"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_5.png" id="230_swat0230"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_6.png" id="231_swat0231"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/2_7.png" id="232_swat0232"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_0.png" id="233_swat0233"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_1.png" id="234_swat0234"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_2.png" id="235_swat0235"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_3.png" id="236_swat0236"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_4.png" id="237_swat0237"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_5.png" id="238_swat0238"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_6.png" id="239_swat0239"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/2_7.png" id="240_swat0240"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_0.png" id="241_swat0241"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_1.png" id="242_swat0242"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_2.png" id="243_swat0243"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_3.png" id="244_swat0244"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_4.png" id="245_swat0245"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_5.png" id="246_swat0246"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_6.png" id="247_swat0247"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/2_7.png" id="248_swat0248"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_0.png" id="249_swat0249"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_1.png" id="250_swat0250"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_2.png" id="251_swat0251"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_3.png" id="252_swat0252"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_4.png" id="253_swat0253"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_5.png" id="254_swat0254"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_6.png" id="255_swat0255"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/3_7.png" id="256_swat0256"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_0.png" id="257_swat0257"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_1.png" id="258_swat0258"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_2.png" id="259_swat0259"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_3.png" id="260_swat0260"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_4.png" id="261_swat0261"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_5.png" id="262_swat0262"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_6.png" id="263_swat0263"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/3_7.png" id="264_swat0264"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_0.png" id="265_swat0265"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_1.png" id="266_swat0266"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_2.png" id="267_swat0267"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_3.png" id="268_swat0268"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_4.png" id="269_swat0269"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_5.png" id="270_swat0270"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_6.png" id="271_swat0271"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/3_7.png" id="272_swat0272"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_0.png" id="273_swat0273"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_1.png" id="274_swat0274"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_2.png" id="275_swat0275"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_3.png" id="276_swat0276"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_4.png" id="277_swat0277"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_5.png" id="278_swat0278"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_6.png" id="279_swat0279"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/3_7.png" id="280_swat0280"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_0.png" id="281_swat0281"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_1.png" id="282_swat0282"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_2.png" id="283_swat0283"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_3.png" id="284_swat0284"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_4.png" id="285_swat0285"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_5.png" id="286_swat0286"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_6.png" id="287_swat0287"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/3_7.png" id="288_swat0288"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_0.png" id="289_swat0289"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_1.png" id="290_swat0290"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_2.png" id="291_swat0291"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_3.png" id="292_swat0292"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_4.png" id="293_swat0293"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_5.png" id="294_swat0294"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_6.png" id="295_swat0295"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/3_7.png" id="296_swat0296"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_0.png" id="297_swat0297"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_1.png" id="298_swat0298"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_2.png" id="299_swat0299"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_3.png" id="300_swat0300"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_4.png" id="301_swat0301"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_5.png" id="302_swat0302"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_6.png" id="303_swat0303"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/4_7.png" id="304_swat0304"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_0.png" id="305_swat0305"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_1.png" id="306_swat0306"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_2.png" id="307_swat0307"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_3.png" id="308_swat0308"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_4.png" id="309_swat0309"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_5.png" id="310_swat0310"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_6.png" id="311_swat0311"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/4_7.png" id="312_swat0312"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_0.png" id="313_swat0313"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_1.png" id="314_swat0314"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_2.png" id="315_swat0315"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_3.png" id="316_swat0316"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_4.png" id="317_swat0317"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_5.png" id="318_swat0318"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_6.png" id="319_swat0319"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/4_7.png" id="320_swat0320"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_0.png" id="321_swat0321"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_1.png" id="322_swat0322"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_2.png" id="323_swat0323"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_3.png" id="324_swat0324"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_4.png" id="325_swat0325"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_5.png" id="326_swat0326"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_6.png" id="327_swat0327"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/4_7.png" id="328_swat0328"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_0.png" id="329_swat0329"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_1.png" id="330_swat0330"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_2.png" id="331_swat0331"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_3.png" id="332_swat0332"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_4.png" id="333_swat0333"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_5.png" id="334_swat0334"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_6.png" id="335_swat0335"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/4_7.png" id="336_swat0336"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_0.png" id="337_swat0337"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_1.png" id="338_swat0338"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_2.png" id="339_swat0339"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_3.png" id="340_swat0340"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_4.png" id="341_swat0341"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_5.png" id="342_swat0342"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_6.png" id="343_swat0343"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/4_7.png" id="344_swat0344"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_0.png" id="345_swat0345"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_1.png" id="346_swat0346"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_2.png" id="347_swat0347"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_3.png" id="348_swat0348"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_4.png" id="349_swat0349"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_5.png" id="350_swat0350"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_6.png" id="351_swat0351"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/5_7.png" id="352_swat0352"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_0.png" id="353_swat0353"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_1.png" id="354_swat0354"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_2.png" id="355_swat0355"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_3.png" id="356_swat0356"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_4.png" id="357_swat0357"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_5.png" id="358_swat0358"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_6.png" id="359_swat0359"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/5_7.png" id="360_swat0360"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_0.png" id="361_swat0361"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_1.png" id="362_swat0362"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_2.png" id="363_swat0363"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_3.png" id="364_swat0364"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_4.png" id="365_swat0365"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_5.png" id="366_swat0366"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_6.png" id="367_swat0367"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/5_7.png" id="368_swat0368"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_0.png" id="369_swat0369"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_1.png" id="370_swat0370"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_2.png" id="371_swat0371"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_3.png" id="372_swat0372"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_4.png" id="373_swat0373"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_5.png" id="374_swat0374"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_6.png" id="375_swat0375"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/5_7.png" id="376_swat0376"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_0.png" id="377_swat0377"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_1.png" id="378_swat0378"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_2.png" id="379_swat0379"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_3.png" id="380_swat0380"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_4.png" id="381_swat0381"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_5.png" id="382_swat0382"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_6.png" id="383_swat0383"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/5_7.png" id="384_swat0384"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_0.png" id="385_swat0385"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_1.png" id="386_swat0386"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_2.png" id="387_swat0387"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_3.png" id="388_swat0388"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_4.png" id="389_swat0389"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_5.png" id="390_swat0390"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_6.png" id="391_swat0391"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/5_7.png" id="392_swat0392"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_0.png" id="393_swat0393"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_1.png" id="394_swat0394"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_2.png" id="395_swat0395"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_3.png" id="396_swat0396"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_4.png" id="397_swat0397"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_5.png" id="398_swat0398"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_6.png" id="399_swat0399"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/6_7.png" id="400_swat0400"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_0.png" id="401_swat0401"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_1.png" id="402_swat0402"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_2.png" id="403_swat0403"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_3.png" id="404_swat0404"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_4.png" id="405_swat0405"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_5.png" id="406_swat0406"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_6.png" id="407_swat0407"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/6_7.png" id="408_swat0408"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_0.png" id="409_swat0409"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_1.png" id="410_swat0410"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_2.png" id="411_swat0411"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_3.png" id="412_swat0412"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_4.png" id="413_swat0413"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_5.png" id="414_swat0414"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_6.png" id="415_swat0415"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/6_7.png" id="416_swat0416"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_0.png" id="417_swat0417"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_1.png" id="418_swat0418"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_2.png" id="419_swat0419"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_3.png" id="420_swat0420"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_4.png" id="421_swat0421"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_5.png" id="422_swat0422"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_6.png" id="423_swat0423"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/6_7.png" id="424_swat0424"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_0.png" id="425_swat0425"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_1.png" id="426_swat0426"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_2.png" id="427_swat0427"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_3.png" id="428_swat0428"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_4.png" id="429_swat0429"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_5.png" id="430_swat0430"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_6.png" id="431_swat0431"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/6_7.png" id="432_swat0432"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_0.png" id="433_swat0433"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_1.png" id="434_swat0434"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_2.png" id="435_swat0435"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_3.png" id="436_swat0436"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_4.png" id="437_swat0437"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_5.png" id="438_swat0438"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_6.png" id="439_swat0439"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/6_7.png" id="440_swat0440"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_0.png" id="441_swat0441"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_1.png" id="442_swat0442"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_2.png" id="443_swat0443"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_3.png" id="444_swat0444"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_4.png" id="445_swat0445"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_5.png" id="446_swat0446"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_6.png" id="447_swat0447"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Pistol/7_7.png" id="448_swat0448"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_0.png" id="449_swat0449"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_1.png" id="450_swat0450"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_2.png" id="451_swat0451"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_3.png" id="452_swat0452"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_4.png" id="453_swat0453"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_5.png" id="454_swat0454"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_6.png" id="455_swat0455"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Railgun/7_7.png" id="456_swat0456"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_0.png" id="457_swat0457"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_1.png" id="458_swat0458"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_2.png" id="459_swat0459"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_3.png" id="460_swat0460"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_4.png" id="461_swat0461"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_5.png" id="462_swat0462"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_6.png" id="463_swat0463"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Rocket/7_7.png" id="464_swat0464"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_0.png" id="465_swat0465"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_1.png" id="466_swat0466"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_2.png" id="467_swat0467"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_3.png" id="468_swat0468"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_4.png" id="469_swat0469"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_5.png" id="470_swat0470"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_6.png" id="471_swat0471"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_Shotgun/7_7.png" id="472_swat0472"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_0.png" id="473_swat0473"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_1.png" id="474_swat0474"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_2.png" id="475_swat0475"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_3.png" id="476_swat0476"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_4.png" id="477_swat0477"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_5.png" id="478_swat0478"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_6.png" id="479_swat0479"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_UZI/7_7.png" id="480_swat0480"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_0.png" id="481_swat0481"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_1.png" id="482_swat0482"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_2.png" id="483_swat0483"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_3.png" id="484_swat0484"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_4.png" id="485_swat0485"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_5.png" id="486_swat0486"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_6.png" id="487_swat0487"]
+[ext_resource type="Texture2D" path="res://sprite/player/skin1/walk_other/7_7.png" id="488_swat0488"]
+
+[resource]
+animations = [
+{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_swat0001")
+}],
+"loop": 0,
+"name": &"dead_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_swat0002")
+}],
+"loop": 0,
+"name": &"dead_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_swat0003")
+}],
+"loop": 0,
+"name": &"dead_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_swat0004")
+}],
+"loop": 0,
+"name": &"dead_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_swat0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_swat0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_swat0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_swat0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_swat0009")
+}],
+"loop": 0,
+"name": &"fallDown_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_swat0010")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_swat0011")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_swat0012")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_swat0013")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_swat0014")
+}],
+"loop": 0,
+"name": &"fallDown_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_swat0015")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_swat0016")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_swat0017")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_swat0018")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_swat0019")
+}],
+"loop": 0,
+"name": &"fallDown_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_swat0020")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_swat0021")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_swat0022")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_swat0023")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_swat0024")
+}],
+"loop": 0,
+"name": &"fallDown_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_swat0025")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_swat0026")
+}],
+"loop": 0,
+"name": &"hitFront_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_swat0027")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_swat0028")
+}],
+"loop": 0,
+"name": &"hitFront_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_swat0029")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_swat0030")
+}],
+"loop": 0,
+"name": &"hitFront_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_swat0031")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_swat0032")
+}],
+"loop": 0,
+"name": &"hitFront_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_swat0033")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_swat0034")
+}],
+"loop": 0,
+"name": &"hitFront_4",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_swat0035")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_swat0036")
+}],
+"loop": 0,
+"name": &"hitFront_5",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("37_swat0037")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_swat0038")
+}],
+"loop": 0,
+"name": &"hitFront_6",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("39_swat0039")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_swat0040")
+}],
+"loop": 0,
+"name": &"hitFront_7",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("41_swat0041")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_swat0042")
+}],
+"loop": 0,
+"name": &"hitRear_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_swat0043")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_swat0044")
+}],
+"loop": 0,
+"name": &"hitRear_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("45_swat0045")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_swat0046")
+}],
+"loop": 0,
+"name": &"hitRear_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("47_swat0047")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_swat0048")
+}],
+"loop": 0,
+"name": &"hitRear_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("49_swat0049")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_swat0050")
+}],
+"loop": 0,
+"name": &"hitRear_4",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("51_swat0051")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_swat0052")
+}],
+"loop": 0,
+"name": &"hitRear_5",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("53_swat0053")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_swat0054")
+}],
+"loop": 0,
+"name": &"hitRear_6",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("55_swat0055")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_swat0056")
+}],
+"loop": 0,
+"name": &"hitRear_7",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("57_swat0057")
+}],
+"loop": 1,
+"name": &"stand_0_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("58_swat0058")
+}],
+"loop": 1,
+"name": &"stand_0_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("59_swat0059")
+}],
+"loop": 1,
+"name": &"stand_0_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("60_swat0060")
+}],
+"loop": 1,
+"name": &"stand_0_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("61_swat0061")
+}],
+"loop": 1,
+"name": &"stand_0_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("62_swat0062")
+}],
+"loop": 1,
+"name": &"stand_0_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("63_swat0063")
+}],
+"loop": 1,
+"name": &"stand_1_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("64_swat0064")
+}],
+"loop": 1,
+"name": &"stand_1_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("65_swat0065")
+}],
+"loop": 1,
+"name": &"stand_1_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("66_swat0066")
+}],
+"loop": 1,
+"name": &"stand_1_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_swat0067")
+}],
+"loop": 1,
+"name": &"stand_1_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("68_swat0068")
+}],
+"loop": 1,
+"name": &"stand_1_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("69_swat0069")
+}],
+"loop": 1,
+"name": &"stand_2_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("70_swat0070")
+}],
+"loop": 1,
+"name": &"stand_2_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("71_swat0071")
+}],
+"loop": 1,
+"name": &"stand_2_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("72_swat0072")
+}],
+"loop": 1,
+"name": &"stand_2_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("73_swat0073")
+}],
+"loop": 1,
+"name": &"stand_2_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("74_swat0074")
+}],
+"loop": 1,
+"name": &"stand_2_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("75_swat0075")
+}],
+"loop": 1,
+"name": &"stand_3_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("76_swat0076")
+}],
+"loop": 1,
+"name": &"stand_3_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("77_swat0077")
+}],
+"loop": 1,
+"name": &"stand_3_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("78_swat0078")
+}],
+"loop": 1,
+"name": &"stand_3_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("79_swat0079")
+}],
+"loop": 1,
+"name": &"stand_3_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("80_swat0080")
+}],
+"loop": 1,
+"name": &"stand_3_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("81_swat0081")
+}],
+"loop": 1,
+"name": &"stand_4_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("82_swat0082")
+}],
+"loop": 1,
+"name": &"stand_4_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("83_swat0083")
+}],
+"loop": 1,
+"name": &"stand_4_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("84_swat0084")
+}],
+"loop": 1,
+"name": &"stand_4_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("85_swat0085")
+}],
+"loop": 1,
+"name": &"stand_4_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("86_swat0086")
+}],
+"loop": 1,
+"name": &"stand_4_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("87_swat0087")
+}],
+"loop": 1,
+"name": &"stand_5_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("88_swat0088")
+}],
+"loop": 1,
+"name": &"stand_5_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("89_swat0089")
+}],
+"loop": 1,
+"name": &"stand_5_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("90_swat0090")
+}],
+"loop": 1,
+"name": &"stand_5_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("91_swat0091")
+}],
+"loop": 1,
+"name": &"stand_5_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("92_swat0092")
+}],
+"loop": 1,
+"name": &"stand_5_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("93_swat0093")
+}],
+"loop": 1,
+"name": &"stand_6_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("94_swat0094")
+}],
+"loop": 1,
+"name": &"stand_6_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("95_swat0095")
+}],
+"loop": 1,
+"name": &"stand_6_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("96_swat0096")
+}],
+"loop": 1,
+"name": &"stand_6_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("97_swat0097")
+}],
+"loop": 1,
+"name": &"stand_6_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("98_swat0098")
+}],
+"loop": 1,
+"name": &"stand_6_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("99_swat0099")
+}],
+"loop": 1,
+"name": &"stand_7_Pistol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("100_swat0100")
+}],
+"loop": 1,
+"name": &"stand_7_Railgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("101_swat0101")
+}],
+"loop": 1,
+"name": &"stand_7_Rocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("102_swat0102")
+}],
+"loop": 1,
+"name": &"stand_7_Shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("103_swat0103")
+}],
+"loop": 1,
+"name": &"stand_7_UZI",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("104_swat0104")
+}],
+"loop": 1,
+"name": &"stand_7_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("105_swat0105")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_swat0106")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_swat0107")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_swat0108")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_swat0109")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_swat0110")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_swat0111")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_swat0112")
+}],
+"loop": 1,
+"name": &"walk_0_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("113_swat0113")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_swat0114")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_swat0115")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_swat0116")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_swat0117")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_swat0118")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_swat0119")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_swat0120")
+}],
+"loop": 1,
+"name": &"walk_0_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("121_swat0121")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_swat0122")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_swat0123")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_swat0124")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_swat0125")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_swat0126")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_swat0127")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_swat0128")
+}],
+"loop": 1,
+"name": &"walk_0_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("129_swat0129")
+}, {
+"duration": 1.0,
+"texture": ExtResource("130_swat0130")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_swat0131")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_swat0132")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_swat0133")
+}, {
+"duration": 1.0,
+"texture": ExtResource("134_swat0134")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_swat0135")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_swat0136")
+}],
+"loop": 1,
+"name": &"walk_0_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("137_swat0137")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_swat0138")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_swat0139")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_swat0140")
+}, {
+"duration": 1.0,
+"texture": ExtResource("141_swat0141")
+}, {
+"duration": 1.0,
+"texture": ExtResource("142_swat0142")
+}, {
+"duration": 1.0,
+"texture": ExtResource("143_swat0143")
+}, {
+"duration": 1.0,
+"texture": ExtResource("144_swat0144")
+}],
+"loop": 1,
+"name": &"walk_0_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("145_swat0145")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_swat0146")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_swat0147")
+}, {
+"duration": 1.0,
+"texture": ExtResource("148_swat0148")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_swat0149")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_swat0150")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_swat0151")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_swat0152")
+}],
+"loop": 1,
+"name": &"walk_0_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("153_swat0153")
+}, {
+"duration": 1.0,
+"texture": ExtResource("154_swat0154")
+}, {
+"duration": 1.0,
+"texture": ExtResource("155_swat0155")
+}, {
+"duration": 1.0,
+"texture": ExtResource("156_swat0156")
+}, {
+"duration": 1.0,
+"texture": ExtResource("157_swat0157")
+}, {
+"duration": 1.0,
+"texture": ExtResource("158_swat0158")
+}, {
+"duration": 1.0,
+"texture": ExtResource("159_swat0159")
+}, {
+"duration": 1.0,
+"texture": ExtResource("160_swat0160")
+}],
+"loop": 1,
+"name": &"walk_1_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("161_swat0161")
+}, {
+"duration": 1.0,
+"texture": ExtResource("162_swat0162")
+}, {
+"duration": 1.0,
+"texture": ExtResource("163_swat0163")
+}, {
+"duration": 1.0,
+"texture": ExtResource("164_swat0164")
+}, {
+"duration": 1.0,
+"texture": ExtResource("165_swat0165")
+}, {
+"duration": 1.0,
+"texture": ExtResource("166_swat0166")
+}, {
+"duration": 1.0,
+"texture": ExtResource("167_swat0167")
+}, {
+"duration": 1.0,
+"texture": ExtResource("168_swat0168")
+}],
+"loop": 1,
+"name": &"walk_1_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("169_swat0169")
+}, {
+"duration": 1.0,
+"texture": ExtResource("170_swat0170")
+}, {
+"duration": 1.0,
+"texture": ExtResource("171_swat0171")
+}, {
+"duration": 1.0,
+"texture": ExtResource("172_swat0172")
+}, {
+"duration": 1.0,
+"texture": ExtResource("173_swat0173")
+}, {
+"duration": 1.0,
+"texture": ExtResource("174_swat0174")
+}, {
+"duration": 1.0,
+"texture": ExtResource("175_swat0175")
+}, {
+"duration": 1.0,
+"texture": ExtResource("176_swat0176")
+}],
+"loop": 1,
+"name": &"walk_1_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("177_swat0177")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_swat0178")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_swat0179")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_swat0180")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_swat0181")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_swat0182")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_swat0183")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_swat0184")
+}],
+"loop": 1,
+"name": &"walk_1_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("185_swat0185")
+}, {
+"duration": 1.0,
+"texture": ExtResource("186_swat0186")
+}, {
+"duration": 1.0,
+"texture": ExtResource("187_swat0187")
+}, {
+"duration": 1.0,
+"texture": ExtResource("188_swat0188")
+}, {
+"duration": 1.0,
+"texture": ExtResource("189_swat0189")
+}, {
+"duration": 1.0,
+"texture": ExtResource("190_swat0190")
+}, {
+"duration": 1.0,
+"texture": ExtResource("191_swat0191")
+}, {
+"duration": 1.0,
+"texture": ExtResource("192_swat0192")
+}],
+"loop": 1,
+"name": &"walk_1_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("193_swat0193")
+}, {
+"duration": 1.0,
+"texture": ExtResource("194_swat0194")
+}, {
+"duration": 1.0,
+"texture": ExtResource("195_swat0195")
+}, {
+"duration": 1.0,
+"texture": ExtResource("196_swat0196")
+}, {
+"duration": 1.0,
+"texture": ExtResource("197_swat0197")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_swat0198")
+}, {
+"duration": 1.0,
+"texture": ExtResource("199_swat0199")
+}, {
+"duration": 1.0,
+"texture": ExtResource("200_swat0200")
+}],
+"loop": 1,
+"name": &"walk_1_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("201_swat0201")
+}, {
+"duration": 1.0,
+"texture": ExtResource("202_swat0202")
+}, {
+"duration": 1.0,
+"texture": ExtResource("203_swat0203")
+}, {
+"duration": 1.0,
+"texture": ExtResource("204_swat0204")
+}, {
+"duration": 1.0,
+"texture": ExtResource("205_swat0205")
+}, {
+"duration": 1.0,
+"texture": ExtResource("206_swat0206")
+}, {
+"duration": 1.0,
+"texture": ExtResource("207_swat0207")
+}, {
+"duration": 1.0,
+"texture": ExtResource("208_swat0208")
+}],
+"loop": 1,
+"name": &"walk_2_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("209_swat0209")
+}, {
+"duration": 1.0,
+"texture": ExtResource("210_swat0210")
+}, {
+"duration": 1.0,
+"texture": ExtResource("211_swat0211")
+}, {
+"duration": 1.0,
+"texture": ExtResource("212_swat0212")
+}, {
+"duration": 1.0,
+"texture": ExtResource("213_swat0213")
+}, {
+"duration": 1.0,
+"texture": ExtResource("214_swat0214")
+}, {
+"duration": 1.0,
+"texture": ExtResource("215_swat0215")
+}, {
+"duration": 1.0,
+"texture": ExtResource("216_swat0216")
+}],
+"loop": 1,
+"name": &"walk_2_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("217_swat0217")
+}, {
+"duration": 1.0,
+"texture": ExtResource("218_swat0218")
+}, {
+"duration": 1.0,
+"texture": ExtResource("219_swat0219")
+}, {
+"duration": 1.0,
+"texture": ExtResource("220_swat0220")
+}, {
+"duration": 1.0,
+"texture": ExtResource("221_swat0221")
+}, {
+"duration": 1.0,
+"texture": ExtResource("222_swat0222")
+}, {
+"duration": 1.0,
+"texture": ExtResource("223_swat0223")
+}, {
+"duration": 1.0,
+"texture": ExtResource("224_swat0224")
+}],
+"loop": 1,
+"name": &"walk_2_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("225_swat0225")
+}, {
+"duration": 1.0,
+"texture": ExtResource("226_swat0226")
+}, {
+"duration": 1.0,
+"texture": ExtResource("227_swat0227")
+}, {
+"duration": 1.0,
+"texture": ExtResource("228_swat0228")
+}, {
+"duration": 1.0,
+"texture": ExtResource("229_swat0229")
+}, {
+"duration": 1.0,
+"texture": ExtResource("230_swat0230")
+}, {
+"duration": 1.0,
+"texture": ExtResource("231_swat0231")
+}, {
+"duration": 1.0,
+"texture": ExtResource("232_swat0232")
+}],
+"loop": 1,
+"name": &"walk_2_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("233_swat0233")
+}, {
+"duration": 1.0,
+"texture": ExtResource("234_swat0234")
+}, {
+"duration": 1.0,
+"texture": ExtResource("235_swat0235")
+}, {
+"duration": 1.0,
+"texture": ExtResource("236_swat0236")
+}, {
+"duration": 1.0,
+"texture": ExtResource("237_swat0237")
+}, {
+"duration": 1.0,
+"texture": ExtResource("238_swat0238")
+}, {
+"duration": 1.0,
+"texture": ExtResource("239_swat0239")
+}, {
+"duration": 1.0,
+"texture": ExtResource("240_swat0240")
+}],
+"loop": 1,
+"name": &"walk_2_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("241_swat0241")
+}, {
+"duration": 1.0,
+"texture": ExtResource("242_swat0242")
+}, {
+"duration": 1.0,
+"texture": ExtResource("243_swat0243")
+}, {
+"duration": 1.0,
+"texture": ExtResource("244_swat0244")
+}, {
+"duration": 1.0,
+"texture": ExtResource("245_swat0245")
+}, {
+"duration": 1.0,
+"texture": ExtResource("246_swat0246")
+}, {
+"duration": 1.0,
+"texture": ExtResource("247_swat0247")
+}, {
+"duration": 1.0,
+"texture": ExtResource("248_swat0248")
+}],
+"loop": 1,
+"name": &"walk_2_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("249_swat0249")
+}, {
+"duration": 1.0,
+"texture": ExtResource("250_swat0250")
+}, {
+"duration": 1.0,
+"texture": ExtResource("251_swat0251")
+}, {
+"duration": 1.0,
+"texture": ExtResource("252_swat0252")
+}, {
+"duration": 1.0,
+"texture": ExtResource("253_swat0253")
+}, {
+"duration": 1.0,
+"texture": ExtResource("254_swat0254")
+}, {
+"duration": 1.0,
+"texture": ExtResource("255_swat0255")
+}, {
+"duration": 1.0,
+"texture": ExtResource("256_swat0256")
+}],
+"loop": 1,
+"name": &"walk_3_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("257_swat0257")
+}, {
+"duration": 1.0,
+"texture": ExtResource("258_swat0258")
+}, {
+"duration": 1.0,
+"texture": ExtResource("259_swat0259")
+}, {
+"duration": 1.0,
+"texture": ExtResource("260_swat0260")
+}, {
+"duration": 1.0,
+"texture": ExtResource("261_swat0261")
+}, {
+"duration": 1.0,
+"texture": ExtResource("262_swat0262")
+}, {
+"duration": 1.0,
+"texture": ExtResource("263_swat0263")
+}, {
+"duration": 1.0,
+"texture": ExtResource("264_swat0264")
+}],
+"loop": 1,
+"name": &"walk_3_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("265_swat0265")
+}, {
+"duration": 1.0,
+"texture": ExtResource("266_swat0266")
+}, {
+"duration": 1.0,
+"texture": ExtResource("267_swat0267")
+}, {
+"duration": 1.0,
+"texture": ExtResource("268_swat0268")
+}, {
+"duration": 1.0,
+"texture": ExtResource("269_swat0269")
+}, {
+"duration": 1.0,
+"texture": ExtResource("270_swat0270")
+}, {
+"duration": 1.0,
+"texture": ExtResource("271_swat0271")
+}, {
+"duration": 1.0,
+"texture": ExtResource("272_swat0272")
+}],
+"loop": 1,
+"name": &"walk_3_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("273_swat0273")
+}, {
+"duration": 1.0,
+"texture": ExtResource("274_swat0274")
+}, {
+"duration": 1.0,
+"texture": ExtResource("275_swat0275")
+}, {
+"duration": 1.0,
+"texture": ExtResource("276_swat0276")
+}, {
+"duration": 1.0,
+"texture": ExtResource("277_swat0277")
+}, {
+"duration": 1.0,
+"texture": ExtResource("278_swat0278")
+}, {
+"duration": 1.0,
+"texture": ExtResource("279_swat0279")
+}, {
+"duration": 1.0,
+"texture": ExtResource("280_swat0280")
+}],
+"loop": 1,
+"name": &"walk_3_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("281_swat0281")
+}, {
+"duration": 1.0,
+"texture": ExtResource("282_swat0282")
+}, {
+"duration": 1.0,
+"texture": ExtResource("283_swat0283")
+}, {
+"duration": 1.0,
+"texture": ExtResource("284_swat0284")
+}, {
+"duration": 1.0,
+"texture": ExtResource("285_swat0285")
+}, {
+"duration": 1.0,
+"texture": ExtResource("286_swat0286")
+}, {
+"duration": 1.0,
+"texture": ExtResource("287_swat0287")
+}, {
+"duration": 1.0,
+"texture": ExtResource("288_swat0288")
+}],
+"loop": 1,
+"name": &"walk_3_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("289_swat0289")
+}, {
+"duration": 1.0,
+"texture": ExtResource("290_swat0290")
+}, {
+"duration": 1.0,
+"texture": ExtResource("291_swat0291")
+}, {
+"duration": 1.0,
+"texture": ExtResource("292_swat0292")
+}, {
+"duration": 1.0,
+"texture": ExtResource("293_swat0293")
+}, {
+"duration": 1.0,
+"texture": ExtResource("294_swat0294")
+}, {
+"duration": 1.0,
+"texture": ExtResource("295_swat0295")
+}, {
+"duration": 1.0,
+"texture": ExtResource("296_swat0296")
+}],
+"loop": 1,
+"name": &"walk_3_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("297_swat0297")
+}, {
+"duration": 1.0,
+"texture": ExtResource("298_swat0298")
+}, {
+"duration": 1.0,
+"texture": ExtResource("299_swat0299")
+}, {
+"duration": 1.0,
+"texture": ExtResource("300_swat0300")
+}, {
+"duration": 1.0,
+"texture": ExtResource("301_swat0301")
+}, {
+"duration": 1.0,
+"texture": ExtResource("302_swat0302")
+}, {
+"duration": 1.0,
+"texture": ExtResource("303_swat0303")
+}, {
+"duration": 1.0,
+"texture": ExtResource("304_swat0304")
+}],
+"loop": 1,
+"name": &"walk_4_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("305_swat0305")
+}, {
+"duration": 1.0,
+"texture": ExtResource("306_swat0306")
+}, {
+"duration": 1.0,
+"texture": ExtResource("307_swat0307")
+}, {
+"duration": 1.0,
+"texture": ExtResource("308_swat0308")
+}, {
+"duration": 1.0,
+"texture": ExtResource("309_swat0309")
+}, {
+"duration": 1.0,
+"texture": ExtResource("310_swat0310")
+}, {
+"duration": 1.0,
+"texture": ExtResource("311_swat0311")
+}, {
+"duration": 1.0,
+"texture": ExtResource("312_swat0312")
+}],
+"loop": 1,
+"name": &"walk_4_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("313_swat0313")
+}, {
+"duration": 1.0,
+"texture": ExtResource("314_swat0314")
+}, {
+"duration": 1.0,
+"texture": ExtResource("315_swat0315")
+}, {
+"duration": 1.0,
+"texture": ExtResource("316_swat0316")
+}, {
+"duration": 1.0,
+"texture": ExtResource("317_swat0317")
+}, {
+"duration": 1.0,
+"texture": ExtResource("318_swat0318")
+}, {
+"duration": 1.0,
+"texture": ExtResource("319_swat0319")
+}, {
+"duration": 1.0,
+"texture": ExtResource("320_swat0320")
+}],
+"loop": 1,
+"name": &"walk_4_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("321_swat0321")
+}, {
+"duration": 1.0,
+"texture": ExtResource("322_swat0322")
+}, {
+"duration": 1.0,
+"texture": ExtResource("323_swat0323")
+}, {
+"duration": 1.0,
+"texture": ExtResource("324_swat0324")
+}, {
+"duration": 1.0,
+"texture": ExtResource("325_swat0325")
+}, {
+"duration": 1.0,
+"texture": ExtResource("326_swat0326")
+}, {
+"duration": 1.0,
+"texture": ExtResource("327_swat0327")
+}, {
+"duration": 1.0,
+"texture": ExtResource("328_swat0328")
+}],
+"loop": 1,
+"name": &"walk_4_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("329_swat0329")
+}, {
+"duration": 1.0,
+"texture": ExtResource("330_swat0330")
+}, {
+"duration": 1.0,
+"texture": ExtResource("331_swat0331")
+}, {
+"duration": 1.0,
+"texture": ExtResource("332_swat0332")
+}, {
+"duration": 1.0,
+"texture": ExtResource("333_swat0333")
+}, {
+"duration": 1.0,
+"texture": ExtResource("334_swat0334")
+}, {
+"duration": 1.0,
+"texture": ExtResource("335_swat0335")
+}, {
+"duration": 1.0,
+"texture": ExtResource("336_swat0336")
+}],
+"loop": 1,
+"name": &"walk_4_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("337_swat0337")
+}, {
+"duration": 1.0,
+"texture": ExtResource("338_swat0338")
+}, {
+"duration": 1.0,
+"texture": ExtResource("339_swat0339")
+}, {
+"duration": 1.0,
+"texture": ExtResource("340_swat0340")
+}, {
+"duration": 1.0,
+"texture": ExtResource("341_swat0341")
+}, {
+"duration": 1.0,
+"texture": ExtResource("342_swat0342")
+}, {
+"duration": 1.0,
+"texture": ExtResource("343_swat0343")
+}, {
+"duration": 1.0,
+"texture": ExtResource("344_swat0344")
+}],
+"loop": 1,
+"name": &"walk_4_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("345_swat0345")
+}, {
+"duration": 1.0,
+"texture": ExtResource("346_swat0346")
+}, {
+"duration": 1.0,
+"texture": ExtResource("347_swat0347")
+}, {
+"duration": 1.0,
+"texture": ExtResource("348_swat0348")
+}, {
+"duration": 1.0,
+"texture": ExtResource("349_swat0349")
+}, {
+"duration": 1.0,
+"texture": ExtResource("350_swat0350")
+}, {
+"duration": 1.0,
+"texture": ExtResource("351_swat0351")
+}, {
+"duration": 1.0,
+"texture": ExtResource("352_swat0352")
+}],
+"loop": 1,
+"name": &"walk_5_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("353_swat0353")
+}, {
+"duration": 1.0,
+"texture": ExtResource("354_swat0354")
+}, {
+"duration": 1.0,
+"texture": ExtResource("355_swat0355")
+}, {
+"duration": 1.0,
+"texture": ExtResource("356_swat0356")
+}, {
+"duration": 1.0,
+"texture": ExtResource("357_swat0357")
+}, {
+"duration": 1.0,
+"texture": ExtResource("358_swat0358")
+}, {
+"duration": 1.0,
+"texture": ExtResource("359_swat0359")
+}, {
+"duration": 1.0,
+"texture": ExtResource("360_swat0360")
+}],
+"loop": 1,
+"name": &"walk_5_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("361_swat0361")
+}, {
+"duration": 1.0,
+"texture": ExtResource("362_swat0362")
+}, {
+"duration": 1.0,
+"texture": ExtResource("363_swat0363")
+}, {
+"duration": 1.0,
+"texture": ExtResource("364_swat0364")
+}, {
+"duration": 1.0,
+"texture": ExtResource("365_swat0365")
+}, {
+"duration": 1.0,
+"texture": ExtResource("366_swat0366")
+}, {
+"duration": 1.0,
+"texture": ExtResource("367_swat0367")
+}, {
+"duration": 1.0,
+"texture": ExtResource("368_swat0368")
+}],
+"loop": 1,
+"name": &"walk_5_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("369_swat0369")
+}, {
+"duration": 1.0,
+"texture": ExtResource("370_swat0370")
+}, {
+"duration": 1.0,
+"texture": ExtResource("371_swat0371")
+}, {
+"duration": 1.0,
+"texture": ExtResource("372_swat0372")
+}, {
+"duration": 1.0,
+"texture": ExtResource("373_swat0373")
+}, {
+"duration": 1.0,
+"texture": ExtResource("374_swat0374")
+}, {
+"duration": 1.0,
+"texture": ExtResource("375_swat0375")
+}, {
+"duration": 1.0,
+"texture": ExtResource("376_swat0376")
+}],
+"loop": 1,
+"name": &"walk_5_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("377_swat0377")
+}, {
+"duration": 1.0,
+"texture": ExtResource("378_swat0378")
+}, {
+"duration": 1.0,
+"texture": ExtResource("379_swat0379")
+}, {
+"duration": 1.0,
+"texture": ExtResource("380_swat0380")
+}, {
+"duration": 1.0,
+"texture": ExtResource("381_swat0381")
+}, {
+"duration": 1.0,
+"texture": ExtResource("382_swat0382")
+}, {
+"duration": 1.0,
+"texture": ExtResource("383_swat0383")
+}, {
+"duration": 1.0,
+"texture": ExtResource("384_swat0384")
+}],
+"loop": 1,
+"name": &"walk_5_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("385_swat0385")
+}, {
+"duration": 1.0,
+"texture": ExtResource("386_swat0386")
+}, {
+"duration": 1.0,
+"texture": ExtResource("387_swat0387")
+}, {
+"duration": 1.0,
+"texture": ExtResource("388_swat0388")
+}, {
+"duration": 1.0,
+"texture": ExtResource("389_swat0389")
+}, {
+"duration": 1.0,
+"texture": ExtResource("390_swat0390")
+}, {
+"duration": 1.0,
+"texture": ExtResource("391_swat0391")
+}, {
+"duration": 1.0,
+"texture": ExtResource("392_swat0392")
+}],
+"loop": 1,
+"name": &"walk_5_other",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("393_swat0393")
+}, {
+"duration": 1.0,
+"texture": ExtResource("394_swat0394")
+}, {
+"duration": 1.0,
+"texture": ExtResource("395_swat0395")
+}, {
+"duration": 1.0,
+"texture": ExtResource("396_swat0396")
+}, {
+"duration": 1.0,
+"texture": ExtResource("397_swat0397")
+}, {
+"duration": 1.0,
+"texture": ExtResource("398_swat0398")
+}, {
+"duration": 1.0,
+"texture": ExtResource("399_swat0399")
+}, {
+"duration": 1.0,
+"texture": ExtResource("400_swat0400")
+}],
+"loop": 1,
+"name": &"walk_6_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("401_swat0401")
+}, {
+"duration": 1.0,
+"texture": ExtResource("402_swat0402")
+}, {
+"duration": 1.0,
+"texture": ExtResource("403_swat0403")
+}, {
+"duration": 1.0,
+"texture": ExtResource("404_swat0404")
+}, {
+"duration": 1.0,
+"texture": ExtResource("405_swat0405")
+}, {
+"duration": 1.0,
+"texture": ExtResource("406_swat0406")
+}, {
+"duration": 1.0,
+"texture": ExtResource("407_swat0407")
+}, {
+"duration": 1.0,
+"texture": ExtResource("408_swat0408")
+}],
+"loop": 1,
+"name": &"walk_6_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("409_swat0409")
+}, {
+"duration": 1.0,
+"texture": ExtResource("410_swat0410")
+}, {
+"duration": 1.0,
+"texture": ExtResource("411_swat0411")
+}, {
+"duration": 1.0,
+"texture": ExtResource("412_swat0412")
+}, {
+"duration": 1.0,
+"texture": ExtResource("413_swat0413")
+}, {
+"duration": 1.0,
+"texture": ExtResource("414_swat0414")
+}, {
+"duration": 1.0,
+"texture": ExtResource("415_swat0415")
+}, {
+"duration": 1.0,
+"texture": ExtResource("416_swat0416")
+}],
+"loop": 1,
+"name": &"walk_6_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("417_swat0417")
+}, {
+"duration": 1.0,
+"texture": ExtResource("418_swat0418")
+}, {
+"duration": 1.0,
+"texture": ExtResource("419_swat0419")
+}, {
+"duration": 1.0,
+"texture": ExtResource("420_swat0420")
+}, {
+"duration": 1.0,
+"texture": ExtResource("421_swat0421")
+}, {
+"duration": 1.0,
+"texture": ExtResource("422_swat0422")
+}, {
+"duration": 1.0,
+"texture": ExtResource("423_swat0423")
+}, {
+"duration": 1.0,
+"texture": ExtResource("424_swat0424")
+}],
+"loop": 1,
+"name": &"walk_6_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("425_swat0425")
+}, {
+"duration": 1.0,
+"texture": ExtResource("426_swat0426")
+}, {
+"duration": 1.0,
+"texture": ExtResource("427_swat0427")
+}, {
+"duration": 1.0,
+"texture": ExtResource("428_swat0428")
+}, {
+"duration": 1.0,
+"texture": ExtResource("429_swat0429")
+}, {
+"duration": 1.0,
+"texture": ExtResource("430_swat0430")
+}, {
+"duration": 1.0,
+"texture": ExtResource("431_swat0431")
+}, {
+"duration": 1.0,
+"texture": ExtResource("432_swat0432")
+}],
+"loop": 1,
+"name": &"walk_6_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("433_swat0433")
+}, {
+"duration": 1.0,
+"texture": ExtResource("434_swat0434")
+}, {
+"duration": 1.0,
+"texture": ExtResource("435_swat0435")
+}, {
+"duration": 1.0,
+"texture": ExtResource("436_swat0436")
+}, {
+"duration": 1.0,
+"texture": ExtResource("437_swat0437")
+}, {
+"duration": 1.0,
+"texture": ExtResource("438_swat0438")
+}, {
+"duration": 1.0,
+"texture": ExtResource("439_swat0439")
+}, {
+"duration": 1.0,
+"texture": ExtResource("440_swat0440")
+}],
+"loop": 1,
+"name": &"walk_6_other",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("441_swat0441")
+}, {
+"duration": 1.0,
+"texture": ExtResource("442_swat0442")
+}, {
+"duration": 1.0,
+"texture": ExtResource("443_swat0443")
+}, {
+"duration": 1.0,
+"texture": ExtResource("444_swat0444")
+}, {
+"duration": 1.0,
+"texture": ExtResource("445_swat0445")
+}, {
+"duration": 1.0,
+"texture": ExtResource("446_swat0446")
+}, {
+"duration": 1.0,
+"texture": ExtResource("447_swat0447")
+}, {
+"duration": 1.0,
+"texture": ExtResource("448_swat0448")
+}],
+"loop": 1,
+"name": &"walk_7_Pistol",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("449_swat0449")
+}, {
+"duration": 1.0,
+"texture": ExtResource("450_swat0450")
+}, {
+"duration": 1.0,
+"texture": ExtResource("451_swat0451")
+}, {
+"duration": 1.0,
+"texture": ExtResource("452_swat0452")
+}, {
+"duration": 1.0,
+"texture": ExtResource("453_swat0453")
+}, {
+"duration": 1.0,
+"texture": ExtResource("454_swat0454")
+}, {
+"duration": 1.0,
+"texture": ExtResource("455_swat0455")
+}, {
+"duration": 1.0,
+"texture": ExtResource("456_swat0456")
+}],
+"loop": 1,
+"name": &"walk_7_Railgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("457_swat0457")
+}, {
+"duration": 1.0,
+"texture": ExtResource("458_swat0458")
+}, {
+"duration": 1.0,
+"texture": ExtResource("459_swat0459")
+}, {
+"duration": 1.0,
+"texture": ExtResource("460_swat0460")
+}, {
+"duration": 1.0,
+"texture": ExtResource("461_swat0461")
+}, {
+"duration": 1.0,
+"texture": ExtResource("462_swat0462")
+}, {
+"duration": 1.0,
+"texture": ExtResource("463_swat0463")
+}, {
+"duration": 1.0,
+"texture": ExtResource("464_swat0464")
+}],
+"loop": 1,
+"name": &"walk_7_Rocket",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("465_swat0465")
+}, {
+"duration": 1.0,
+"texture": ExtResource("466_swat0466")
+}, {
+"duration": 1.0,
+"texture": ExtResource("467_swat0467")
+}, {
+"duration": 1.0,
+"texture": ExtResource("468_swat0468")
+}, {
+"duration": 1.0,
+"texture": ExtResource("469_swat0469")
+}, {
+"duration": 1.0,
+"texture": ExtResource("470_swat0470")
+}, {
+"duration": 1.0,
+"texture": ExtResource("471_swat0471")
+}, {
+"duration": 1.0,
+"texture": ExtResource("472_swat0472")
+}],
+"loop": 1,
+"name": &"walk_7_Shotgun",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("473_swat0473")
+}, {
+"duration": 1.0,
+"texture": ExtResource("474_swat0474")
+}, {
+"duration": 1.0,
+"texture": ExtResource("475_swat0475")
+}, {
+"duration": 1.0,
+"texture": ExtResource("476_swat0476")
+}, {
+"duration": 1.0,
+"texture": ExtResource("477_swat0477")
+}, {
+"duration": 1.0,
+"texture": ExtResource("478_swat0478")
+}, {
+"duration": 1.0,
+"texture": ExtResource("479_swat0479")
+}, {
+"duration": 1.0,
+"texture": ExtResource("480_swat0480")
+}],
+"loop": 1,
+"name": &"walk_7_UZI",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("481_swat0481")
+}, {
+"duration": 1.0,
+"texture": ExtResource("482_swat0482")
+}, {
+"duration": 1.0,
+"texture": ExtResource("483_swat0483")
+}, {
+"duration": 1.0,
+"texture": ExtResource("484_swat0484")
+}, {
+"duration": 1.0,
+"texture": ExtResource("485_swat0485")
+}, {
+"duration": 1.0,
+"texture": ExtResource("486_swat0486")
+}, {
+"duration": 1.0,
+"texture": ExtResource("487_swat0487")
+}, {
+"duration": 1.0,
+"texture": ExtResource("488_swat0488")
+}],
+"loop": 1,
+"name": &"walk_7_other",
+"speed": 10.0
+}
+]

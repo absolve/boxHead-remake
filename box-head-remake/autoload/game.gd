@@ -189,10 +189,10 @@ var mapId: Array = [
 ## 玩家角色列表配置
 # 存储所有可用玩家角色的信息（名称、ID、头像）
 var playerName: Array = [
-	{'name': 'bambo', 'id': 1, 'img': "res://sprite/ui/12.png"},
-	{'name': 'bon', 'id': 2, 'img': "res://sprite/ui/2.png"},
-	{'name': 'bind', 'id': 3, 'img': "res://sprite/ui/3.png"},
-	{'name': 'bert', 'id': 4, 'img': "res://sprite/ui/4.png"}
+	{'name': 'SWAT', 'id': 1, 'img': "res://sprite/ui/12.png"},
+	{'name': 'BOND', 'id': 2, 'img': "res://sprite/ui/2.png"},
+	{'name': 'GIJOE', 'id': 3, 'img': "res://sprite/ui/3.png"},
+	{'name': 'BAMBO', 'id': 4, 'img': "res://sprite/ui/4.png"}
 ]
 
 ## 全局信号定义

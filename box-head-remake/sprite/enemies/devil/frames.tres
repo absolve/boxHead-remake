@@ -1,0 +1,983 @@
+[gd_resource type="SpriteFrames" load_steps=185 format=3]
+
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/0_0.png" id="1_devil0001"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/0_1.png" id="2_devil0002"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/0_2.png" id="3_devil0003"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/0_3.png" id="4_devil0004"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/1_0.png" id="5_devil0005"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/1_1.png" id="6_devil0006"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/1_2.png" id="7_devil0007"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/1_3.png" id="8_devil0008"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/2_0.png" id="9_devil0009"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/2_1.png" id="10_devil0010"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/2_2.png" id="11_devil0011"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/2_3.png" id="12_devil0012"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/3_0.png" id="13_devil0013"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/3_1.png" id="14_devil0014"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/3_2.png" id="15_devil0015"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/3_3.png" id="16_devil0016"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/4_0.png" id="17_devil0017"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/4_1.png" id="18_devil0018"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/4_2.png" id="19_devil0019"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/4_3.png" id="20_devil0020"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/5_0.png" id="21_devil0021"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/5_1.png" id="22_devil0022"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/5_2.png" id="23_devil0023"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/5_3.png" id="24_devil0024"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/6_0.png" id="25_devil0025"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/6_1.png" id="26_devil0026"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/6_2.png" id="27_devil0027"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/6_3.png" id="28_devil0028"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/7_0.png" id="29_devil0029"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/7_1.png" id="30_devil0030"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/7_2.png" id="31_devil0031"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/attack/7_3.png" id="32_devil0032"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/dead/0.png" id="33_devil0033"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/dead/1.png" id="34_devil0034"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/dead/2.png" id="35_devil0035"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/dead/3.png" id="36_devil0036"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/0_0.png" id="37_devil0037"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/0_1.png" id="38_devil0038"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/0_2.png" id="39_devil0039"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/0_3.png" id="40_devil0040"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/0_4.png" id="41_devil0041"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/1_0.png" id="42_devil0042"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/1_1.png" id="43_devil0043"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/1_2.png" id="44_devil0044"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/1_3.png" id="45_devil0045"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/1_4.png" id="46_devil0046"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/2_0.png" id="47_devil0047"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/2_1.png" id="48_devil0048"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/2_2.png" id="49_devil0049"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/2_3.png" id="50_devil0050"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/2_4.png" id="51_devil0051"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/3_0.png" id="52_devil0052"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/3_1.png" id="53_devil0053"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/3_2.png" id="54_devil0054"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/3_3.png" id="55_devil0055"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/fallDown/3_4.png" id="56_devil0056"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/0_0.png" id="57_devil0057"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/0_1.png" id="58_devil0058"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/1_0.png" id="59_devil0059"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/1_1.png" id="60_devil0060"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/2_0.png" id="61_devil0061"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/2_1.png" id="62_devil0062"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/3_0.png" id="63_devil0063"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/3_1.png" id="64_devil0064"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/4_0.png" id="65_devil0065"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/4_1.png" id="66_devil0066"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/5_0.png" id="67_devil0067"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/5_1.png" id="68_devil0068"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/6_0.png" id="69_devil0069"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/6_1.png" id="70_devil0070"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/7_0.png" id="71_devil0071"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitFront/7_1.png" id="72_devil0072"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/0_0.png" id="73_devil0073"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/0_1.png" id="74_devil0074"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/1_0.png" id="75_devil0075"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/1_1.png" id="76_devil0076"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/2_0.png" id="77_devil0077"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/2_1.png" id="78_devil0078"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/3_0.png" id="79_devil0079"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/3_1.png" id="80_devil0080"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/4_0.png" id="81_devil0081"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/4_1.png" id="82_devil0082"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/5_0.png" id="83_devil0083"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/5_1.png" id="84_devil0084"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/6_0.png" id="85_devil0085"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/6_1.png" id="86_devil0086"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/7_0.png" id="87_devil0087"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/hitRear/7_1.png" id="88_devil0088"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/0_0.png" id="89_devil0089"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/0_1.png" id="90_devil0090"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/0_2.png" id="91_devil0091"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/0_3.png" id="92_devil0092"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/1_0.png" id="93_devil0093"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/1_1.png" id="94_devil0094"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/1_2.png" id="95_devil0095"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/1_3.png" id="96_devil0096"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/2_0.png" id="97_devil0097"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/2_1.png" id="98_devil0098"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/2_2.png" id="99_devil0099"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/2_3.png" id="100_devil0100"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/3_0.png" id="101_devil0101"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/3_1.png" id="102_devil0102"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/3_2.png" id="103_devil0103"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/3_3.png" id="104_devil0104"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/4_0.png" id="105_devil0105"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/4_1.png" id="106_devil0106"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/4_2.png" id="107_devil0107"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/4_3.png" id="108_devil0108"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/5_0.png" id="109_devil0109"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/5_1.png" id="110_devil0110"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/5_2.png" id="111_devil0111"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/5_3.png" id="112_devil0112"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/6_0.png" id="113_devil0113"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/6_1.png" id="114_devil0114"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/6_2.png" id="115_devil0115"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/6_3.png" id="116_devil0116"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/7_0.png" id="117_devil0117"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/7_1.png" id="118_devil0118"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/7_2.png" id="119_devil0119"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/stand/7_3.png" id="120_devil0120"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_0.png" id="121_devil0121"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_1.png" id="122_devil0122"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_2.png" id="123_devil0123"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_3.png" id="124_devil0124"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_4.png" id="125_devil0125"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_5.png" id="126_devil0126"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_6.png" id="127_devil0127"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/0_7.png" id="128_devil0128"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_0.png" id="129_devil0129"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_1.png" id="130_devil0130"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_2.png" id="131_devil0131"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_3.png" id="132_devil0132"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_4.png" id="133_devil0133"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_5.png" id="134_devil0134"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_6.png" id="135_devil0135"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/1_7.png" id="136_devil0136"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_0.png" id="137_devil0137"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_1.png" id="138_devil0138"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_2.png" id="139_devil0139"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_3.png" id="140_devil0140"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_4.png" id="141_devil0141"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_5.png" id="142_devil0142"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_6.png" id="143_devil0143"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/2_7.png" id="144_devil0144"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_0.png" id="145_devil0145"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_1.png" id="146_devil0146"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_2.png" id="147_devil0147"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_3.png" id="148_devil0148"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_4.png" id="149_devil0149"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_5.png" id="150_devil0150"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_6.png" id="151_devil0151"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/3_7.png" id="152_devil0152"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_0.png" id="153_devil0153"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_1.png" id="154_devil0154"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_2.png" id="155_devil0155"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_3.png" id="156_devil0156"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_4.png" id="157_devil0157"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_5.png" id="158_devil0158"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_6.png" id="159_devil0159"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/4_7.png" id="160_devil0160"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_0.png" id="161_devil0161"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_1.png" id="162_devil0162"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_2.png" id="163_devil0163"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_3.png" id="164_devil0164"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_4.png" id="165_devil0165"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_5.png" id="166_devil0166"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_6.png" id="167_devil0167"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/5_7.png" id="168_devil0168"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_0.png" id="169_devil0169"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_1.png" id="170_devil0170"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_2.png" id="171_devil0171"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_3.png" id="172_devil0172"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_4.png" id="173_devil0173"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_5.png" id="174_devil0174"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_6.png" id="175_devil0175"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/6_7.png" id="176_devil0176"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_0.png" id="177_devil0177"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_1.png" id="178_devil0178"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_2.png" id="179_devil0179"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_3.png" id="180_devil0180"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_4.png" id="181_devil0181"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_5.png" id="182_devil0182"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_6.png" id="183_devil0183"]
+[ext_resource type="Texture2D" path="res://sprite/enemies/devil/walk/7_7.png" id="184_devil0184"]
+
+[resource]
+animations = [
+{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_devil0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_devil0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_devil0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_devil0004")
+}],
+"loop": 0,
+"name": &"attack_0",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_devil0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_devil0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_devil0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_devil0008")
+}],
+"loop": 0,
+"name": &"attack_1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_devil0009")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_devil0010")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_devil0011")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_devil0012")
+}],
+"loop": 0,
+"name": &"attack_2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_devil0013")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_devil0014")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_devil0015")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_devil0016")
+}],
+"loop": 0,
+"name": &"attack_3",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_devil0017")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_devil0018")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_devil0019")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_devil0020")
+}],
+"loop": 0,
+"name": &"attack_4",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("21_devil0021")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_devil0022")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_devil0023")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_devil0024")
+}],
+"loop": 0,
+"name": &"attack_5",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_devil0025")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_devil0026")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_devil0027")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_devil0028")
+}],
+"loop": 0,
+"name": &"attack_6",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_devil0029")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_devil0030")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_devil0031")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_devil0032")
+}],
+"loop": 0,
+"name": &"attack_7",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_devil0033")
+}],
+"loop": 0,
+"name": &"dead_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34_devil0034")
+}],
+"loop": 0,
+"name": &"dead_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_devil0035")
+}],
+"loop": 0,
+"name": &"dead_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("36_devil0036")
+}],
+"loop": 0,
+"name": &"dead_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("37_devil0037")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_devil0038")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_devil0039")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_devil0040")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_devil0041")
+}],
+"loop": 0,
+"name": &"fallDown_0",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("42_devil0042")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_devil0043")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_devil0044")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_devil0045")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_devil0046")
+}],
+"loop": 0,
+"name": &"fallDown_1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("47_devil0047")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_devil0048")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_devil0049")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_devil0050")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_devil0051")
+}],
+"loop": 0,
+"name": &"fallDown_2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("52_devil0052")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_devil0053")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_devil0054")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_devil0055")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_devil0056")
+}],
+"loop": 0,
+"name": &"fallDown_3",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("57_devil0057")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_devil0058")
+}],
+"loop": 0,
+"name": &"hitFront_0",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("59_devil0059")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_devil0060")
+}],
+"loop": 0,
+"name": &"hitFront_1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("61_devil0061")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_devil0062")
+}],
+"loop": 0,
+"name": &"hitFront_2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("63_devil0063")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_devil0064")
+}],
+"loop": 0,
+"name": &"hitFront_3",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("65_devil0065")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_devil0066")
+}],
+"loop": 0,
+"name": &"hitFront_4",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_devil0067")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_devil0068")
+}],
+"loop": 0,
+"name": &"hitFront_5",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("69_devil0069")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_devil0070")
+}],
+"loop": 0,
+"name": &"hitFront_6",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("71_devil0071")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_devil0072")
+}],
+"loop": 0,
+"name": &"hitFront_7",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("73_devil0073")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_devil0074")
+}],
+"loop": 0,
+"name": &"hitRear_0",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("75_devil0075")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_devil0076")
+}],
+"loop": 0,
+"name": &"hitRear_1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("77_devil0077")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_devil0078")
+}],
+"loop": 0,
+"name": &"hitRear_2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("79_devil0079")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_devil0080")
+}],
+"loop": 0,
+"name": &"hitRear_3",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("81_devil0081")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_devil0082")
+}],
+"loop": 0,
+"name": &"hitRear_4",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("83_devil0083")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_devil0084")
+}],
+"loop": 0,
+"name": &"hitRear_5",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("85_devil0085")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_devil0086")
+}],
+"loop": 0,
+"name": &"hitRear_6",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("87_devil0087")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_devil0088")
+}],
+"loop": 0,
+"name": &"hitRear_7",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("89_devil0089")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_devil0090")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_devil0091")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_devil0092")
+}],
+"loop": 1,
+"name": &"stand_0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("93_devil0093")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_devil0094")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_devil0095")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_devil0096")
+}],
+"loop": 1,
+"name": &"stand_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("97_devil0097")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_devil0098")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_devil0099")
+}, {
+"duration": 1.0,
+"texture": ExtResource("100_devil0100")
+}],
+"loop": 1,
+"name": &"stand_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("101_devil0101")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_devil0102")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_devil0103")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_devil0104")
+}],
+"loop": 1,
+"name": &"stand_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("105_devil0105")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_devil0106")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_devil0107")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_devil0108")
+}],
+"loop": 1,
+"name": &"stand_4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("109_devil0109")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_devil0110")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_devil0111")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_devil0112")
+}],
+"loop": 1,
+"name": &"stand_5",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("113_devil0113")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_devil0114")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_devil0115")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_devil0116")
+}],
+"loop": 1,
+"name": &"stand_6",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("117_devil0117")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_devil0118")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_devil0119")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_devil0120")
+}],
+"loop": 1,
+"name": &"stand_7",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("121_devil0121")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_devil0122")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_devil0123")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_devil0124")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_devil0125")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_devil0126")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_devil0127")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_devil0128")
+}],
+"loop": 1,
+"name": &"walk_0",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("129_devil0129")
+}, {
+"duration": 1.0,
+"texture": ExtResource("130_devil0130")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_devil0131")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_devil0132")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_devil0133")
+}, {
+"duration": 1.0,
+"texture": ExtResource("134_devil0134")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_devil0135")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_devil0136")
+}],
+"loop": 1,
+"name": &"walk_1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("137_devil0137")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_devil0138")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_devil0139")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_devil0140")
+}, {
+"duration": 1.0,
+"texture": ExtResource("141_devil0141")
+}, {
+"duration": 1.0,
+"texture": ExtResource("142_devil0142")
+}, {
+"duration": 1.0,
+"texture": ExtResource("143_devil0143")
+}, {
+"duration": 1.0,
+"texture": ExtResource("144_devil0144")
+}],
+"loop": 1,
+"name": &"walk_2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("145_devil0145")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_devil0146")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_devil0147")
+}, {
+"duration": 1.0,
+"texture": ExtResource("148_devil0148")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_devil0149")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_devil0150")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_devil0151")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_devil0152")
+}],
+"loop": 1,
+"name": &"walk_3",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("153_devil0153")
+}, {
+"duration": 1.0,
+"texture": ExtResource("154_devil0154")
+}, {
+"duration": 1.0,
+"texture": ExtResource("155_devil0155")
+}, {
+"duration": 1.0,
+"texture": ExtResource("156_devil0156")
+}, {
+"duration": 1.0,
+"texture": ExtResource("157_devil0157")
+}, {
+"duration": 1.0,
+"texture": ExtResource("158_devil0158")
+}, {
+"duration": 1.0,
+"texture": ExtResource("159_devil0159")
+}, {
+"duration": 1.0,
+"texture": ExtResource("160_devil0160")
+}],
+"loop": 1,
+"name": &"walk_4",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("161_devil0161")
+}, {
+"duration": 1.0,
+"texture": ExtResource("162_devil0162")
+}, {
+"duration": 1.0,
+"texture": ExtResource("163_devil0163")
+}, {
+"duration": 1.0,
+"texture": ExtResource("164_devil0164")
+}, {
+"duration": 1.0,
+"texture": ExtResource("165_devil0165")
+}, {
+"duration": 1.0,
+"texture": ExtResource("166_devil0166")
+}, {
+"duration": 1.0,
+"texture": ExtResource("167_devil0167")
+}, {
+"duration": 1.0,
+"texture": ExtResource("168_devil0168")
+}],
+"loop": 1,
+"name": &"walk_5",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("169_devil0169")
+}, {
+"duration": 1.0,
+"texture": ExtResource("170_devil0170")
+}, {
+"duration": 1.0,
+"texture": ExtResource("171_devil0171")
+}, {
+"duration": 1.0,
+"texture": ExtResource("172_devil0172")
+}, {
+"duration": 1.0,
+"texture": ExtResource("173_devil0173")
+}, {
+"duration": 1.0,
+"texture": ExtResource("174_devil0174")
+}, {
+"duration": 1.0,
+"texture": ExtResource("175_devil0175")
+}, {
+"duration": 1.0,
+"texture": ExtResource("176_devil0176")
+}],
+"loop": 1,
+"name": &"walk_6",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("177_devil0177")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_devil0178")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_devil0179")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_devil0180")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_devil0181")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_devil0182")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_devil0183")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_devil0184")
+}],
+"loop": 1,
+"name": &"walk_7",
+"speed": 10.0
+}
+]

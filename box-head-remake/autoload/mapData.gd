@@ -104,7 +104,7 @@ const SLOT_CPU: int = 5
 ## 每个槽位的角色
 var playerSlots: Array[int] = [SLOT_P1, SLOT_OFF, SLOT_OFF, SLOT_OFF]
 
-## 每个槽位选的角色（Game.playerName 的下标）；目前只用于界面展示
+## 每个槽位选的角色（Game.playerName 的下标）；决定该玩家用哪套皮肤素材
 var playerSlotChars: Array[int] = [0, 1, 2, 3]
 
 

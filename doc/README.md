@@ -22,6 +22,7 @@
 | [cpu-player-ai.md](cpu-player-ai.md) | CPU 玩家 AI：Beehave 决策层、敌人源距离场导航、感知与友伤、策略与武器选择、测试场景与分阶段计划 |
 | [test-checklist.md](test-checklist.md) | AI 自动化测试：工具选型（GdUnit4/GUT + 自建 TestBridge）、玩家-敌人/CPU/武器/系统/长跑测试清单，以及驱动脚本的生成规格与提示词 |
 | [lan-multiplayer.md](lan-multiplayer.md) | 局域网联机设计：Godot 自带 ENet 主机权威方案、输入意图抽象、同步分级、CPU 玩家与断线接管、分阶段计划 |
+| [xsi-sprite-skins.md](xsi-sprite-skins.md) | 原版 XSI 烘焙素材替换：玩家 4 套角色皮肤 + 僵尸/恶魔，画布与锚点/方向约定、SpriteFrames 生成脚本、皮肤选择与换色策略 |
 
 ## 如何验证
 
