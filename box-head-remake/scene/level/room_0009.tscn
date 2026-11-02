@@ -169,41 +169,41 @@ z_index = 11
 position = Vector2(1272, 8)
 
 [node name="wallShape011" parent="." unique_id=39532751 instance=ExtResource("3_3t6be")]
-z_index = 600
+z_index = 1900
 position = Vector2(24, 1031)
 
 [node name="wallShape012" parent="." unique_id=460704956 instance=ExtResource("4_44864")]
-z_index = 599
+z_index = 1899
 position = Vector2(155, 1038)
 
 [node name="wallShape013" parent="." unique_id=216636622 instance=ExtResource("3_3t6be")]
-z_index = 598
+z_index = 1898
 position = Vector2(280, 1031)
 
 [node name="wallShape014" parent="." unique_id=1817543051 instance=ExtResource("4_44864")]
-z_index = 597
+z_index = 1897
 position = Vector2(411, 1038)
 
 [node name="wallShape015" parent="." unique_id=1350051061 instance=ExtResource("3_3t6be")]
-z_index = 596
+z_index = 1896
 position = Vector2(536, 1031)
 
 [node name="wallShape016" parent="." unique_id=561913923 instance=ExtResource("3_3t6be")]
-z_index = 595
+z_index = 1895
 position = Vector2(760, 1031)
 
 [node name="wallShape017" parent="." unique_id=1041410239 instance=ExtResource("4_44864")]
-z_index = 594
+z_index = 1894
 position = Vector2(891, 1038)
 
 [node name="wallShape018" parent="." unique_id=612925528 instance=ExtResource("3_3t6be")]
-z_index = 593
+z_index = 1893
 position = Vector2(1016, 1031)
 
 [node name="wallShape019" parent="." unique_id=1478136622 instance=ExtResource("4_44864")]
-z_index = 592
+z_index = 1891
 position = Vector2(1147, 1038)
 
 [node name="wallShape020" parent="." unique_id=415990877 instance=ExtResource("3_3t6be")]
-z_index = 591
+z_index = 1890
 position = Vector2(1272, 1031)

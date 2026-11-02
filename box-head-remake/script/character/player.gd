@@ -17,12 +17,18 @@ const RESPAWN_INVINCIBLE: float = 5.0
 ## 原版 Boxhead 多人就是「同一套精灵 + 染色」，所以用色相旋转而不是独立素材。
 ## 玩家默认绿色 = 0x00FF00（doc/04 §2.1）；色相旋转量按绿→红/蓝/黄换算。
 const PLAYER_HUE_SHIFT: Array[float] = [0.0, 0.667, 0.333, -0.167]
+## 血量低于这个比例才开始往红里染（原版没有这层表现，是重制版加的受伤提示）
+const DAMAGE_TINT_ABOVE: float = 0.75
 
 
 ## 玩家ID（用于多人游戏区分）
 @export var playerId: int = 1
 ## 槽位颜色编号（0~3）；由 map.gd 按槽位写入，-1 = 退回用 playerId 推算
 var colorIndex: int = -1
+## 身上的换色/受伤材质实例（每人一份，改 uniform 不会串到别的玩家）
+var tintMat: ShaderMaterial = null
+## 上一次真正下发给 shader 的受伤强度，用来避免每帧重复设置
+var damageTintApplied: float = -1.0
 ## 皮肤编号（0~3 = SWAT/BOND/GIJOE/BAMBO）；由 map.gd 按角色卡写入，-1 = 用场景默认（skin1）
 var skinIndex: int = -1
 ## 四套原版角色素材（XSI 烘焙帧），下标 = skinIndex
@@ -628,19 +634,38 @@ func skinSharedWithOtherSlot(skin: int) -> bool:
 ## 给身体精灵套一个换色材质（每人一份独立实例）
 ## 4 套角色素材本身配色就不同（SWAT 深蓝 / BOND 黑西装 / GIJOE 沙漠迷彩 / BAMBO 赤膊红头巾），
 ## 只有多个槽位撞了同一个角色时才需要色相旋转来区分，否则保留原版配色。
+## 材质本身要一直挂着：受伤变红那层也走同一个 shader。
 func applyPlayerColor() -> void:
 	var shader = load("res://shader/player_tint.gdshader")
 	if shader == null or ani == null:
 		return
 	var idx: int = colorIndex if colorIndex >= 0 else absi(playerId - 1)
-	if skinIndex >= 0 and not skinSharedWithOtherSlot(skinIndex):
-		ani.material = null
-		return
 	var mat := ShaderMaterial.new()
 	mat.shader = shader
-	var hueIndex: int = idx % PLAYER_HUE_SHIFT.size()
-	mat.set_shader_parameter("hue_shift", PLAYER_HUE_SHIFT[hueIndex])
+	var hue: float = 0.0
+	if skinIndex < 0 or skinSharedWithOtherSlot(skinIndex):
+		hue = PLAYER_HUE_SHIFT[idx % PLAYER_HUE_SHIFT.size()]
+	mat.set_shader_parameter("hue_shift", hue)
 	ani.material = mat
+	tintMat = mat
+	updateDamageTint()
+
+
+## 血量越低越红（0 = 原配色，1 = 全红）
+## 曲线取 1.4 次幂：过半血只有一点点色差，残血时才迅速转红。
+## 每帧都调也没压力：值没跨过 0.01 就不下发 uniform，只有掉血/回血时才连续变化。
+func updateDamageTint() -> void:
+	if tintMat == null or maxHp <= 0:
+		return
+	var ratio: float = clampf(float(hp) / float(maxHp), 0.0, 1.0)
+	var t: float = 0.0
+	if ratio < DAMAGE_TINT_ABOVE:
+		var x: float = (DAMAGE_TINT_ABOVE - ratio) / DAMAGE_TINT_ABOVE
+		t = clampf(x ** 1.4, 0.0, 1.0)
+	if absf(t - damageTintApplied) < 0.01:
+		return
+	damageTintApplied = t
+	tintMat.set_shader_parameter("damage_tint", t)
 
 
 ## 设置无敌（秒）：>0 时免疫伤害并闪烁
@@ -689,6 +714,9 @@ func updateCommon(delta: float) -> void:
 			hp = mini(hp + heal, maxHp)
 			lifeBar.maxHp = maxHp
 	lifeBar.hp = hp
+
+	# 受伤上色跟着 hp 走（回血也会往回退色）
+	updateDamageTint()
 
 
 ## 限制玩家在地图边界内，并按 Y 坐标设置 Z 轴顺序（2.5D）

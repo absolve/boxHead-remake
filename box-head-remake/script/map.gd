@@ -708,6 +708,13 @@ func swapRoom() -> void:
 	room = packed.instantiate()
 	room.name = "room001"
 	add_child(room)
+
+	# 换图后清掉上一张图的视野：player.gd 每帧按 MapData.moveRect() 夹人，
+	# 留着旧矩形会把新出生点直接夹偏；同时让相机下一帧瞬移到玩家，不要飘过来。
+	MapData.viewRect = Rect2()
+	var cam := get_node_or_null("camera")
+	if cam != null:
+		cam.set("snapNext", true)
 	print("[map] 加载地图 %s" % want)
 
 

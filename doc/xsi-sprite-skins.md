@@ -83,19 +83,28 @@ scale    = Vector2(0.5, 0.5)
 4. `Game.playerName` 的角色名改成与头像/素材一致：`SWAT / BOND / GIJOE / BAMBO`
    （下标 0~3 依次对应 `skin1..skin4`，与四张头像 `sprite/ui/12,2,3,4.png` 同序）
 
-换色材质（`shader/player_tint.gdshader`）保留，但只在**多个槽位选了同一个角色**时才启用：
+换色材质（`shader/player_tint.gdshader`）现在**常驻挂在 `ani` 上**，因为受伤变红那层也走同一个 shader；
+色相旋转本身仍然只在**多个槽位选了同一个角色**时才启用（`hue_shift = 0` 时材质是恒等的）：
 4 套素材本身配色不同，再套色相旋转会破坏原版配色；撞角色时才用绿/红/蓝/黄区分。
 `skinIndex = -1`（测试场景、未指定皮肤的场合）沿用旧行为：默认 `skin1` + 按槽位染色。
+
+血量低于 75% 后按 `((0.75 - ratio) / 0.75) ^ 1.4` 渐进染成暗红（`damage_tint`，
+`player.gd::updateDamageTint()`，每帧随 hp/自动回血更新）。**原版没有这层表现**——
+反编译脚本里 `mColor` 只在构造时赋一次（恶魔/僵尸红、玩家绿），渲染入口
+`_Render(oBMD, pos, tAlpha)` 也没有颜色参数，唯一随血量变化的是地面血迹贴花的量
+（`CThing_Affect_Bullet.as` 的 `1 - mLife/mMaxLife`），所以这是重制版新增的可读性提示。
+肤色像素（脸/手）由 shader 里的 `is_skin` 判定保护，不参与染色。
 
 ## 6. 重新生成
 
 ```powershell
 python doc\tools\gen_player_skins.py      # 玩家 4 套皮肤 -> sprite/player/skin1..4
 python doc\tools\gen_creature_skins.py    # 僵尸/恶魔 -> sprite/enemies/{zombie,devil}
+python doc\tools\gen_offset_dir.py        # 5 把射线武器的 offsetDir 数值（见 §8）
 python doc\tools\gen_player_skins.py --dry-run   # 只校验帧数/路径
 ```
 
-两个脚本都会读对应场景现有的动画表，逐条核对帧数（不一致直接报错退出），所以动画组增删后重跑即可。
+这些脚本都会读对应场景现有的动画表，逐条核对帧数（不一致直接报错退出），所以动画组增删后重跑即可。
 
 **新 PNG 需要 Godot 导入一次**：首次用编辑器打开项目会自动生成 `.import`；
 命令行可用 `Godot_v4.7.2 --headless --path box-head-remake --import`。
@@ -141,7 +150,41 @@ run-2026-11-02022039-devil-body-s2    画布 90×90 逻辑 = 180×180 设备，�
 离线合成实测站立/行走/受击的地面线偏差 ≤1px（僵尸）、≤3px（恶魔），恶魔身体比旧素材高约 5~7px，
 这是原版真实比例（XSI 站立 72 逻辑像素 ≈ 72 世界像素），碰撞圆 `14.4 / 13` 未动。
 
-## 8. 遗留
+## 8. 手持武器的枪口锚点（`offsetDir`）
+
+`offsetDir` 不只是贴图摆位：它同时是视觉枪口——曳光起点（`_draw`）、枪口火光位置、
+火箭弹出膛点，还被 `hitEnd()` 用来补射程长度。旧数值是按 MoreRooms 烘焙图（`scale 0.4`）
+手调的，换成 XSI 素材（`scale 0.5`、枪已烘进帧里）后必然错位，所以按导出锚点重算。
+
+数据源是 `generated/weapon-anchors/run-2026-11-02023656-player-body-s2/`
+（`muzzles.json` 是整理好的表，`anchors.json` / `anchors.md` 是逐条明细）：
+原版 `XSI_Model_GunPosition_Right`，即 `CThing_Weapon.Fire(mParent.GetWeaponPosition(), …)`
+真正用的发射点，单位是相对脚底锚点的屏幕像素（+x 右、+y 下）。
+
+换算：
+
+- 1 逻辑像素 = 1 世界像素（§4），所以锚点值可以直接当世界偏移用；
+- 站立/持枪是 16 方向 → `dir = angle × 2`（同 §2）；
+- 锚点相对的是脚底，而 §4 把脚底摆在玩家原点下方 3px，所以
+  `offsetDir[angle] = muzzle[dir] + (0, 3)`；
+- 每把枪取自己的集：`pistolstand` / `uzistand` / `shotgunstand` / `rocketstand` / `railgunstand`
+  （旧代码是 5 把枪共用一组手调值，现在霰弹枪明显更低、火箭筒更短）；
+- 4 个变体（SWAT/BOND/GIJOE/BAMBO）的锚点逐条相同，所以皮肤之间不需要分别配；
+- 行走集的枪口随步伐上下浮动 ≤0.5px，忽略，统一取站立值。
+
+放置类武器（Mine / ChargePack / Wall / Barrel / Grenade）不读 `offsetDir`，
+基类里保持 `Vector2.ZERO` 即可。命中判定也不依赖它：射线从 `hitOrigin()`（身体中心 `y = -15`）
+出发，只有曳光和射程补偿跟着枪口走。
+
+校验：`python doc\tools\check_muzzle_overlay.py` 会把 8 个方向的 `offsetDir` 画回
+`sprite/player/skin1/stand_<武器>/<角度>.png` 的实际贴图（青十字 = 脚底锚点，红叉 = 枪口），
+逐方向确认落在枪管口上。
+
+方向下标统一走 `weapon.gd::dirIdx()`（`roundi` 取最近方向，和 `player.gd` 算 `angle` 的规则一致）。
+之前是 `int(angle / (PI/4))` 向零截断，负角度会少一格，导致上半圈整体偏一个方向
+（朝正左打却拿到左上的枪口），别改回去。
+
+## 9. 遗留
 
 - 旧素材目录 `sprite/player/DefineSprite_*`、`sprite/Zombie2/`、`sprite/Devil/` 已经不再被任何场景/脚本引用，
   确认新画面没问题后可以删除。

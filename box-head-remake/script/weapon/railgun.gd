@@ -22,15 +22,16 @@ var wallDist: float = -1.0
 
 ## 初始化
 func _ready() -> void:
-	# 设置8个方向的武器偏移量（同时作为枪口位置）
-	offsetDir[0] = Vector2(45, -15)
-	offsetDir[1] = Vector2(20, 0)
-	offsetDir[2] = Vector2(-10, 10)
-	offsetDir[3] = Vector2(-35, -5)
-	offsetDir[4] = Vector2(-40, -35)
-	offsetDir[5] = Vector2(-18, -45)
-	offsetDir[6] = Vector2(15, -50)
-	offsetDir[7] = Vector2(40, -35)
+	# 8 方向枪口 = 原版 XSI 枪口锚点（railgunstand，16 方向取 dir = angle×2）+ 脚底锚点偏移 (0,3)
+	# 重生成：doc/tools/gen_offset_dir.py；推导记于 doc/xsi-sprite-skins.md §8
+	offsetDir[0] = Vector2(29, -10)
+	offsetDir[1] = Vector2(13, 2)
+	offsetDir[2] = Vector2(-11, 3)
+	offsetDir[3] = Vector2(-28, -9)
+	offsetDir[4] = Vector2(-29, -26)
+	offsetDir[5] = Vector2(-13, -38)
+	offsetDir[6] = Vector2(11, -39)
+	offsetDir[7] = Vector2(28, -27)
 
 
 ## 射击
@@ -47,7 +48,7 @@ func fire(direction: Vector2) -> void:
 		timer.start(delay)
 
 		# 武器贴图摆位仍用 offsetDir
-		ani.position = offsetDir[wrapi(int(vector.angle() / (PI / 4)), 0, 8)]
+		ani.position = offsetDir[dirIdx(vector)]
 		ani.rotation = vector.angle()
 		player.play("fire")
 		sound.play()

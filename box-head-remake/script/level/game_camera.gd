@@ -37,6 +37,13 @@ var shakeAmp: float = 0.0
 var shakePhase: float = 0.0
 ## 当前跟随目标（兜底用）
 var target: Node2D = null
+## 下一帧直接跳到目标，不做插值（开局 / 换房时用）
+##
+## 相机场景里没写 position，默认在世界原点 = 地图左上角。开局若从那里飘过去，
+## 头十几帧的视野根本不包含出生点那一簇，而 player.gd 每帧把玩家夹进
+## MapData.moveRect()（相机视野），结果出生点会被硬拽到视野边缘，
+## 实测 room_0003 偏 60px、room_0009 偏 115px，且再也回不去。
+var snapNext: bool = true
 
 
 ## 2D 音频监听器：场景里的子节点，作为位置音效的听点
@@ -126,7 +133,11 @@ func _physics_process(delta: float) -> void:
 	if anchor_mode == 0:
 		anchorFix = -vp * 0.5
 
-	global_position = global_position.lerp(goalCenter + anchorFix, minf(smoothSpeed * delta, 1.0))
+	if snapNext:
+		global_position = goalCenter + anchorFix
+		snapNext = false
+	else:
+		global_position = global_position.lerp(goalCenter + anchorFix, minf(smoothSpeed * delta, 1.0))
 
 	# 把「当前可视区域」写回 MapData：玩家和 CPU 都用它当移动边界
 	var center: Vector2 = global_position

@@ -68,6 +68,16 @@ func explode() -> void:
 	queue_free()
 
 
+## 重叠列表里是否有"别人"
+## 发射者自己的受击框要跳过：枪口贴着身体，不跳过的话出膛第一帧就自爆
+func hitsForeign(overlaps: Array) -> bool:
+	for o in overlaps:
+		if o is CollisionObject2D and (o as CollisionObject2D).get_rid() == ownerId:
+			continue
+		return true
+	return false
+
+
 ## 物理帧更新
 func _physics_process(delta: float) -> void:
 	_updateSmokeTrail(delta)
@@ -79,14 +89,12 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# 检测与物体的碰撞
-	var body = get_overlapping_bodies()
-	if body:
+	if hitsForeign(get_overlapping_bodies()):
 		explode()
 		return
 
 	# 检测与区域的碰撞
-	var area = get_overlapping_areas()
-	if area:
+	if hitsForeign(get_overlapping_areas()):
 		explode()
 		return
 

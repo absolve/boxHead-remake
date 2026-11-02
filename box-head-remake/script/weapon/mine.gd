@@ -28,8 +28,8 @@ func fire(_v: Vector2) -> void:
 				floori(pos.y / MapData.cellSize) * MapData.cellSize) + \
 				Vector2(MapData.cellSize / 2, MapData.cellSize / 2)
 
-		# 设置Z轴顺序
-		temp.z_index = MapData.itemZ(MapData.worldToCell(temp.global_position))
+		# 设置Z轴顺序（贴地物按格心排，别用墙/桶的底边基准）
+		temp.z_index = MapData.groundItemZ(MapData.worldToCell(temp.global_position))
 
 		# 设置伤害值
 		temp.damage = damage

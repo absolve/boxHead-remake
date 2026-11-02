@@ -189,17 +189,31 @@ func loadRoom(i: int) -> void:
 	player.playerId = 1
 	player.invincible = true
 	add_child(player)
+	# 一进树就落位：placePlayer 之前他有几帧待在 (0,0)，
+	# 相机正好在那时消耗掉 snapNext，把他夹到地图左上角再跳回来（连按 → 时肉眼可见）
+	placePlayer()
 	await get_tree().process_frame
 
-	placePlayer()
 	updateLabel()
 
 
-## 把玩家放在可走区域中心
+## 把玩家放在本房间的 1P 出生点上（房间没摆标记点时退回可走区域中心）
+##
+## 浏览房间就是要看真实落点，放地图中心会看不出出生点摆得对不对。
 func placePlayer() -> void:
 	if player == null or not is_instance_valid(player):
 		return
-	player.global_position = MapData.mapSize * 0.5
+	var marks: Array = room.get("playerSpawnPoint") if room != null else []
+	if marks.is_empty():
+		player.global_position = MapData.mapSize * 0.5
+		return
+	player.global_position = (marks[0] as Node2D).global_position
+	# 换房间等于把人瞬移走：让相机下一帧直接跳过来，并清掉上一张图的视野，
+	# 否则相机飘过来的途中，player.gd 的每帧夹取会把他从出生点上拽走
+	MapData.viewRect = Rect2()
+	var cam: Camera2D = get_node_or_null("camera")
+	if cam != null:
+		cam.set("snapNext", true)
 
 
 func updateLabel() -> void:
@@ -211,7 +225,7 @@ func updateLabel() -> void:
 	var hoverTxt := "-" if hoverCell.x < 0 else "(%d, %d)" % [hoverCell.x, hoverCell.y]
 	label.text = (
 			"[%d/%d] %s   %d x %d 格  (%d x %d px)   障碍 %d 格   "
-			+ "鼠标格 %s   相机：%s\n← → 切换房间   R 回中心   "
+			+ "鼠标格 %s   相机：%s\n← → 切换房间   R 回出生点   "
 			+ "M 切换相机（正常跟随/方向键移动，手动时用 [ ] 切房间）") % [
 		index + 1, ROOMS.size(), ROOMS[index].get_file().get_basename(),
 		int(cells.x), int(cells.y), int(MapData.mapSize.x), int(MapData.mapSize.y), obsCount, hoverTxt,

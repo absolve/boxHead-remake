@@ -44,27 +44,27 @@ position = Vector2(380, 7)
 position = Vector2(637, 7)
 
 [node name="wallShape007" parent="." index="7" unique_id=97024381 instance=ExtResource("2_dxvdj")]
-z_index = 21
+z_index = 901
 position = Vector2(121, 487)
 
 [node name="wallShape008" parent="." index="8" unique_id=43138273 instance=ExtResource("3_1p7uw")]
-z_index = 22
+z_index = 902
 position = Vector2(-11, 480)
 
 [node name="wallShape009" parent="." index="9" unique_id=1495899912 instance=ExtResource("3_1p7uw")]
-z_index = 20
+z_index = 900
 position = Vector2(248, 480)
 
 [node name="wallShape010" parent="." index="10" unique_id=68072621 instance=ExtResource("2_dxvdj")]
-z_index = 21
+z_index = 898
 position = Vector2(512, 487)
 
 [node name="wallShape011" parent="." index="11" unique_id=1605333051 instance=ExtResource("3_1p7uw")]
-z_index = 22
+z_index = 899
 position = Vector2(380, 480)
 
 [node name="wallShape012" parent="." index="12" unique_id=2103650403 instance=ExtResource("3_1p7uw")]
-z_index = 20
+z_index = 888
 position = Vector2(639, 480)
 
 [node name="mapSign" parent="." index="13" unique_id=962863172 instance=ExtResource("6_fbdb3")]

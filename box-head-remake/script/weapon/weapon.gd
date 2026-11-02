@@ -35,8 +35,9 @@ var detecframes: int = 0
 var vector: Vector2 = Vector2.RIGHT
 ## 武器偏移方向（8个方向的偏移量）
 #
-# 它同时是"枪口位置"：射线类武器直接用 offsetDir[idx]
-# 作为枪口（局部坐标），再换算成射线起点，所以画面上枪口在哪，射线就从哪出发。
+# 它同时是"视觉枪口"（局部坐标，相对玩家原点）：枪口火光、曳光起点、投射物出膛点都用它。
+# 命中判定的射线不从它出发（见 hitOrigin），只按它的长度补射程。
+# 射线类武器按 doc/xsi-sprite-skins.md §8 从原版 XSI 枪口锚点换算；放置类武器保持 ZERO。
 var offsetDir: Dictionary = {
 	0: Vector2.ZERO, 1: Vector2.ZERO, 2: Vector2.ZERO,
 	3: Vector2.ZERO, 4: Vector2.ZERO, 5: Vector2.ZERO,
@@ -116,10 +117,17 @@ func tracerEnd(muzzle: Vector2, dir: Vector2, hitWorld: Vector2) -> Vector2:
 	return muzzle + dir * maxf(toHit.dot(dir), 0.0)
 
 
+## 瞄准向量 → 8 方向下标
+##
+## 取最近方向（和 player.gd 算 angle 的规则一致），不能用 int() 截断：
+## 负角度向零取整会让上半圈整体偏一格，正左方会拿到左上的枪口。
+func dirIdx(v: Vector2) -> int:
+	return wrapi(roundi(v.angle() / (PI / 4.0)), 0, 8)
+
+
 ## 当前方向的视觉枪口（局部坐标，只用于摆贴图和画曳光）
 func muzzleOffset(dir: Vector2) -> Vector2:
-	var idx: int = wrapi(int(dir.angle() / (PI / 4)), 0, 8)
-	var v: Variant = offsetDir.get(idx, Vector2.ZERO)
+	var v: Variant = offsetDir.get(dirIdx(dir), Vector2.ZERO)
 	return v if v is Vector2 else Vector2.ZERO
 
 

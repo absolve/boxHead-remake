@@ -26,6 +26,14 @@ uniform float skin_hue_hi : hint_range(0.0, 1.0) = 0.130;
 uniform float skin_sat_max : hint_range(0.0, 1.0) = 0.45;
 uniform float skin_value_min : hint_range(0.0, 1.0) = 0.15;
 
+// ---- 受伤上色 ----
+//
+// 原版没有这层表现（血越少越红是重制版加的可读性提示，见 doc/04），
+// 做法是按亮度染成暗红：保留明暗和阴影，只把色相整体拉向红，
+// 所以深蓝的 SWAT、黑西装的 BOND 也能一致地变红，不会走出黄/绿的色相弯路。
+uniform float damage_tint : hint_range(0.0, 1.0) = 0.0;
+uniform vec3 damage_color = vec3(0.80, 0.07, 0.06);
+
 vec3 rgb2hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
 	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
@@ -54,5 +62,12 @@ void fragment() {
 		hsv.y = clamp(hsv.y * saturation_scale, 0.0, 1.0);
 		hsv.z = clamp(hsv.z * value_scale, 0.0, 1.0);
 		COLOR.rgb = hsv2rgb(hsv);
+
+		// 受伤上色：按亮度染红（除以红色自身的亮度，保证染完不比原来暗）
+		if (damage_tint > 0.0) {
+			float v = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+			float redLuma = max(dot(damage_color, vec3(0.299, 0.587, 0.114)), 1.0e-4);
+			COLOR.rgb = mix(COLOR.rgb, damage_color * (v / redLuma), damage_tint);
+		}
 	}
 }

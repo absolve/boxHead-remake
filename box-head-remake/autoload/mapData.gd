@@ -85,6 +85,17 @@ func itemZ(cell: Vector2i) -> int:
 	return base - (cell.x % 32)
 
 
+## 贴地放置物（地雷 / 充电包）的 z_order
+##
+## itemZ 的基准是「格子底边」，那是给立着的东西用的：墙和桶的贴图底部压在底边，
+## 还烘焙了右下阴影。地雷（25×21）和充电包（28×26）是居中贴在格心的地面图，
+## 用 itemZ 会让它们比同格的玩家最多靠前 32px，把玩家的腿盖住。
+## 这里按格心排，再减 1：同格时玩家一定压在它上面（放置物和玩家 z 相等时
+## 会退回树顺序，而后加的放置物会盖住先加的玩家）。
+func groundItemZ(cell: Vector2i) -> int:
+	return worldZ(cellCenter(cell).y) - 1
+
+
 ## 当前玩家人数（含 CPU；由 playerSlots 推导，map.gd 生成玩家时刷新）
 var playerCount: int = 1
 
