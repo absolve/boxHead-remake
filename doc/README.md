@@ -1,5 +1,7 @@
 # Boxhead 原版逆向文档索引
 
+项目简介与使用说明见根目录 [README.md](../README.md)（English: [README.en.md](../README.en.md)）。
+
 本目录记录原版 Flash 游戏 **Boxhead: 2Play Rooms**（`oldGame/Boxhead_2Play.swf`）的设计，
 用途是给 `box-head-remake`（Godot 4 重制）提供可照抄的数值与规则。
 
@@ -26,6 +28,12 @@
 | [known-issues.md](known-issues.md) | 项目体检问题清单：本轮已修项（恶魔寻路、复活保留武器、难度预发升级、进度重置、遍历判空）+ 待确认的死配置/贴花挂点/CPU 双轨/与原版差距/工程卫生/文档陈旧 |
 
 ## 如何验证
+
+> **当前状态（2026-11-03）**：下面这些 AS2 工具脚本（`as2_delinearize.py`、`as2_constpool.py`、
+> `as2_resolve.py`、`check_citations.py`）**已不在仓库里** —— `.gitignore` 第 31 行排除了 `/doc/tools`，
+> 而 `doc/tools/` 现在只剩素材/测试/命名相关的脚本（见根目录 README 的"开发脚本"表）。
+> 因此这几条自检命令暂时跑不了，下面的"当前实测"是当时（脚本还在时）的结果留档。
+> 需要重跑的话得先把这几个脚本补回仓库（或 `git add -f doc/tools/as2_*.py`）。
 
 结论不是"看着像"，三条检查都能自己跑：
 
@@ -78,14 +86,14 @@ oldGame/_decompiled/Boxhead_2Play/resolved/            ← 成员名也还原了
    目前 90 个文件成功还原，其余保持原样。
 3. 池条目里若含换行（解密出来的字符串字节），替换时压成空格，以免破坏行对齐。
 
-工具分工：
+工具分工（下列脚本**当前不在仓库中**，见"如何验证"开头的说明）：
 
 | 工具 | 作用 |
 |---|---|
-| [`tools/as2_delinearize.py`](tools/as2_delinearize.py) | 剥掉控制流扁平化外壳，保留真实语句并重新缩进 → `linearized/` |
-| [`tools/as2_constpool.py`](tools/as2_constpool.py) | 从 SWF 字节码解析 `ActionConstantPool`，导出索引→成员名映射（含 `--selftest`） |
-| [`tools/as2_resolve.py`](tools/as2_resolve.py) | 把映射就地应用到整棵树 → `resolved/`（同名类不匹配时**拒绝替换**，宁缺毋滥） |
-| [`tools/check_citations.py`](tools/check_citations.py) | 校验文档里每条 `路径:行号` 引用确实指向真实代码行 |
+| `tools/as2_delinearize.py` | 剥掉控制流扁平化外壳，保留真实语句并重新缩进 → `linearized/` |
+| `tools/as2_constpool.py` | 从 SWF 字节码解析 `ActionConstantPool`，导出索引→成员名映射（含 `--selftest`） |
+| `tools/as2_resolve.py` | 把映射就地应用到整棵树 → `resolved/`（同名类不匹配时**拒绝替换**，宁缺毋滥） |
+| `tools/check_citations.py` | 校验文档里每条 `路径:行号` 引用确实指向真实代码行 |
 
 复现命令：
 
@@ -117,7 +125,9 @@ oldGame/_decompiled/MoreRooms/resolved/                ← 同样与 linearized/
 两个 build 的 `resolved/` 都做到了**零行号错位**（2Play 91 个文件被替换、MoreRooms 101 个）。
 所以文档里 `[MoreRooms] 路径:行号` 的引用也可以直接换根目录读，不必改写行号。
 
-`_decompiled/` 已加入 `.gitignore`；`doc/tools/` 下的工具与 `pools/*.json` 是可复现产物，保留在版本库里。
+`_decompiled/` 已加入 `.gitignore`。注意 `doc/tools/` **同样被 `.gitignore` 排除**（第 31 行 `/doc/tools`），
+所以 AS2 工具链与 `pools/*.json` 并不是"保留在版本库里"的可复现产物 —— 目前仓库里只有
+素材生成 / 测试驱动 / 命名核查这几类脚本，需要入库要 `git add -f`。
 
 ## 混淆说明（读文档前必读）
 
@@ -169,7 +179,7 @@ oldGame/_decompiled/MoreRooms/resolved/                ← 同样与 linearized/
    而代码是 `this[§5] = ...[§6][§7]` → 还原为 `this.mFlags = CThing.mFlag_Collidable`，
    与已知基类事实（`__Packages/Thing/CThing.as:139` 的 `mFlag_Collidable = 1`）完全吻合。
 
-   工具：[`tools/as2_constpool.py`](tools/as2_constpool.py)。
+   工具：`tools/as2_constpool.py`（当前不在仓库中）。
    **注意：该工具仍在收尾中，尚未端到端验证通过**（实测在 2Play SWF 上暂时返回 0 个池）。
    凡是标了【常量池恢复】的结论，请以"能否用该工具复现"为准绳；
    在工具跑通之前，这些结论应当视为**待复核**。
