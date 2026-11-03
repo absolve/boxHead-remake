@@ -13,13 +13,28 @@
 
 ## 1. 本轮已修（需要回归验证）
 
-### 1.1 恶魔寻路实际是失效的 `已修`
+### 1.1 恶魔寻路实际是失效的 `已修（第一层）` → **第二层仍未修，见 1.1b**
 - 现象：恶魔不会绕墙、凹室和窄口会直线撞墙；僵尸正常。
 - 原因：`map.gd` 只生产 `flowFieldDict["multi"]`（`computeFieldMulti`），而 `devil.gd::targetId()` 返回 **int** 玩家号，
   `getFlowDir(pos, 1)` 查不到键 → 恒返回 `ZERO` → 走 `freeDirectionTowardsTarget()` 直线贪心。
   僵尸在"多玩家单场"改造时已改成返回 `"multi"`，恶魔漏了。
 - 改动：`script/character/devil.gd:94` 返回 `"multi"`。
 - 确认方法：开局后看恶魔是否绕开墙体追人；或 `test_devils.tscn` 里把恶魔放在墙两侧观察。
+
+### 1.1b 恶魔缺"可行性过滤" `已修`
+- 现象：1.1 修完仍然"前面被挡住不会换方向"。流场正常时它会绕，一旦流场给 `ZERO`
+  （所在格是障碍 / 该格不可达 / 场刚清空）或给的方向正好怼墙，就一直顶墙。
+- 原因：僵尸那条链有三层保护，恶魔一层都没有：
+  | 能力 | 僵尸 | 恶魔（修前） |
+  |---|---|---|
+  | 方向可行性 `canStep()` | `zombie.gd:271` | **完全没有** |
+  | 流场方向被挡时侧移 | `chooseDirTowardsTarget()` → `sidestepDirection()` | 直接用流场原方向 |
+  | 贪心回退过滤 + 卡墙脱困 | `freeDirectionTowardsTarget()` 过滤 + `escapeDirection()` | 只取最优点积方向，撞墙不回头 |
+- 改动：`script/character/devil.gd` 补 `canStep()` / `sidestepDirection()` / `escapeDirection()`，
+  并让 `flowDirection()` 走"可行就用、不可行就侧移"。恶魔的 `canStep` **只查地形障碍格**，
+  不查同类占格（僵尸那版会查）：恶魔体型大、又会拆障碍，把同类当墙会在窄口集体卡死。
+- 确认方法：`test_devils.tscn` 里把恶魔放在墙的另一侧，观察它会绕/侧移而不是贴墙；
+  实测同点位（恶魔格 (10,8)、朝玩家方向 (-1,0) 是墙）：修前照走撞墙，修后改选 `(0.71,0.71)` 并真的移动。
 
 ### 1.2 复活不再清空武器 `已修`
 - 现象（改前）：死亡复活后背包只剩手枪，辛苦开的 UZI/霰弹/火箭全没。

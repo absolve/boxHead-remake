@@ -153,10 +153,86 @@ func flowDirection() -> Vector2:
 		return freeDirectionTowardsTarget()
 	var dir: Vector2 = MapData.getFlowDir(global_position, targetId())
 	if dir == Vector2.ZERO:
-		dir = freeDirectionTowardsTarget()
-	return dir
+		return freeDirectionTowardsTarget()
+	if canStep(dir):
+		return dir
+	return sidestepDirection(dir)
 
 
+## 下一步能否通过 —— 只看地形障碍格
+##
+## 与 `Zombie.canStep()` 的区别：不查别的僵尸/恶魔占的格。恶魔体型大、又会拆障碍，
+## 把同类当墙会让它在窄口彻底卡死；同类挤压交给 move_and_collide 的推挤。
+func canStep(dir: Vector2) -> bool:
+	if dir == Vector2.ZERO:
+		return false
+	var step := Vector2i(roundi(dir.normalized().x), roundi(dir.normalized().y))
+	if step == Vector2i.ZERO:
+		return false
+	var cell := MapData.worldToCell(global_position)
+	if MapData.isObstacle(cell + step):
+		return false
+	if step.x != 0 and step.y != 0:
+		# 对角不允许从两个障碍的夹角里穿过去
+		if MapData.isObstacle(cell + Vector2i(step.x, 0)) \
+				or MapData.isObstacle(cell + Vector2i(0, step.y)):
+			return false
+	return true
+
+
+## 期望方向被挡时，左右各试 45°..180°，取"能走且偏离最小"的那个
+func sidestepDirection(desired: Vector2) -> Vector2:
+	if desired == Vector2.ZERO:
+		return freeDirectionTowardsTarget()
+	var best := Vector2.ZERO
+	var bestDot := -INF
+	for step in range(1, 5):
+		for side in [1, -1]:
+			var d: Vector2 = desired.rotated(side * step * PI / 4.0)
+			if not canStep(d):
+				continue
+			var dot := d.normalized().dot(desired.normalized())
+			if dot > bestDot:
+				bestDot = dot
+				best = d
+		if best != Vector2.ZERO:
+			# 同一偏角内已找到可行方向，就不再扩大偏角
+			break
+	return best
+
+
+## 卡在障碍里时的脱困方向：半径 3 格内找最近的空格
+##
+## 只看 8 邻格不够——被挤进厚墙里时 8 个邻居全是墙，那样会永远贴墙不动。
+func escapeDirection() -> Vector2:
+	var cell := MapData.worldToCell(global_position)
+	var bestCell := cell
+	var bestDist := 1.0e9
+	var found := false
+	for r in range(1, 4):
+		for dx in range(-r, r + 1):
+			for dy in range(-r, r + 1):
+				if absi(dx) != r and absi(dy) != r:
+					continue
+				var c: Vector2i = cell + Vector2i(dx, dy)
+				if MapData.isObstacle(c):
+					continue
+				var d2: float = float(dx * dx + dy * dy)
+				if d2 < bestDist:
+					bestDist = d2
+					bestCell = c
+					found = true
+		if found:
+			break
+	if not found:
+		return Vector2.ZERO
+	var to: Vector2 = MapData.cellCenter(bestCell) - global_position
+	if to.length() < 0.5:
+		return Vector2.ZERO
+	return to.normalized()
+
+
+## 在 8 个方向里挑一个"能走且最接近目标方向"的；全被挡就是卡墙里了，走脱困方向
 func freeDirectionTowardsTarget() -> Vector2:
 	var want := Vector2.ZERO
 	if hasTarget():
@@ -167,10 +243,14 @@ func freeDirectionTowardsTarget() -> Vector2:
 	var best := Vector2.ZERO
 	var bestDot := -INF
 	for d in Zombie.DIRS:
+		if not canStep(d):
+			continue
 		var dot := d.normalized().dot(want)
 		if dot > bestDot:
 			bestDot = dot
 			best = d
+	if best == Vector2.ZERO:
+		best = escapeDirection()
 	return best
 
 
