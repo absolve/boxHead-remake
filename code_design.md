@@ -221,6 +221,15 @@ if (hasTarget()):
 > **现状说明**：现有代码命名新旧混用（`mapData.gd` / `sfxManage.gd` 是 camelCase 文件名，
 > `cellSize` / `weaponName` 是 camelCase 常量）。**新写代码一律按上表执行**；
 > 改造旧文件时**只改本次触碰到的部分**，不要为了统一风格做全量重命名。
+>
+> **2026-11-03 核查记录**：已对全部项目脚本（`script/` + `autoload/`，不含 `addons/`）做过一次
+> 变量 / 函数 / 参数 / 信号命名核查与修正，结果为：snake_case 函数 0、变量 0、参数 0、信号 0。
+> 本轮共改：私有成员去掉 `_` 前缀 56 处（含 4 个仅代码连接的回调改成 `onXxxYyy`），
+> snake_case 变量/参数 11 处。
+> 复查工具：`python doc/tools/check_naming.py`（分类统计）与 `doc/tools/check_callback_naming.py`
+> （区分「写在 .tscn 里不能改」与「仅代码连接」）；批量改名工具 `doc/tools/fix_naming.py`。
+> **刻意保留**：31 个（36 处）写在 `.tscn` `[connection method=...]` 里的 `_on_*` 编辑器回调、
+> camelCase 文件名、`cellSize` / `weaponName` 两个历史常量（改动面极大，按上条原则不动）。
 
 ### 2.2 禁止占用 Godot 内置名（强制）
 

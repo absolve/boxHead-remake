@@ -181,6 +181,8 @@ Fire,Fire,射击
 Players:,Players:,玩家：
 PAUSED,PAUSED,已暂停
 ESC to resume,ESC to resume,ESC 继续游戏
+Resume,Resume,继续游戏
+Main Menu,Main Menu,返回主菜单
 Pistol,Pistol,手枪
 UZI,UZI,乌兹
 Shotgun,Shotgun,霰弹枪

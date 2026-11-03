@@ -33,7 +33,7 @@ var label: Label = null
 var font: FontFile
 var treesPaused := false
 var humanInvincible := true
-var _flowTimer := 0
+var flowTimer := 0
 
 
 func _ready() -> void:
@@ -46,8 +46,8 @@ func _ready() -> void:
 	MapData.mapSize = room.mapSize
 	font = ThemeDB.fallback_font
 
-	human = _spawnPlayer(1, false, spawnPos(0))
-	_setHumanInvincible(true)
+	human = spawnPlayer(1, false, spawnPos(0))
+	setHumanInvincible(true)
 	for i in cpuCount:
 		spawnCpu(i)
 	buildUI()
@@ -60,7 +60,7 @@ func spawnPos(slot: int) -> Vector2:
 	return pts[mini(slot, pts.size() - 1)].global_position
 
 
-func _spawnPlayer(pid: int, cpu: bool, pos: Vector2) -> Player:
+func spawnPlayer(pid: int, cpu: bool, pos: Vector2) -> Player:
 	var p := PLAYER_SCENE.instantiate() as Player
 	p.playerId = pid
 	p.isCpu = cpu
@@ -70,7 +70,7 @@ func _spawnPlayer(pid: int, cpu: bool, pos: Vector2) -> Player:
 
 
 func spawnCpu(i: int) -> void:
-	var p := _spawnPlayer(3 + i, true, spawnPos(1 + i))
+	var p := spawnPlayer(3 + i, true, spawnPos(1 + i))
 	var brain: Node = BRAIN_SCRIPT.new()
 	brain.name = "CpuBrain"
 	p.add_child(brain)
@@ -85,7 +85,7 @@ func despawnCpu() -> void:
 		p.queue_free()
 
 
-func _setHumanInvincible(on: bool) -> void:
+func setHumanInvincible(on: bool) -> void:
 	humanInvincible = on
 	human.invincible = on
 	human.invincibleTime = 0.0
@@ -106,10 +106,10 @@ func buildUI() -> void:
 
 ## 僵尸寻路 + CPU 归队都依赖玩家流场；测试场景没有 map.gd，自己刷
 func _physics_process(_delta: float) -> void:
-	_flowTimer += 1
-	if _flowTimer < FLOW_REFRESH_FRAMES and not MapData.flowDirty:
+	flowTimer += 1
+	if flowTimer < FLOW_REFRESH_FRAMES and not MapData.flowDirty:
 		return
-	_flowTimer = 0
+	flowTimer = 0
 	MapData.flowDirty = false
 	var seeds: Array = []
 	for p in get_tree().get_nodes_in_group("player"):
@@ -126,13 +126,13 @@ func _process(_delta: float) -> void:
 				"暂停" if treesPaused else "运行", "开" if humanInvincible else "关"],
 			"敌人 %d 只  FPS %d   %s" % [
 				get_tree().get_nodes_in_group("enemy").size(),
-				Engine.get_frames_per_second(), _strategySummary()],
+				Engine.get_frames_per_second(), strategySummary()],
 			"[1/2]CPU [Z]僵尸 [X]恶魔 [C]清空 [F]友伤 [T]策略 [G]发枪 [H]掉血 [P]暂停 [R]复位 [空格]无敌",
 		])
 	queue_redraw()
 
 
-func _strategySummary() -> String:
+func strategySummary() -> String:
 	var parts: Array = []
 	for c in cpus:
 		if not is_instance_valid(c):
@@ -223,7 +223,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if is_instance_valid(cpus[i]):
 					cpus[i].global_position = spawnPos(1 + i)
 		KEY_SPACE:
-			_setHumanInvincible(not humanInvincible)
+			setHumanInvincible(not humanInvincible)
 		KEY_H:
 			# 把人类血量压到 35% 以下，观察救援分支
 			human.hp = 60

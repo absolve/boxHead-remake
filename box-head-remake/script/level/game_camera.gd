@@ -63,20 +63,24 @@ func refreshTarget() -> void:
 	var ps := get_tree().get_nodes_in_group("player")
 	# 优先跟「活着的人类玩家」：槽位顺序里 CPU 可能排在前面，人类也可能已经倒地
 	for p in ps:
-		if bool(p.get("isCpu")) or bool(p.get("isDead")):
+		if not is_instance_valid(p) or bool(p.get("isCpu")) or bool(p.get("isDead")):
 			continue
 		target = p
 		return
 	for p in ps:
-		if not bool(p.get("isCpu")):
+		if is_instance_valid(p) and not bool(p.get("isCpu")):
 			target = p
 			return
-	if ps.size() > 0:
-		target = ps[0]
+	# 全灭/全是 CPU 时兜底一个仍然有效的玩家，别把已释放的节点交给相机
+	for p in ps:
+		if is_instance_valid(p):
+			target = p
+			return
+	target = null
 
 
 func _physics_process(delta: float) -> void:
-	_updateShake(delta)
+	updateShake(delta)
 
 	if target == null or not is_instance_valid(target) or bool(target.get("isDead")):
 		# 只在「没目标 / 目标失效 / 目标死亡」时重挑。
@@ -159,7 +163,7 @@ func shake(amount: float = -1.0) -> void:
 
 ## 抖动衰减：指数包络 + 12.5Hz 正弦，写进 Camera2D.offset
 ## 不写 global_position —— 那是跟随插值的状态，混进去会互相打架
-func _updateShake(delta: float) -> void:
+func updateShake(delta: float) -> void:
 	if shakeAmp > 0.0:
 		if bool(MapData.mapConfig.get("screenShake", true)):
 			shakeAmp *= exp(-delta * (log(2.0) / shakeHalfLife))

@@ -91,10 +91,10 @@ func refreshTarget(delta: float) -> bool:
 	return hasTarget()
 
 
-func targetId() -> int:
-	if hasTarget() and target.get("playerId") != null:
-		return int(target.playerId)
-	return 1
+## 恶魔取流场用的键：与僵尸一致，所有存活玩家共用一张 "multi" 场
+## （map.gd 只生产 flowFieldDict["multi"]；返回 int 会查不到场，恶魔就退化成直线贪心）
+func targetId() -> String:
+	return "multi"
 
 
 func dirToTarget() -> int:

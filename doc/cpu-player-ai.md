@@ -368,7 +368,7 @@ score(w) = 距离适配 + 伤害效率 + 弹药余量 + 策略偏好 − 安全�
   - 黑板 `Blackboard`：`set_value(key, value)` / `get_value(key, default)`。
 - 树**用代码搭**（`CpuBrain.buildTree()`），不依赖 `.tscn`：先把整棵子树建好再 `add_child(tree)`，避免 `BeehaveTree` 在空树状态下 tick；编辑器里的 Beehave 调试器照样能看到节点。
 
-### 8.2 树结构（已实现）
+### 8.2 树结构（已实现，与 `cpu_brain.gd::buildTree()` 一致）
 
 ```
 BeehaveTree (tick_rate = 6 帧 ≈ 0.1s)
@@ -381,9 +381,12 @@ BeehaveTree (tick_rate = 6 帧 ≈ 0.1s)
         ├── SequenceReactive  survive    ShouldSurvive → Survive（低血找箱子/放风筝）
         ├── SequenceReactive  rescue     ShouldRescue → Rescue
         ├── SequenceReactive  retreat    ShouldRetreat → Retreat
+        ├── SequenceReactive  pickup     ShouldPickup → Pickup（捡地上的枪/血）
         ├── SequenceReactive  demolish   ShouldDemolish → Demolish（拆墙/炸油桶）
+        ├── SequenceReactive  place      ShouldPlace → PlaceWeapon（放地雷/充电包/墙/油桶）
         ├── SequenceReactive  combat     HasTarget → PickWeapon → MoveToRange → FireIfSafe
         ├── SequenceReactive  search     HasLastKnown → MoveToLastKnown
+        ├── SequenceReactive  investigate HasNoise → Investigate（枪声处查看）
         ├── SequenceReactive  patrol     ShouldPatrol → Patrol
         ├── SequenceReactive  follow     HasAlly → FollowAlly
         └── Idle
@@ -416,6 +419,12 @@ BeehaveTree (tick_rate = 6 帧 ≈ 0.1s)
 | `demolish` | `demolish.gd` | Action | 站定用当前枪拆掉该目标 |
 | `should_patrol` | `should_patrol.gd` | Condition | 主策略=巡逻且无目标/无记忆 |
 | `patrol` | `patrol.gd` | Action | 在锚点附近随机游走（卡住换点，到点停顿） |
+| `should_pickup` | `should_pickup.gd` | Condition | 附近有箱子且（缺弹/缺血/箱里可能是没持有的枪）；按 `MapData.weaponUnlock` 判断值不值得跑 |
+| `pickup` | `pickup.gd` | Action | 走过去捡（走距离场，被挡时侧移） |
+| `should_place` | `should_place.gd` | Condition | 手里有放置类武器且敌人进入布设距离 |
+| `place_weapon` | `place_weapon.gd` | Action | 放地雷 / 充电包 / 喷墙 / 油桶（含爆区安全校验 `explosiveSafe`） |
+| `has_noise` | `has_noise.gd` | Condition | 近期有枪声（`Game.gunshot`）且方向不明 |
+| `investigate` | `investigate.gd` | Action | 去枪声位置查看 |
 | `idle` | `idle.gd` | Action | 原地待机 |
 
 ### 8.4 与执行层的接口（已实现）
@@ -502,9 +511,9 @@ else:
 |---|---|---|
 | **P0** | 安装 Beehave（2.9.3 已装）；`test_cpu.tscn` + `CpuBrain` 骨架 + 15 个叶子 + Player 接口 | **已完成**（未实机运行，仅静态检查） |
 | **P1** | 敌人源距离场导航 + 窄口兜底 | **已完成**：`MapData.cpuDist/ensureCpuField/cpuFieldDir/cpuFieldAwayDir`，`CpuBrain.pathDir()` 接入走位/撤退/搜索 |
-| **P2** | 目标评分/粘滞/记忆、队友枪线避让、爆炸物爆区检查 | **已完成**：`CpuBrain._targetScore/scan()`、`explosiveSafe()`、`cpuAllyInLine` |
+| **P2** | 目标评分/粘滞/记忆、队友枪线避让、爆炸物爆区检查 | **已完成**：`CpuBrain.scoreTarget/scan()`、`explosiveSafe()`、`cpuAllyInLine` |
 | **P3** | 策略层（含 RESCUE / PATROL）+ 性格分配 | **已完成**：4 种战斗策略 + 巡逻 + 救援分支 + 性格按 playerId 分配 + 15s 驻留/20% 滞回 |
-| **P4** | 删除临时 AI，`map` 里的 CPU 挂上 `CpuBrain` | 待做（关卡选择 CPU 槽位已就绪） |
+| **P4** | 删除临时 AI，`map` 里的 CPU 挂上 `CpuBrain` | **部分完成**：挂载已完成（`map.gd:171-175` 在玩家 `tree_entered` 后 `add_child.call_deferred(CpuBrain)`）；临时 AI `player.gd::cpuUpdateAi()` 仍在，作为 `cpuBrain == null` 时的兜底（见 known-issues §4.1） |
 
 ### 已落地的骨架文件
 
@@ -532,6 +541,12 @@ else:
 ---
 
 ## 13. 实机测试记录（2026-10-30，Godot 4.7.2 / room_001）
+
+> **这些记录里提到的 `tools/_cpu_solo_test`、`tools/qa/qa_*.tscn`、`qa_runner` 等一次性测试壳没有入库**
+> （`tools/` 目录不在仓库里），下面的数字是当时的实测留档，不能直接复现。
+> 现在可复现的入口是：`scene/test/test_cpu.tscn`（手动）与
+> TestBridge + `python doc/tools/run_bridge_tests.py`（自动，命令与断言见 doc/test-checklist.md）。
+> 需要重跑某项时按 test-checklist 的清单重新构造，不要照抄这里的数字。
 
 本轮在测试场景里实际跑了一遍（人工按键驱动 + 截图/日志分析），确认了 6 个问题并当场修复。
 
@@ -662,7 +677,7 @@ if role == MapData.SLOT_CPU:
 | `survive.gd` / `retreat.gd` | 改用 `fleeDirection()`；返回 `ZERO`（四面被堵死）时 **返回 FAILURE**，让 combat 接管就地反击，而不是原地抖 |
 | `should_survive.gd` | 敌人在 6 格外不逃；僵尸在 2.5 格外不逃（近战慢，追不上） |
 | `should_retreat.gd` | 同上：僵尸 2.5 格外不撤，只有恶魔才拉距离 |
-| `CpuBrain.scan()` | `_validEnemy(target)` 前先判 `is_instance_valid`，修掉敌人被 free 后 `previously freed` 报错刷屏 |
+| `CpuBrain.scan()` | `isValidEnemy(target)` 前先判 `is_instance_valid`，修掉敌人被 free 后 `previously freed` 报错刷屏 |
 
 **实测**（`tools/qa/qa_flee.tscn`，CPU 血量 15%、贴在可玩区域角落、3 只恶魔围 2~3 格，8 秒采样）：
 

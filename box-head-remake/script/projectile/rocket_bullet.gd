@@ -43,18 +43,13 @@ func addSmoke() -> void:
 
 
 ## 每物理帧：按 25Hz 累积，50% 概率喷一个烟（原版 random(2)）
-func _updateSmokeTrail(delta: float) -> void:
+func updateSmokeTrail(delta: float) -> void:
 	var tick: float = 1.0 / MapData.TICKS_PER_SEC
 	smokeAcc += delta
 	while smokeAcc >= tick:
 		smokeAcc -= tick
 		if randi() % 2 == 0:
 			addSmoke()
-
-
-## 离开屏幕时销毁
-func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
-	queue_free()
 
 
 ## 引爆：生成爆炸并销毁自己
@@ -80,7 +75,7 @@ func hitsForeign(overlaps: Array) -> bool:
 
 ## 物理帧更新
 func _physics_process(delta: float) -> void:
-	_updateSmokeTrail(delta)
+	updateSmokeTrail(delta)
 
 	# 撞静态障碍格：地图里的柱子/边界墙只有障碍格数据，未必有物理体，
 	# 光靠 get_overlapping_bodies() 会穿过去，所以按格子再判一次。

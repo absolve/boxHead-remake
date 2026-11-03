@@ -159,12 +159,12 @@ func clear() -> void:
 
 | 事件 | 重制版位置 | 调用 |
 |---|---|---|
-| 僵尸被命中 | `script/character/zombie.gd:568` `hit()` | `Decals.blood(global_position)`（按 §2.4 节流） |
-| 僵尸死亡 | `script/character/zombie.gd:599` `die()` | `Decals.blood(...)` |
-| 恶魔被命中 / 死亡 | `script/character/devil.gd` 的 `hit()` / `die()` | 同上 |
-| 玩家被抓咬 | `script/character/player.gd` 的 `hit()` | 同上（原版会出血，别漏） |
-| 爆炸 | `script/fx/explosion.gd` 结算处 | `Decals.scorch(center)` |
-| 墙被打碎 | 墙对象的破坏分支 | `Decals.scorch(...)` |
+| 僵尸被命中 / 死亡 | `script/character/zombie.gd` 的 `hit()` | `MapData.addBlood(pos, 1.0 / 致命 2.0)` |
+| 恶魔被命中 / 死亡 | `script/character/devil.gd` 的 `hit()` | 同上（致命 2.5） |
+| 玩家被抓咬 | `script/character/player.gd:560` 的 `hit()` | `MapData.addBlood(pos, 1.0 / 致命 2.0)` ✅ 已接 |
+| 玩家被击退滑行 | `player.gd:1160-1166` 的 `updateHurt()` | 按 25Hz 节流滴 `addBlood(pos, 0.6)`；**爆炸来源不滴**（原版 `CThing_Creature.as:332-335`）✅ 已接 |
+| 爆炸（火箭/手雷/地雷/充电包/油桶） | `script/fx/explosion.gd:46` | `MapData.addScorch(center, 2.0)` ✅ |
+| 墙被打碎 | `script/item/wall_obj.gd` | **不画焦痕**（重制版决定）。注意：原版其实会 —— `CThing_Object_Wall.as:129` 在墙被打碎时 `Draw_ScorchMark`；而油桶的焦痕是间接来的（爆炸特效 `CThing_Effect_Explosion.as:86`），所以原版里所有爆炸都留焦痕，不只是油桶。 |
 
 `Decals` 建议做成关卡场景里的一个节点（随关卡释放），通过 `MapData` 或 `get_node` 拿到，
 不要做成 autoload——它的尺寸和内容都是关卡级的。

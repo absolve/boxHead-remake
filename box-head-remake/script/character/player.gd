@@ -88,8 +88,18 @@ var vector: Vector2 = Vector2.RIGHT
 var aniException: Array = ['Mine', 'ChargePack', 'Wall', 'Barrel', 'Grenade']
 ## 形状查询参数（用于碰撞检测）
 var shapeQuery: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
+## 移动阻挡掩码（开碰撞）：1 player + 2 enemy + 4 item(油桶/可放墙) + 8 staticWall
+const COLLIDE_MASK_ALL: int = 1 + 2 + 4 + 8
+## 移动阻挡掩码（关碰撞）：只剩静态墙
+const COLLIDE_MASK_STATIC: int = 8
+## 区域推开掩码（开碰撞）：其他玩家 / 敌人 / 物品
+const BLOCKER_MASK_ALL: int = 1 + 2 + 4
 ## 受伤计时器
 var hurtTimer: float = 0
+## 本次 Hurt 是否由爆炸造成（原版：爆炸击退途中不滴血，CThing_Creature.as:332-335）
+var hurtFromExplosion: bool = false
+## 击退途中的滴血节流累加器（原版每 tick 一次 = 25Hz）
+var bloodAcc: float = 0.0
 ## 受伤持续时间（秒）；每次受击按击退帧数重算
 var hurtDelay: float = 0.5
 ## 武器背包节点（存放所有武器）
@@ -121,9 +131,12 @@ func _ready() -> void:
 
 	# 配置形状查询参数
 	shapeQuery.collide_with_areas = true
-	shapeQuery.collision_mask = 1 + 2 + 4
+	shapeQuery.collision_mask = BLOCKER_MASK_ALL
 	shapeQuery.exclude = [get_rid(), body.get_rid()]
 	shapeQuery.shape = shape.shape
+
+	# 应用「碰撞」开关（原版 CMap_Collide.as:44-63 只在玩家这一侧生效）
+	applyCollisionSetting()
 
 	# 初始化武器列表（默认装备手枪）
 	# var temp = load("res://scene/weapon/pistol.tscn")
@@ -225,13 +238,95 @@ func initWeapon() -> void:
 	weaponList.push_back(gun)
 	weaponBackpack.add_child(gun)
 
-	currWeapon = gun
+	# 高难度开局（Expert/Nightmare）在 MapData.applyDifficulty 里已经解锁了一批枪，
+	# 原版是 AddUpgrade 直接 NewWeapon 发给每个玩家，这里同样直接进背包
+	for wt in MapData.weaponUnlock:
+		giveWeapon(wt)
+
+	currWeaponIndex = 0
+	currWeapon = weaponList[0]
 	# 设置武器名称显示（名字要跟着语言走）
 	txt.text = weaponDisplayName()
 
 
+## 武器类型 -> 场景名（原版 10 把枪的注册表，见 CThing_Creature_Player.as:306-320）
+func weaponSceneName(weaponType: int) -> String:
+	match weaponType:
+		Game.weaponType.Railgun:
+			return "railgun"
+		Game.weaponType.Rocket:
+			return "rocket"
+		Game.weaponType.Shotgun:
+			return "shotgun"
+		Game.weaponType.UZI:
+			return "uzi"
+		Game.weaponType.Mine:
+			return "mine"
+		Game.weaponType.ChargePack:
+			return "chargePack"
+		Game.weaponType.Wall:
+			return "wall"
+		Game.weaponType.Barrel:
+			return "barrel"
+		Game.weaponType.Grenade:
+			return "grenade"
+		_:
+			return "pistol"
+
+
+## 直接发一把武器（数值取自 MapData.allWeaponData，含已发放的升级）
+## 已持有则只补满弹药，不重复入包；供 MapData.unlockWeapon 与 initWeapon 使用
+func giveWeapon(weaponType: int) -> void:
+	var d: Dictionary = MapData.allWeaponData.get(weaponType, {})
+	if d.is_empty():
+		return
+	for w in weaponList:
+		if w.type == weaponType:
+			w.ammoNum = d.get('ammoNum', w.maxAmmoNum)
+			return
+	var path := "res://scene/weapon/%s.tscn" % weaponSceneName(weaponType)
+	if not ResourceLoader.exists(path):
+		push_warning("giveWeapon: 武器场景不存在 %s" % path)
+		return
+	var w = load(path).instantiate()
+	w.ownerId = body.get_rid()
+	w.ownerNode = self
+	w.type = weaponType
+	w.damage = d['damage']
+	w.maxAmmoNum = d['maxAmmoNum']
+	w.ammoNum = d.get('ammoNum', d['maxAmmoNum'])
+	w.automatic = d['automatic']
+	w.wRange = d.get('wRange', 0)
+	w.delay = d['delay']
+	for key in ['splitAngle', 'wideShot', 'splitExplosion', 'biggerBang', 'clusterExplode']:
+		if d.has(key):
+			w.set(key, d[key])
+	weaponList.push_back(w)
+	weaponBackpack.add_child(w)
+
+
+## 复活重置武器（对齐原版 CThing_Creature_Player.ResetWeapons + CThing_Weapon.EmptyWeapon）
+##
+## 原版：除手枪外的武器 `mAmmo = (mTotalAmmo != mInfinateAmmo ? 0 : mTotalAmmo)`，
+## 然后 SelectWeapon("pistol") —— **武器本身保留**，只是打空了弹。
+## 之前这里调 initWeapon() 重建背包，等于死亡没收全部已解锁的枪，惩罚远重于原版。
+func resetWeaponsOnRespawn() -> void:
+	if weaponList.is_empty():
+		initWeapon()
+		return
+	for w in weaponList:
+		# maxAmmoNum <= 0（手枪）与 Infinite 升级后的哨兵值都算无限弹药，不清
+		if w.maxAmmoNum <= 0 or w.maxAmmoNum >= MapData.INFINITE_AMMO:
+			continue
+		w.ammoNum = 0
+	# 手枪固定在 0 号位（initWeapon 先塞手枪，pickItem 只往后追加）
+	currWeaponIndex = 0
+	currWeapon = weaponList[0]
+	txt.text = weaponDisplayName()
+
+
 func resurrection() -> void:
-	initWeapon()
+	resetWeaponsOnRespawn()
 	# 播放出生闪烁动画
 	player.play("flash")
 	var tween = create_tween()
@@ -460,6 +555,10 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 	lifeBar.maxHp = maxHp
 	lifeBar.hp = hp
 
+	# 地面血迹：与僵尸/恶魔同一套尺度（受伤一点、致命一大摊）
+	# 原版 CThing_Creature.as:308（BulletHit_Init 1 摊）与 :378（Dead_Init 5 摊）
+	MapData.addBlood(global_position, 2.0 if hp <= 0 else 1.0)
+
 	if hp <= 0:
 		# 死亡处理
 		state = Game.playerState.dead
@@ -481,6 +580,8 @@ func hit(damage: int, _attackPos: Vector2 = Vector2.ZERO,
 		if fsm != null:
 			fsm.transitionTo(&"Hurt")
 		hurtTimer = 0
+		hurtFromExplosion = fromExplosion
+		bloodAcc = 0.0
 
 		# 原版不区分前后：两种受击动画随机二选一
 		# （Player_HitRear = shothit_1 / Player_HitFront = shothit_2，random(2)+1）
@@ -519,10 +620,17 @@ func shapeExtents() -> Vector2:
 ## 所以两个相邻的油桶中间不会留下缝隙。
 func blockedByCell(pos: Vector2) -> bool:
 	var r: float = playerRadius()
+	# 原版关闭 Collisions 后，油桶 / 喷墙也拦不住玩家：
+	# 它们在原版里是 mFlag_Collidable 的"who 对象"，不是 StaticImpassable 格
+	var ignoreItems: bool = not MapData.collisionOn()
 	for dx in [-r, 0.0, r]:
 		for dy in [-r, 0.0, r]:
-			if MapData.isObstacle(MapData.worldToCell(pos + Vector2(dx, dy))):
-				return true
+			var c: Vector2i = MapData.worldToCell(pos + Vector2(dx, dy))
+			if not MapData.isObstacle(c):
+				continue
+			if ignoreItems and MapData.isItemCell(c):
+				continue
+			return true
 	return false
 
 
@@ -578,6 +686,24 @@ func penetration(center: Vector2, radius: float, collider: Node2D) -> Vector2:
 		return diff.normalized() * (radius - dist2)
 
 	return Vector2.ZERO
+
+
+## 应用「碰撞」设置（原版 CSaveData.mCollisionsActive → CMap_Collide.PlayerCollide）
+##
+## 原版的开关语义很窄，只包住玩家那一次"把自己从可碰撞体里推出去"（Collide_Mapwho）：
+##   关 → 玩家不再被其他玩家 / 敌人 / 油桶 / 玩家放的墙阻挡或推开；
+##   但静态墙照样挡（StaticImpassable 判定与 Collide_Map 在开关之外，无条件执行）；
+##   敌人侧（CreatureCollide）不看这个开关，所以是**单向**的：
+##   敌人仍会把"自己"从玩家身上挪开，玩家却可以直接穿过敌人。
+## 这里照搬：关碰撞时玩家只留静态墙掩码，区域推开也关掉（mask = 0 时查询返回空）。
+## 只在出生时应用：设置面板在开局前的关卡选择里，原版也是进图时读一次。
+func applyCollisionSetting() -> void:
+	if MapData.collisionOn():
+		collision_mask = COLLIDE_MASK_ALL
+		shapeQuery.collision_mask = BLOCKER_MASK_ALL
+	else:
+		collision_mask = COLLIDE_MASK_STATIC
+		shapeQuery.collision_mask = 0
 
 
 ## 区域障碍物碰撞处理
@@ -1030,6 +1156,14 @@ func updateHurt(delta: float) -> void:
 			clearKnockback()
 		elif not blockedByCell(next):
 			move_and_collide(step)
+			# 原版 State_BulletHit 在被击退的每一 tick（25Hz）滴一滴血，
+			# 但爆炸造成的击退不滴（CThing_Creature.as:332-335）
+			if not hurtFromExplosion:
+				var tick: float = 1.0 / MapData.TICKS_PER_SEC
+				bloodAcc += delta
+				while bloodAcc >= tick:
+					bloodAcc -= tick
+					MapData.addBlood(global_position, 0.6)
 
 
 ## Dead：倒地演出期间不响应输入，等 resurrection() 复活

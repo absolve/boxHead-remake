@@ -44,7 +44,7 @@ func _ready() -> void:
 		position.y -= 10
 		play("1")
 	elif type == Game.smokeType.ExplosionSmoke:
-		sprite_frames = _buildBurstFrames()
+		sprite_frames = buildBurstFrames()
 		play("burst")
 
 	# 动画播放完毕后销毁
@@ -53,7 +53,7 @@ func _ready() -> void:
 
 
 ## 15 帧烟团：场景里的 SpriteFrames 只放了两种动画，这个按需拼出来
-func _buildBurstFrames() -> SpriteFrames:
+func buildBurstFrames() -> SpriteFrames:
 	var sf := SpriteFrames.new()
 	sf.remove_animation("default")
 	sf.add_animation("burst")

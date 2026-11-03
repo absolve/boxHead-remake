@@ -97,7 +97,7 @@ var strategySinceMs: int = 0
 ## 手动覆盖策略到该时间点（测试用：T 键轮换后 20 秒内不被自动策略改回）
 var manualUntilMs: int = 0
 var anchorPos: Vector2 = Vector2.ZERO
-var _lastStrategyEvalMs: int = 0
+var lastStrategyEvalMs: int = 0
 
 ## 巡逻（没敌人时用）：一格一格走，走一段歇一会，不乱窜
 @export var patrolLeashCells: float = 5.0
@@ -119,11 +119,11 @@ func _ready() -> void:
 	strategySinceMs = Time.get_ticks_msec()
 	buildPerception()
 	buildTree()
-	Game.gunshot.connect(_on_gunshot)
+	Game.gunshot.connect(onGunshot)
 
 
 ## 听到枪声：记住位置，7 秒内过去查看（太远的不管）
-func _on_gunshot(pos: Vector2, shooter: Node) -> void:
+func onGunshot(pos: Vector2, shooter: Node) -> void:
 	if player == null or player.isDead or shooter == player:
 		return
 	if player.global_position.distance_to(pos) > 10.0 * MapData.cellSize:
@@ -172,7 +172,7 @@ func buildTree() -> void:
 	tree.actor = player
 	tree.tick_rate = maxi(tickEveryFrames, 1)
 
-	var root := _sequence("root", [
+	var root := buildSequence("root", [
 		["can_act", true],
 		["perceive", true],
 		["pick_strategy", false],
@@ -182,38 +182,38 @@ func buildTree() -> void:
 	behaviour.name = "behaviour"
 	root.add_child(behaviour)
 
-	behaviour.add_child(_sequence("dodge", [["fireball_incoming", true], ["dodge", false]]))
-	behaviour.add_child(_sequence("survive", [["should_survive", true], ["survive", false]]))
-	behaviour.add_child(_sequence("rescue", [["should_rescue", true], ["rescue", false]]))
-	behaviour.add_child(_sequence("retreat", [["should_retreat", true], ["retreat", false]]))
-	behaviour.add_child(_sequence("pickup", [["should_pickup", true], ["pickup", false]]))
-	behaviour.add_child(_sequence("demolish", [["should_demolish", true], ["demolish", false]]))
-	behaviour.add_child(_sequence("place", [["should_place", true], ["place_weapon", false]]))
-	behaviour.add_child(_sequence("combat", [
+	behaviour.add_child(buildSequence("dodge", [["fireball_incoming", true], ["dodge", false]]))
+	behaviour.add_child(buildSequence("survive", [["should_survive", true], ["survive", false]]))
+	behaviour.add_child(buildSequence("rescue", [["should_rescue", true], ["rescue", false]]))
+	behaviour.add_child(buildSequence("retreat", [["should_retreat", true], ["retreat", false]]))
+	behaviour.add_child(buildSequence("pickup", [["should_pickup", true], ["pickup", false]]))
+	behaviour.add_child(buildSequence("demolish", [["should_demolish", true], ["demolish", false]]))
+	behaviour.add_child(buildSequence("place", [["should_place", true], ["place_weapon", false]]))
+	behaviour.add_child(buildSequence("combat", [
 		["has_target", true], ["pick_weapon", false],
 		["move_to_range", false], ["fire_if_safe", false],
 	]))
-	behaviour.add_child(_sequence("search", [["has_last_known", true], ["move_to_last_known", false]]))
-	behaviour.add_child(_sequence("investigate", [["has_noise", true], ["investigate", false]]))
-	behaviour.add_child(_sequence("patrol", [["should_patrol", true], ["patrol", false]]))
-	behaviour.add_child(_sequence("follow", [["has_ally", true], ["follow_ally", false]]))
-	behaviour.add_child(_makeLeaf("idle", false))
+	behaviour.add_child(buildSequence("search", [["has_last_known", true], ["move_to_last_known", false]]))
+	behaviour.add_child(buildSequence("investigate", [["has_noise", true], ["investigate", false]]))
+	behaviour.add_child(buildSequence("patrol", [["should_patrol", true], ["patrol", false]]))
+	behaviour.add_child(buildSequence("follow", [["has_ally", true], ["follow_ally", false]]))
+	behaviour.add_child(makeLeaf("idle", false))
 
 	tree.add_child(root)
 	add_child(tree)
 	board = tree.blackboard
 
 
-func _sequence(nodeName: String, children: Array) -> SequenceReactiveComposite:
+func buildSequence(nodeName: String, children: Array) -> SequenceReactiveComposite:
 	# 用 Reactive 版：条件每个 tick 都重新判断（普通 Sequence 会跳过已成功的子节点）
 	var s := SequenceReactiveComposite.new()
 	s.name = nodeName
 	for c in children:
-		s.add_child(_makeLeaf(str(c[0]), bool(c[1])))
+		s.add_child(makeLeaf(str(c[0]), bool(c[1])))
 	return s
 
 
-func _makeLeaf(leafName: String, isCondition: bool) -> BeehaveNode:
+func makeLeaf(leafName: String, isCondition: bool) -> BeehaveNode:
 	var n: BeehaveNode = ConditionLeaf.new() if isCondition else ActionLeaf.new()
 	n.name = leafName
 	var sc := load(LEAF_DIR + leafName + ".gd") as Script
@@ -229,28 +229,28 @@ func _makeLeaf(leafName: String, isCondition: bool) -> BeehaveNode:
 ## 刷新感知：敌人（带目标粘滞与记忆）+ 危险物
 func scan() -> void:
 	var now := Time.get_ticks_msec()
-	_scanHazards()
-	_scanProps()
-	_scanBox()
+	scanHazards()
+	scanProps()
+	scanBox()
 
-	var candidates := _collectEnemies()
+	var candidates := collectEnemies()
 	var best: Node2D = null
 	var bestScore := -INF
 	for e in candidates:
-		var s: float = _targetScore(e)
+		var s: float = scoreTarget(e)
 		if s > bestScore:
 			bestScore = s
 			best = e
 
 	# 选择规则：恶魔优先 > 距离近优先；
 	# 同类型里只有明显更近（25%）才换，且换目标有 0.5 秒冷却，避免一直换方向。
-	if target != null and is_instance_valid(target) and _validEnemy(target):
+	if target != null and is_instance_valid(target) and isValidEnemy(target):
 		var keep := false
 		if best == null:
 			keep = true
-		elif _tier(target) < _tier(best):
+		elif threatTier(target) < threatTier(best):
 			keep = true                      # 当前是恶魔，新目标不是
-		elif _tier(target) == _tier(best):
+		elif threatTier(target) == threatTier(best):
 			var curD: float = player.global_position.distance_to(target.global_position)
 			var newD: float = player.global_position.distance_to(best.global_position)
 			if newD > curD * 0.75 or now - lastTargetSwitchMs < 500:
@@ -269,7 +269,7 @@ func scan() -> void:
 		hasLastKnown = false
 
 
-func _scanHazards() -> void:
+func scanHazards() -> void:
 	hazards.clear()
 	if area == null:
 		return
@@ -286,7 +286,7 @@ func _scanHazards() -> void:
 
 
 ## 收集范围内的可拆物品（油桶 / 墙）
-func _scanProps() -> void:
+func scanProps() -> void:
 	props.clear()
 	if area == null:
 		return
@@ -301,7 +301,7 @@ func _scanProps() -> void:
 
 
 ## 找最近的补给箱：血量低（回血）或武器少（开新武器）时才去
-func _scanBox() -> void:
+func scanBox() -> void:
 	boxTarget = null
 	if player == null:
 		return
@@ -323,7 +323,7 @@ func _scanBox() -> void:
 
 
 ## 收集范围内的敌人（本体 + 受击区，按实例去重）
-func _collectEnemies() -> Array:
+func collectEnemies() -> Array:
 	var seen := {}
 	var out: Array = []
 	if area == null:
@@ -352,7 +352,7 @@ func _collectEnemies() -> Array:
 	return out
 
 
-func _validEnemy(n: Node) -> bool:
+func isValidEnemy(n: Node) -> bool:
 	if not isEnemy(n):
 		return false
 	if n.get("isDead") == true:
@@ -361,7 +361,7 @@ func _validEnemy(n: Node) -> bool:
 
 
 ## 目标打分：距离 × 威胁 × 队友受威胁加成 × 被队友锁定的惩罚
-func _targetScore(e: Node2D) -> float:
+func scoreTarget(e: Node2D) -> float:
 	if not isEnemy(e) or e.get("isDead") == true:
 		return 0.0
 	var d: float = player.global_position.distance_to(e.global_position)
@@ -369,7 +369,7 @@ func _targetScore(e: Node2D) -> float:
 		return 0.0
 	var distScore := 1.0 / (1.0 + d / 64.0)
 	# 层级分：恶魔永远比僵尸优先（1000 远大于距离分 0~1）
-	var threat := 1000.0 if _tier(e) == 0 else 1.0
+	var threat := 1000.0 if threatTier(e) == 0 else 1.0
 	var allyBonus := 1.0
 	var ally := nearestAlly()
 	if ally != null and ally.global_position.distance_to(e.global_position) < 3.0 * MapData.cellSize:
@@ -458,8 +458,8 @@ func canStepTo(pos: Vector2, step: Vector2, ignore: Node = null) -> bool:
 	var target: Vector2 = pos + step
 	if not MapData.moveRect().has_point(target):
 		return false
-	if MapData.isObstacle(MapData.worldToCell(target)):
-		return false
+	# 只用玩家的 blockedByCell：它已经按半径采样，并且会按「碰撞」开关
+	# 决定油桶 / 喷墙这格算不算阻挡（直接查 isObstacle 会绕过开关）
 	if player.blockedByCell(target):
 		return false
 	return not cellOccupiedByCharacter(MapData.worldToCell(target), ignore)
@@ -745,9 +745,9 @@ func updateStrategy() -> void:
 	var now := Time.get_ticks_msec()
 	if now < manualUntilMs:
 		return
-	if now - _lastStrategyEvalMs < 1000:
+	if now - lastStrategyEvalMs < 1000:
 		return
-	_lastStrategyEvalMs = now
+	lastStrategyEvalMs = now
 
 	var hpRatio := float(player.hp) / maxf(float(player.maxHp), 1.0)
 	var ally := nearestAlly()
@@ -757,15 +757,15 @@ func updateStrategy() -> void:
 	# 强制切换：立即生效，不等驻留
 	# 血量很低先放风筝拉开距离（求生分支负责找箱子/后退）
 	if hpRatio < surviveThreshold():
-		_setStrategy(Strategy.KITER, now)
+		applyStrategy(Strategy.KITER, now)
 		return
 	# 单人生存：真人队友全死了，不守尸体、不等复活，优先保命
 	#   有敌人 → 放风筝（拉远打），没敌人 → 巡逻警戒（别乱冲）
 	if isSolo():
-		_setStrategy(Strategy.KITER if target != null else Strategy.PATROL, now)
+		applyStrategy(Strategy.KITER if target != null else Strategy.PATROL, now)
 		return
 	if hpRatio < 0.35:
-		_setStrategy(Strategy.DEFENSIVE, now)
+		applyStrategy(Strategy.DEFENSIVE, now)
 		return
 	if target == null:
 		# 没敌人：队友太远就归队，否则在附近巡逻
@@ -773,14 +773,14 @@ func updateStrategy() -> void:
 		if ally != null:
 			far = player.global_position.distance_to(ally.global_position)
 		if far > 8.0 * MapData.cellSize:
-			_setStrategy(Strategy.SUPPORT, now)
+			applyStrategy(Strategy.SUPPORT, now)
 		else:
-			_setStrategy(Strategy.PATROL, now)
+			applyStrategy(Strategy.PATROL, now)
 		return
 
 	# 刚从巡逻切回战斗：不等驻留，直接按性格进入战斗策略
 	if strategy == Strategy.PATROL:
-		_setStrategy(personalityOf(), now)
+		applyStrategy(personalityOf(), now)
 
 	if now - strategySinceMs < strategyDwellMs:
 		return
@@ -825,10 +825,10 @@ func updateStrategy() -> void:
 			best = k
 	# 滞回：新策略要高出当前 20% 才换
 	if bestScore > float(scores[strategy]) * 1.20:
-		_setStrategy(best, now)
+		applyStrategy(best, now)
 
 
-func _setStrategy(s: int, now: int) -> void:
+func applyStrategy(s: int, now: int) -> void:
 	if s == strategy:
 		strategySinceMs = now
 		return
@@ -1004,7 +1004,7 @@ func allyInBlast() -> bool:
 
 
 ## 目标层级：0 = 恶魔（最优先），1 = 僵尸
-func _tier(e: Node) -> int:
+func threatTier(e: Node) -> int:
 	if e != null and e.get("type") == Game.roleType.Devil:
 		return 0
 	return 1

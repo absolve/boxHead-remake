@@ -189,7 +189,7 @@ func registerItemObstacles() -> void:
 			continue
 
 		var cell: Vector2i = MapData.worldToCell(n.global_position)
-		MapData.addObstacleAt(cell)
+		MapData.addObstacleAt(cell, true)
 		count += 1
 
 		# 让 item._exit_tree 在被打碎时自动把这格摘掉

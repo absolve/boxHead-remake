@@ -51,12 +51,12 @@ func _ready() -> void:
 	add_child(decals)
 
 	cam = $camera as Camera2D
-	_centerCamera()
-	_buildUI()
+	centerCamera()
+	buildUI()
 	print("[test_shake] 准备就绪：按 1~5 触发爆炸")
 
 
-func _centerCamera() -> void:
+func centerCamera() -> void:
 	if cam == null:
 		return
 	var vp: Vector2 = get_viewport_rect().size
@@ -67,7 +67,7 @@ func _centerCamera() -> void:
 
 
 ## 固定在屏幕上的文字与参照线（CanvasLayer 不受相机抖动影响）
-func _buildUI() -> void:
+func buildUI() -> void:
 	var ui: CanvasLayer = $ui
 
 	label = Label.new()
@@ -82,15 +82,15 @@ func _buildUI() -> void:
 	var vp: Vector2 = get_viewport_rect().size
 	var c := vp * 0.5
 	# 十字线：竖线按抖动方向（竖直）贯穿，横线做辅助
-	_ruler(Vector2(c.x, 20), Vector2(1, vp.y - 40), Color(0, 0.4, 0.9, 0.8))
-	_ruler(Vector2(c.x - 40, c.y), Vector2(80, 1), Color(0, 0.4, 0.9, 0.8))
+	drawRuler(Vector2(c.x, 20), Vector2(1, vp.y - 40), Color(0, 0.4, 0.9, 0.8))
+	drawRuler(Vector2(c.x - 40, c.y), Vector2(80, 1), Color(0, 0.4, 0.9, 0.8))
 	# 刻度：±15 px = 原版可见峰值，±32 px = 叠加上限
 	for d in [15.0, 32.0]:
 		for s in [-1.0, 1.0]:
-			_ruler(Vector2(c.x - 6, c.y + s * d), Vector2(13, 1), Color(0.85, 0.15, 0.15, 0.85))
+			drawRuler(Vector2(c.x - 6, c.y + s * d), Vector2(13, 1), Color(0.85, 0.15, 0.15, 0.85))
 
 
-func _ruler(pos: Vector2, size: Vector2, color: Color) -> void:
+func drawRuler(pos: Vector2, size: Vector2, color: Color) -> void:
 	var r := ColorRect.new()
 	r.position = pos
 	r.size = size
@@ -137,31 +137,31 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_5:
 			bigBang()
 		KEY_SPACE:
-			_toggleShake()
+			toggleShake()
 		KEY_R:
-			_reset()
+			resetAll()
 		KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT:
-			_tune(k.keycode)
+			tuneParams(k.keycode)
 
 
 ## 同帧连发 count 发；interval > 0 时改成每隔 interval 秒一发
 func burst(count: int, interval: float = 0.0) -> void:
-	_trigger("触发 %d 发%s" % [count, "" if interval <= 0.0 else "（间隔 %.2fs）" % interval])
+	triggerShake("触发 %d 发%s" % [count, "" if interval <= 0.0 else "（间隔 %.2fs）" % interval])
 	for i in count:
-		_explode()
+		explodeOnce()
 		if interval > 0.0 and i < count - 1:
 			await get_tree().create_timer(interval).timeout
 
 
 ## 模拟 BigBang：4 发、80~200ms 随机延迟
 func bigBang() -> void:
-	_trigger("触发 BigBang（4 发，80~200ms 随机延迟）")
+	triggerShake("触发 BigBang（4 发，80~200ms 随机延迟）")
 	for i in 4:
 		await get_tree().create_timer(randf_range(0.08, 0.2)).timeout
-		_explode()
+		explodeOnce()
 
 
-func _explode() -> void:
+func explodeOnce() -> void:
 	var e: Node2D = EXPLOSION.instantiate()
 	e.set("damage", explosionDamage)
 	var vp: Vector2 = get_viewport_rect().size
@@ -169,7 +169,7 @@ func _explode() -> void:
 	add_child(e)
 
 
-func _trigger(title: String) -> void:
+func triggerShake(title: String) -> void:
 	peak = 0.0
 	lastDurationMs = 0
 	shakeStartMs = Time.get_ticks_msec()
@@ -177,7 +177,7 @@ func _trigger(title: String) -> void:
 	print("[test_shake] ", title)
 
 
-func _toggleShake() -> void:
+func toggleShake() -> void:
 	var on := not bool(MapData.mapConfig.get("screenShake", true))
 	MapData.mapConfig.screenShake = on
 	if not on:
@@ -186,7 +186,7 @@ func _toggleShake() -> void:
 	print("[test_shake] 画面抖动 = ", on)
 
 
-func _tune(key: int) -> void:
+func tuneParams(key: int) -> void:
 	var impulse: float = cam.get("shakeImpulse")
 	var cap: float = cam.get("shakeMax")
 	match key:
@@ -200,8 +200,8 @@ func _tune(key: int) -> void:
 			cam.set("shakeMax", maxf(cap - 1.0, 1.0))
 
 
-func _reset() -> void:
-	_centerCamera()
+func resetAll() -> void:
+	centerCamera()
 	peak = 0.0
 	lastDurationMs = 0
 	timing = false

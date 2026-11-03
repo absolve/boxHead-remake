@@ -103,11 +103,13 @@ var awaitingResurrectionPlayer: Array = [] # 等待复活的玩家列表
 
 ## 初始化
 func _ready() -> void:
+	# autoload 跨场景存活，先把上一局的分数/连杀/解锁/升级清干净
+	MapData.resetRunProgress()
 	updateLevelLabel()
 	# 连杀衰减计时器：按原版 GetTicks 公式逐级衰减
 	streakDecayTimer = Timer.new()
 	streakDecayTimer.one_shot = true
-	streakDecayTimer.timeout.connect(_on_streak_decay_timeout)
+	streakDecayTimer.timeout.connect(onStreakDecayTimeout)
 	add_child(streakDecayTimer)
 	# 按 selectedMapId 创建房间（必须在用到 room 之前）
 	swapRoom()
@@ -234,7 +236,9 @@ func applyDifficulty() -> void:
 			startMult = 0
 
 	currWave = startLevel - 1
-	MapData.currKillStreak = startMult
+	# 原版 SetDifficulty 会逐级 ++mMultiplier，setter 把经过档位的升级全部激活
+	# （CUpgrades.as:567-586）；只设 currKillStreak 的话高难度开局等于没发升级
+	MapData.grantUpgradesToStreak(startMult)
 	print("[%s] 难度 %d：起始等级 %d，起始倍率 %d" % [name, diff, startLevel, startMult])
 
 
@@ -477,6 +481,9 @@ func playerDead() -> void:
 	var players = get_tree().get_nodes_in_group("player")
 	var num = 0
 	for i in players:
+		# 组里可能还挂着刚 queue_free、本帧尚未移除的玩家，直接取属性会崩
+		if not is_instance_valid(i):
+			continue
 		if i.isDead:
 			awaitingResurrectionPlayer.append(i)
 			num += 1
@@ -526,7 +533,7 @@ func restartStreakDecay() -> void:
 	countAniNode.speed_scale = clampf(animLen / maxf(dur, 0.04), 1.0, 60.0)
 
 
-func _on_streak_decay_timeout() -> void:
+func onStreakDecayTimeout() -> void:
 	if MapData.currKillStreak - 1 >= 1:
 		MapData.currKillStreak -= 1
 		countNode.text = str('x', MapData.currKillStreak)
@@ -617,10 +624,13 @@ func _on_resurrection_timer_timeout() -> void:
 
 	var alivePlayers := []
 	for p in get_tree().get_nodes_in_group("player"):
-		if not p.isDead:
+		if is_instance_valid(p) and not p.isDead:
 			alivePlayers.append(p)
 
 	for i in awaitingResurrectionPlayer:
+		# 记录的是 Node 引用，游戏结束/换房时可能已经释放
+		if not is_instance_valid(i):
+			continue
 		i.resurrection()
 		var pos: Vector2 = pickRespawnPos(i, alivePlayers)
 		i.global_position = pos
@@ -636,10 +646,10 @@ func _on_resurrection_timer_timeout() -> void:
 ## 1. 优先：存活玩家 3 格范围内的空闲格（和队友靠在一起）
 ## 2. 其次：当前相机可走区域内随机一个空闲格
 ## 3. 兜底：从配置的出生点螺旋找空格
-func pickRespawnPos(dead_player: Node2D, alivePlayers: Array) -> Vector2:
+func pickRespawnPos(deadPlayer: Node2D, alivePlayers: Array) -> Vector2:
 	var occupied := {}
 	for p in get_tree().get_nodes_in_group("player"):
-		if p == dead_player or p.isDead:
+		if not is_instance_valid(p) or p == deadPlayer or p.isDead:
 			continue
 		occupied[MapData.worldToCell(p.global_position)] = true
 
@@ -674,9 +684,9 @@ func pickRespawnPos(dead_player: Node2D, alivePlayers: Array) -> Vector2:
 		return MapData.cellCenter(cells[randi() % cells.size()])
 
 	# 3. 兜底
-	var want: int = int(dead_player.get("spawnSlot"))
+	var want: int = int(deadPlayer.get("spawnSlot"))
 	if want < 0:
-		want = maxi(dead_player.playerId - 1, 0)
+		want = maxi(deadPlayer.playerId - 1, 0)
 	var fallback := mini(want, playerSpawnPoint.size() - 1)
 	return findFreeSpawn(playerSpawnPoint[maxi(fallback, 0)].global_position)
 

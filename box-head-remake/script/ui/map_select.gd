@@ -76,13 +76,13 @@ func initSlots() -> void:
 		for role in ROLE_TEXT.size():
 			b.add_item(ROLE_TEXT[role], role)
 		b.select(b.get_item_index(MapData.playerSlots[i]))
-		b.item_selected.connect(_onSlotRoleSelected.bind(i))
+		b.item_selected.connect(onSlotRoleSelected.bind(i))
 	refreshSlotCards()
 	refreshPlayTip()
 
 
 ## 槽位角色改变：1P~4P 各自全局唯一；允许全人类 / 全 CPU / 混合，但全关不能开局
-func _onSlotRoleSelected(itemIdx: int, slot: int) -> void:
+func onSlotRoleSelected(itemIdx: int, slot: int) -> void:
 	var role: int = slotButtons[slot].get_item_id(itemIdx)
 
 	# 该人类槽位已被别的槽位占着：和当前槽位交换，相当于"把人挪到这个槽"
@@ -178,7 +178,8 @@ func startGame() -> void:
 		SoundUtil.playClick()
 		return
 	MapData.selectedMapId = int(img[index].id)
-	# 槽位 + 每张卡选的角色（角色目前只影响界面展示，游戏内仍按槽位换色）
+	# 槽位 + 每张卡选的角色（角色号 = 皮肤索引，见 doc/xsi-sprite-skins.md §5；
+	# 只有多个槽位撞同一个角色时才会额外用色相染色区分）
 	MapData.normalizeSlots()
 	for i in cards.size():
 		MapData.playerSlotChars[i] = int(cards[i].index)

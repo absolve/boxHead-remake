@@ -13,31 +13,31 @@ extends Node
 
 const DEFAULT_PORT := 28765
 
-var _server: TCPServer = null
-var _clients: Array = []
+var tcpServer: TCPServer = null
+var clients: Array = []
 
 ## 卡住检测：inst_id -> {"pos": Vector2, "t": int(ms)}
-var _track: Dictionary = {}
+var clientTrack: Dictionary = {}
 
 ## 是否输出调试日志（--test-bridge-verbose）
-var _verbose := false
+var verboseLog := false
 
 ## 长跑用：无敌保护 / 物理帧计数
-var _god := false
-var _godAtMs := 0
-var _ticks := 0
+var godMode := false
+var godAtMs := 0
+var tickCount := 0
 
 
 func _ready() -> void:
 	# 暂停时也要能响应（玩家的 pause 测试要用）
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_dbg("ready user_args=" + str(OS.get_cmdline_user_args()))
+	dbgLog("ready user_args=" + str(OS.get_cmdline_user_args()))
 	var args := OS.get_cmdline_user_args()
 	if not args.has("--test-bridge"):
-		_dbg("disabled (no flag)")
+		dbgLog("disabled (no flag)")
 		queue_free()
 		return
-	_verbose = args.has("--test-bridge-verbose")
+	verboseLog = args.has("--test-bridge-verbose")
 	var port := DEFAULT_PORT
 	for a in args:
 		if a.begins_with("--test-bridge-port="):
@@ -49,35 +49,35 @@ func _ready() -> void:
 			MapData.playerSlots.clear()
 			for v in a.get_slice("=", 1).split(","):
 				MapData.playerSlots.append(int(v))
-	_server = TCPServer.new()
-	var err := _server.listen(port, "127.0.0.1")
+	tcpServer = TCPServer.new()
+	var err := tcpServer.listen(port, "127.0.0.1")
 	if err != OK:
 		push_error("TestBridge: 监听 127.0.0.1:%d 失败 (err=%d)" % [port, err])
-		_dbg("listen failed port=%d err=%d" % [port, err])
+		dbgLog("listen failed port=%d err=%d" % [port, err])
 		return
 	print("[TestBridge] listening on 127.0.0.1:%d" % port)
 
 
 func _process(_delta: float) -> void:
-	if _server == null:
+	if tcpServer == null:
 		return
 
-	if _god and Time.get_ticks_msec() - _godAtMs > 1000:
-		_godAtMs = Time.get_ticks_msec()
-		_apply_god()
+	if godMode and Time.get_ticks_msec() - godAtMs > 1000:
+		godAtMs = Time.get_ticks_msec()
+		applyGod()
 
-	while _server.is_connection_available():
-		var peer := _server.take_connection()
-		_clients.append({"peer": peer, "buf": ""})
+	while tcpServer.is_connection_available():
+		var peer := tcpServer.take_connection()
+		clients.append({"peer": peer, "buf": ""})
 		print("[TestBridge] client connected")
 
-	for i in range(_clients.size() - 1, -1, -1):
-		var c: Dictionary = _clients[i]
+	for i in range(clients.size() - 1, -1, -1):
+		var c: Dictionary = clients[i]
 		var peer: StreamPeerTCP = c["peer"]
 		peer.poll()
 		var st := peer.get_status()
 		if st != StreamPeerTCP.STATUS_CONNECTED:
-			_clients.remove_at(i)
+			clients.remove_at(i)
 			continue
 
 		var avail := peer.get_available_bytes()
@@ -98,24 +98,24 @@ func _process(_delta: float) -> void:
 				continue
 			var req = JSON.parse_string(line)
 			if typeof(req) != TYPE_DICTIONARY:
-				_send(peer, {"ok": false, "err": "bad json"})
+				sendJson(peer, {"ok": false, "err": "bad json"})
 				continue
-			_dbg("cmd " + str(req.get("cmd", "?")))
-			var resp: Dictionary = _handle(req)
-			_send(peer, resp)
+			dbgLog("cmd " + str(req.get("cmd", "?")))
+			var resp: Dictionary = handleRequest(req)
+			sendJson(peer, resp)
 
 
-func _send(peer: StreamPeerTCP, obj: Dictionary) -> void:
+func sendJson(peer: StreamPeerTCP, obj: Dictionary) -> void:
 	var txt := JSON.stringify(obj)
 	if txt.is_empty():
-		_dbg("SERIALIZE EMPTY keys=" + str(obj.keys()))
+		dbgLog("SERIALIZE EMPTY keys=" + str(obj.keys()))
 		txt = '{"ok":false,"err":"serialize"}'
-	_dbg("send " + str(txt.length()))
+	dbgLog("send " + str(txt.length()))
 	peer.put_data((txt + String.chr(10)).to_utf8_buffer())
 
 
-func _dbg(msg: String) -> void:
-	if not _verbose:
+func dbgLog(msg: String) -> void:
+	if not verboseLog:
 		return
 	var f := FileAccess.open("user://testbridge.log", FileAccess.READ_WRITE)
 	if f == null:
@@ -128,35 +128,35 @@ func _dbg(msg: String) -> void:
 
 # ---------------------------------------------------------------- 命令分发
 
-func _handle(req: Dictionary) -> Dictionary:
+func handleRequest(req: Dictionary) -> Dictionary:
 	match str(req.get("cmd", "")):
 		"ping":
 			return {"ok": true}
 		"snapshot":
-			return _snapshot()
+			return buildSnapshot()
 		"spawn":
-			return _cmd_spawn(req)
+			return cmdSpawn(req)
 		"clear_enemies":
-			return _cmd_clear_enemies()
+			return cmdClearEnemies()
 		"set_hp":
-			return _cmd_set_hp(req)
+			return cmdSetHp(req)
 		"grant_weapons":
-			return _cmd_grant_weapons(req)
+			return cmdGrantWeapons(req)
 		"teleport":
-			return _cmd_teleport(req)
+			return cmdTeleport(req)
 		"set_setting":
-			return _cmd_set_setting(req)
+			return cmdSetSetting(req)
 		"pause":
 			get_tree().paused = bool(req.get("paused", true))
 			return {"ok": true, "paused": get_tree().paused}
 		"god":
-			_god = bool(req.get("on", true))
-			_apply_god()
-			return {"ok": true, "god": _god}
+			godMode = bool(req.get("on", true))
+			applyGod()
+			return {"ok": true, "god": godMode}
 		"input":
-			return _cmd_input(req)
+			return cmdInput(req)
 		"screenshot":
-			return _cmd_screenshot(req)
+			return cmdScreenshot(req)
 		"quit":
 			get_tree().quit(int(req.get("code", 0)))
 			return {"ok": true}
@@ -166,7 +166,7 @@ func _handle(req: Dictionary) -> Dictionary:
 
 # ---------------------------------------------------------------- 快照
 
-func _snapshot() -> Dictionary:
+func buildSnapshot() -> Dictionary:
 	var players: Array = []
 	var cpus: Array = []
 	for p in get_tree().get_nodes_in_group("player"):
@@ -221,12 +221,12 @@ func _snapshot() -> Dictionary:
 			"id": e.get_instance_id(),
 		})
 
-	var metrics := _enemy_metrics(enemies)
+	var metrics := enemyMetrics(enemies)
 
-	var decal_count := 0
+	var decalTotal := 0
 	for d in get_tree().get_nodes_in_group("decal"):
 		if is_instance_valid(d) and d.get("splats") != null:
-			decal_count = (d.get("splats") as Array).size()
+			decalTotal = (d.get("splats") as Array).size()
 
 	return {
 		"ok": true,
@@ -239,13 +239,14 @@ func _snapshot() -> Dictionary:
 		"cpus": cpus,
 		"enemies": enemies,
 		"metrics": metrics,
-		"decalCount": decal_count,
+		"decalCount": decalTotal,
 		"boxCount": get_tree().get_nodes_in_group("box").size(),
+		"refresh": refreshMetrics(get_tree().current_scene),
 		"nodeCount": int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)),
 		"orphanCount": int(Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)),
 		"memMb": OS.get_static_memory_usage() / 1048576.0,
-		"ticks": _ticks,
-		"simTimeSec": _ticks / 60.0 * Engine.time_scale,
+		"ticks": tickCount,
+		"simTimeSec": tickCount / 60.0 * Engine.time_scale,
 		"wave": int(get_tree().current_scene.get("currWave")) if get_tree().current_scene != null and get_tree().current_scene.get("currWave") != null else -1,
 		"score": MapData.score,
 		"settings": {
@@ -256,11 +257,11 @@ func _snapshot() -> Dictionary:
 	}
 
 
-func _enemy_metrics(enemies: Array) -> Dictionary:
+func enemyMetrics(enemies: Array) -> Dictionary:
 	var n := enemies.size()
-	var cell_w := int(MapData.mapSize.x / MapData.cellSize)
-	var cell_h := int(MapData.mapSize.y / MapData.cellSize)
-	var min_d := 9999.0
+	var cellW := int(MapData.mapSize.x / MapData.cellSize)
+	var cellH := int(MapData.mapSize.y / MapData.cellSize)
+	var minDist := 9999.0
 	var overlap := 0
 	var cells := {}
 	var obstacle := 0
@@ -273,17 +274,17 @@ func _enemy_metrics(enemies: Array) -> Dictionary:
 		var cell := MapData.worldToCell(pa)
 		cells[MapData.cellKey(cell)] = int(cells.get(MapData.cellKey(cell), 0)) + 1
 		# 只统计"已经进场"的敌人：出生/从场外走进来时不算法
-		var in_map := cell.x >= 0 and cell.y >= 0 and cell.x < cell_w and cell.y < cell_h
+		var inMap := cell.x >= 0 and cell.y >= 0 and cell.x < cellW and cell.y < cellH
 		var spawning: bool = int(enemies[i].get("state", -1)) == int(Game.enemyState.init)
-		var out_of_map := cell.x < 0 or cell.y < 0 or cell.x >= cell_w or cell.y >= cell_h
-		if not out_of_map and not spawning and MapData.isObstacle(cell):
+		var outOfMap := cell.x < 0 or cell.y < 0 or cell.x >= cellW or cell.y >= cellH
+		if not outOfMap and not spawning and MapData.isObstacle(cell):
 			obstacle += 1
 
 		# 卡住：5 秒内位移 < 8px
 		var id: int = enemies[i]["id"]
-		var rec: Dictionary = _track.get(id, {})
+		var rec: Dictionary = clientTrack.get(id, {})
 		if rec.is_empty() or now - int(rec.get("t", 0)) > 5000:
-			_track[id] = {"pos": pa, "t": now}
+			clientTrack[id] = {"pos": pa, "t": now}
 		else:
 			var moved: float = pa.distance_to(rec["pos"])
 			if now - int(rec.get("t", 0)) >= 4500 and moved < 8.0:
@@ -292,32 +293,55 @@ func _enemy_metrics(enemies: Array) -> Dictionary:
 		for j in range(i + 1, n):
 			var b: Array = enemies[j]["pos"]
 			var d := pa.distance_to(Vector2(b[0], b[1]))
-			if d < min_d:
-				min_d = d
+			if d < minDist:
+				minDist = d
 			if d < 26.0:
 				overlap += 1
 
-	var max_per := 0
+	var maxCellLoad := 0
 	for k in cells.keys():
-		max_per = maxi(max_per, int(cells[k]))
+		maxCellLoad = maxi(maxCellLoad, int(cells[k]))
 
 	return {
 		"count": n,
-		"minPairDist": min_d if n > 1 else -1.0,
+		"minPairDist": minDist if n > 1 else -1.0,
 		"overlapPairs": overlap,
-		"maxPerCell": max_per,
+		"maxPerCell": maxCellLoad,
 		"obstacleCount": obstacle,
 		"stuckCount": stuck,
+	}
+
+
+## 补给刷新诊断
+#
+# 用于回答"箱子为什么不刷新"：定时器到底有没有在倒数、刷新点有几个、
+# 当前有几个点被 hasBlock() 判成占用。导出版没有控制台时靠这个定位。
+func refreshMetrics(scene: Node) -> Dictionary:
+	if scene == null:
+		return {}
+	var points: Variant = scene.get("itemSpawnPoint")
+	var timer: Timer = scene.get("refreshTimer")
+	var total: int = (points as Array).size() if points is Array else 0
+	var blocked: int = 0
+	if points is Array:
+		for sp in (points as Array):
+			if is_instance_valid(sp) and sp.has_method("hasBlock") and sp.hasBlock():
+				blocked += 1
+	return {
+		"points": total,
+		"blocked": blocked,
+		"timerLeft": timer.time_left if timer != null else -1.0,
+		"waitTime": timer.wait_time if timer != null else -1.0,
 	}
 
 
 # ---------------------------------------------------------------- 操作
 
 func _physics_process(_delta: float) -> void:
-	_ticks += 1
+	tickCount += 1
 
 
-func _apply_god() -> void:
+func applyGod() -> void:
 	for p in get_tree().get_nodes_in_group("player"):
 		if not is_instance_valid(p):
 			continue
@@ -327,7 +351,7 @@ func _apply_god() -> void:
 			p.ani.modulate.a = 1.0
 
 
-func _cmd_spawn(req: Dictionary) -> Dictionary:
+func cmdSpawn(req: Dictionary) -> Dictionary:
 	var kind := str(req.get("kind", "zombie"))
 	var pos := Vector2(float(req.get("x", 0.0)), float(req.get("y", 0.0)))
 	var path := ""
@@ -372,7 +396,7 @@ func _cmd_spawn(req: Dictionary) -> Dictionary:
 	return {"ok": true, "id": e.get_instance_id()}
 
 
-func _cmd_clear_enemies() -> Dictionary:
+func cmdClearEnemies() -> Dictionary:
 	var n := 0
 	for e in get_tree().get_nodes_in_group("enemy"):
 		if is_instance_valid(e):
@@ -381,7 +405,7 @@ func _cmd_clear_enemies() -> Dictionary:
 	return {"ok": true, "cleared": n}
 
 
-func _cmd_set_hp(req: Dictionary) -> Dictionary:
+func cmdSetHp(req: Dictionary) -> Dictionary:
 	var pid := int(req.get("playerId", 1))
 	var hp := int(req.get("hp", 100))
 	for p in get_tree().get_nodes_in_group("player"):
@@ -393,7 +417,7 @@ func _cmd_set_hp(req: Dictionary) -> Dictionary:
 	return {"ok": false, "err": "player not found"}
 
 
-func _cmd_grant_weapons(req: Dictionary) -> Dictionary:
+func cmdGrantWeapons(req: Dictionary) -> Dictionary:
 	var pid := int(req.get("playerId", -1))
 	var granted := 0
 	for p in get_tree().get_nodes_in_group("player"):
@@ -408,7 +432,7 @@ func _cmd_grant_weapons(req: Dictionary) -> Dictionary:
 	return {"ok": true, "cpus": granted}
 
 
-func _cmd_teleport(req: Dictionary) -> Dictionary:
+func cmdTeleport(req: Dictionary) -> Dictionary:
 	var pid := int(req.get("playerId", 1))
 	var pos := Vector2(float(req.get("x", 0.0)), float(req.get("y", 0.0)))
 	for p in get_tree().get_nodes_in_group("player"):
@@ -419,7 +443,7 @@ func _cmd_teleport(req: Dictionary) -> Dictionary:
 	return {"ok": false, "err": "player not found"}
 
 
-func _cmd_set_setting(req: Dictionary) -> Dictionary:
+func cmdSetSetting(req: Dictionary) -> Dictionary:
 	var key := str(req.get("key", ""))
 	var value = req.get("value", null)
 	if key.is_empty():
@@ -428,7 +452,7 @@ func _cmd_set_setting(req: Dictionary) -> Dictionary:
 	return {"ok": true, "key": key, "value": MapData.mapConfig.get(key)}
 
 
-func _cmd_input(req: Dictionary) -> Dictionary:
+func cmdInput(req: Dictionary) -> Dictionary:
 	var action := str(req.get("action", ""))
 	var pressed := bool(req.get("pressed", true))
 	if action.is_empty() or not InputMap.has_action(action):
@@ -440,7 +464,7 @@ func _cmd_input(req: Dictionary) -> Dictionary:
 	return {"ok": true}
 
 
-func _cmd_screenshot(req: Dictionary) -> Dictionary:
+func cmdScreenshot(req: Dictionary) -> Dictionary:
 	if DisplayServer.get_name() == "headless":
 		return {"ok": false, "err": "headless: no rendering"}
 	var path := str(req.get("path", "user://shot.png"))

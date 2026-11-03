@@ -22,7 +22,7 @@ func tick(actor: Node, _blackboard: Blackboard) -> int:
 			p.cpuMoveDir = Vector2.ZERO
 		else:
 			p.cpuMoveDir = b.pathDirSimple(p.global_position, toBox.normalized())
-		_tryFire(p, b)
+		tryFire(p, b)
 		return RUNNING
 
 	# 2) 没箱子：选一个「远离威胁 + 不钻墙角」的方向后撤
@@ -34,12 +34,12 @@ func tick(actor: Node, _blackboard: Blackboard) -> int:
 		# 四面被堵死（墙角/被围）：别再原地抖，交给 combat 就地打
 		return FAILURE
 	p.cpuMoveDir = away
-	_tryFire(p, b)
+	tryFire(p, b)
 	return RUNNING
 
 
 ## 顺手开火：射程内 + 射线能打到 + 爆炸物不误伤
-func _tryFire(p: Player, b: CpuBrain) -> void:
+func tryFire(p: Player, b: CpuBrain) -> void:
 	var t: Node2D = b.target
 	if t == null or not is_instance_valid(t):
 		return

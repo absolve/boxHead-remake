@@ -152,11 +152,15 @@ run-2026-11-02022039-devil-body-s2    画布 90×90 逻辑 = 180×180 设备，�
 
 ## 8. 手持武器的枪口锚点（`offsetDir`）
 
+**状态：已实现** —— 五把枪（`hand_gun.gd` / `uzi.gd` / `shotgun.gd` / `rocket.gd` / `railgun.gd`）
+各自在脚本里写死了 8 个方向的 `offsetDir`；放置类（Mine / ChargePack / Wall / Barrel / Grenade）
+不读它，基类保持 `Vector2.ZERO`。已用 `muzzles.json` 逐方向核对：**5 把枪 × 8 方向全部落在 ±1px 内**。
+
 `offsetDir` 不只是贴图摆位：它同时是视觉枪口——曳光起点（`_draw`）、枪口火光位置、
 火箭弹出膛点，还被 `hitEnd()` 用来补射程长度。旧数值是按 MoreRooms 烘焙图（`scale 0.4`）
 手调的，换成 XSI 素材（`scale 0.5`、枪已烘进帧里）后必然错位，所以按导出锚点重算。
 
-数据源是 `generated/weapon-anchors/run-2026-11-02023656-player-body-s2/`
+数据源是 `F:\boxhead_remake-main\generated\weapon-anchors\run-2026-11-03015429-player-body-game-s2\`
 （`muzzles.json` 是整理好的表，`anchors.json` / `anchors.md` 是逐条明细）：
 原版 `XSI_Model_GunPosition_Right`，即 `CThing_Weapon.Fire(mParent.GetWeaponPosition(), …)`
 真正用的发射点，单位是相对脚底锚点的屏幕像素（+x 右、+y 下）。
@@ -176,9 +180,9 @@ run-2026-11-02022039-devil-body-s2    画布 90×90 逻辑 = 180×180 设备，�
 基类里保持 `Vector2.ZERO` 即可。命中判定也不依赖它：射线从 `hitOrigin()`（身体中心 `y = -15`）
 出发，只有曳光和射程补偿跟着枪口走。
 
-校验：`python doc\tools\check_muzzle_overlay.py` 会把 8 个方向的 `offsetDir` 画回
-`sprite/player/skin1/stand_<武器>/<角度>.png` 的实际贴图（青十字 = 脚底锚点，红叉 = 枪口），
-逐方向确认落在枪管口上。
+校验方式：直接拿 `muzzles.json` 的 `sets.<武器>stand.muzzle.SWAT[dir][0]`（`dir = angle×2`）
+加 `(0, 3)` 与脚本里的 `offsetDir[angle]` 对比即可，无需专用工具
+（`doc/tools/check_muzzle_overlay.py` 这个把红叉画回贴图的可视化工具尚未创建，需要时再补）。
 
 方向下标统一走 `weapon.gd::dirIdx()`（`roundi` 取最近方向，和 `player.gd` 算 `angle` 的规则一致）。
 之前是 `int(angle / (PI/4))` 向零截断，负角度会少一格，导致上半圈整体偏一个方向

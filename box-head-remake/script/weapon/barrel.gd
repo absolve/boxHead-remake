@@ -44,7 +44,7 @@ func fire(_v: Vector2) -> void:
 	get_tree().current_scene.add_child(temp)
 
 	MapData.addMapItem(center, temp.get_instance_id())
-	MapData.addObstacleAt(cell)
+	MapData.addObstacleAt(cell, true)
 
 	sound.play()
 	ammoNum -= 1

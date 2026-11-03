@@ -53,19 +53,19 @@ func _ready() -> void:
 
 	# 4 个 CPU
 	for i in range(4):
-		_spawnCpu(i)
+		spawnCpu(i)
 
 	buildUI()
 	spawnDevils(devilCount)
 	SpawnZombies(zombieCount)
 
 	if OS.has_feature("headless") or DisplayServer.get_name() == "headless":
-		_autoRun()
+		autoRun()
 	else:
 		captureShot()
 
 
-func _spawnCpu(i: int) -> void:
+func spawnCpu(i: int) -> void:
 	var p := PLAYER_SCENE.instantiate() as Player
 	p.playerId = 3 + i
 	p.isCpu = true
@@ -117,7 +117,7 @@ func buildUI() -> void:
 func _physics_process(_delta: float) -> void:
 	flowTimer += 1
 	if flowTimer < FLOW_REFRESH_FRAMES and not MapData.flowDirty:
-		_checkBounds()
+		checkBounds()
 		return
 	flowTimer = 0
 	MapData.flowDirty = false
@@ -126,11 +126,11 @@ func _physics_process(_delta: float) -> void:
 		if is_instance_valid(p) and not p.isDead:
 			seeds.append(MapData.worldToCell(p.global_position))
 	MapData.computeFieldMulti(seeds)
-	_checkBounds()
+	checkBounds()
 
 
 ## 每帧检查：敌人是否在地图外（被击退出去）
-func _checkBounds() -> void:
+func checkBounds() -> void:
 	insideChecks += 1
 	frameCount += 1
 	var mapRect := Rect2(Vector2.ZERO, MapData.mapSize)
@@ -223,7 +223,7 @@ func captureShot() -> void:
 
 
 ## headless：跑一段时间后输出统计
-func _autoRun() -> void:
+func autoRun() -> void:
 	await get_tree().create_timer(autoRunSec).timeout
 	print("QAK|RESULT|敌人出界次数=%d 最大越界=%.1fpx 检查帧=%d" % [
 		outEvents, maxOvershoot, insideChecks])

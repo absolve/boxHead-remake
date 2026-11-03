@@ -685,7 +685,7 @@ func updateLabel() -> void:
 # ---------------------------------------------------------------- 绘制
 
 ## 画一个出生点标记（圆圈 + 文字 + 朝向箭头；selected = 当前编辑的玩家槽）
-func _drawSignMarker(font: Font, center: Vector2, col: Color, ch: String,
+func drawSignMarker(font: Font, center: Vector2, col: Color, ch: String,
 		dir: int, selected: bool) -> void:
 	var cs: float = MapData.cellSize
 	draw_circle(center, cs * 0.3, Color(col.r, col.g, col.b, 0.30))
@@ -742,7 +742,7 @@ func _draw() -> void:
 		var p: Dictionary = players[i]
 		var pc: Vector2 = MapData.cellCenter(p.cell)
 		var col: Color = playerColors[i % playerColors.size()]
-		_drawSignMarker(font, pc, col, "P%d" % (i + 1), int(p.dir), i == playerSlot)
+		drawSignMarker(font, pc, col, "P%d" % (i + 1), int(p.dir), i == playerSlot)
 
 	# 其他出生点（同格有多个时左右错开，僵尸+恶魔都看得见）
 	var byCell: Dictionary = {}
@@ -767,7 +767,7 @@ func _draw() -> void:
 			Game.mapSign.Box:
 				col2 = Color(0.6, 0.6, 0.6)
 				ch = "B"
-		_drawSignMarker(font, center, col2, ch, int(s.dir), false)
+		drawSignMarker(font, center, col2, ch, int(s.dir), false)
 
 	# 矩形预览
 	if rectActive and rectStart.x >= 0 and rectEnd.x >= 0:

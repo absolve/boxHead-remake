@@ -32,6 +32,9 @@ const UP_QUAD_AMMO: StringName = &"QuadAmmo"
 
 const UP_INFINATE_AMMO: StringName = &"InfinateAmmo"
 
+## 无限弹药的哨兵值（原版 mInfinateAmmo）；手枪用 maxAmmoNum = 0 表示无限
+const INFINITE_AMMO: int = 999999
+
 const UP_LONG_SHOT: StringName = &"LongShot"
 
 const UP_INFINATE_RANGE: StringName = &"InfinateRange"
@@ -226,6 +229,10 @@ var currKillStreak: int = 0
 ## 累计连杀数（记录最高值）
 var killStreak: int = 0
 
+## 静默发放标记：开局按难度补发升级时不发 HUD 通知
+## （原版 CUpgrades.SetDifficulty 也是把 mHud.mSilentMessages 置 true 再逐级加倍率）
+var silentNotices: bool = false
+
 ## 当前分数
 var score: int = 0
 
@@ -257,6 +264,12 @@ var mapTile: Dictionary = {}
 # 键："x-y"格式的格子坐标字符串
 # 值：障碍物位置（Vector2）
 var obstacle: Dictionary = {}
+
+## 其中"来自可碰撞物体"的障碍格（预摆的油桶 / 喷墙）
+# 原版里这些东西是 mFlag_Collidable 的 who 对象，不是 StaticImpassable 格：
+# 关闭「碰撞」后玩家可以直接穿过去，但僵尸的流场仍然要绕开它们。
+# 所以要把来源记下来，玩家的格子判定才能区别对待。
+var itemCells: Dictionary = {}
 
 ## 流场字典（多玩家支持）
 # 键：玩家ID（int）
@@ -293,6 +306,20 @@ func _ready() -> void:
 	# 武器数值表必须在这里初始化：
 	# 下面 var allWeaponData 的初始值已经是历史残留（旧的 1 伤害 / 300 射程），
 	# 不调用 resetAllWeaponData() 的话，整套原版数值 + 升级表都不会生效。
+	resetAllWeaponData()
+
+
+## 开新局时清空上一局的进度与升级
+#
+# MapData 是 autoload，切场景/回菜单再开局都不会重建 —— 不重置就会把上一局的
+# 分数、连杀、已解锁武器和升级带进新局（原版每次进关卡都是重新 new 一个 CWorld）。
+# map.gd::_ready 开头调用。
+func resetRunProgress() -> void:
+	score = 0
+	currKillStreak = 0
+	killStreak = 0
+	weaponUnlock.clear()
+	silentNotices = false
 	resetAllWeaponData()
 
 
@@ -374,7 +401,9 @@ func addDecal(pos: Vector2, kind: String = "blood", size: float = 1.0) -> void:
 	if not bool(mapConfig.get("blood", true)):
 		return
 	for d in get_tree().get_nodes_in_group("decal"):
-		d.addSplat(pos, kind, size)
+		# 换房/切场景时旧贴花层已 queue_free，组里可能还挂着它
+		if is_instance_valid(d):
+			d.addSplat(pos, kind, size)
 
 
 func addBlood(pos: Vector2, size: float = 1.0) -> void:
@@ -387,6 +416,15 @@ func addScorch(pos: Vector2, size: float = 1.0) -> void:
 
 func friendlyFireOn() -> bool:
 	return bool(mapConfig.get("friendlyFire", false))
+
+
+## 「碰撞」开关（原版 CSaveData.mCollisionsActive，默认开）
+##
+## 原版只在玩家这一侧生效：`CMap_Collide.PlayerCollide` 里的"把玩家推出可碰撞体"
+## 那一步包在 `if (mCollisionsActive)` 里，而静态墙判定（StaticImpassable / Collide_Map）
+## 无条件执行；`CreatureCollide`（僵尸/恶魔）根本不看这个开关。
+func collisionOn() -> bool:
+	return bool(mapConfig.get("collision", true))
 
 
 func isObstacle(cell: Vector2i) -> bool:
@@ -402,19 +440,30 @@ func isObstacle(cell: Vector2i) -> bool:
 
 ## 添加障碍（格子坐标）
 # 放置油桶 / 喷墙时调用，让流场绕开它
-func addObstacleAt(cell: Vector2i) -> void:
+# @param fromItem true 表示这格来自可碰撞物体（油桶/喷墙），关闭「碰撞」后玩家可以穿过
+func addObstacleAt(cell: Vector2i, fromItem: bool = false) -> void:
 	var key := cellKey(cell)
 	if obstacle.has(key):
+		if fromItem:
+			itemCells[key] = true
 		return
 	obstacle[key] = Vector2(cell)
+	if fromItem:
+		itemCells[key] = true
 	obstacleVersion += 1
 	flowDirty = true
+
+
+## 这格是不是"物体类"障碍（油桶 / 喷墙），静态墙返回 false
+func isItemCell(cell: Vector2i) -> bool:
+	return itemCells.has(cellKey(cell))
 
 
 ## 移除障碍（格子坐标）
 # 油桶爆炸 / 墙被打碎时调用
 func removeObstacleAt(cell: Vector2i) -> void:
 	var key := cellKey(cell)
+	itemCells.erase(key)
 	if not obstacle.has(key):
 		return
 	obstacle.erase(key)
@@ -435,6 +484,7 @@ func removeObstacle(pos: Vector2) -> void:
 ## 清空所有障碍物
 func clearObstacle() -> void:
 	obstacle.clear()
+	itemCells.clear()
 	obstacleVersion += 1
 	flowDirty = true
 
@@ -596,11 +646,33 @@ func countKillStreak() -> void:
 			applyUpgrade(item.w, item.up, item.text)
 
 
+## 按倍率档位补发升级（原版 mMultiplier 的 setter 级联，见 CUpgrades.as:567-586）
+#
+# 高难度开局（Expert 起始倍率 29 / Nightmare 49）在原版是"起手就带几十项升级和解锁枪"，
+# 之前重制版只把 currKillStreak 设成起始倍率、没有补发，所以高难度手感与原版差一大截。
+# 逐档调用 countKillStreak()：unlockWeapon / applyUpgrade 本身幂等，重复发放不会叠加数值。
+func grantUpgradesToStreak(targetStreak: int) -> void:
+	if targetStreak <= killStreak:
+		return
+	silentNotices = true
+	for tier in range(killStreak + 1, targetStreak + 1):
+		killStreak = tier
+		countKillStreak()
+	silentNotices = false
+	currKillStreak = maxi(currKillStreak, targetStreak)
+
+
 ## 解锁一把新武器
+# 原版 CUpgrades.AddUpgrade 解锁武器时会对每个在场玩家调 NewWeapon（不是等开箱），
+# 这里照做；开局前解锁的（难度预发）此时还没有玩家，由 player.initWeapon() 补发。
 func unlockWeapon(weaponType: int, noticeText: String) -> void:
 	if not weaponUnlock.has(weaponType):
 		weaponUnlock.append(weaponType)
-	Game.notice.emit(tr(noticeText))
+	for p in get_tree().get_nodes_in_group("player"):
+		if is_instance_valid(p) and not p.isDead and p.has_method("giveWeapon"):
+			p.giveWeapon(weaponType)
+	if not silentNotices:
+		Game.notice.emit(tr(noticeText))
 
 
 ## 发放一次升级（每项只发一次，之后从原始值重算）
@@ -615,7 +687,8 @@ func applyUpgrade(weaponType: int, upgrade: String, noticeText: String) -> void:
 	weaponUpgrades[weaponType][upgrade] = true
 	recomputeWeapon(weaponType)
 	Game.weaponUpgrade.emit(weaponType)
-	Game.notice.emit(tr(noticeText))
+	if not silentNotices:
+		Game.notice.emit(tr(noticeText))
 
 
 ## 从原始值重算某把武器的当前数值（幂等，可反复调用）
@@ -649,8 +722,8 @@ func recomputeWeapon(weaponType: int) -> void:
 		s.maxAmmoNum *= 4
 		s.ammoNum *= 4
 	if up.has(UP_INFINATE_AMMO):
-		s.maxAmmoNum = 999999
-		s.ammoNum = 999999
+		s.maxAmmoNum = INFINITE_AMMO
+		s.ammoNum = INFINITE_AMMO
 
 	# --- 射程：LongShot ×1.5 / InfinateRange 100 格
 	# 只有 Pistol / UZI / Shotgun / Railgun 原版有 mRange，其余不要凭空空填
@@ -999,15 +1072,15 @@ func computeCpuField() -> void:
 
 ## 往"距离更小"的邻格走一格的方向（8 向）；没有场/孤立格返回 ZERO
 func cpuFieldDir(pos: Vector2) -> Vector2:
-	return _cpuFieldStep(pos, false)
+	return cpuFieldStep(pos, false)
 
 
 ## 撤退用：往"距离更大"的邻格走一格
 func cpuFieldAwayDir(pos: Vector2) -> Vector2:
-	return _cpuFieldStep(pos, true)
+	return cpuFieldStep(pos, true)
 
 
-func _cpuFieldStep(pos: Vector2, uphill: bool) -> Vector2:
+func cpuFieldStep(pos: Vector2, uphill: bool) -> Vector2:
 	if cpuDist.is_empty():
 		return Vector2.ZERO
 	var cell := worldToCell(pos)

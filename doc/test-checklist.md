@@ -46,7 +46,7 @@ func _ready() -> void:
     if not OS.get_cmdline_user_args().has("--test-bridge"):
         queue_free()
         return
-    # TCPServer 监听 127.0.0.1:8765，按行收发 JSON
+    # TCPServer 监听 127.0.0.1:28765（默认端口，可 --test-bridge-port= 覆盖），按行收发 JSON
 ```
 
 **命令（客户端 → 游戏）**
@@ -60,25 +60,27 @@ func _ready() -> void:
 | `set_hp` | target, hp | 指定玩家/敌人血量 |
 | `set_setting` | key, value | friendlyFire / screenShake / blood / difficulty |
 | `pause` | bool | `get_tree().paused` |
-| `step` | frames | 暂停下逐帧推进（固定步长复现） |
+| `step` | frames | ⚠️ **未实现**（设计里有，`test_bridge.gd` 没这条命令；暂停下逐帧推进） |
 | `screenshot` | path | `get_viewport().get_texture().get_image().save_png()` |
-| `select_strategy` | cpu, strategy | 强制 CPU 策略（测试用） |
+| `select_strategy` | cpu, strategy | ⚠️ **未实现**（强制 CPU 策略；目前只能在 `test_cpu.tscn` 里按 T 键手动切） |
+| `grant_weapons` | playerId? | 给 CPU 发满四类武器 |
+| `teleport` | playerId, x, y | 把玩家挪到指定坐标 |
+| `god` | bool | 全员无敌（长跑用） |
 | `quit` | code | 退出并带退出码 |
 
 **快照字段（游戏 → 客户端）**
 
 ```
-game:   mode, wave, paused, fps, process_ms, physics_ms,
-        enemy_count, decal_count, node_count, orphan_count
-players[]: id, isCpu, hp/maxHp, pos, state, invincible, weapon{type,ammo,maxAmmo,delay,range}
-enemies[]: type(zombie/devil), hp, pos, state, target, dir, speed,
-           reserved_cell, occupied_cell
-enemy_metrics: min_pair_dist, overlap_pairs, max_enemies_per_cell,
-               stuck_count, avg_speed, dir_flip_per_sec
-cpu[]:  strategy, running_branch, target{id,dist}, want_fire,
-        stuck_ms, last_switch_ms, rescue_state, box_target
-items[]: type(barrel/wall/box/mine), pos, hp
-settings: friendlyFire, screenShake, blood, difficulty, gameSpeed
+顶层:    ok, pid, scene, mapSize, paused, fps, wave, score,
+         decalCount, boxCount, nodeCount, orphanCount, memMb, ticks, simTimeSec
+players[]: id, isCpu, hp, maxHp, dead, state, pos, weapon(type), weaponName, ammo
+cpus[]:   id, strategy, branch(正在跑的行为分支), hasTarget, targetDist,
+          wantFire, boxTarget, props, stuckMs
+enemies[]: id, type(zombie/devil), hp, state, pos
+          ⚠️ 设计里的 target / dir / speed / reservedCell / occupiedCell 未实现
+metrics:  count, minPairDist, overlapPairs, maxPerCell, obstacleCount, stuckCount
+refresh:  points, blocked, timerLeft, waitTime   ← 补给箱不刷新时先看这四个数
+settings: friendlyFire, blood, screenShake
 ```
 
 > 安全：只监听 `127.0.0.1`、只在 `--test-bridge` 时加载、不要打进正式发行包。
@@ -192,7 +194,7 @@ python doc/tools/run_bridge_tests.py --longrun --minutes 5 --time-scale 3
 |---|---|---|---|---|
 | C1 | 手枪 | 26 伤害 / 8 格 / 0.32s / 无限弹药 | P0 | 🤖 |
 | C2 | UZI | 35 / 8 格 / 0.16s / 100 发，按住连发、弹药递减 | P0 | 🤖 |
-| C3 | 霰弹 | 51×弹丸数，射程 7 格；**重制版 4 发（原版 3 发）——按现状断言，别当 bug** | P0 | 🤖 |
+| C3 | 霰弹 | 51×弹丸数，射程 7 格；弹丸数 **3 / 5 / 5**（`wideShot` 0/1/2，与原版 `CThing_Weapon_Shotgun.as:58-63` 一致：0 级 1 次循环 ±1.25°，1/2 级 2 次循环 ±step、±2step，step = 1.25×(wideShot+1)）| P0 | 🤖 |
 | C4 | 轨道炮 | 100 / 10 格 / 0.20s / 15 发；穿透一条线 | P0 | 🤖 |
 | C5 | 火箭 | 250；命中有爆炸；射程按弹丸；**近距自炸会击退玩家**（友伤开时）；**弹丸不得因贴着玩家受击框自爆**：8 个方向发射都要能飞出去（出膛时必须把 `ownerId` 传给弹丸） | P0 | 🤖 |
 | C6 | 手雷 | 150；投掷距离约 6 格；延时爆炸 | P1 | 🤖 |
@@ -313,10 +315,10 @@ path_progress        = 到目标的距离随时间是否单调下降（允许短
 ## 3. 长跑监控（建议每 10 秒采样一次）
 
 ```
-t, fps, process_ms, physics_ms, enemy_count, player_count, cpu_count,
-node_count, orphan_count, decal_count, memory_mb, wave, score,
-stuck_enemies, invalid_pos_count, nan_positions,
-min_pair_dist, overlap_pairs, max_enemies_per_cell, dir_flip_per_sec
+t, fps, processMs, physicsMs, enemyCount, playerCount, cpuCount,
+nodeCount, orphanCount, decalCount, memoryMb, wave, score,
+stuckEnemies, invalidPosCount, nanPositions,
+minPairDist, overlapPairs, maxPerCell, dirFlipPerSec
 ```
 
 判红条件（任一）：
@@ -333,8 +335,13 @@ min_pair_dist, overlap_pairs, max_enemies_per_cell, dir_flip_per_sec
 
 ## 4. 已知偏差（别当 bug 断言）
 
-- 霰弹枪：重制 4 发（`-15/-7.5/0/+7.5` 再随机），原版 3 发对称；对同一目标一枪最多 1 发伤害（`excludeObj` 共用）。
-- 击退模型：枪械走 `hitFeedback` 正数（跳过伤害×质量公式）、恶魔质量 1.0、硬直固定 0.5/0.4s、60Hz 结算。详见 `doc/future-improvements.md` §射击与击退。
+- 霰弹枪：弹丸数 3 / 5 / 5，已与原版一致（见 C3）；对同一目标一枪最多 1 发伤害（`excludeObj` 共用）。
+- 击退：已回到原版的"伤害×质量"公式（`character.gd::knockbackSpeed`），恶魔质量 **5.0**（`devil.tscn`），
+  致命伤先击退再倒地，衰减按 25Hz 等价的连续指数（60Hz 下视觉等价）。
+- 补给箱内容：**加权**抽签（原版 `RandomPickup`）——缺弹的枪权重高（0.25~1.0），
+  满血且没有可解锁武器时箱子被吃掉但什么都不给（`rollContent` 返回 -1），这是原版行为。
+- 「碰撞」开关关闭时：玩家可以穿过其他玩家 / 敌人 / 油桶 / 喷墙，但静态墙照旧挡；
+  敌人侧不受开关影响（单向），与原版 `CMap_Collide` 一致（见 doc/known-issues.md §1.8）。
 - 火箭 `wRange = 0`（弹丸武器），CPU 用 `effectiveRange()` 按 320px 估算。
 - 血量/贴花密度按 60Hz 计算，比原版 25Hz 密，属预期。
 - CPU：受击 Hurt 期间行为树停摆（标签会停在受伤前状态）。
