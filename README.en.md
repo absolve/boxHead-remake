@@ -2,6 +2,8 @@
 
 [中文](README.md) | **English**
 
+![Boxhead title art: the BOXHEAD logo with the selectable characters (SWAT / devil / zombie / GIJOE / BOND / BAMBO)](box-head-remake/sprite/new.png)
+
 A remake of the Flash game **Boxhead 2Play** built with **Godot 4.7** (GL Compatibility).
 
 Boxhead 2Play is a top-down zombie survival shooter from the 2000s: you fight waves inside a closed
@@ -171,22 +173,6 @@ Reverse-engineering notes, design docs and stat tables are in `doc/`; the index 
 | [code_design.md](code_design.md) | Coding conventions: naming, typing, file layout, architecture (**this project deliberately does not use Godot's snake_case defaults**) |
 | `box-head-remake/doc/map_layouts/` | Per-room ASCII layouts and marker details |
 
-### Development scripts
-
-Scripts currently present in the repository under `doc/tools/`:
-
-| Script | Purpose |
-|---|---|
-| `gen_player_skins.py` / `gen_creature_skins.py` | Generate skin assets and `frames.tres` from the XSI bake |
-| `run_bridge_tests.py` | TestBridge driver: self-check, CPU behaviour, long-run sampling |
-| `check_naming.py` / `check_callback_naming.py` / `fix_naming.py` | Naming-convention audit and batch renames |
-| `check_res_paths.py` | Verify `res://` path casing (an exported `.pck` is case-sensitive) |
-
-> Note: `.gitignore` excludes `/doc/tools`, so the files above only get committed with `git add -f`.
-> Also, the AS2 de-obfuscation toolchain described in `doc/README.md` (`as2_delinearize.py`,
-> `as2_constpool.py`, `as2_resolve.py`, `check_citations.py`) is **not in the repository right now**,
-> so those self-check commands cannot be run as written.
-
 ---
 
 ## Repository layout
@@ -200,7 +186,7 @@ box-head-remake/        Godot project
   autoload/             singletons (Game, MapData, Settings, SoundUtil, TestBridge…)
   addons/beehave/       CPU behaviour-tree plugin (third party)
   doc/map_layouts/      ASCII room layouts
-doc/                    reverse-engineering notes, design docs, dev scripts (doc/tools is git-ignored)
+doc/                    reverse-engineering notes and design docs
 oldGame/                original SWFs and decompiled sources (read-only reference)
 code_design.md          coding conventions
 ```

@@ -2,6 +2,8 @@
 
 **中文** | [English](README.en.md)
 
+![Boxhead 标题图：BOXHEAD 字样与可选角色（SWAT / 恶魔 / 僵尸 / GIJOE / BOND / BAMBO）](box-head-remake/sprite/new.png)
+
 用 **Godot 4.7**（GL Compatibility）重制 Flash 小游戏 **Boxhead 2Play**（箱子头：双人版）。
 
 原版是 2000 年代的 Flash 俯视角僵尸生存射击游戏：玩家在封闭房间里边打边跑，靠连杀叠倍率刷分。本项目通过反编译原版 SWF 逐项还原数值、状态机与美术资源，目标是**行为与原版一致**的重制版。
@@ -157,21 +159,6 @@ python doc/tools/run_bridge_tests.py --longrun --minutes 5 --time-scale 3   # �
 | [code_design.md](code_design.md) | 编码规范：命名、类型、文件结构、架构约定（**本项目不用官方 snake_case**）|
 | `box-head-remake/doc/map_layouts/` | 每个房间的字符画布局与标记明细 |
 
-### 开发脚本
-
-`doc/tools/` 下当前在仓库里的脚本：
-
-| 脚本 | 用途 |
-|---|---|
-| `gen_player_skins.py` / `gen_creature_skins.py` | 从 XSI 烘焙帧生成皮肤素材与 `frames.tres` |
-| `run_bridge_tests.py` | TestBridge 驱动：自检、CPU 行为、长跑采样 |
-| `check_naming.py` / `check_callback_naming.py` / `fix_naming.py` | 命名规范核查与批量改名 |
-| `check_res_paths.py` | 校验 `res://` 路径大小写（导出 `.pck` 后严格区分大小写） |
-
-> 注意：`.gitignore` 排除了 `/doc/tools`，上面这些文件要靠 `git add -f` 才会入库。
-> 另外 `doc/README.md` 里描述的 AS2 反混淆工具链（`as2_delinearize.py` / `as2_constpool.py` /
-> `as2_resolve.py` / `check_citations.py`）**当前不在仓库中**，那几条自检命令暂时跑不了。
-
 ---
 
 ## 目录结构
@@ -185,7 +172,7 @@ box-head-remake/        Godot 项目
   autoload/             全局单例（Game、MapData、Settings、SoundUtil、TestBridge…）
   addons/beehave/       CPU 行为树插件（第三方）
   doc/map_layouts/      房间布局字符画
-doc/                    逆向文档、设计文档、开发脚本（doc/tools 被 gitignore）
+doc/                    逆向文档、设计文档
 oldGame/                原版 SWF 与反编译源码（只读参考）
 code_design.md          编码规范
 ```
