@@ -42,6 +42,9 @@ var detonated: bool = false
 
 
 func _ready() -> void:
+	# 爆炸图要画在焦痕/角色/墙之上，否则会被自己刚撒出去的焦痕盖住
+	z_index = MapData.FX_Z
+
 	# 0) 地面焦痕
 	MapData.addScorch(global_position, 2.0)
 

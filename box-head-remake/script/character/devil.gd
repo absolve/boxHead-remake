@@ -159,10 +159,17 @@ func flowDirection() -> Vector2:
 	return sidestepDirection(dir)
 
 
-## 下一步能否通过 —— 只看地形障碍格
+## 某格能不能站：地形障碍 + 相机可视范围之外
 ##
-## 与 `Zombie.canStep()` 的区别：不查别的僵尸/恶魔占的格。恶魔体型大、又会拆障碍，
-## 把同类当墙会让它在窄口彻底卡死；同类挤压交给 move_and_collide 的推挤。
+## 和 `Zombie.isNavBlocked()` 的差别只有最后一条：不查别的生物占的格。
+## 恶魔体型大、又会拆障碍，把同类当墙会在窄口集体卡死；同类挤压交给 move_and_collide。
+func cellFree(cell: Vector2i) -> bool:
+	if MapData.isObstacle(cell):
+		return false
+	return MapData.getPlayRect().has_point(MapData.cellCenter(cell))
+
+
+## 下一步能否通过
 func canStep(dir: Vector2) -> bool:
 	if dir == Vector2.ZERO:
 		return false
@@ -170,12 +177,11 @@ func canStep(dir: Vector2) -> bool:
 	if step == Vector2i.ZERO:
 		return false
 	var cell := MapData.worldToCell(global_position)
-	if MapData.isObstacle(cell + step):
+	if not cellFree(cell + step):
 		return false
 	if step.x != 0 and step.y != 0:
 		# 对角不允许从两个障碍的夹角里穿过去
-		if MapData.isObstacle(cell + Vector2i(step.x, 0)) \
-				or MapData.isObstacle(cell + Vector2i(0, step.y)):
+		if not cellFree(cell + Vector2i(step.x, 0)) or not cellFree(cell + Vector2i(0, step.y)):
 			return false
 	return true
 
