@@ -19,6 +19,9 @@ const SCORE_POPUP_ACCEL: float = 1.2199     # ln(1.05) * 25
 ## 连杀衰减计时器（原版 CUpgrades 的 mMultiplierTick）
 var streakDecayTimer: Timer = null
 
+## 连击衰减计时器（原版 CUpgrades 的 mMultipleKillsTick：窗口极短，到点直接归零）
+var comboDecayTimer: Timer = null
+
 ## 正在飞的飘分标签
 var scorePopups: Array = []
 ## CPU 玩家的行为树大脑（槽位选 CPU 时挂到玩家下）
@@ -111,6 +114,11 @@ func _ready() -> void:
 	streakDecayTimer.one_shot = true
 	streakDecayTimer.timeout.connect(onStreakDecayTimeout)
 	add_child(streakDecayTimer)
+	# 连击衰减计时器（原版 mMultipleKillsTick = GetTicks/6，到点归零）
+	comboDecayTimer = Timer.new()
+	comboDecayTimer.one_shot = true
+	comboDecayTimer.timeout.connect(onComboDecayTimeout)
+	add_child(comboDecayTimer)
 	# 按 selectedMapId 创建房间（必须在用到 room 之前）
 	swapRoom()
 	updateLevelLabel()
@@ -401,6 +409,8 @@ func enemyKilled(pos: Vector2, baseScore: int = 100) -> void:
 
 	# 连杀衰减计时（连杀越高，衰减越快）
 	restartStreakDecay()
+	# 连击窗口（原版 mMultipleKillsTick，比倍率衰减快 6 倍）
+	restartComboDecay()
 
 	# 死亡点飘分（原版 CHud.AddScore）
 	spawnScorePopup(pos, gained)
@@ -414,9 +424,11 @@ func enemyKilled(pos: Vector2, baseScore: int = 100) -> void:
 	countAniNode.speed_scale = 1 + 0.1 * (MapData.currKillStreak / 10)
 	countAniNode.play("default")
 
-	# 原版 CWorld.LogKill：恶魔必掉补给箱；僵尸按连杀倍数掉。
+	# 原版 CWorld.LogKill:613-639：恶魔必掉补给箱；僵尸按连击数每 5 杀掉一个。
+	# 注意用的是 comboKills（快衰减、到点归零的连击计数），不是显示用的 currKillStreak；
+	# 先 +1 再判 %5，所以连击断掉归零后不会误判成 0 % 5 == 0。
 	var isDevil: bool = baseScore >= 1000
-	if isDevil or (MapData.currKillStreak > 0 and MapData.currKillStreak % MapData.killRewardBox == 0):
+	if isDevil or MapData.comboKills % MapData.killRewardBox == 0:
 		spawnRewardBox(pos)
 
 
@@ -431,7 +443,8 @@ func spawnRewardBox(pos: Vector2) -> void:
 			return
 	var temp = box.instantiate()
 	temp.global_position = MapData.cellCenter(cell)
-	temp.expiredTime = 15
+	# 原版 CWorld._CreatePickup:647 是 SetDeleteCounter(CMain.mFPS * 10) → 存在 10 秒
+	temp.expiredTime = 10
 	add_child(temp)
 
 
@@ -531,6 +544,22 @@ func restartStreakDecay() -> void:
 	var frames: int = countAniNode.sprite_frames.get_frame_count("default")
 	var animLen: float = float(frames) / maxf(speed, 1.0)
 	countAniNode.speed_scale = clampf(animLen / maxf(dur, 0.04), 1.0, 60.0)
+
+
+## 连击窗口：原版 mMultipleKillsTick = GetTicks(index)/6，比倍率衰减快 6 倍
+##   （CUpgrades.as:546 vs :570）—— 到点不是 -1 而是直接归零
+func comboWindowSeconds(combo: int) -> float:
+	return streakDecaySeconds(maxi(combo, 1)) / 6.0
+
+
+## 每次击杀后重置连击窗口；窗口内没再杀就归零，下一轮从头数
+func restartComboDecay() -> void:
+	comboDecayTimer.stop()
+	comboDecayTimer.start(maxf(comboWindowSeconds(MapData.comboKills), 0.04))
+
+
+func onComboDecayTimeout() -> void:
+	MapData.comboKills = 0
 
 
 func onStreakDecayTimeout() -> void:

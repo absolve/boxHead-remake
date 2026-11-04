@@ -151,7 +151,7 @@
 
 | # | 差距 | 原版证据 | 重制现状 | 备注 |
 |---|---|---|---|---|
-| 5.1 | 补给箱掉落**节奏**慢很多 | `CWorld.LogKill:613-639` 用极快衰减的 `mMultipleKill`，`%5==0` 掉箱（恶魔死亡必掉） | `map.gd:414-416` 用慢衰减 `currKillStreak % 30` | 手感差异明显，可调 |
+| 5.1 | ~~补给箱掉落**节奏**慢很多~~ → **已修**，按原版补了独立的连击计数器 | 原版**两个计数器**：`CUpgrades.LogKills:513-521` 里 `mMultipleKill` 与 `mMultiplier` 同时 +1，但衰减不同（`:81-88`）——`mMultipleKillsTick = GetTicks/6`（`:546`，约 0.45s）**到点直接归零**，`mMultiplierTick`（`:570`）才是慢速 `-1`；掉箱判的是快的那个：`CWorld.LogKill:620` `mMultipleKill % 5 == 0`，恶魔 `:627` 无条件掉；箱子寿命 `CWorld._CreatePickup:647` = `FPS*10` = **10s** | 现实现：`MapData.comboKills`（≡`mMultipleKill`）+ `MapData.killRewardBox = 5`，`map.gd::restartComboDecay()/onComboDecayTimeout()` 负责 1/6 窗口归零，`enemyKilled()` 判 `comboKills % 5`；`spawnRewardBox` 寿命 15→10s。`currKillStreak` 仍只当倍率（显示/分数/升级）用 | 之前是拿慢衰减的 `currKillStreak % 30` 判，等于要连杀 30 才掉一个，比原版稀有得多。⚠️ 未实机验证：连杀 5 只的窗口很短（约 0.45s/只），实际掉箱频率需要打一局看 |
 | 5.2 | ~~箱内物品**权重**不同~~ → **已修**，改成原版的加权抽签 | 原版 `CThing_Creature_Player.RandomPickup:355-397` | 现实现 `script/item/box.gd::rollContent()/ammoWeight()`：每把已解锁非手枪武器权重 `(1-当前弹/上限)×0.75+0.25`，回血权重 `(1-hp/maxHp)×武器权重和` | ⚠️ 原版的推论：**一把武器都没解锁时开箱什么都不给**（回血权重乘的是武器权重总和，总和为 0）。已按原版保留；想改成"新手期开箱必给血"只需把 life 项换成固定权重。自造的 `healThreshold` 已删除 |
 | 5.3 | ~~无 DeathMatch / 模式选择 / 胜者结算 / HighScore 提交~~ → **明确不做**（超出本项目范围） | 原版 `CScreen_Main.as:38-40`、`CWorld.mGameMode`、`CScreen_Debrief_Winner` | 只有合作流程，按决定不再补 | 将来若要做：`MapData.resetRunProgress()` 与 `playerSlots` 都要按模式分支 |
 | 5.4 | 结算与暂停信息量低（暂停已补"继续 / 返回主菜单"，其余仍缺） | 原版 `CScreen_Debrief.as:34-96`、`CHud.Pause:63-108` | `gameover.gd:11-16` 只显示总分；`pause_layer.gd` 现有两个按钮，但无升级列表 | 缺等级/击杀/死亡/存活时间/升级列表 |

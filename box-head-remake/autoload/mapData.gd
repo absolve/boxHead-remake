@@ -226,6 +226,13 @@ var mapConfig: Dictionary = {
 ## 当前连杀数（显示用）
 var currKillStreak: int = 0
 
+## 连击计数（原版 CUpgrades.mMultipleKill）
+# 和 currKillStreak 是两个独立计数器：
+#   currKillStreak ≡ mMultiplier，慢衰减（每次 -1），驱动分数倍率与升级解锁
+#   comboKills     ≡ mMultipleKill，快衰减（窗口约 0.45s，到点直接归零），只用于补给箱节奏
+# 出处：__Packages/World/CUpgrades.as:81-88（两条独立衰减）、:513-521（LogKills 同时 +1）
+var comboKills: int = 0
+
 ## 累计连杀数（记录最高值）
 var killStreak: int = 0
 
@@ -283,7 +290,9 @@ var flowDirty: bool = true
 ## 障碍版本号（每次增删 +1，便于调试/断言）
 var obstacleVersion: int = 0
 
-var killRewardBox: int = 30 #击杀数是当前数的倍数就有补给箱
+## 补给箱掉落档位：连击数（comboKills）每满这一档掉一个
+# 原版 CWorld.LogKill:620 是写死的 % 5，恶魔死亡则无条件掉（:627）
+var killRewardBox: int = 5
 
 ## 房间真实世界边界（相机夹取用；原点不一定是 0,0）
 var mapRect: Rect2 = Rect2(0, 0, 0, 0)
@@ -317,6 +326,7 @@ func _ready() -> void:
 func resetRunProgress() -> void:
 	score = 0
 	currKillStreak = 0
+	comboKills = 0
 	killStreak = 0
 	weaponUnlock.clear()
 	silentNotices = false
@@ -626,10 +636,12 @@ func addMapItem(pos: Vector2, id: int) -> void:
 	mapTile["%s-%s" % [x, y]] = id
 
 
-## 添加连杀数
+## 记一次击杀：两个计数器同时 +1
+# 对应原版 CUpgrades.LogKills:513-521（mMultipleKill 与 mMultiplier 各自 +1）
 # @param val 增加的连杀数（int）
 func addKillStreak(val: int) -> void:
 	currKillStreak += val
+	comboKills += val
 	if currKillStreak > killStreak:
 		killStreak = currKillStreak
 		countKillStreak()
