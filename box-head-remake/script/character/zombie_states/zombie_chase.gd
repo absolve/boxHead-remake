@@ -41,9 +41,15 @@ func physicsUpdate(delta: float) -> void:
 	if z.isDead:
 		return
 
-	# 目标丢失 → 乱走（原版无此分支，这里避免玩家死后全体站桩）
+	# 没有存活目标（单人死亡 / 全灭后等 gameover 的那几秒）→ 站住，与恶魔一致
+	# （devil_chase.gd 无目标就 stand）。原版会把尸体当目标（GetClosestPlayer 的
+	# 单人快速路径不查死亡，CThing_Collection.as:95-102、:120），但尸体格一直挂着
+	# mCollide_Player，僵尸走到跟前就反复进 Attack 落空 / Wait，看着也是停在尸体边。
+	# 详见 doc/01-enemy-ai.md §3。之前的"随机乱走"兜底每帧重挑方向 = 原地抖动，已删。
 	if not z.refreshTarget(delta):
-		wanderFallback(delta)
+		cancelMove()
+		z.velocity = Vector2.ZERO
+		z.playAnim("stand")
 		return
 
 	# 卡在障碍格里（被击退推进墙 / 出生点压墙）→ 先直线挪到最近空格再说
@@ -166,14 +172,3 @@ func cancelMove() -> void:
 		MapData.releaseCell(z.moveTargetCell, z)
 		z.moveTargetCell = Vector2i(-9999, -9999)
 	z.claimCurrentCell()
-
-
-## 没有目标时的兜底：随便找个能走的方向挪
-func wanderFallback(delta: float) -> void:
-	var dir: Vector2 = z.wanderDir()
-	if dir == Vector2.ZERO:
-		z.velocity = Vector2.ZERO
-		z.playAnim("stand")
-		return
-	z.moveInDirection(dir, delta)
-	z.playAnim("walk")

@@ -706,32 +706,6 @@ func updateOccupancy() -> void:
 	MapData.setZombieCell(cell, self)
 
 
-## 选方向：返回归一化方向；无路可走返回 ZERO
-func inNavBounds(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.y >= 0 \
-		and cell.x < int(MapData.mapSize.x / MapData.cellSize) \
-		and cell.y < int(MapData.mapSize.y / MapData.cellSize)
-
-
-## 彻底找不到方向时的兜底：随机挑一个可走的方向
-##
-## 原版僵尸不会站着不动——它会到处乱走。没有这个兜底，
-## 出生点被围住 / 流场没算好时，僵尸就会永远杵在原地。
-func wanderDir() -> Vector2:
-	var cell := gridPosition()
-	var options: Array = []
-	for d in DIRS:
-		var step := Vector2i(roundi(d.normalized().x), roundi(d.normalized().y))
-		# 只用格子判定：canStep 走 ShapeCast，一群僵尸围着时会 8 向全挡，
-		# 反而一个方向都挑不出来 → 站着不动。
-		if MapData.isObstacle(cell + step):
-			continue
-		options.append(d.normalized())
-	if options.is_empty():
-		return Vector2.ZERO
-	return options[randi() % options.size()]
-
-
 # ================================================================ 原版导航
 # 依据 2P/CMap_Cell.as:280-538：Nav_Direction 三段式 + 8 向位掩码
 

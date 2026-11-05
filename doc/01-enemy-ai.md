@@ -307,6 +307,32 @@ GetClosestPlayer(p) {
 * **【推断】** 双人模式下「两人都活着」时，敌人的目标会在两人间距变化时来回切换；
   文档化的实现若想还原手感，应保留这一「无锁定」行为。
 
+### 3.1 重制版口径：没有存活玩家时**站住**（2026-11-05 拍板）
+
+多人里死一个 → 僵尸/恶魔立刻转追活着的（`findTarget()` 过滤 `isDead`，与原版多人分支一致）。
+**全部死亡 / 单人死亡**时两种做法：
+
+| 做法 | 依据 |
+|---|---|
+| 原版：继续把尸体当目标 | `GetClosestPlayer` 单人快速路径不查 `mFlag_DEAD`（`CThing_Collection.as:95-102`），全灭时兜底返回第一个（`:120`）；尸体格还挂着 `mCollide_Player`（`CThing_Creature_Player.as:161`） |
+| 重制版：无存活目标 → `velocity = ZERO` + `stand` | **已采用** |
+
+为什么选站住：原版的"继续走"其实走不出什么效果——目标格被 `mCollide_Player` 永久占着，
+而 `mCollide_NonMovable` 含 `mCollide_Player`（`CMap_Cell.as:46`），僵尸到尸体跟前只会
+反复进 `State_Attack`（落空睡 10 帧，`CThing_Creature_Zombie.as:103-111`、`:127-131`）
+或 `State_Wait`（1 秒，`:258`），视觉上也停在尸体边；而原版 `PlayerDead` 同帧就切
+debrief（`CWorld.as:665`、`CMain.as:190-205`），根本来不及看。
+重制版全灭后有 **5 秒**才进结算场景（`map.gd::playerDead`），抖动会看得很清楚，
+所以这里直接站住。
+
+落地位置：`zombie_chase.gd`（无目标分支，与 `devil_chase.gd` 的无目标处理一致）。
+原先的"随机乱走"兜底 `wanderDir()` 是**每帧重挑一个随机方向**，所以僵尸会原地摇摆 —— 已删除
+（连带删了没有调用方的 `inNavBounds()`）。卡地形/被围住的脱困不依赖它：
+所在格是障碍时走 `escapeDirection()`（`zombie.gd`，半径 3 格找最近空格）。
+
+> 若以后想还原原版：把 `findTarget()` 加一条兜底（无存活玩家时返回任意尸体）
+> 并让流场在 seeds 为空时仍以尸体为目标即可。
+
 ---
 
 ## 4. 状态机：从发现到靠近到攻击（问题 3）

@@ -133,6 +133,22 @@
 - 同类未动：`smoke.tscn` 的 `z_index = 10`、`fireball.gd` 的 `z_index = 200` 也低于角色（按 y 排到几百），
   烟雾/火球在地图下半部分会被角色和墙盖住。要不要一起抬到 `FX_Z` 待定。
 
+### 1.9 单人死亡后僵尸原地摇摆 `已修`
+- 现象（改前）：只有一个玩家时玩家死亡，僵尸在原地来回抖；恶魔不会。多人里死一个不受影响
+  （活着的玩家还在，僵尸会转追别人）。
+- 原因：`zombie_chase.gd` 无目标分支走 `wanderFallback()` → `zombie.gd::wanderDir()`
+  是**每帧**从可走方向里 `randi()` 挑一个，方向每帧重掷 → 视觉抖动。
+  恶魔的 `devil_chase.gd:21-24` 无目标直接 `velocity = ZERO` + `stand`，所以不抖。
+- 改动：僵尸与恶魔统一成"无存活目标 → 站住"，删掉 `wanderFallback()` / `wanderDir()`
+  （以及没有调用方的 `inNavBounds()`）。被墙围住/卡在障碍格的脱困不依赖它，走
+  `escapeDirection()`。口径与依据写在 `doc/01-enemy-ai.md` §3.1。
+- 与原版的差别：原版会把尸体当目标继续走（`CThing_Collection.as:95-102`、`:120`），
+  但目标格被 `mCollide_Player` 永久占着，实际是在尸体边反复 Attack 落空 / Wait；
+  且原版 `PlayerDead` 同帧就切结算场景（`CWorld.as:665`）。重制版全灭后有 **5 秒**才进
+  `gameover.tscn`（`map.gd::playerDead`），抖动会被看清，所以选择站住。
+- 确认方法：单人开局打死一只僵尸→自己送死→5 秒内僵尸应站住不再抖；多人（≥2 人）死一个，
+  僵尸应立刻改追活着的队友。
+
 ---
 
 ## 2. 待确认：设置与开关
