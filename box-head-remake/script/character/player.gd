@@ -847,8 +847,7 @@ func updateCommon(delta: float) -> void:
 
 ## 限制玩家在地图边界内，并按 Y 坐标设置 Z 轴顺序（2.5D）
 func updateBoundsAndZ() -> void:
-	# 按「相机可视范围」钳取，而不是整张地图：
-	# 地图比相机大时，相机被夹在边缘 32px 内，玩家走到更外面就会出画。
+	# 地图边界内缩相机边距，避免玩家走进相机无法显示的地图边缘。
 	var play: Rect2 = MapData.getPlayRect()
 	position.x = clampf(position.x, play.position.x + bodySize.x / 2, play.end.x - bodySize.x / 2)
 	position.y = clampf(position.y, play.position.y + bodySize.y / 2, play.end.y - bodySize.y / 2)
@@ -868,15 +867,33 @@ func updateBoundsAndZ() -> void:
 			var a: float = float(get_instance_id() % 8) * PI * 0.25
 			position += Vector2.RIGHT.rotated(a) * 0.5
 
-	# 再夹进「相机视野」：多人共用一个相机时，谁也不能单独走出画面。
-	# 已经死亡的不夹：尸体可以留在原地，不用跟着相机跑。
-	var move: Rect2 = MapData.moveRect()
-	if not isDead and move.size.x > bodySize.x and move.size.y > bodySize.y:
-		position.x = clampf(position.x, move.position.x + bodySize.x / 2, move.end.x - bodySize.x / 2)
-		position.y = clampf(position.y, move.position.y + bodySize.y / 2, move.end.y - bodySize.y / 2)
-
 	# 根据Y坐标设置Z轴顺序（实现2.5D视觉效果）
 	z_index = MapData.worldZ(global_position.y)
+
+
+## 只阻挡主动位移越过当前相机视野；相机移动不能改写玩家的世界坐标。
+func clampMovementToView(displacement: Vector2) -> Vector2:
+	if isDead:
+		return displacement
+	var move: Rect2 = MapData.moveRect()
+	if move.size.x <= bodySize.x or move.size.y <= bodySize.y:
+		return displacement
+
+	var minimum: Vector2 = move.position + bodySize * 0.5
+	var maximum: Vector2 = move.end - bodySize * 0.5
+	var current: Vector2 = global_position
+	var target: Vector2 = current + displacement
+
+	if displacement.x < 0.0 and target.x < minimum.x:
+		target.x = maxf(current.x, minimum.x)
+	elif displacement.x > 0.0 and target.x > maximum.x:
+		target.x = minf(current.x, maximum.x)
+	if displacement.y < 0.0 and target.y < minimum.y:
+		target.y = maxf(current.y, minimum.y)
+	elif displacement.y > 0.0 and target.y > maximum.y:
+		target.y = minf(current.y, maximum.y)
+
+	return target - current
 
 
 ## ---- 状态钩子（供 player_states/*.gd 调用）----
@@ -994,6 +1011,7 @@ func updateIdle(delta: float) -> void:
 	# 移动并处理碰撞
 	var displacement = velocity * delta
 	if displacement != Vector2.ZERO:
+		displacement = clampMovementToView(displacement)
 		# 格子级阻挡：整体走不通就分轴尝试（原版 Collide_Map 的滑行语义）
 		# 注意：如果自己脚下已经是障碍格（比如刚在脚下放了油桶），
 		# 就允许自由离开，否则会被自己放的物体卡死。
@@ -1150,12 +1168,13 @@ func updateHurt(delta: float) -> void:
 	hurtTimer += delta
 	var step: Vector2 = advanceKnockback(delta)
 	if step != Vector2.ZERO:
+		var boundedStep: Vector2 = clampMovementToView(step)
 		var next: Vector2 = body.global_position + step
 		# 后面有墙 / 敌人 / 可玩区域边界 → 直接停住
-		if knockbackBlocked(next, playerRadius()):
+		if boundedStep != step or knockbackBlocked(next, playerRadius()):
 			clearKnockback()
 		elif not blockedByCell(next):
-			move_and_collide(step)
+			move_and_collide(boundedStep)
 			# 原版 State_BulletHit 在被击退的每一 tick（25Hz）滴一滴血，
 			# 但爆炸造成的击退不滴（CThing_Creature.as:332-335）
 			if not hurtFromExplosion:

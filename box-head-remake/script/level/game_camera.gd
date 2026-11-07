@@ -91,16 +91,26 @@ func _physics_process(delta: float) -> void:
 			return
 
 	var vp: Vector2 = get_viewport_rect().size
+	var viewSize: Vector2 = vp / zoom
 
 	# 多人：相机跟所有存活玩家的中心（原版 CWorld.TrackThing 是求平均）
 	var goal: Vector2 = target.global_position
 	var alive: Array = []
 	var sum := Vector2.ZERO
+	var minPlayerCenter := Vector2(INF, INF)
+	var maxPlayerCenter := Vector2(-INF, -INF)
 	for n in get_tree().get_nodes_in_group("player"):
 		if not is_instance_valid(n) or bool(n.get("isDead")):
 			continue
 		alive.append(n)
-		sum += (n as Node2D).global_position
+		var playerPosition: Vector2 = (n as Node2D).global_position
+		sum += playerPosition
+		var playerSize: Vector2 = n.get("bodySize")
+		var playerExtent: Vector2 = playerSize * 0.5 + Vector2(8.0, 8.0)
+		minPlayerCenter.x = maxf(minPlayerCenter.x, playerPosition.x - viewSize.x * 0.5 + playerExtent.x)
+		minPlayerCenter.y = maxf(minPlayerCenter.y, playerPosition.y - viewSize.y * 0.5 + playerExtent.y)
+		maxPlayerCenter.x = minf(maxPlayerCenter.x, playerPosition.x + viewSize.x * 0.5 - playerExtent.x)
+		maxPlayerCenter.y = minf(maxPlayerCenter.y, playerPosition.y + viewSize.y * 0.5 - playerExtent.y)
 	if alive.size() > 0:
 		goal = sum / float(alive.size())
 
@@ -115,8 +125,23 @@ func _physics_process(delta: float) -> void:
 	bounds = bounds.grow(-edgeMargin)
 
 	# 视口中心的允许范围：保证视口完整落在 bounds 内
-	var minC: Vector2 = bounds.position + vp * 0.5
-	var maxC: Vector2 = bounds.end - vp * 0.5
+	var minC: Vector2 = bounds.position + viewSize * 0.5
+	var maxC: Vector2 = bounds.end - viewSize * 0.5
+
+	# 相机不能为了跟随一名玩家而把其他玩家带出画面。
+	# 玩家会被限制在当前视野边缘，因此队伍不会超出单个相机能显示的范围。
+	if minPlayerCenter.x <= maxPlayerCenter.x:
+		var constrainedMinX: float = maxf(minC.x, minPlayerCenter.x)
+		var constrainedMaxX: float = minf(maxC.x, maxPlayerCenter.x)
+		if constrainedMinX <= constrainedMaxX:
+			minC.x = constrainedMinX
+			maxC.x = constrainedMaxX
+	if minPlayerCenter.y <= maxPlayerCenter.y:
+		var constrainedMinY: float = maxf(minC.y, minPlayerCenter.y)
+		var constrainedMaxY: float = minf(maxC.y, maxPlayerCenter.y)
+		if constrainedMinY <= constrainedMaxY:
+			minC.y = constrainedMinY
+			maxC.y = constrainedMaxY
 
 	# 地图（内缩后）比视口还小 → 居中；否则夹取
 	var cx: float = (
@@ -135,7 +160,7 @@ func _physics_process(delta: float) -> void:
 	# （Godot 4 里枚举常量名不可直接引用，用数值判断）
 	var anchorFix := Vector2.ZERO
 	if anchor_mode == 0:
-		anchorFix = -vp * 0.5
+		anchorFix = -viewSize * 0.5
 
 	if snapNext:
 		global_position = goalCenter + anchorFix
@@ -146,8 +171,7 @@ func _physics_process(delta: float) -> void:
 	# 把「当前可视区域」写回 MapData：玩家和 CPU 都用它当移动边界
 	var center: Vector2 = global_position
 	if anchor_mode == 0:      # FIXED_TOP：position 是左上角
-		center += vp * 0.5
-	var viewSize: Vector2 = vp / zoom
+		center += viewSize * 0.5
 	MapData.viewRect = Rect2(center - viewSize * 0.5, viewSize)
 
 

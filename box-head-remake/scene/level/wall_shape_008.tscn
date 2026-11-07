@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b4uw3tv67g6np"]
+
+[ext_resource type="PackedScene" uid="uid://chj3ogfpmj4mk" path="res://scene/level/wall_shape.tscn" id="1_hp8hi"]
+[ext_resource type="Texture2D" uid="uid://bjaq07f2icsfj" path="res://sprite/shape/100.png" id="2_qws6u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qws6u"]
+size = Vector2(256, 192)
+
+[node name="wallShape" unique_id=1549973302 instance=ExtResource("1_hp8hi")]
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_qws6u")
+
+[node name="shape" parent="." index="1"]
+position = Vector2(6, 19)
+shape = SubResource("RectangleShape2D_qws6u")

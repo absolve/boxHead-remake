@@ -1,154 +1,321 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://bk51ysqc101hv"]
 
-[ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
-[ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="2_sign"]
-[ext_resource type="PackedScene" path="res://scene/item/wall_obj.tscn" id="5_wobj"]
-[ext_resource type="PackedScene" path="res://scene/item/barrel_obj.tscn" id="4_barrel"]
+[ext_resource type="Script" uid="uid://ck7mpcduqksur" path="res://script/level/room_generic.gd" id="1_room"]
+[ext_resource type="PackedScene" uid="uid://dkx7wkdp0lmnd" path="res://scene/level/map_sign.tscn" id="2_sign"]
+[ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/level/wall_shape_003.tscn" id="3_hfwg8"]
+[ext_resource type="PackedScene" uid="uid://enp6h28qyi1b" path="res://scene/level/wall_shape_001.tscn" id="4_wqlqq"]
 
-[node name="room_0015" type="Node2D"]
+[node name="room_0015" type="Node2D" unique_id=659687912]
 script = ExtResource("1_room")
-barrelPoint = Array[Vector2i]([])
-wallPoint = Array[Vector2i]([])
+wallObstacles = [Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(14, 4), Vector2i(15, 4), Vector2i(16, 4), Vector2i(17, 4), Vector2i(18, 4), Vector2i(19, 4), Vector2i(20, 4), Vector2i(21, 4), Vector2i(22, 4), Vector2i(23, 4), Vector2i(24, 4), Vector2i(25, 4), Vector2i(26, 4), Vector2i(27, 4), Vector2i(28, 4), Vector2i(29, 4), Vector2i(30, 4), Vector2i(31, 4), Vector2i(32, 4), Vector2i(33, 4), Vector2i(34, 4), Vector2i(35, 4), Vector2i(36, 4), Vector2i(37, 4), Vector2i(38, 4), Vector2i(39, 4), Vector2i(40, 4), Vector2i(41, 4), Vector2i(42, 4), Vector2i(43, 4), Vector2i(44, 4), Vector2i(45, 4), Vector2i(46, 4), Vector2i(47, 4), Vector2i(48, 4), Vector2i(49, 4), Vector2i(50, 4), Vector2i(51, 4), Vector2i(52, 4), Vector2i(53, 4), Vector2i(54, 4), Vector2i(55, 4), Vector2i(56, 4), Vector2i(57, 4), Vector2i(58, 4), Vector2i(59, 4), Vector2i(60, 4), Vector2i(61, 4), Vector2i(62, 4), Vector2i(63, 4), Vector2i(64, 4), Vector2i(65, 4), Vector2i(66, 4), Vector2i(67, 4), Vector2i(68, 4), Vector2i(69, 4), Vector2i(70, 4), Vector2i(71, 4), Vector2i(72, 4), Vector2i(73, 4), Vector2i(74, 4), Vector2i(75, 4), Vector2i(76, 4), Vector2i(77, 4), Vector2i(78, 4), Vector2i(79, 4), Vector2i(80, 4), Vector2i(81, 4), Vector2i(82, 4), Vector2i(83, 4), Vector2i(0, 5), Vector2i(1, 5), Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(6, 5), Vector2i(7, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(13, 5), Vector2i(14, 5), Vector2i(15, 5), Vector2i(16, 5), Vector2i(17, 5), Vector2i(18, 5), Vector2i(19, 5), Vector2i(20, 5), Vector2i(21, 5), Vector2i(22, 5), Vector2i(23, 5), Vector2i(24, 5), Vector2i(25, 5), Vector2i(26, 5), Vector2i(27, 5), Vector2i(28, 5), Vector2i(29, 5), Vector2i(30, 5), Vector2i(31, 5), Vector2i(32, 5), Vector2i(33, 5), Vector2i(34, 5), Vector2i(35, 5), Vector2i(36, 5), Vector2i(37, 5), Vector2i(38, 5), Vector2i(39, 5), Vector2i(40, 5), Vector2i(41, 5), Vector2i(42, 5), Vector2i(43, 5), Vector2i(44, 5), Vector2i(45, 5), Vector2i(46, 5), Vector2i(47, 5), Vector2i(48, 5), Vector2i(49, 5), Vector2i(50, 5), Vector2i(51, 5), Vector2i(52, 5), Vector2i(53, 5), Vector2i(54, 5), Vector2i(55, 5), Vector2i(56, 5), Vector2i(57, 5), Vector2i(58, 5), Vector2i(59, 5), Vector2i(60, 5), Vector2i(61, 5), Vector2i(62, 5), Vector2i(63, 5), Vector2i(64, 5), Vector2i(65, 5), Vector2i(66, 5), Vector2i(67, 5), Vector2i(68, 5), Vector2i(69, 5), Vector2i(70, 5), Vector2i(71, 5), Vector2i(72, 5), Vector2i(73, 5), Vector2i(74, 5), Vector2i(75, 5), Vector2i(76, 5), Vector2i(77, 5), Vector2i(78, 5), Vector2i(79, 5), Vector2i(80, 5), Vector2i(81, 5), Vector2i(82, 5), Vector2i(83, 5), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(4, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12), Vector2i(13, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(19, 12), Vector2i(20, 12), Vector2i(21, 12), Vector2i(22, 12), Vector2i(23, 12), Vector2i(24, 12), Vector2i(25, 12), Vector2i(26, 12), Vector2i(27, 12), Vector2i(28, 12), Vector2i(29, 12), Vector2i(30, 12), Vector2i(31, 12), Vector2i(32, 12), Vector2i(33, 12), Vector2i(34, 12), Vector2i(35, 12), Vector2i(36, 12), Vector2i(37, 12), Vector2i(38, 12), Vector2i(39, 12), Vector2i(40, 12), Vector2i(41, 12), Vector2i(42, 12), Vector2i(43, 12), Vector2i(44, 12), Vector2i(45, 12), Vector2i(46, 12), Vector2i(47, 12), Vector2i(48, 12), Vector2i(49, 12), Vector2i(50, 12), Vector2i(51, 12), Vector2i(52, 12), Vector2i(53, 12), Vector2i(54, 12), Vector2i(55, 12), Vector2i(56, 12), Vector2i(57, 12), Vector2i(58, 12), Vector2i(59, 12), Vector2i(60, 12), Vector2i(61, 12), Vector2i(62, 12), Vector2i(63, 12), Vector2i(64, 12), Vector2i(65, 12), Vector2i(66, 12), Vector2i(67, 12), Vector2i(68, 12), Vector2i(69, 12), Vector2i(70, 12), Vector2i(71, 12), Vector2i(72, 12), Vector2i(73, 12), Vector2i(74, 12), Vector2i(75, 12), Vector2i(76, 12), Vector2i(77, 12), Vector2i(78, 12), Vector2i(79, 12), Vector2i(80, 12), Vector2i(81, 12), Vector2i(82, 12), Vector2i(83, 12), Vector2i(0, 13), Vector2i(1, 13), Vector2i(2, 13), Vector2i(3, 13), Vector2i(4, 13), Vector2i(5, 13), Vector2i(6, 13), Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13), Vector2i(10, 13), Vector2i(11, 13), Vector2i(12, 13), Vector2i(13, 13), Vector2i(14, 13), Vector2i(15, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(18, 13), Vector2i(19, 13), Vector2i(20, 13), Vector2i(21, 13), Vector2i(22, 13), Vector2i(23, 13), Vector2i(24, 13), Vector2i(25, 13), Vector2i(26, 13), Vector2i(27, 13), Vector2i(28, 13), Vector2i(29, 13), Vector2i(30, 13), Vector2i(31, 13), Vector2i(32, 13), Vector2i(33, 13), Vector2i(34, 13), Vector2i(35, 13), Vector2i(36, 13), Vector2i(37, 13), Vector2i(38, 13), Vector2i(39, 13), Vector2i(40, 13), Vector2i(41, 13), Vector2i(42, 13), Vector2i(43, 13), Vector2i(44, 13), Vector2i(45, 13), Vector2i(46, 13), Vector2i(47, 13), Vector2i(48, 13), Vector2i(49, 13), Vector2i(50, 13), Vector2i(51, 13), Vector2i(52, 13), Vector2i(53, 13), Vector2i(54, 13), Vector2i(55, 13), Vector2i(56, 13), Vector2i(57, 13), Vector2i(58, 13), Vector2i(59, 13), Vector2i(60, 13), Vector2i(61, 13), Vector2i(62, 13), Vector2i(63, 13), Vector2i(64, 13), Vector2i(65, 13), Vector2i(66, 13), Vector2i(67, 13), Vector2i(68, 13), Vector2i(69, 13), Vector2i(70, 13), Vector2i(71, 13), Vector2i(72, 13), Vector2i(73, 13), Vector2i(74, 13), Vector2i(75, 13), Vector2i(76, 13), Vector2i(77, 13), Vector2i(78, 13), Vector2i(79, 13), Vector2i(80, 13), Vector2i(81, 13), Vector2i(82, 13), Vector2i(83, 13)]
 mapSize = Vector2(2688, 544)
-wallObstacles = Array[Vector2i]([Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(10, 4), Vector2i(11, 4), Vector2i(12, 4), Vector2i(13, 4), Vector2i(14, 4), Vector2i(15, 4), Vector2i(16, 4), Vector2i(17, 4), Vector2i(18, 4), Vector2i(19, 4), Vector2i(20, 4), Vector2i(21, 4), Vector2i(22, 4), Vector2i(23, 4), Vector2i(24, 4), Vector2i(25, 4), Vector2i(26, 4), Vector2i(27, 4), Vector2i(28, 4), Vector2i(29, 4), Vector2i(30, 4), Vector2i(31, 4), Vector2i(32, 4), Vector2i(33, 4), Vector2i(34, 4), Vector2i(35, 4), Vector2i(36, 4), Vector2i(37, 4), Vector2i(38, 4), Vector2i(39, 4), Vector2i(40, 4), Vector2i(41, 4), Vector2i(42, 4), Vector2i(43, 4), Vector2i(44, 4), Vector2i(45, 4), Vector2i(46, 4), Vector2i(47, 4), Vector2i(48, 4), Vector2i(49, 4), Vector2i(50, 4), Vector2i(51, 4), Vector2i(52, 4), Vector2i(53, 4), Vector2i(54, 4), Vector2i(55, 4), Vector2i(56, 4), Vector2i(57, 4), Vector2i(58, 4), Vector2i(59, 4), Vector2i(60, 4), Vector2i(61, 4), Vector2i(62, 4), Vector2i(63, 4), Vector2i(64, 4), Vector2i(65, 4), Vector2i(66, 4), Vector2i(67, 4), Vector2i(68, 4), Vector2i(69, 4), Vector2i(70, 4), Vector2i(71, 4), Vector2i(72, 4), Vector2i(73, 4), Vector2i(74, 4), Vector2i(75, 4), Vector2i(76, 4), Vector2i(77, 4), Vector2i(78, 4), Vector2i(79, 4), Vector2i(80, 4), Vector2i(81, 4), Vector2i(82, 4), Vector2i(83, 4), Vector2i(0, 5), Vector2i(1, 5), Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(6, 5), Vector2i(7, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(10, 5), Vector2i(11, 5), Vector2i(12, 5), Vector2i(13, 5), Vector2i(14, 5), Vector2i(15, 5), Vector2i(16, 5), Vector2i(17, 5), Vector2i(18, 5), Vector2i(19, 5), Vector2i(20, 5), Vector2i(21, 5), Vector2i(22, 5), Vector2i(23, 5), Vector2i(24, 5), Vector2i(25, 5), Vector2i(26, 5), Vector2i(27, 5), Vector2i(28, 5), Vector2i(29, 5), Vector2i(30, 5), Vector2i(31, 5), Vector2i(32, 5), Vector2i(33, 5), Vector2i(34, 5), Vector2i(35, 5), Vector2i(36, 5), Vector2i(37, 5), Vector2i(38, 5), Vector2i(39, 5), Vector2i(40, 5), Vector2i(41, 5), Vector2i(42, 5), Vector2i(43, 5), Vector2i(44, 5), Vector2i(45, 5), Vector2i(46, 5), Vector2i(47, 5), Vector2i(48, 5), Vector2i(49, 5), Vector2i(50, 5), Vector2i(51, 5), Vector2i(52, 5), Vector2i(53, 5), Vector2i(54, 5), Vector2i(55, 5), Vector2i(56, 5), Vector2i(57, 5), Vector2i(58, 5), Vector2i(59, 5), Vector2i(60, 5), Vector2i(61, 5), Vector2i(62, 5), Vector2i(63, 5), Vector2i(64, 5), Vector2i(65, 5), Vector2i(66, 5), Vector2i(67, 5), Vector2i(68, 5), Vector2i(69, 5), Vector2i(70, 5), Vector2i(71, 5), Vector2i(72, 5), Vector2i(73, 5), Vector2i(74, 5), Vector2i(75, 5), Vector2i(76, 5), Vector2i(77, 5), Vector2i(78, 5), Vector2i(79, 5), Vector2i(80, 5), Vector2i(81, 5), Vector2i(82, 5), Vector2i(83, 5), Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 12), Vector2i(4, 12), Vector2i(5, 12), Vector2i(6, 12), Vector2i(7, 12), Vector2i(8, 12), Vector2i(9, 12), Vector2i(10, 12), Vector2i(11, 12), Vector2i(12, 12), Vector2i(13, 12), Vector2i(14, 12), Vector2i(15, 12), Vector2i(16, 12), Vector2i(17, 12), Vector2i(18, 12), Vector2i(19, 12), Vector2i(20, 12), Vector2i(21, 12), Vector2i(22, 12), Vector2i(23, 12), Vector2i(24, 12), Vector2i(25, 12), Vector2i(26, 12), Vector2i(27, 12), Vector2i(28, 12), Vector2i(29, 12), Vector2i(30, 12), Vector2i(31, 12), Vector2i(32, 12), Vector2i(33, 12), Vector2i(34, 12), Vector2i(35, 12), Vector2i(36, 12), Vector2i(37, 12), Vector2i(38, 12), Vector2i(39, 12), Vector2i(40, 12), Vector2i(41, 12), Vector2i(42, 12), Vector2i(43, 12), Vector2i(44, 12), Vector2i(45, 12), Vector2i(46, 12), Vector2i(47, 12), Vector2i(48, 12), Vector2i(49, 12), Vector2i(50, 12), Vector2i(51, 12), Vector2i(52, 12), Vector2i(53, 12), Vector2i(54, 12), Vector2i(55, 12), Vector2i(56, 12), Vector2i(57, 12), Vector2i(58, 12), Vector2i(59, 12), Vector2i(60, 12), Vector2i(61, 12), Vector2i(62, 12), Vector2i(63, 12), Vector2i(64, 12), Vector2i(65, 12), Vector2i(66, 12), Vector2i(67, 12), Vector2i(68, 12), Vector2i(69, 12), Vector2i(70, 12), Vector2i(71, 12), Vector2i(72, 12), Vector2i(73, 12), Vector2i(74, 12), Vector2i(75, 12), Vector2i(76, 12), Vector2i(77, 12), Vector2i(78, 12), Vector2i(79, 12), Vector2i(80, 12), Vector2i(81, 12), Vector2i(82, 12), Vector2i(83, 12), Vector2i(0, 13), Vector2i(1, 13), Vector2i(2, 13), Vector2i(3, 13), Vector2i(4, 13), Vector2i(5, 13), Vector2i(6, 13), Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13), Vector2i(10, 13), Vector2i(11, 13), Vector2i(12, 13), Vector2i(13, 13), Vector2i(14, 13), Vector2i(15, 13), Vector2i(16, 13), Vector2i(17, 13), Vector2i(18, 13), Vector2i(19, 13), Vector2i(20, 13), Vector2i(21, 13), Vector2i(22, 13), Vector2i(23, 13), Vector2i(24, 13), Vector2i(25, 13), Vector2i(26, 13), Vector2i(27, 13), Vector2i(28, 13), Vector2i(29, 13), Vector2i(30, 13), Vector2i(31, 13), Vector2i(32, 13), Vector2i(33, 13), Vector2i(34, 13), Vector2i(35, 13), Vector2i(36, 13), Vector2i(37, 13), Vector2i(38, 13), Vector2i(39, 13), Vector2i(40, 13), Vector2i(41, 13), Vector2i(42, 13), Vector2i(43, 13), Vector2i(44, 13), Vector2i(45, 13), Vector2i(46, 13), Vector2i(47, 13), Vector2i(48, 13), Vector2i(49, 13), Vector2i(50, 13), Vector2i(51, 13), Vector2i(52, 13), Vector2i(53, 13), Vector2i(54, 13), Vector2i(55, 13), Vector2i(56, 13), Vector2i(57, 13), Vector2i(58, 13), Vector2i(59, 13), Vector2i(60, 13), Vector2i(61, 13), Vector2i(62, 13), Vector2i(63, 13), Vector2i(64, 13), Vector2i(65, 13), Vector2i(66, 13), Vector2i(67, 13), Vector2i(68, 13), Vector2i(69, 13), Vector2i(70, 13), Vector2i(71, 13), Vector2i(72, 13), Vector2i(73, 13), Vector2i(74, 13), Vector2i(75, 13), Vector2i(76, 13), Vector2i(77, 13), Vector2i(78, 13), Vector2i(79, 13), Vector2i(80, 13), Vector2i(81, 13), Vector2i(82, 13), Vector2i(83, 13)])
 
-
-[node name="mapSign" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign" parent="." unique_id=3686428 instance=ExtResource("2_sign")]
 position = Vector2(1328, 240)
 type = 700
 dir = 0
 
-[node name="mapSign2" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign2" parent="." unique_id=1395692772 instance=ExtResource("2_sign")]
 position = Vector2(1392, 240)
 type = 700
 dir = 0
 
-[node name="mapSign3" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign3" parent="." unique_id=1183404345 instance=ExtResource("2_sign")]
 position = Vector2(1328, 336)
 type = 700
 dir = 0
 
-[node name="mapSign4" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign4" parent="." unique_id=1224887538 instance=ExtResource("2_sign")]
 position = Vector2(1392, 336)
 type = 700
 dir = 0
 
-[node name="mapSign5" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign5" parent="." unique_id=2116352039 instance=ExtResource("2_sign")]
 position = Vector2(16, 208)
-type = 701
 dir = 1
 
-[node name="mapSign6" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign6" parent="." unique_id=2106037222 instance=ExtResource("2_sign")]
 position = Vector2(2672, 208)
-type = 701
 dir = 0
 
-[node name="mapSign7" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign7" parent="." unique_id=519558446 instance=ExtResource("2_sign")]
 position = Vector2(16, 240)
-type = 701
 dir = 1
 
-[node name="mapSign8" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign8" parent="." unique_id=2087183219 instance=ExtResource("2_sign")]
 position = Vector2(2672, 240)
-type = 701
 dir = 0
 
-[node name="mapSign9" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign9" parent="." unique_id=1032086439 instance=ExtResource("2_sign")]
 position = Vector2(16, 272)
-type = 701
 dir = 1
 
-[node name="mapSign10" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign10" parent="." unique_id=435316625 instance=ExtResource("2_sign")]
 position = Vector2(2672, 272)
-type = 701
 dir = 0
 
-[node name="mapSign11" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign11" parent="." unique_id=137067840 instance=ExtResource("2_sign")]
 position = Vector2(16, 304)
-type = 701
 dir = 1
 
-[node name="mapSign12" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign12" parent="." unique_id=683807450 instance=ExtResource("2_sign")]
 position = Vector2(2672, 304)
-type = 701
 dir = 0
 
-[node name="mapSign13" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign13" parent="." unique_id=339274064 instance=ExtResource("2_sign")]
 position = Vector2(16, 336)
-type = 701
 dir = 1
 
-[node name="mapSign14" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign14" parent="." unique_id=4216261 instance=ExtResource("2_sign")]
 position = Vector2(2672, 336)
-type = 701
 dir = 0
 
-[node name="mapSign15" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign15" parent="." unique_id=1954787816 instance=ExtResource("2_sign")]
 position = Vector2(16, 368)
-type = 701
 dir = 1
 
-[node name="mapSign16" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign16" parent="." unique_id=668639537 instance=ExtResource("2_sign")]
 position = Vector2(2672, 368)
-type = 701
 dir = 0
 
-[node name="mapSign17" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign17" parent="." unique_id=1931058365 instance=ExtResource("2_sign")]
 position = Vector2(2672, 240)
 type = 702
 dir = 0
 
-[node name="mapSign18" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign18" parent="." unique_id=64896556 instance=ExtResource("2_sign")]
 position = Vector2(16, 272)
 type = 702
 dir = 1
 
-[node name="mapSign19" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign19" parent="." unique_id=2119405815 instance=ExtResource("2_sign")]
 position = Vector2(176, 240)
 type = 703
-dir = 3
 
-[node name="mapSign20" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign20" parent="." unique_id=1745814993 instance=ExtResource("2_sign")]
 position = Vector2(592, 240)
 type = 703
-dir = 3
 
-[node name="mapSign21" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign21" parent="." unique_id=956623854 instance=ExtResource("2_sign")]
 position = Vector2(1264, 240)
 type = 703
-dir = 3
 
-[node name="mapSign22" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign22" parent="." unique_id=94500980 instance=ExtResource("2_sign")]
 position = Vector2(1680, 240)
 type = 703
-dir = 3
 
-[node name="mapSign23" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign23" parent="." unique_id=1877127550 instance=ExtResource("2_sign")]
 position = Vector2(2384, 240)
 type = 703
-dir = 3
 
-[node name="mapSign24" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign24" parent="." unique_id=2021813006 instance=ExtResource("2_sign")]
 position = Vector2(2000, 304)
 type = 703
-dir = 3
 
-[node name="mapSign25" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign25" parent="." unique_id=155670613 instance=ExtResource("2_sign")]
 position = Vector2(144, 336)
 type = 703
-dir = 3
 
-[node name="mapSign26" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign26" parent="." unique_id=847918158 instance=ExtResource("2_sign")]
 position = Vector2(592, 336)
 type = 703
-dir = 3
 
-[node name="mapSign27" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign27" parent="." unique_id=457688974 instance=ExtResource("2_sign")]
 position = Vector2(1264, 336)
 type = 703
-dir = 3
 
-[node name="mapSign28" parent="." instance=ExtResource("2_sign")]
+[node name="mapSign28" parent="." unique_id=1724672714 instance=ExtResource("2_sign")]
 position = Vector2(1680, 336)
 type = 703
-dir = 3
+
+[node name="wallShape003" parent="." unique_id=124259767 instance=ExtResource("3_hfwg8")]
+z_index = 29
+position = Vector2(89, 136)
+
+[node name="wallShape001" parent="." unique_id=1532828226 instance=ExtResource("4_wqlqq")]
+z_index = 28
+position = Vector2(219, 142)
+
+[node name="wallShape004" parent="." unique_id=762337956 instance=ExtResource("3_hfwg8")]
+z_index = 27
+position = Vector2(345, 136)
+
+[node name="wallShape002" parent="." unique_id=914882109 instance=ExtResource("4_wqlqq")]
+z_index = 26
+position = Vector2(475, 142)
+
+[node name="wallShape005" parent="." unique_id=1598363051 instance=ExtResource("3_hfwg8")]
+z_index = 25
+position = Vector2(601, 136)
+
+[node name="wallShape006" parent="." unique_id=1043784586 instance=ExtResource("4_wqlqq")]
+z_index = 24
+position = Vector2(731, 142)
+
+[node name="wallShape007" parent="." unique_id=1122703966 instance=ExtResource("3_hfwg8")]
+z_index = 23
+position = Vector2(857, 136)
+
+[node name="wallShape008" parent="." unique_id=73254889 instance=ExtResource("4_wqlqq")]
+z_index = 22
+position = Vector2(987, 142)
+
+[node name="wallShape009" parent="." unique_id=1318854116 instance=ExtResource("3_hfwg8")]
+z_index = 21
+position = Vector2(1113, 136)
+
+[node name="wallShape010" parent="." unique_id=1431924783 instance=ExtResource("4_wqlqq")]
+z_index = 20
+position = Vector2(1243, 142)
+
+[node name="wallShape011" parent="." unique_id=1965787697 instance=ExtResource("3_hfwg8")]
+z_index = 19
+position = Vector2(1369, 136)
+
+[node name="wallShape012" parent="." unique_id=456624852 instance=ExtResource("4_wqlqq")]
+z_index = 18
+position = Vector2(1499, 142)
+
+[node name="wallShape013" parent="." unique_id=591433845 instance=ExtResource("3_hfwg8")]
+z_index = 17
+position = Vector2(1625, 136)
+
+[node name="wallShape014" parent="." unique_id=1197322052 instance=ExtResource("4_wqlqq")]
+z_index = 16
+position = Vector2(1755, 142)
+
+[node name="wallShape015" parent="." unique_id=447453606 instance=ExtResource("3_hfwg8")]
+z_index = 15
+position = Vector2(1881, 136)
+
+[node name="wallShape016" parent="." unique_id=1837810261 instance=ExtResource("4_wqlqq")]
+z_index = 30
+position = Vector2(-38, 142)
+
+[node name="wallShape018" parent="." unique_id=343881119 instance=ExtResource("4_wqlqq")]
+z_index = 14
+position = Vector2(2012, 143)
+
+[node name="wallShape019" parent="." unique_id=1022707850 instance=ExtResource("3_hfwg8")]
+z_index = 13
+position = Vector2(2138, 137)
+
+[node name="wallShape020" parent="." unique_id=288992252 instance=ExtResource("4_wqlqq")]
+z_index = 12
+position = Vector2(2268, 143)
+
+[node name="wallShape021" parent="." unique_id=93494341 instance=ExtResource("3_hfwg8")]
+z_index = 11
+position = Vector2(2394, 137)
+
+[node name="wallShape022" parent="." unique_id=141328163 instance=ExtResource("4_wqlqq")]
+z_index = 10
+position = Vector2(2524, 143)
+
+[node name="wallShape023" parent="." unique_id=1315072536 instance=ExtResource("3_hfwg8")]
+z_index = 9
+position = Vector2(2650, 137)
+
+[node name="wallShape024" parent="." unique_id=1274584785 instance=ExtResource("4_wqlqq")]
+z_index = 8
+position = Vector2(2780, 143)
+
+[node name="wallShape025" parent="." unique_id=953323254 instance=ExtResource("3_hfwg8")]
+z_index = 7
+position = Vector2(2906, 137)
+
+[node name="wallShape017" parent="." unique_id=970749501 instance=ExtResource("3_hfwg8")]
+z_index = 1129
+position = Vector2(185, 392)
+
+[node name="wallShape026" parent="." unique_id=1475717246 instance=ExtResource("4_wqlqq")]
+z_index = 1128
+position = Vector2(315, 398)
+
+[node name="wallShape027" parent="." unique_id=1710190599 instance=ExtResource("3_hfwg8")]
+z_index = 1127
+position = Vector2(441, 392)
+
+[node name="wallShape028" parent="." unique_id=784072913 instance=ExtResource("4_wqlqq")]
+z_index = 1126
+position = Vector2(571, 398)
+
+[node name="wallShape029" parent="." unique_id=604590024 instance=ExtResource("3_hfwg8")]
+z_index = 1125
+position = Vector2(697, 392)
+
+[node name="wallShape030" parent="." unique_id=1099289198 instance=ExtResource("4_wqlqq")]
+z_index = 1124
+position = Vector2(827, 398)
+
+[node name="wallShape031" parent="." unique_id=1189595145 instance=ExtResource("3_hfwg8")]
+z_index = 1123
+position = Vector2(953, 392)
+
+[node name="wallShape032" parent="." unique_id=1042004583 instance=ExtResource("4_wqlqq")]
+z_index = 1122
+position = Vector2(1083, 398)
+
+[node name="wallShape033" parent="." unique_id=1746323673 instance=ExtResource("3_hfwg8")]
+z_index = 1121
+position = Vector2(1209, 392)
+
+[node name="wallShape034" parent="." unique_id=1240280692 instance=ExtResource("4_wqlqq")]
+z_index = 1120
+position = Vector2(1339, 398)
+
+[node name="wallShape035" parent="." unique_id=906462768 instance=ExtResource("3_hfwg8")]
+z_index = 1119
+position = Vector2(1465, 392)
+
+[node name="wallShape036" parent="." unique_id=695413387 instance=ExtResource("4_wqlqq")]
+z_index = 1118
+position = Vector2(1595, 398)
+
+[node name="wallShape037" parent="." unique_id=325153911 instance=ExtResource("3_hfwg8")]
+z_index = 1117
+position = Vector2(1721, 392)
+
+[node name="wallShape038" parent="." unique_id=2106378636 instance=ExtResource("4_wqlqq")]
+z_index = 1116
+position = Vector2(1851, 398)
+
+[node name="wallShape039" parent="." unique_id=196325157 instance=ExtResource("3_hfwg8")]
+z_index = 1115
+position = Vector2(1977, 392)
+
+[node name="wallShape040" parent="." unique_id=242189743 instance=ExtResource("4_wqlqq")]
+z_index = 1130
+position = Vector2(58, 398)
+
+[node name="wallShape041" parent="." unique_id=1758887253 instance=ExtResource("4_wqlqq")]
+z_index = 1114
+position = Vector2(2108, 399)
+
+[node name="wallShape042" parent="." unique_id=94848510 instance=ExtResource("3_hfwg8")]
+z_index = 1113
+position = Vector2(2234, 393)
+
+[node name="wallShape043" parent="." unique_id=1663714299 instance=ExtResource("4_wqlqq")]
+z_index = 1112
+position = Vector2(2364, 399)
+
+[node name="wallShape044" parent="." unique_id=796735914 instance=ExtResource("3_hfwg8")]
+z_index = 1111
+position = Vector2(2490, 393)
+
+[node name="wallShape045" parent="." unique_id=1754079184 instance=ExtResource("4_wqlqq")]
+z_index = 1110
+position = Vector2(2620, 399)
+
+[node name="wallShape046" parent="." unique_id=1856298560 instance=ExtResource("3_hfwg8")]
+z_index = 1109
+position = Vector2(2746, 393)
+
+[node name="wallShape047" parent="." unique_id=1425652739 instance=ExtResource("4_wqlqq")]
+z_index = 1108
+position = Vector2(2876, 399)
+
+[node name="wallShape048" parent="." unique_id=117933283 instance=ExtResource("3_hfwg8")]
+z_index = 7
+position = Vector2(3002, 393)
