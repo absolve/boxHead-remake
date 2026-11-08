@@ -153,15 +153,15 @@ z_index = 8
 position = Vector2(26, 500)
 
 [node name="wallShape008" parent="." unique_id=103661238 instance=ExtResource("4_rhpyg")]
-z_index = 2
+z_index = 200
 position = Vector2(24, 584)
 
 [node name="wallShape013" parent="." unique_id=153897570 instance=ExtResource("4_rhpyg")]
-z_index = 6
+z_index = 194
 position = Vector2(792, 583)
 
 [node name="wallShape001" parent="." unique_id=1532828226 instance=ExtResource("5_ylcnu")]
-z_index = 2
+z_index = 199
 position = Vector2(152, 590)
 
 [node name="wallShape014" parent="." unique_id=1305451218 instance=ExtResource("3_0guw6")]
@@ -169,7 +169,7 @@ z_index = 2
 position = Vector2(538, 490)
 
 [node name="wallShape009" parent="." unique_id=1912942440 instance=ExtResource("4_rhpyg")]
-z_index = 2
+z_index = 198
 position = Vector2(279, 583)
 
 [node name="wallShape015" parent="." unique_id=1264646868 instance=ExtResource("4_rhpyg")]
@@ -177,7 +177,7 @@ z_index = 2
 position = Vector2(536, 385)
 
 [node name="wallShape010" parent="." unique_id=1246030535 instance=ExtResource("5_ylcnu")]
-z_index = 9
+z_index = 197
 position = Vector2(409, 590)
 
 [node name="wallShape016" parent="." unique_id=1193517409 instance=ExtResource("4_rhpyg")]
@@ -185,7 +185,7 @@ z_index = 2
 position = Vector2(280, 8)
 
 [node name="wallShape011" parent="." unique_id=942641222 instance=ExtResource("4_rhpyg")]
-z_index = 8
+z_index = 196
 position = Vector2(536, 583)
 
 [node name="wallShape017" parent="." unique_id=446675774 instance=ExtResource("5_ylcnu")]
@@ -193,7 +193,7 @@ z_index = 9
 position = Vector2(411, 14)
 
 [node name="wallShape012" parent="." unique_id=744701668 instance=ExtResource("5_ylcnu")]
-z_index = 7
+z_index = 195
 position = Vector2(665, 590)
 
 [node name="wallShape018" parent="." unique_id=1799984397 instance=ExtResource("4_rhpyg")]
@@ -332,15 +332,15 @@ z_index = 895
 position = Vector2(665, 1165)
 
 [node name="wallShape052" parent="." unique_id=440718107 instance=ExtResource("4_rhpyg")]
-z_index = 80
+z_index = 280
 position = Vector2(24, 775)
 
 [node name="wallShape053" parent="." unique_id=1649852897 instance=ExtResource("3_0guw6")]
-z_index = 90
+z_index = 290
 position = Vector2(27, 870)
 
 [node name="wallShape054" parent="." unique_id=1950175694 instance=ExtResource("4_rhpyg")]
-z_index = 91
+z_index = 300
 position = Vector2(25, 967)
 
 [node name="wallShape055" parent="." unique_id=1462917439 instance=ExtResource("3_0guw6")]
@@ -348,35 +348,35 @@ z_index = 92
 position = Vector2(27, 1062)
 
 [node name="wallShape056" parent="." unique_id=1287171878 instance=ExtResource("5_ylcnu")]
-z_index = 70
+z_index = 279
 position = Vector2(153, 782)
 
 [node name="wallShape057" parent="." unique_id=22146234 instance=ExtResource("4_rhpyg")]
-z_index = 69
+z_index = 278
 position = Vector2(280, 775)
 
 [node name="wallShape058" parent="." unique_id=830966034 instance=ExtResource("3_0guw6")]
-z_index = 59
+z_index = 200
 position = Vector2(538, 677)
 
 [node name="wallShape059" parent="." unique_id=1507840840 instance=ExtResource("4_rhpyg")]
-z_index = 60
+z_index = 276
 position = Vector2(535, 775)
 
 [node name="wallShape060" parent="." unique_id=1899019685 instance=ExtResource("3_0guw6")]
-z_index = 61
+z_index = 278
 position = Vector2(538, 870)
 
 [node name="wallShape061" parent="." unique_id=1616558480 instance=ExtResource("4_rhpyg")]
-z_index = 62
+z_index = 298
 position = Vector2(536, 967)
 
 [node name="wallShape062" parent="." unique_id=1861225492 instance=ExtResource("4_rhpyg")]
-z_index = 98
+z_index = 300
 position = Vector2(280, 967)
 
 [node name="wallShape063" parent="." unique_id=633066276 instance=ExtResource("5_ylcnu")]
-z_index = 97
+z_index = 299
 position = Vector2(410, 974)
 
 [node name="wallShape064" parent="." unique_id=1994456765 instance=ExtResource("3_0guw6")]
@@ -388,9 +388,9 @@ z_index = 2
 position = Vector2(536, 199)
 
 [node name="wallShape066" parent="." unique_id=154913708 instance=ExtResource("4_rhpyg")]
-z_index = 98
+z_index = 276
 position = Vector2(792, 775)
 
 [node name="wallShape067" parent="." unique_id=1769607807 instance=ExtResource("5_ylcnu")]
-z_index = 97
+z_index = 275
 position = Vector2(922, 782)
