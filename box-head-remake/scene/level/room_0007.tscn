@@ -1,7 +1,13 @@
-[gd_scene load_steps=45 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://script/level/room_generic.gd" id="1_room"]
 [ext_resource type="PackedScene" path="res://scene/level/map_sign.tscn" id="2_sign"]
+[ext_resource type="PackedScene" uid="uid://cyergwj4l37pu" path="res://scene/level/wall_shape_005.tscn" id="20_w005"]
+[ext_resource type="PackedScene" uid="uid://oqcdwrvw0ps7" path="res://scene/level/wall_shape_006.tscn" id="20_w006"]
+
+
+
+
 
 [node name="room_0007" type="Node2D"]
 script = ExtResource("1_room")
@@ -145,3 +151,179 @@ dir = 3
 position = Vector2(752, 848)
 type = 703
 dir = 3
+[node name="wallShape001" parent="." instance=ExtResource("20_w005")]
+z_index = 81
+position = Vector2(4, 41)
+
+[node name="wallShape002" parent="." instance=ExtResource("20_w005")]
+z_index = 80
+position = Vector2(116, 41)
+
+[node name="wallShape003" parent="." instance=ExtResource("20_w005")]
+z_index = 79
+position = Vector2(244, 41)
+
+[node name="wallShape004" parent="." instance=ExtResource("20_w005")]
+z_index = 78
+position = Vector2(372, 41)
+
+[node name="wallShape005" parent="." instance=ExtResource("20_w005")]
+z_index = 77
+position = Vector2(500, 41)
+
+[node name="wallShape006" parent="." instance=ExtResource("20_w005")]
+z_index = 76
+position = Vector2(628, 41)
+
+[node name="wallShape007" parent="." instance=ExtResource("20_w005")]
+z_index = 75
+position = Vector2(756, 41)
+
+[node name="wallShape008" parent="." instance=ExtResource("20_w005")]
+z_index = 74
+position = Vector2(884, 41)
+
+[node name="wallShape009" parent="." instance=ExtResource("20_w005")]
+z_index = 73
+position = Vector2(1012, 41)
+
+[node name="wallShape010" parent="." instance=ExtResource("20_w006")]
+z_index = 270
+position = Vector2(414, 230)
+
+[node name="wallShape011" parent="." instance=ExtResource("20_w005")]
+z_index = 273
+position = Vector2(20, 233)
+
+[node name="wallShape012" parent="." instance=ExtResource("20_w005")]
+z_index = 272
+position = Vector2(276, 233)
+
+[node name="wallShape013" parent="." instance=ExtResource("20_w005")]
+z_index = 271
+position = Vector2(532, 233)
+
+[node name="wallShape014" parent="." instance=ExtResource("20_w005")]
+z_index = 270
+position = Vector2(660, 233)
+
+[node name="wallShape015" parent="." instance=ExtResource("20_w005")]
+z_index = 269
+position = Vector2(788, 233)
+
+[node name="wallShape016" parent="." instance=ExtResource("20_w006")]
+z_index = 430
+position = Vector2(126, 390)
+
+[node name="wallShape017" parent="." instance=ExtResource("20_w005")]
+z_index = 433
+position = Vector2(244, 393)
+
+[node name="wallShape018" parent="." instance=ExtResource("20_w005")]
+z_index = 432
+position = Vector2(500, 393)
+
+[node name="wallShape019" parent="." instance=ExtResource("20_w005")]
+z_index = 431
+position = Vector2(628, 393)
+
+[node name="wallShape020" parent="." instance=ExtResource("20_w005")]
+z_index = 430
+position = Vector2(884, 393)
+
+[node name="wallShape021" parent="." instance=ExtResource("20_w005")]
+z_index = 429
+position = Vector2(1012, 393)
+
+[node name="wallShape022" parent="." instance=ExtResource("20_w006")]
+z_index = 590
+position = Vector2(670, 550)
+
+[node name="wallShape023" parent="." instance=ExtResource("20_w005")]
+z_index = 593
+position = Vector2(20, 553)
+
+[node name="wallShape024" parent="." instance=ExtResource("20_w005")]
+z_index = 592
+position = Vector2(148, 553)
+
+[node name="wallShape025" parent="." instance=ExtResource("20_w005")]
+z_index = 591
+position = Vector2(276, 553)
+
+[node name="wallShape026" parent="." instance=ExtResource("20_w005")]
+z_index = 590
+position = Vector2(404, 553)
+
+[node name="wallShape027" parent="." instance=ExtResource("20_w005")]
+z_index = 589
+position = Vector2(532, 553)
+
+[node name="wallShape028" parent="." instance=ExtResource("20_w005")]
+z_index = 588
+position = Vector2(788, 553)
+
+[node name="wallShape029" parent="." instance=ExtResource("20_w005")]
+z_index = 587
+position = Vector2(916, 553)
+
+[node name="wallShape030" parent="." instance=ExtResource("20_w006")]
+z_index = 750
+position = Vector2(382, 710)
+
+[node name="wallShape031" parent="." instance=ExtResource("20_w005")]
+z_index = 753
+position = Vector2(116, 713)
+
+[node name="wallShape032" parent="." instance=ExtResource("20_w005")]
+z_index = 752
+position = Vector2(500, 713)
+
+[node name="wallShape033" parent="." instance=ExtResource("20_w005")]
+z_index = 751
+position = Vector2(628, 713)
+
+[node name="wallShape034" parent="." instance=ExtResource("20_w005")]
+z_index = 750
+position = Vector2(756, 713)
+
+[node name="wallShape035" parent="." instance=ExtResource("20_w005")]
+z_index = 749
+position = Vector2(884, 713)
+
+[node name="wallShape036" parent="." instance=ExtResource("20_w005")]
+z_index = 748
+position = Vector2(1012, 713)
+
+[node name="wallShape037" parent="." instance=ExtResource("20_w006")]
+z_index = 942
+position = Vector2(798, 902)
+
+[node name="wallShape038" parent="." instance=ExtResource("20_w005")]
+z_index = 945
+position = Vector2(20, 905)
+
+[node name="wallShape039" parent="." instance=ExtResource("20_w005")]
+z_index = 944
+position = Vector2(148, 905)
+
+[node name="wallShape040" parent="." instance=ExtResource("20_w005")]
+z_index = 943
+position = Vector2(276, 905)
+
+[node name="wallShape041" parent="." instance=ExtResource("20_w005")]
+z_index = 942
+position = Vector2(404, 905)
+
+[node name="wallShape042" parent="." instance=ExtResource("20_w005")]
+z_index = 941
+position = Vector2(660, 905)
+
+[node name="wallShape043" parent="." instance=ExtResource("20_w005")]
+z_index = 940
+position = Vector2(916, 905)
+
+[node name="wallShape044" parent="." instance=ExtResource("20_w005")]
+z_index = 939
+position = Vector2(1028, 905)
+
