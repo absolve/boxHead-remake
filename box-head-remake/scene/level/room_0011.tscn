@@ -185,3 +185,27 @@ position = Vector2(154, 717)
 [node name="wallShape011" parent="." unique_id=1838375763 instance=ExtResource("20_w008")]
 z_index = 917
 position = Vector2(538, 877)
+
+[node name="wallShape" parent="." unique_id=1549973302 instance=ExtResource("20_w008")]
+z_index = 53
+position = Vector2(-6, 13)
+
+[node name="wallShape2" parent="." unique_id=593021922 instance=ExtResource("20_w008")]
+z_index = 373
+position = Vector2(-7, 333)
+
+[node name="wallShape3" parent="." unique_id=1349311136 instance=ExtResource("20_w008")]
+z_index = 52
+position = Vector2(1307, 13)
+
+[node name="wallShape4" parent="." unique_id=1727561979 instance=ExtResource("20_w008")]
+z_index = 438
+position = Vector2(1306, 398)
+
+[node name="wallShape5" parent="." unique_id=1771027656 instance=ExtResource("20_w008")]
+z_index = 1078
+position = Vector2(-6, 1037)
+
+[node name="wallShape6" parent="." unique_id=559658276 instance=ExtResource("20_w008")]
+z_index = 1077
+position = Vector2(1307, 1038)
