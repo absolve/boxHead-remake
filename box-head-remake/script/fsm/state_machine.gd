@@ -17,7 +17,8 @@ extends Node
 ##   - actor：状态机宿主，默认取 get_parent()（状态机挂在宿主下）。
 ##   - initialState：初始状态子节点名；留空则取第一个 State 子节点。
 ##   - 状态名按节点名注册（大小写不敏感）。
-##   - 每物理帧转发 physicsUpdate 并累加 stateTime；每渲染帧转发 processUpdate。
+##   - 每物理帧转发 physicsUpdate 并累加 stateTime；每渲染帧转发 processUpdate；
+##     未处理的输入转发给当前状态的 handleInput。
 ##   - transitionTo(name, msg)：exit 旧状态 → enter 新状态 → 广播 stateChanged。
 ##
 ## 与参考实现的一处差异：初始状态的切换用 call_deferred 延后到本帧末。
@@ -150,3 +151,9 @@ func _process(delta: float) -> void:
 	if not enabled or currentState == null:
 		return
 	currentState.processUpdate(delta)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not enabled or currentState == null:
+		return
+	currentState.handleInput(event)

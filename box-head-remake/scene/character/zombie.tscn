@@ -4,7 +4,8 @@
 [ext_resource type="SpriteFrames" path="res://sprite/enemies/zombie/frames.tres" id="900_zombie"]
 [ext_resource type="Script" uid="uid://daiw21qhyfjle" path="res://script/character/zombie.gd" id="2_tet0w"]
 [ext_resource type="AudioStream" uid="uid://bbgocyb1tdhoo" path="res://sound/546_546 Creature.Zombie.Attack.mp3" id="187_j3gq8"]
-[ext_resource type="Script" uid="uid://dm4ks84mtlxa2" path="res://script/fsm/state_machine.gd" id="200_fsm"]
+[ext_resource type="PackedScene" path="res://scene/fsm/state_machine.tscn" id="200_fsm"]
+[ext_resource type="PackedScene" path="res://scene/fsm/state.tscn" id="208_state"]
 [ext_resource type="Script" uid="uid://b6k1nraabpcow" path="res://script/character/zombie_states/zombie_spawn.gd" id="201_spawn"]
 [ext_resource type="Script" uid="uid://4b76p57nlgu" path="res://script/character/zombie_states/zombie_chase.gd" id="202_chase"]
 [ext_resource type="Script" uid="uid://dbjh78pddpff4" path="res://script/character/zombie_states/zombie_turn.gd" id="203_turn"]
@@ -73,29 +74,28 @@ collide_with_areas = true
 stream = ExtResource("187_j3gq8")
 bus = &"sfx"
 
-[node name="StateMachine" type="Node" parent="." index="5" unique_id=1524112205]
-script = ExtResource("200_fsm")
+[node name="StateMachine" parent="." index="5" instance=ExtResource("200_fsm")]
 initialState = &"Chase"
 
-[node name="Spawn" type="Node" parent="StateMachine" index="0" unique_id=1208293482]
+[node name="Spawn" parent="StateMachine" index="0" unique_id=1208293482 instance=ExtResource("208_state")]
 script = ExtResource("201_spawn")
 
-[node name="Chase" type="Node" parent="StateMachine" index="1" unique_id=2032716280]
+[node name="Chase" parent="StateMachine" index="1" unique_id=2032716280 instance=ExtResource("208_state")]
 script = ExtResource("202_chase")
 
-[node name="Turn" type="Node" parent="StateMachine" index="2" unique_id=267385872]
+[node name="Turn" parent="StateMachine" index="2" unique_id=267385872 instance=ExtResource("208_state")]
 script = ExtResource("203_turn")
 
-[node name="Attack" type="Node" parent="StateMachine" index="3" unique_id=1379806274]
+[node name="Attack" parent="StateMachine" index="3" unique_id=1379806274 instance=ExtResource("208_state")]
 script = ExtResource("204_attack")
 
-[node name="Hurt" type="Node" parent="StateMachine" index="4" unique_id=1071831458]
+[node name="Hurt" parent="StateMachine" index="4" unique_id=1071831458 instance=ExtResource("208_state")]
 script = ExtResource("205_hurt")
 
-[node name="Dead" type="Node" parent="StateMachine" index="5" unique_id=463805397]
+[node name="Dead" parent="StateMachine" index="5" unique_id=463805397 instance=ExtResource("208_state")]
 script = ExtResource("206_dead")
 
-[node name="Sleep" type="Node" parent="StateMachine" index="6" unique_id=1149239364]
+[node name="Sleep" parent="StateMachine" index="6" unique_id=1149239364 instance=ExtResource("208_state")]
 script = ExtResource("207_sleep")
 
 [node name="detect" type="Area2D" parent="." index="6" unique_id=1997949396]

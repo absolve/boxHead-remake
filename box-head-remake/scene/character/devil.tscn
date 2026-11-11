@@ -3,7 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://gvl5ox363h8g" path="res://scene/character/character.tscn" id="1_char"]
 [ext_resource type="SpriteFrames" path="res://sprite/enemies/devil/frames.tres" id="900_devil"]
 [ext_resource type="Script" uid="uid://bdr7epqbc0edr" path="res://script/character/devil.gd" id="2_devil"]
-[ext_resource type="Script" uid="uid://dm4ks84mtlxa2" path="res://script/fsm/state_machine.gd" id="10_fsm"]
+[ext_resource type="PackedScene" path="res://scene/fsm/state_machine.tscn" id="10_fsm"]
+[ext_resource type="PackedScene" path="res://scene/fsm/state.tscn" id="19_state"]
 [ext_resource type="Script" uid="uid://bq5y4xjdnwlrc" path="res://script/character/devil_states/devil_chase.gd" id="11_chase"]
 [ext_resource type="Script" uid="uid://dj2mdbahk6mkh" path="res://script/character/devil_states/devil_attack.gd" id="12_attack"]
 [ext_resource type="Script" uid="uid://bkg28x441gduu" path="res://script/character/devil_states/devil_hurt.gd" id="13_hurt"]
@@ -55,30 +56,29 @@ collision_mask = 0
 position = Vector2(0, -14)
 shape = SubResource("CircleShape2D_5hg7i")
 
-[node name="StateMachine" type="Node" parent="." index="3" unique_id=841156098]
-script = ExtResource("10_fsm")
+[node name="StateMachine" parent="." index="3" instance=ExtResource("10_fsm")]
 initialState = &"EnterMap"
 
-[node name="EnterMap" type="Node" parent="StateMachine" index="0" unique_id=670922423]
+[node name="EnterMap" parent="StateMachine" index="0" unique_id=670922423 instance=ExtResource("19_state")]
 script = ExtResource("16_enter")
 
-[node name="Chase" type="Node" parent="StateMachine" index="1" unique_id=1358336612]
+[node name="Chase" parent="StateMachine" index="1" unique_id=1358336612 instance=ExtResource("19_state")]
 script = ExtResource("11_chase")
 
-[node name="Turn" type="Node" parent="StateMachine" index="2" unique_id=1126903816]
+[node name="Turn" parent="StateMachine" index="2" unique_id=1126903816 instance=ExtResource("19_state")]
 script = ExtResource("15_turn")
 
-[node name="Attack" type="Node" parent="StateMachine" index="3" unique_id=602554859]
+[node name="Attack" parent="StateMachine" index="3" unique_id=602554859 instance=ExtResource("19_state")]
 script = ExtResource("12_attack")
 
-[node name="RemoveObject" type="Node" parent="StateMachine" index="4" unique_id=1399906814]
+[node name="RemoveObject" parent="StateMachine" index="4" unique_id=1399906814 instance=ExtResource("19_state")]
 script = ExtResource("17_remove")
 
-[node name="TrackTarget" type="Node" parent="StateMachine" index="5" unique_id=2015311803]
+[node name="TrackTarget" parent="StateMachine" index="5" unique_id=2015311803 instance=ExtResource("19_state")]
 script = ExtResource("18_track")
 
-[node name="Hurt" type="Node" parent="StateMachine" index="6" unique_id=1259479617]
+[node name="Hurt" parent="StateMachine" index="6" unique_id=1259479617 instance=ExtResource("19_state")]
 script = ExtResource("13_hurt")
 
-[node name="Dead" type="Node" parent="StateMachine" index="7" unique_id=1333277432]
+[node name="Dead" parent="StateMachine" index="7" unique_id=1333277432 instance=ExtResource("19_state")]
 script = ExtResource("14_dead")

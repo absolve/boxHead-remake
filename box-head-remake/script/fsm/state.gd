@@ -7,6 +7,7 @@ extends Node
 ##   1) 在角色的 StateMachine 节点下挂一个 Node，脚本 `extends State`；
 ##   2) StateMachine._ready 会统一注入 stateMachine / actor，并按节点名注册；
 ##   3) 各状态实现 enter() / exit() / physicsUpdate() / processUpdate()；
+##      需要处理输入时再实现 handleInput()；
 ##   4) 想切状态就调用 transitionTo("状态节点名", msg)。
 ##
 ## 设计约定：
@@ -40,6 +41,11 @@ func physicsUpdate(_delta: float) -> void:
 
 ## 每渲染帧更新（可选；AI 逻辑一般放 physicsUpdate）
 func processUpdate(_delta: float) -> void:
+	pass
+
+
+## 由 StateMachine 转发 unhandled input（可选）
+func handleInput(_event: InputEvent) -> void:
 	pass
 
 

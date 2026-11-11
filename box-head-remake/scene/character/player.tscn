@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cdjct7uurqxrn" path="res://scene/ui/life_bar.tscn" id="155_6ev46"]
 [ext_resource type="AudioStream" uid="uid://cegjj3n1puxvv" path="res://sound/540_540 Creature.Player.Scream.1.mp3" id="428_vluh7"]
 [ext_resource type="AudioStream" uid="uid://b6ffrlpy1idvk" path="res://sound/551_551 Object.Pickup.mp3" id="429_m6mmm"]
-[ext_resource type="Script" uid="uid://dm4ks84mtlxa2" path="res://script/fsm/state_machine.gd" id="430_fsm"]
+[ext_resource type="PackedScene" path="res://scene/fsm/state_machine.tscn" id="430_fsm"]
+[ext_resource type="PackedScene" path="res://scene/fsm/state.tscn" id="434_state"]
 [ext_resource type="Script" uid="uid://cl2jaaqpj05gl" path="res://script/character/player_states/player_idle.gd" id="431_idle"]
 [ext_resource type="Script" uid="uid://chyrhnp6g6gxk" path="res://script/character/player_states/player_hurt.gd" id="432_hurt"]
 [ext_resource type="Script" uid="uid://1tolj6qaxew3" path="res://script/character/player_states/player_dead.gd" id="433_dead"]
@@ -113,15 +114,14 @@ bus = &"sfx"
 libraries/ = SubResource("AnimationLibrary_n1i1r")
 speed_scale = 8.0
 
-[node name="StateMachine" type="Node" parent="." index="9" unique_id=101151910]
-script = ExtResource("430_fsm")
+[node name="StateMachine" parent="." index="9" instance=ExtResource("430_fsm")]
 initialState = &"Idle"
 
-[node name="Idle" type="Node" parent="StateMachine" index="0" unique_id=823714953]
+[node name="Idle" parent="StateMachine" index="0" unique_id=823714953 instance=ExtResource("434_state")]
 script = ExtResource("431_idle")
 
-[node name="Hurt" type="Node" parent="StateMachine" index="1" unique_id=1392987898]
+[node name="Hurt" parent="StateMachine" index="1" unique_id=1392987898 instance=ExtResource("434_state")]
 script = ExtResource("432_hurt")
 
-[node name="Dead" type="Node" parent="StateMachine" index="2" unique_id=1616386533]
+[node name="Dead" parent="StateMachine" index="2" unique_id=1616386533 instance=ExtResource("434_state")]
 script = ExtResource("433_dead")

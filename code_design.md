@@ -630,11 +630,14 @@ add_child(listener)
 
 ```text
 [zombie (CharacterBody2D, script: zombie.gd)]
-└─ [StateMachine (script: fsm/state_machine.gd)]
-    ├─ Spawn / Chase / Turn / Attack / Hurt / Dead   ← 每个是 Node + extends State
+└─ [StateMachine (instance: scene/fsm/state_machine.tscn)]
+    ├─ Spawn / Chase / Turn / Attack / Hurt / Dead   ← 每个实例化 scene/fsm/state.tscn 并覆盖为具体状态脚本
 ```
 
-- 状态脚本 `extends State`，实现 `enter()` / `exit()` / `physicsUpdate()` / `processUpdate()`。
+- `StateMachine` 实例化 `scene/fsm/state_machine.tscn`；每个状态实例化 `scene/fsm/state.tscn`，
+  再覆盖为 `extends State` 的具体状态脚本。
+- 状态脚本实现 `enter()` / `exit()` / `physicsUpdate()` / `processUpdate()`；
+  需要处理输入事件时再实现 `handleInput()`（由 `StateMachine._unhandled_input` 转发）。
 - 状态**只声明"想去哪"**，调用 `transitionTo("状态名", msg)`；切换由 `StateMachine` 统一执行。
 - 状态自身不持有宿主逻辑，通过 `actor` 访问宿主（`var z: Zombie: get: return actor as Zombie`）。
 - 需要传参就用 `msg`（如 `{"to": 3, "next": "Attack"}`），不要状态之间直接互相引用。
