@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://d082kpj6e4oue" path="res://scene/level/wall_shape_003.tscn" id="20_w003"]
 [ext_resource type="PackedScene" uid="uid://be7b4a8otb4vp" path="res://scene/level/wall_shape_004.tscn" id="20_w004"]
 [ext_resource type="PackedScene" uid="uid://cyergwj4l37pu" path="res://scene/level/wall_shape_005.tscn" id="20_w005"]
-[ext_resource type="PackedScene" uid="uid://oqcdwrvw0ps7" path="res://scene/level/wall_shape_006.tscn" id="20_w006"]
 
 [node name="room_0016" type="Node2D" unique_id=779144959]
 script = ExtResource("1_room")
@@ -359,55 +358,27 @@ z_index = 52
 position = Vector2(532, 10)
 
 [node name="wallShape008" parent="." unique_id=1658537252 instance=ExtResource("20_w003")]
-z_index = 49
+z_index = 51
 position = Vector2(664, 8)
 
 [node name="wallShape009" parent="." unique_id=220894271 instance=ExtResource("20_w001")]
-z_index = 48
+z_index = 50
 position = Vector2(792, 16)
 
 [node name="wallShape010" parent="." unique_id=1340519428 instance=ExtResource("20_w003")]
-z_index = 47
+z_index = 49
 position = Vector2(920, 9)
 
-[node name="wallShape011" parent="." unique_id=290942510 instance=ExtResource("20_w001")]
-z_index = 46
-position = Vector2(1049, 14)
-
-[node name="wallShape012" parent="." unique_id=1116358358 instance=ExtResource("20_w005")]
-z_index = 45
-position = Vector2(1300, 11)
-
-[node name="wallShape013" parent="." unique_id=1031081 instance=ExtResource("20_w005")]
-z_index = 44
-position = Vector2(1428, 11)
-
-[node name="wallShape014" parent="." unique_id=431110450 instance=ExtResource("20_w003")]
-z_index = 43
-position = Vector2(1560, 8)
-
-[node name="wallShape015" parent="." unique_id=1543561917 instance=ExtResource("20_w001")]
-z_index = 42
-position = Vector2(1688, 16)
-
-[node name="wallShape016" parent="." unique_id=199151364 instance=ExtResource("20_w003")]
-z_index = 41
-position = Vector2(1816, 8)
-
 [node name="wallShape017" parent="." unique_id=1024844648 instance=ExtResource("20_w002")]
-z_index = 140
+z_index = 142
 position = Vector2(26, 101)
 
 [node name="wallShape020" parent="." unique_id=1354280101 instance=ExtResource("20_w002")]
-z_index = 235
+z_index = 141
 position = Vector2(922, 102)
 
-[node name="wallShape021" parent="." unique_id=687817049 instance=ExtResource("20_w002")]
-z_index = 138
-position = Vector2(1818, 100)
-
 [node name="wallShape023" parent="." unique_id=2127354822 instance=ExtResource("20_w003")]
-z_index = 184
+z_index = 240
 position = Vector2(24, 192)
 
 [node name="wallShape025" parent="." unique_id=155535600 instance=ExtResource("20_w003")]
@@ -423,36 +394,12 @@ z_index = 180
 position = Vector2(408, 135)
 
 [node name="wallShape028" parent="." unique_id=1998433832 instance=ExtResource("20_w001")]
-z_index = 179
+z_index = 178
 position = Vector2(666, 142)
 
 [node name="wallShape029" parent="." unique_id=1377812774 instance=ExtResource("20_w003")]
-z_index = 178
-position = Vector2(793, 135)
-
-[node name="wallShape030" parent="." unique_id=892550061 instance=ExtResource("20_w003")]
 z_index = 177
-position = Vector2(1048, 136)
-
-[node name="wallShape031" parent="." unique_id=58965081 instance=ExtResource("20_w001")]
-z_index = 176
-position = Vector2(1176, 144)
-
-[node name="wallShape032" parent="." unique_id=589738289 instance=ExtResource("20_w003")]
-z_index = 175
-position = Vector2(1304, 136)
-
-[node name="wallShape033" parent="." unique_id=583516326 instance=ExtResource("20_w003")]
-z_index = 174
-position = Vector2(1304, 136)
-
-[node name="wallShape034" parent="." unique_id=915087866 instance=ExtResource("20_w001")]
-z_index = 173
-position = Vector2(1432, 144)
-
-[node name="wallShape035" parent="." unique_id=1192702060 instance=ExtResource("20_w003")]
-z_index = 172
-position = Vector2(1560, 136)
+position = Vector2(793, 135)
 
 [node name="wallShape041" parent="." unique_id=1850936047 instance=ExtResource("20_w005")]
 z_index = 371
@@ -462,108 +409,52 @@ position = Vector2(20, 331)
 z_index = 368
 position = Vector2(916, 331)
 
-[node name="wallShape045" parent="." unique_id=1772592190 instance=ExtResource("20_w005")]
-z_index = 367
-position = Vector2(1044, 331)
-
-[node name="wallShape046" parent="." unique_id=460287544 instance=ExtResource("20_w005")]
-z_index = 366
-position = Vector2(1684, 331)
-
-[node name="wallShape047" parent="." unique_id=1767641172 instance=ExtResource("20_w005")]
-z_index = 365
-position = Vector2(1812, 331)
-
 [node name="wallShape048" parent="." unique_id=568579375 instance=ExtResource("20_w004")]
 z_index = 421
 position = Vector2(474, 381)
-
-[node name="wallShape049" parent="." unique_id=845225746 instance=ExtResource("20_w004")]
-z_index = 420
-position = Vector2(1370, 381)
 
 [node name="wallShape050" parent="." unique_id=78148178 instance=ExtResource("20_w005")]
 z_index = 499
 position = Vector2(20, 459)
 
 [node name="wallShape051" parent="." unique_id=801225871 instance=ExtResource("20_w002")]
-z_index = 524
+z_index = 270
 position = Vector2(154, 230)
 
 [node name="wallShape052" parent="." unique_id=1114401386 instance=ExtResource("20_w002")]
-z_index = 620
+z_index = 601
 position = Vector2(154, 550)
 
 [node name="wallShape053" parent="." unique_id=1378139224 instance=ExtResource("20_w002")]
-z_index = 523
+z_index = 269
 position = Vector2(794, 230)
 
 [node name="wallShape054" parent="." unique_id=811811529 instance=ExtResource("20_w002")]
-z_index = 619
+z_index = 600
 position = Vector2(794, 561)
 
 [node name="wallShape055" parent="." unique_id=768147081 instance=ExtResource("20_w005")]
-z_index = 498
+z_index = 496
 position = Vector2(916, 459)
 
-[node name="wallShape056" parent="." unique_id=656660402 instance=ExtResource("20_w002")]
-z_index = 522
-position = Vector2(1050, 484)
-
-[node name="wallShape057" parent="." unique_id=301324012 instance=ExtResource("20_w002")]
-z_index = 618
-position = Vector2(1050, 580)
-
-[node name="wallShape058" parent="." unique_id=54617124 instance=ExtResource("20_w002")]
-z_index = 521
-position = Vector2(1690, 484)
-
-[node name="wallShape059" parent="." unique_id=175531729 instance=ExtResource("20_w002")]
-z_index = 617
-position = Vector2(1690, 580)
-
-[node name="wallShape060" parent="." unique_id=264661423 instance=ExtResource("20_w005")]
-z_index = 497
-position = Vector2(1812, 459)
-
 [node name="wallShape062" parent="." unique_id=830458338 instance=ExtResource("20_w002")]
-z_index = 748
+z_index = 730
 position = Vector2(27, 678)
 
 [node name="wallShape065" parent="." unique_id=1145523788 instance=ExtResource("20_w002")]
-z_index = 1036
+z_index = 910
 position = Vector2(26, 870)
 
 [node name="wallShape066" parent="." unique_id=1343953014 instance=ExtResource("20_w002")]
-z_index = 651
+z_index = 729
 position = Vector2(922, 690)
 
 [node name="wallShape070" parent="." unique_id=795539557 instance=ExtResource("20_w002")]
-z_index = 1033
+z_index = 909
 position = Vector2(922, 870)
 
-[node name="wallShape071" parent="." unique_id=2107580542 instance=ExtResource("20_w002")]
-z_index = 650
-position = Vector2(1818, 612)
-
-[node name="wallShape072" parent="." unique_id=306138063 instance=ExtResource("20_w002")]
-z_index = 746
-position = Vector2(1818, 708)
-
-[node name="wallShape073" parent="." unique_id=2026391602 instance=ExtResource("20_w002")]
-z_index = 842
-position = Vector2(1818, 804)
-
-[node name="wallShape074" parent="." unique_id=1465299631 instance=ExtResource("20_w002")]
-z_index = 936
-position = Vector2(1818, 900)
-
-[node name="wallShape075" parent="." unique_id=1758811211 instance=ExtResource("20_w002")]
-z_index = 1030
-position = Vector2(1818, 996)
-
 [node name="wallShape076" parent="." unique_id=1701463700 instance=ExtResource("20_w003")]
-z_index = 696
+z_index = 624
 position = Vector2(24, 583)
 
 [node name="wallShape078" parent="." unique_id=343104015 instance=ExtResource("20_w003")]
@@ -579,55 +470,27 @@ z_index = 692
 position = Vector2(409, 647)
 
 [node name="wallShape081" parent="." unique_id=736169610 instance=ExtResource("20_w001")]
-z_index = 691
+z_index = 690
 position = Vector2(666, 654)
 
 [node name="wallShape082" parent="." unique_id=920618307 instance=ExtResource("20_w003")]
-z_index = 690
+z_index = 689
 position = Vector2(792, 648)
 
-[node name="wallShape083" parent="." unique_id=1236650968 instance=ExtResource("20_w003")]
-z_index = 689
-position = Vector2(1048, 648)
-
-[node name="wallShape084" parent="." unique_id=1203848623 instance=ExtResource("20_w001")]
-z_index = 688
-position = Vector2(1176, 656)
-
-[node name="wallShape085" parent="." unique_id=1427423083 instance=ExtResource("20_w003")]
-z_index = 687
-position = Vector2(1304, 648)
-
-[node name="wallShape086" parent="." unique_id=2088516856 instance=ExtResource("20_w003")]
-z_index = 686
-position = Vector2(1304, 648)
-
-[node name="wallShape087" parent="." unique_id=1992345644 instance=ExtResource("20_w001")]
-z_index = 685
-position = Vector2(1432, 656)
-
-[node name="wallShape088" parent="." unique_id=1455765818 instance=ExtResource("20_w003")]
-z_index = 684
-position = Vector2(1560, 648)
-
-[node name="wallShape089" parent="." unique_id=2145233817 instance=ExtResource("20_w001")]
-z_index = 683
-position = Vector2(1688, 656)
-
 [node name="wallShape092" parent="." unique_id=2091956556 instance=ExtResource("20_w003")]
-z_index = 822
+z_index = 820
 position = Vector2(281, 775)
 
 [node name="wallShape093" parent="." unique_id=382102372 instance=ExtResource("20_w005")]
-z_index = 821
+z_index = 819
 position = Vector2(404, 779)
 
 [node name="wallShape094" parent="." unique_id=978641 instance=ExtResource("20_w005")]
-z_index = 820
+z_index = 818
 position = Vector2(532, 779)
 
 [node name="wallShape095" parent="." unique_id=802641735 instance=ExtResource("20_w003")]
-z_index = 819
+z_index = 817
 position = Vector2(536, 776)
 
 [node name="wallShape098" parent="." unique_id=1924853263 instance=ExtResource("20_w001")]
@@ -639,47 +502,23 @@ z_index = 816
 position = Vector2(664, 776)
 
 [node name="wallShape101" parent="." unique_id=1157058553 instance=ExtResource("20_w003")]
-z_index = 813
+z_index = 814
 position = Vector2(920, 776)
 
-[node name="wallShape102" parent="." unique_id=108428779 instance=ExtResource("20_w001")]
-z_index = 812
-position = Vector2(1050, 782)
-
-[node name="wallShape103" parent="." unique_id=584155873 instance=ExtResource("20_w005")]
-z_index = 811
-position = Vector2(1300, 779)
-
-[node name="wallShape104" parent="." unique_id=639553377 instance=ExtResource("20_w005")]
-z_index = 810
-position = Vector2(1428, 779)
-
-[node name="wallShape105" parent="." unique_id=584877670 instance=ExtResource("20_w003")]
-z_index = 809
-position = Vector2(1560, 776)
-
-[node name="wallShape106" parent="." unique_id=2113805585 instance=ExtResource("20_w001")]
-z_index = 808
-position = Vector2(1688, 784)
-
-[node name="wallShape107" parent="." unique_id=264828082 instance=ExtResource("20_w003")]
-z_index = 807
-position = Vector2(1816, 776)
-
 [node name="wallShape108" parent="." unique_id=1499802545 instance=ExtResource("20_w003")]
-z_index = 952
+z_index = 822
 position = Vector2(24, 775)
 
 [node name="wallShape110" parent="." unique_id=1362854430 instance=ExtResource("20_w003")]
-z_index = 949
+z_index = 950
 position = Vector2(152, 904)
 
 [node name="wallShape111" parent="." unique_id=258756103 instance=ExtResource("20_w001")]
-z_index = 948
+z_index = 949
 position = Vector2(282, 910)
 
 [node name="wallShape112" parent="." unique_id=1487397608 instance=ExtResource("20_w003")]
-z_index = 947
+z_index = 948
 position = Vector2(408, 903)
 
 [node name="wallShape113" parent="." unique_id=1036656983 instance=ExtResource("20_w001")]
@@ -690,49 +529,13 @@ position = Vector2(665, 910)
 z_index = 945
 position = Vector2(792, 904)
 
-[node name="wallShape115" parent="." unique_id=267889259 instance=ExtResource("20_w003")]
-z_index = 943
-position = Vector2(1048, 904)
-
-[node name="wallShape116" parent="." unique_id=76925181 instance=ExtResource("20_w001")]
-z_index = 942
-position = Vector2(1176, 912)
-
-[node name="wallShape117" parent="." unique_id=1323720464 instance=ExtResource("20_w003")]
-z_index = 941
-position = Vector2(1304, 904)
-
-[node name="wallShape118" parent="." unique_id=1671340813 instance=ExtResource("20_w003")]
-z_index = 940
-position = Vector2(1304, 904)
-
-[node name="wallShape119" parent="." unique_id=752347133 instance=ExtResource("20_w001")]
-z_index = 939
-position = Vector2(1432, 912)
-
-[node name="wallShape120" parent="." unique_id=298949578 instance=ExtResource("20_w003")]
-z_index = 938
-position = Vector2(1560, 904)
-
-[node name="wallShape121" parent="." unique_id=1471429517 instance=ExtResource("20_w001")]
-z_index = 937
-position = Vector2(1688, 912)
-
 [node name="wallShape123" parent="." unique_id=473827607 instance=ExtResource("20_w002")]
-z_index = 1138
+z_index = 1038
 position = Vector2(154, 998)
 
 [node name="wallShape124" parent="." unique_id=576519630 instance=ExtResource("20_w002")]
-z_index = 1034
+z_index = 1037
 position = Vector2(794, 996)
-
-[node name="wallShape126" parent="." unique_id=1179708202 instance=ExtResource("20_w006")]
-z_index = 1032
-position = Vector2(1054, 995)
-
-[node name="wallShape127" parent="." unique_id=1176432896 instance=ExtResource("20_w006")]
-z_index = 1031
-position = Vector2(1694, 995)
 
 [node name="wallShape128" parent="." unique_id=528132467 instance=ExtResource("20_w005")]
 z_index = 1139
@@ -742,84 +545,36 @@ position = Vector2(19, 1099)
 z_index = 1136
 position = Vector2(916, 1099)
 
-[node name="wallShape130" parent="." unique_id=663819270 instance=ExtResource("20_w005")]
-z_index = 1135
-position = Vector2(1044, 1099)
-
-[node name="wallShape131" parent="." unique_id=2023574744 instance=ExtResource("20_w005")]
-z_index = 1134
-position = Vector2(1684, 1099)
-
-[node name="wallShape132" parent="." unique_id=565597116 instance=ExtResource("20_w005")]
-z_index = 1133
-position = Vector2(1812, 1099)
-
 [node name="wallShape133" parent="." unique_id=1958607040 instance=ExtResource("20_w004")]
 z_index = 1189
 position = Vector2(474, 1149)
-
-[node name="wallShape134" parent="." unique_id=1627114354 instance=ExtResource("20_w004")]
-z_index = 1188
-position = Vector2(1370, 1149)
 
 [node name="wallShape135" parent="." unique_id=1810337002 instance=ExtResource("20_w005")]
 z_index = 1267
 position = Vector2(20, 1227)
 
 [node name="wallShape137" parent="." unique_id=662370423 instance=ExtResource("20_w002")]
-z_index = 1388
+z_index = 1370
 position = Vector2(154, 1318)
 
 [node name="wallShape140" parent="." unique_id=1634398767 instance=ExtResource("20_w002")]
-z_index = 1387
+z_index = 1369
 position = Vector2(794, 1330)
 
 [node name="wallShape142" parent="." unique_id=638891134 instance=ExtResource("20_w005")]
-z_index = 1266
+z_index = 1264
 position = Vector2(916, 1227)
 
-[node name="wallShape143" parent="." unique_id=654612689 instance=ExtResource("20_w002")]
-z_index = 1290
-position = Vector2(1050, 1252)
-
-[node name="wallShape144" parent="." unique_id=518419378 instance=ExtResource("20_w002")]
-z_index = 1386
-position = Vector2(1050, 1348)
-
-[node name="wallShape146" parent="." unique_id=302720232 instance=ExtResource("20_w002")]
-z_index = 1289
-position = Vector2(1690, 1252)
-
-[node name="wallShape147" parent="." unique_id=1039211114 instance=ExtResource("20_w002")]
-z_index = 1385
-position = Vector2(1690, 1348)
-
-[node name="wallShape148" parent="." unique_id=279399512 instance=ExtResource("20_w005")]
-z_index = 1265
-position = Vector2(1812, 1227)
-
 [node name="wallShape149" parent="." unique_id=264506951 instance=ExtResource("20_w002")]
-z_index = 1420
+z_index = 1498
 position = Vector2(26, 1458)
 
 [node name="wallShape152" parent="." unique_id=437035304 instance=ExtResource("20_w002")]
-z_index = 1419
+z_index = 1497
 position = Vector2(922, 1458)
 
-[node name="wallShape155" parent="." unique_id=941012734 instance=ExtResource("20_w002")]
-z_index = 1418
-position = Vector2(1818, 1380)
-
-[node name="wallShape156" parent="." unique_id=1831597803 instance=ExtResource("20_w002")]
-z_index = 1514
-position = Vector2(1818, 1476)
-
-[node name="wallShape157" parent="." unique_id=1870581780 instance=ExtResource("20_w002")]
-z_index = 1610
-position = Vector2(1818, 1572)
-
 [node name="wallShape158" parent="." unique_id=672429915 instance=ExtResource("20_w003")]
-z_index = 1464
+z_index = 1392
 position = Vector2(24, 1352)
 
 [node name="wallShape160" parent="." unique_id=763315607 instance=ExtResource("20_w003")]
@@ -835,36 +590,8 @@ z_index = 1460
 position = Vector2(408, 1415)
 
 [node name="wallShape163" parent="." unique_id=1951996331 instance=ExtResource("20_w001")]
-z_index = 1459
+z_index = 1458
 position = Vector2(665, 1422)
-
-[node name="wallShape165" parent="." unique_id=1824090531 instance=ExtResource("20_w003")]
-z_index = 1457
-position = Vector2(1048, 1416)
-
-[node name="wallShape166" parent="." unique_id=604555518 instance=ExtResource("20_w001")]
-z_index = 1456
-position = Vector2(1176, 1424)
-
-[node name="wallShape167" parent="." unique_id=1409317875 instance=ExtResource("20_w003")]
-z_index = 1455
-position = Vector2(1304, 1416)
-
-[node name="wallShape168" parent="." unique_id=1622053991 instance=ExtResource("20_w003")]
-z_index = 1454
-position = Vector2(1304, 1416)
-
-[node name="wallShape169" parent="." unique_id=1434766415 instance=ExtResource("20_w001")]
-z_index = 1453
-position = Vector2(1432, 1424)
-
-[node name="wallShape170" parent="." unique_id=2015836572 instance=ExtResource("20_w003")]
-z_index = 1452
-position = Vector2(1560, 1416)
-
-[node name="wallShape171" parent="." unique_id=80905593 instance=ExtResource("20_w001")]
-z_index = 1451
-position = Vector2(1688, 1424)
 
 [node name="wallShape172" parent="." unique_id=1252629324 instance=ExtResource("20_w003")]
 z_index = 1592
@@ -891,91 +618,389 @@ z_index = 1587
 position = Vector2(536, 1544)
 
 [node name="wallShape180" parent="." unique_id=1994306205 instance=ExtResource("20_w001")]
-z_index = 1583
+z_index = 1585
 position = Vector2(792, 1550)
 
 [node name="wallShape181" parent="." unique_id=687437017 instance=ExtResource("20_w003")]
-z_index = 1584
+z_index = 1586
 position = Vector2(664, 1543)
 
 [node name="wallShape183" parent="." unique_id=2010605672 instance=ExtResource("20_w003")]
-z_index = 1581
+z_index = 1584
 position = Vector2(920, 1544)
 
-[node name="wallShape184" parent="." unique_id=1060806962 instance=ExtResource("20_w001")]
-z_index = 1580
-position = Vector2(1176, 1552)
-
-[node name="wallShape185" parent="." unique_id=2044507884 instance=ExtResource("20_w005")]
-z_index = 1579
-position = Vector2(1300, 1547)
-
-[node name="wallShape186" parent="." unique_id=678862012 instance=ExtResource("20_w005")]
-z_index = 1578
-position = Vector2(1428, 1547)
-
-[node name="wallShape187" parent="." unique_id=741000175 instance=ExtResource("20_w003")]
-z_index = 1577
-position = Vector2(1560, 1544)
-
-[node name="wallShape188" parent="." unique_id=14518064 instance=ExtResource("20_w001")]
-z_index = 1576
-position = Vector2(1688, 1552)
-
-[node name="wallShape189" parent="." unique_id=240973451 instance=ExtResource("20_w003")]
-z_index = 1575
-position = Vector2(1816, 1544)
-
-[node name="wallShape006" parent="." unique_id=124259767 instance=ExtResource("20_w003")]
-position = Vector2(1176, 8)
-
 [node name="wallShape007" parent="." unique_id=1096378238 instance=ExtResource("20_w003")]
+z_index = 239
 position = Vector2(920, 199)
 
 [node name="wallShape018" parent="." unique_id=1202235241 instance=ExtResource("20_w003")]
+z_index = 179
 position = Vector2(536, 135)
 
 [node name="wallShape019" parent="." unique_id=2125040765 instance=ExtResource("20_w003")]
+z_index = 370
 position = Vector2(152, 328)
 
 [node name="wallShape022" parent="." unique_id=1976790809 instance=ExtResource("20_w003")]
+z_index = 498
 position = Vector2(152, 456)
 
 [node name="wallShape024" parent="." unique_id=839809449 instance=ExtResource("20_w003")]
+z_index = 691
 position = Vector2(536, 648)
 
 [node name="wallShape036" parent="." unique_id=1045076672 instance=ExtResource("20_w003")]
+z_index = 369
 position = Vector2(792, 327)
 
 [node name="wallShape037" parent="." unique_id=606543902 instance=ExtResource("20_w003")]
+z_index = 497
 position = Vector2(793, 456)
 
 [node name="wallShape038" parent="." unique_id=1532828226 instance=ExtResource("20_w001")]
+z_index = 821
 position = Vector2(155, 782)
 
 [node name="wallShape039" parent="." unique_id=2120636595 instance=ExtResource("20_w003")]
+z_index = 1008
 position = Vector2(24, 967)
 
 [node name="wallShape040" parent="." unique_id=1529247527 instance=ExtResource("20_w003")]
+z_index = 947
 position = Vector2(536, 904)
 
 [node name="wallShape042" parent="." unique_id=1113663605 instance=ExtResource("20_w003")]
+z_index = 1266
 position = Vector2(152, 1223)
 
 [node name="wallShape043" parent="." unique_id=1219444273 instance=ExtResource("20_w003")]
+z_index = 1138
 position = Vector2(153, 1095)
 
 [node name="wallShape061" parent="." unique_id=1405408252 instance=ExtResource("20_w003")]
+z_index = 1137
 position = Vector2(792, 1095)
 
 [node name="wallShape063" parent="." unique_id=1569110330 instance=ExtResource("20_w003")]
+z_index = 1265
 position = Vector2(792, 1224)
 
 [node name="wallShape064" parent="." unique_id=1927831218 instance=ExtResource("20_w003")]
+z_index = 1457
 position = Vector2(792, 1416)
 
 [node name="wallShape067" parent="." unique_id=394391116 instance=ExtResource("20_w003")]
+z_index = 1459
 position = Vector2(536, 1415)
 
 [node name="wallShape068" parent="." unique_id=837248511 instance=ExtResource("20_w003")]
+z_index = 1391
 position = Vector2(920, 1352)
+
+[node name="wallShapeM001" parent="." unique_id=1226669051 instance=ExtResource("20_w003")]
+z_index = 42
+position = Vector2(1818, 8)
+
+[node name="wallShapeM002" parent="." unique_id=1205532337 instance=ExtResource("20_w001")]
+z_index = 43
+position = Vector2(1691, 14)
+
+[node name="wallShapeM003" parent="." unique_id=1747892869 instance=ExtResource("20_w003")]
+z_index = 44
+position = Vector2(1560, 8)
+
+[node name="wallShapeM004" parent="." unique_id=1303025836 instance=ExtResource("20_w005")]
+z_index = 45
+position = Vector2(1428, 11)
+
+[node name="wallShapeM005" parent="." unique_id=1412389135 instance=ExtResource("20_w005")]
+z_index = 46
+position = Vector2(1300, 11)
+
+[node name="wallShapeM006" parent="." unique_id=1893097479 instance=ExtResource("20_w003")]
+z_index = 47
+position = Vector2(1178, 8)
+
+[node name="wallShapeM007" parent="." unique_id=1729098627 instance=ExtResource("20_w001")]
+z_index = 48
+position = Vector2(1051, 16)
+
+[node name="wallShapeM009" parent="." unique_id=57494963 instance=ExtResource("20_w002")]
+z_index = 140
+position = Vector2(1819, 102)
+
+[node name="wallShapeM011" parent="." unique_id=383376851 instance=ExtResource("20_w003")]
+z_index = 238
+position = Vector2(1814, 200)
+
+[node name="wallShapeM012" parent="." unique_id=2020936438 instance=ExtResource("20_w003")]
+z_index = 171
+position = Vector2(1689, 136)
+
+[node name="wallShapeM013" parent="." unique_id=667641723 instance=ExtResource("20_w001")]
+z_index = 172
+position = Vector2(1562, 142)
+
+[node name="wallShapeM014" parent="." unique_id=909174662 instance=ExtResource("20_w003")]
+z_index = 173
+position = Vector2(1433, 135)
+
+[node name="wallShapeM015" parent="." unique_id=1752356494 instance=ExtResource("20_w001")]
+z_index = 175
+position = Vector2(1178, 142)
+
+[node name="wallShapeM016" parent="." unique_id=1326423726 instance=ExtResource("20_w003")]
+z_index = 176
+position = Vector2(1049, 135)
+
+[node name="wallShapeM017" parent="." unique_id=1621052201 instance=ExtResource("20_w005")]
+z_index = 365
+position = Vector2(1813, 331)
+
+[node name="wallShapeM019" parent="." unique_id=1234037704 instance=ExtResource("20_w004")]
+z_index = 420
+position = Vector2(1367, 381)
+
+[node name="wallShapeM020" parent="." unique_id=1980284610 instance=ExtResource("20_w005")]
+z_index = 493
+position = Vector2(1813, 459)
+
+[node name="wallShapeM021" parent="." unique_id=1439559833 instance=ExtResource("20_w002")]
+z_index = 267
+position = Vector2(1691, 230)
+
+[node name="wallShapeM022" parent="." unique_id=1047067237 instance=ExtResource("20_w002")]
+z_index = 598
+position = Vector2(1690, 550)
+
+[node name="wallShapeM023" parent="." unique_id=1165139748 instance=ExtResource("20_w002")]
+z_index = 268
+position = Vector2(1050, 230)
+
+[node name="wallShapeM024" parent="." unique_id=952095063 instance=ExtResource("20_w002")]
+z_index = 599
+position = Vector2(1051, 561)
+
+[node name="wallShapeM026" parent="." unique_id=933830419 instance=ExtResource("20_w002")]
+z_index = 728
+position = Vector2(1818, 678)
+
+[node name="wallShapeM027" parent="." unique_id=1050751193 instance=ExtResource("20_w002")]
+z_index = 908
+position = Vector2(1819, 870)
+
+[node name="wallShapeM030" parent="." unique_id=1718337044 instance=ExtResource("20_w003")]
+z_index = 622
+position = Vector2(1816, 583)
+
+[node name="wallShapeM031" parent="." unique_id=172151407 instance=ExtResource("20_w003")]
+z_index = 683
+position = Vector2(1689, 648)
+
+[node name="wallShapeM032" parent="." unique_id=253365734 instance=ExtResource("20_w001")]
+z_index = 684
+position = Vector2(1563, 654)
+
+[node name="wallShapeM033" parent="." unique_id=397791628 instance=ExtResource("20_w003")]
+z_index = 685
+position = Vector2(1433, 647)
+
+[node name="wallShapeM034" parent="." unique_id=1182692018 instance=ExtResource("20_w001")]
+z_index = 687
+position = Vector2(1179, 653)
+
+[node name="wallShapeM035" parent="." unique_id=84114071 instance=ExtResource("20_w003")]
+z_index = 688
+position = Vector2(1049, 648)
+
+[node name="wallShapeM036" parent="." unique_id=2002122990 instance=ExtResource("20_w003")]
+z_index = 809
+position = Vector2(1561, 775)
+
+[node name="wallShapeM037" parent="." unique_id=701364442 instance=ExtResource("20_w005")]
+z_index = 810
+position = Vector2(1429, 779)
+
+[node name="wallShapeM038" parent="." unique_id=1554231426 instance=ExtResource("20_w005")]
+z_index = 811
+position = Vector2(1300, 779)
+
+[node name="wallShapeM040" parent="." unique_id=1538163631 instance=ExtResource("20_w001")]
+z_index = 813
+position = Vector2(1062, 782)
+
+[node name="wallShapeM041" parent="." unique_id=1241350518 instance=ExtResource("20_w003")]
+z_index = 812
+position = Vector2(1192, 776)
+
+[node name="wallShapeM043" parent="." unique_id=635347566 instance=ExtResource("20_w003")]
+z_index = 807
+position = Vector2(1819, 775)
+
+[node name="wallShapeM044" parent="." unique_id=1310049860 instance=ExtResource("20_w003")]
+z_index = 939
+position = Vector2(1689, 904)
+
+[node name="wallShapeM045" parent="." unique_id=1231193624 instance=ExtResource("20_w001")]
+z_index = 940
+position = Vector2(1562, 910)
+
+[node name="wallShapeM046" parent="." unique_id=1248539600 instance=ExtResource("20_w003")]
+z_index = 941
+position = Vector2(1433, 903)
+
+[node name="wallShapeM047" parent="." unique_id=765515820 instance=ExtResource("20_w001")]
+z_index = 943
+position = Vector2(1178, 910)
+
+[node name="wallShapeM048" parent="." unique_id=1966267805 instance=ExtResource("20_w003")]
+z_index = 944
+position = Vector2(1048, 904)
+
+[node name="wallShapeM049" parent="." unique_id=375205209 instance=ExtResource("20_w002")]
+z_index = 1035
+position = Vector2(1691, 998)
+
+[node name="wallShapeM050" parent="." unique_id=974833317 instance=ExtResource("20_w002")]
+z_index = 1036
+position = Vector2(1051, 996)
+
+[node name="wallShapeM051" parent="." unique_id=1523460967 instance=ExtResource("20_w005")]
+z_index = 1133
+position = Vector2(1813, 1099)
+
+[node name="wallShapeM053" parent="." unique_id=564325434 instance=ExtResource("20_w004")]
+z_index = 1188
+position = Vector2(1382, 1149)
+
+[node name="wallShapeM054" parent="." unique_id=2023376201 instance=ExtResource("20_w005")]
+z_index = 1261
+position = Vector2(1812, 1227)
+
+[node name="wallShapeM055" parent="." unique_id=706997916 instance=ExtResource("20_w002")]
+z_index = 1367
+position = Vector2(1692, 1318)
+
+[node name="wallShapeM056" parent="." unique_id=1657890096 instance=ExtResource("20_w002")]
+z_index = 1368
+position = Vector2(1051, 1330)
+
+[node name="wallShapeM058" parent="." unique_id=421686782 instance=ExtResource("20_w002")]
+z_index = 1496
+position = Vector2(1818, 1458)
+
+[node name="wallShapeM060" parent="." unique_id=1044581214 instance=ExtResource("20_w003")]
+z_index = 1390
+position = Vector2(1816, 1352)
+
+[node name="wallShapeM061" parent="." unique_id=1339103053 instance=ExtResource("20_w003")]
+z_index = 1451
+position = Vector2(1689, 1415)
+
+[node name="wallShapeM062" parent="." unique_id=864911178 instance=ExtResource("20_w001")]
+z_index = 1452
+position = Vector2(1563, 1422)
+
+[node name="wallShapeM063" parent="." unique_id=1624031231 instance=ExtResource("20_w003")]
+z_index = 1453
+position = Vector2(1433, 1415)
+
+[node name="wallShapeM064" parent="." unique_id=750841817 instance=ExtResource("20_w001")]
+z_index = 1455
+position = Vector2(1178, 1421)
+
+[node name="wallShapeM065" parent="." unique_id=649792600 instance=ExtResource("20_w003")]
+z_index = 1577
+position = Vector2(1817, 1544)
+
+[node name="wallShapeM066" parent="." unique_id=150134616 instance=ExtResource("20_w001")]
+z_index = 1578
+position = Vector2(1691, 1550)
+
+[node name="wallShapeM067" parent="." unique_id=1704946784 instance=ExtResource("20_w003")]
+z_index = 1579
+position = Vector2(1561, 1544)
+
+[node name="wallShapeM068" parent="." unique_id=1364428167 instance=ExtResource("20_w005")]
+z_index = 1580
+position = Vector2(1428, 1547)
+
+[node name="wallShapeM069" parent="." unique_id=759699850 instance=ExtResource("20_w005")]
+z_index = 1581
+position = Vector2(1300, 1547)
+
+[node name="wallShapeM071" parent="." unique_id=344317818 instance=ExtResource("20_w001")]
+z_index = 1583
+position = Vector2(1049, 1550)
+
+[node name="wallShapeM072" parent="." unique_id=501690114 instance=ExtResource("20_w003")]
+z_index = 1582
+position = Vector2(1175, 1543)
+
+[node name="wallShapeM075" parent="." unique_id=779506517 instance=ExtResource("20_w003")]
+z_index = 174
+position = Vector2(1305, 135)
+
+[node name="wallShapeM076" parent="." unique_id=1350698243 instance=ExtResource("20_w003")]
+z_index = 366
+position = Vector2(1689, 328)
+
+[node name="wallShapeM077" parent="." unique_id=1819168571 instance=ExtResource("20_w003")]
+z_index = 494
+position = Vector2(1688, 456)
+
+[node name="wallShapeM078" parent="." unique_id=1465395479 instance=ExtResource("20_w003")]
+z_index = 686
+position = Vector2(1305, 647)
+
+[node name="wallShapeM079" parent="." unique_id=2082192401 instance=ExtResource("20_w003")]
+z_index = 367
+position = Vector2(1048, 327)
+
+[node name="wallShapeM080" parent="." unique_id=1150783263 instance=ExtResource("20_w003")]
+z_index = 495
+position = Vector2(1049, 456)
+
+[node name="wallShapeM081" parent="." unique_id=1163867270 instance=ExtResource("20_w001")]
+z_index = 808
+position = Vector2(1690, 782)
+
+[node name="wallShapeM082" parent="." unique_id=158358837 instance=ExtResource("20_w003")]
+z_index = 1006
+position = Vector2(1816, 967)
+
+[node name="wallShapeM083" parent="." unique_id=538130844 instance=ExtResource("20_w003")]
+z_index = 942
+position = Vector2(1305, 904)
+
+[node name="wallShapeM084" parent="." unique_id=567876630 instance=ExtResource("20_w003")]
+z_index = 1262
+position = Vector2(1690, 1223)
+
+[node name="wallShapeM085" parent="." unique_id=1372617460 instance=ExtResource("20_w003")]
+z_index = 1134
+position = Vector2(1689, 1095)
+
+[node name="wallShapeM086" parent="." unique_id=1361399492 instance=ExtResource("20_w003")]
+z_index = 1135
+position = Vector2(1049, 1095)
+
+[node name="wallShapeM087" parent="." unique_id=1308154760 instance=ExtResource("20_w003")]
+z_index = 1263
+position = Vector2(1049, 1224)
+
+[node name="wallShapeM088" parent="." unique_id=1031024325 instance=ExtResource("20_w003")]
+z_index = 1456
+position = Vector2(1049, 1416)
+
+[node name="wallShapeM089" parent="." unique_id=1930960883 instance=ExtResource("20_w003")]
+z_index = 1454
+position = Vector2(1304, 1415)
+
+[node name="wallShape006" parent="." unique_id=124259767 instance=ExtResource("20_w003")]
+z_index = 1007
+position = Vector2(920, 968)
+
+[node name="wallShape011" parent="." unique_id=1832149388 instance=ExtResource("20_w003")]
+z_index = 623
+position = Vector2(921, 584)
